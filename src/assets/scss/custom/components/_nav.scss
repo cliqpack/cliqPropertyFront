@@ -467,12 +467,17 @@
 .custom_search_bar_input_field {
   width: 300px;
   text-align: center;
-  background-color: #3A607A;
+  // background-color: #3A607A;
   border-radius: 20px 0px 0px 20px;
   padding: 8px;
   border: none;
   border-right: 0px;
-  color: #fff;
+  color: #000;
+  border: 1px solid gray;
+}
+
+.custom_search_bar_input_field::placeholder {
+  color: #000 !important;
 }
 
 @media screen and (min-width: 300px) and (max-width: 567px) {

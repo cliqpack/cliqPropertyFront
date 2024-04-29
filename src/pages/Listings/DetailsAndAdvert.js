@@ -170,25 +170,22 @@ const DetailsAndAdvert = props => {
     }
     if (props.listing_list_info_loading === false) {
       props.ListingListInfo(id);
-    } if (props.rental_listing_loading === false) {
+    } else if (props.rental_listing_loading === false) {
       props.RentalListingData(id);
-    } if (props.listing_list_info_data?.data[0].property_id) {
+    } else if (props.listing_list_info_data?.data[0].property_id) {
       props.ListingListInspectionInfo(
         props.listing_list_info_data?.data[0].property_id
       );
-    } if (props.listing_link_data_loading === false) {
+    } else if (props.list_desc_loading === false) {
+      props.ListingDescData(id);
+    } else if (props.listing_link_data_loading === false) {
       props.listingLinksInfo(id);
     }
 
-    if (props.property_edit_info_loading == false) {
+    else if (props.property_edit_info_loading == false) {
 
-      props.getPropertyEditInfo(propertyInfo?.property_id);
+      props.getPropertyEditInfo(propertyInfo.property_id);
     };
-
-    if (props.list_desc_loading === false) {
-      props.ListingDescData(id);
-    }
-
     if (props.general_list_feature_image_add_loading === 'Success') {
       toastr.success('Image added successfully');
       props.generalListFeatureImageAddFresh();
@@ -240,7 +237,7 @@ const DetailsAndAdvert = props => {
     props.property_edit_info_loading,
     props.general_list_feature_image_add_loading,
     props.general_list_image_add_loading,
-    props.link_data_loading, props.listing_list_info_data?.data[0]?.property_id,
+    props.link_data_loading, props.listing_list_info_data?.data[0].property_id,
     props.store_inspection_task_job_document_loading
   ]);
 
@@ -1117,7 +1114,7 @@ const DetailsAndAdvert = props => {
                                 <span className="card-title text-primary">
                                   {rentalListingData?.rent ? `$${rentalListingData?.rent}` : ""} per week
                                 </span>{" "}
-                                <br />{rentalListingData?.bond ? `$${rentalListingData?.bond}` : ''} Bond
+                                <br />{rentalListingData?.bond ? `$${rentalListingData?.bond}` : ''} Security Deposit
 
                               </Col>
                               <Col className="d-flex justify-content-end">

@@ -1274,7 +1274,7 @@ const ContactEdit = props => {
                                                 }
                                                 onChange={handlePropertyFormValues}
                                               />
-                                              <label htmlFor="usr">BIN</label>
+                                              <label htmlFor="usr">ABN</label>
                                             </div>
                                             <ErrorMessage
                                               name="abn"

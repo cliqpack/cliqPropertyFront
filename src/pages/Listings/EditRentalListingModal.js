@@ -377,7 +377,7 @@ const EditRentalListingModal = props => {
             </FormGroup>
             <FormGroup row>
               <Label for="bond" sm={3}>
-                Bond
+                Security Deposit
               </Label>
               <Col sm={9}>
                 <input

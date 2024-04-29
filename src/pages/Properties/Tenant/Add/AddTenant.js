@@ -1271,7 +1271,7 @@ const AddTenant = props => {
                                                                                                                 for="bond_required"
                                                                                                                 className="form-label text-dark"
                                                                                                             >
-                                                                                                                Bond required
+                                                                                                                Security Deposit required
                                                                                                             </Label>
                                                                                                         </Col>
                                                                                                         <Col md={4}>
@@ -1623,7 +1623,7 @@ const AddTenant = props => {
                                                                                                                 for="bond_held"
                                                                                                                 className="form-label text-dark"
                                                                                                             >
-                                                                                                                Bond held
+                                                                                                                Security Deposit held
                                                                                                             </Label>
                                                                                                         </Col>
                                                                                                         <Col md={4}>

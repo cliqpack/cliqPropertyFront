@@ -45,7 +45,6 @@
 
 const initialState = {
     chartsData: null,
-    chartsDataLoading: false,
     insightsInspectionEntry: null,
     dashboardInsightsPropertyData: null,
     dashboardInsightsPropertyDataLoading: false,
@@ -84,7 +83,6 @@ const Dashboard = (state = initialState, action) => {
         case "GET_CHARTS_DATA":
             state = {
                 ...state,
-                chartsDataLoading: action.status,
                 chartsData: action.payload,
             }
             break;

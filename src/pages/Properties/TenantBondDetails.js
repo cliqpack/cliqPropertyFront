@@ -14,7 +14,7 @@ const TenantBondDetails = props => {
   return (
     <Fragment>
       <div onClick={toggle} className="text-primary hoverBondDetails">
-        Edit bond details <i className="fas fa-pen"></i>
+        Edit Security Deposit details <i className="fas fa-pen"></i>
       </div>
 
       <Modal isOpen={state} toggle={toggle} centered>
@@ -22,7 +22,7 @@ const TenantBondDetails = props => {
         <ModalHeader style={{ backgroundColor: "#153D58" }} >
           <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
             <div>
-              <span className="text-white"> Bond Details</span>
+              <span className="text-white"> Security Deposit Details</span>
             </div>
             <i className="mdi mdi-close-thick font-size-20 text-white" onClick={toggle} style={{ cursor: "pointer" }}></i>
           </div>
@@ -47,7 +47,7 @@ const TenantBondDetails = props => {
                       value={props.state2.bond_required}
                       onChange={props.handlePropertyFormTwoValues}
                     />
-                    <label htmlFor="usr">Bond required</label>
+                    <label htmlFor="usr">Security Deposit required</label>
                   </div>
                   <span className="input-group-append">
                     <span
@@ -77,7 +77,7 @@ const TenantBondDetails = props => {
                       value={props.state2.bond_paid}
                       onChange={props.handlePropertyFormBond}
                     />
-                    <label htmlFor="usr">Bond already paid</label>
+                    <label htmlFor="usr">Security Deposit already paid</label>
                   </div>
                   <span className="input-group-append">
                     <span
@@ -115,7 +115,7 @@ const TenantBondDetails = props => {
                       value={props.state2.bond_receipted}
                       onChange={props.handlePropertyFormTwoValues}
                     />
-                    <label htmlFor="usr"> Bond receipted</label>
+                    <label htmlFor="usr"> Security Deposit receipted</label>
                   </div>
                   <span className="input-group-append">
                     <span
@@ -145,7 +145,7 @@ const TenantBondDetails = props => {
                       value={props.state2.bond_held}
                       onChange={props.handlePropertyFormTwoValues}
                     />
-                    <label htmlFor="usr">Bond held</label>
+                    <label htmlFor="usr">Security Deposit held</label>
                   </div>
                   <span className="input-group-append">
                     <span
@@ -185,7 +185,7 @@ const TenantBondDetails = props => {
                       onChange={props.handlePropertyFormTwoValues}
                     />
 
-                    <label htmlFor="usr">  Bond arrears</label>
+                    <label htmlFor="usr">  Security Deposit arrears</label>
                   </div>
                   <span className="input-group-append">
                     <span
@@ -209,7 +209,7 @@ const TenantBondDetails = props => {
                       value={props.state2.bond_reference}
                       onChange={props.handlePropertyFormTwoValues}
                     />
-                    <label htmlFor="usr"> Bond reference</label>
+                    <label htmlFor="usr"> Security Deposit reference</label>
                   </div>
                 </Col>
               </Row>

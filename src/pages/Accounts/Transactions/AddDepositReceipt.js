@@ -236,7 +236,7 @@ const AddDepositReceipt = (props) => {
                                                     {
                                                         !props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_cleared_date &&
                                                         <tr>
-                                                            <td>Bond</td>
+                                                            <td>Security Deposit</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_due_date}</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_part_paid_description}</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}৳</td>

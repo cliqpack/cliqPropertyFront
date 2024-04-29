@@ -28,23 +28,12 @@ import {
     Modal,
     ModalBody,
     FormGroup,
-    ModalHeader,
-    ModalFooter
 } from "reactstrap";
 import DatatableTables2 from "pages/Tables/DatatableTables2";
 import Parser from "html-react-parser";
-import { AllDocumentByListing, listingDocumentUpdateById, listingDocumentUpdateByIdFresh, listingDocumentDeleteById, listingDocumentDeleteByIdFresh } from "store/actions";
+import { AllListingDocument } from "store/actions";
 import moment from "moment";
 import toastr from "toastr";
-import ToolkitProvider, {
-    Search,
-} from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-    PaginationProvider,
-    PaginationListStandalone,
-    SizePerPageDropdownStandalone,
-} from "react-bootstrap-table2-paginator";
 
 function ListingAllDocs(props) {
     const { id } = useParams();
@@ -74,12 +63,6 @@ function ListingAllDocs(props) {
     const [state, setState] = useState({
         activeTab: "1",
     });
-
-    const [actionArray, setActionArray] = useState([]);
-    const [table, setTable] = useState([]);
-
-
-
     const dateRef = (cell, row) => {
         return <span>{moment(row.created_at).format("DD-MM-YYYY")}</span>;
     };
@@ -122,7 +105,7 @@ function ListingAllDocs(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(rowData, docID);
-        props.listingDocumentUpdateById(rowData, actionArray[0].id);
+        props.taskDocumentUpdateById(rowData, docID);
         setModal(false)
 
     }
@@ -130,7 +113,7 @@ function ListingAllDocs(props) {
     const handleSubmit1 = (e) => {
         e.preventDefault();
         //console.log(rowData);
-        props.listingDocumentDeleteById(actionArray);
+        props.taskDocumentDeleteById(docID);
         setModal1(false)
 
     }
@@ -150,18 +133,12 @@ function ListingAllDocs(props) {
             dataField: "id",
             text: "Date",
             formatter: dateRef,
-            events: {
-                onClick: (e, column, columnIndex, row, rowIndex) => {
-                    refDetail(e, column, columnIndex, row, rowIndex);
-                },
-            },
             sort: true,
         },
         {
             dataField: "",
             text: "Filename",
             formatter: fileRef,
-
             sort: true,
         },
         {
@@ -189,37 +166,18 @@ function ListingAllDocs(props) {
             sort: true,
         },
 
-        // {
-        //     dataField: "",
-        //     text: "Action",
-        //     //sort: true,
-        //     formatter: buttonRef
-        // },
+        {
+            dataField: "",
+            text: "Action",
+            //sort: true,
+            formatter: buttonRef
+        },
     ];
 
     useEffect(() => {
-        props.AllDocumentByListing(id, 'Uploaded')
-
+        props.AllListingDocument(id, 'Uploaded')
     }, [])
-
-    useEffect(() => {
-        if (props.listing_doc_name_loading === "Success") {
-            toastr.success('Edited Successfull');
-            props.listingDocumentUpdateByIdFresh();
-            // props.AllJobDocument(id);
-            setTable([])
-
-            toggle(state.activeTab)
-        }
-
-        if (props.listing_doc_delete_loading === "Success") {
-            toastr.success('Deleted Successfull');
-            props.listingDocumentDeleteByIdFresh();
-            // props.AllJobDocument(id);
-            toggle(state.activeTab)
-        }
-    }, [props.listing_doc_name_loading, props.listing_doc_delete_loading])
-
+    console.log(props.all_document_by_listing_data);
 
     const toggle = (tab, type) => {
         if (state.activeTab !== tab) {
@@ -231,64 +189,10 @@ function ListingAllDocs(props) {
 
 
         if (tab == 1) {
-            props.AllDocumentByListing(id, 'Uploaded')
+            props.AllListingDocument(id, 'Uploaded')
         } else {
-            props.AllDocumentByListing(id, 'Generated')
+            props.AllListingDocument(id, 'Generated')
         }
-    };
-
-    console.log(actionArray);
-
-    const { SearchBar } = Search;
-
-    const pageOptions = {
-        sizePerPage: 10,
-        totalSize: props.all_document_by_listing_data?.data?.data.length, // replace later with size(customers),
-        custom: true,
-    };
-
-    const handleSelect = (isSelect, rows, e) => {
-        // console.log(isSelect, rows);
-        if (rows) {
-            setActionArray(prevArray => [...prevArray, isSelect]);
-            setTable([...table, isSelect?.id]);
-
-        } else {
-            setActionArray(cur => cur.filter(data => data?.id !== isSelect?.id));
-            setTable(cur => cur.filter(data => data !== isSelect?.id));
-
-        }
-    };
-
-    const handleSelectAll = (isSelect, rows, e) => {
-        // console.log(isSelect, rows);
-        if (isSelect) {
-            setActionArray(rows);
-            setTable(data)
-
-        } else {
-            setActionArray([]);
-            setTable([])
-
-        }
-    };
-
-    let node;
-    const defaultSorted = [
-        {
-            dataField: "id",
-            order: "asc",
-        },
-    ];
-
-
-    const selectRow = {
-        mode: "checkbox",
-        selected: table,
-
-        onSelect: handleSelect,
-
-        onSelectAll: handleSelectAll,
     };
 
     return (
@@ -301,24 +205,30 @@ function ListingAllDocs(props) {
                                 <CardBody>
                                     <h4 className="ms-2 mb-4 text-primary">Document</h4>
                                     <div className="button-items">
-                                        {state.activeTab == '1' &&
-                                            <button
-                                                type="button"
-                                                className="btn btn-info"
-                                                disabled={actionArray.length == 1 ? false : true}
-                                                onClick={toggleModal}
-                                            >
-                                                <i className="fas fa-pen me-1" />Edit File name
-                                            </button>}
+                                        {/* <Link to="/contact">
+                      <button type="button" className="btn btn-info">
+                        <i className="bx bx-user font-size-16 align-middle me-2"></i>
+                        Add Contact
+                      </button>
+                    </Link>
 
-                                        <button
-                                            type="button"
-                                            className="btn btn-secondary ms-1"
-                                            disabled={actionArray.length ? false : true}
-                                            onClick={toggleModal1}
-                                        >
-                                            Delete
-                                        </button>
+                    <Link to="/addSupplier">
+                      <button type="button" className="btn btn-info">
+                        <i className="bx bx-user-plus font-size-18 align-middle me-2"></i>
+                        Add Supplier
+                      </button>
+                    </Link> */}
+
+                                        {/* <button type="button" className="btn btn-secondary">
+                      <i className="fas fas fa-paper-plane font-size-12 align-middle me-2"></i>
+                      Message
+                      <i className="fas fas fa-chevron-down font-size-12 align-middle ms-2"></i>
+                    </button>
+
+                    <button disable type="button" className="btn btn-secondary">
+                      Actions
+                      <i className="fas fas fa-chevron-down font-size-12 align-middle ms-2"></i>
+                    </button> */}
                                     </div>
                                 </CardBody>
                             </Card>
@@ -362,82 +272,12 @@ function ListingAllDocs(props) {
                                                 <Row>
                                                     <Col sm="12">
                                                         <CardText className="mb-0">
-                                                            {/* {props.all_document_by_listing_data?.data ? (
+                                                            {/* {[] ? (
                                                                 <DatatableTables2
-                                                                    products={props.all_document_by_listing_data?.data}
+                                                                    products={[]}
                                                                     columnData={columnData}
                                                                 />
                                                             ) : null} */}
-                                                            <CardText className="mb-0">
-                                                                {props.all_document_by_listing_data?.data &&
-                                                                    <PaginationProvider
-                                                                        pagination={paginationFactory(pageOptions)}
-                                                                        keyField="id"
-                                                                        columns={columnData}
-                                                                        data={props.all_document_by_listing_data?.data?.data}
-                                                                    >
-                                                                        {({ paginationProps, paginationTableProps }) => (
-                                                                            <ToolkitProvider
-                                                                                keyField="id"
-                                                                                columns={columnData}
-                                                                                data={props.all_document_by_listing_data?.data?.data}
-                                                                                search
-                                                                            >
-                                                                                {toolkitProps => (
-                                                                                    <React.Fragment>
-                                                                                        <Row className="mb-2">
-                                                                                            <Col md={2}></Col>
-                                                                                            <Col md={10}></Col>
-                                                                                        </Row>
-
-                                                                                        <Row>
-                                                                                            <Col xl="12">
-                                                                                                <div className="table-responsive">
-                                                                                                    <div className="d-flex justify-content-end align-items-center search-box" style={{ marginTop: "100px" }}>
-                                                                                                        <SearchBar
-                                                                                                            {...toolkitProps.searchProps}
-                                                                                                        />
-                                                                                                    </div>
-                                                                                                    <BootstrapTable
-                                                                                                        ref={n => (node = n)}
-                                                                                                        keyField={"id"}
-                                                                                                        responsive
-                                                                                                        bordered={false}
-                                                                                                        striped={false}
-                                                                                                        defaultSorted={defaultSorted}
-                                                                                                        selectRow={selectRow}
-                                                                                                        tabIndexCell
-                                                                                                        classes={
-                                                                                                            "table align-middle table-nowrap"
-                                                                                                        }
-                                                                                                        headerWrapperClasses={"thead-light"}
-                                                                                                        {...toolkitProps.baseProps}
-                                                                                                        {...paginationTableProps}
-                                                                                                    />
-                                                                                                </div>
-                                                                                            </Col>
-                                                                                        </Row>
-
-                                                                                        <Row className="align-items-md-center mt-30">
-                                                                                            <Col className="inner-custom-pagination d-flex">
-                                                                                                <div className="d-inline">
-                                                                                                    <SizePerPageDropdownStandalone
-                                                                                                        {...paginationProps}
-                                                                                                    />
-                                                                                                </div>
-                                                                                                <div className="text-md-right ms-auto">
-                                                                                                    <PaginationListStandalone
-                                                                                                        {...paginationProps}
-                                                                                                    />
-                                                                                                </div>
-                                                                                            </Col>
-                                                                                        </Row>
-                                                                                    </React.Fragment>
-                                                                                )}
-                                                                            </ToolkitProvider>
-                                                                        )}
-                                                                    </PaginationProvider>}
-                                                            </CardText>
                                                         </CardText>
                                                     </Col>
                                                 </Row>
@@ -446,12 +286,12 @@ function ListingAllDocs(props) {
                                                 <Row>
                                                     <Col sm="12">
                                                         <CardText className="mb-0">
-                                                            {props.all_document_by_listing_data?.data ? (
+                                                            {/* {jobData.data ? (
                                                                 <DatatableTables2
-                                                                    products={props.all_document_by_listing_data?.data}
-                                                                    columnData={columnData}
+                                                                    products={jobData}
+                                                                    columnData={columnJobData}
                                                                 />
-                                                            ) : null}
+                                                            ) : null} */}
                                                         </CardText>
                                                     </Col>
                                                 </Row>
@@ -465,7 +305,7 @@ function ListingAllDocs(props) {
                 </Row>
 
                 {/* ============ edit modal start=============== */}
-                {/* <Modal isOpen={modal} toggle={toggleModal} centered={true}>
+                <Modal isOpen={modal} toggle={toggleModal} centered={true}>
                     <ModalBody>
                         <form onSubmit={handleSubmit}>
                             <FormGroup row>
@@ -494,49 +334,12 @@ function ListingAllDocs(props) {
                         </form>
                     </ModalBody>
 
-                </Modal> */}
-                {/* ============ edit modal ends=============== */}
-                {/* ============ edit modal start=============== */}
-                <Modal isOpen={modal} toggle={toggleModal} >
-                    <ModalHeader className="text-info" toggle={toggleModal}>
-                        <span className="text-info">Edit {actionArray?.[0]?.name} file name</span>
-                    </ModalHeader>
-                    <ModalBody>
-                        <form className="py-2">
-                            <FormGroup row>
-                                <Label for="exampleText" sm={3}>
-                                    File Name
-                                </Label>
-                                <Col sm={9}>
-                                    <Input
-                                        id="exampleText"
-                                        name="fileName"
-                                        value={rowData}
-                                        type="text"
-                                        required={true}
-                                        onChange={handleFileName}
-                                    />
-                                </Col>
-                            </FormGroup>
-
-                        </form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <div style={{ display: "flex", justifyContent: "flex-end", gap: 5 }}>
-                            <Button color="primary" onClick={handleSubmit}>
-                                Submit
-                            </Button>{' '}
-                            <Button color="secondary" onClick={toggleModal}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </ModalFooter>
                 </Modal>
                 {/* ============ edit modal ends=============== */}
 
 
                 {/* ============ delete modal start=============== */}
-                {/* <Modal isOpen={modal1} toggle={toggleModal1} centered={true} style={{ width: "300px" }}>
+                <Modal isOpen={modal1} toggle={toggleModal1} centered={true} style={{ width: "300px" }}>
                     <ModalBody >
                         <div style={{ height: "100px" }}>
                             <div style={{ textAlign: "center" }}>
@@ -556,34 +359,8 @@ function ListingAllDocs(props) {
 
                     </ModalBody>
 
-                </Modal> */}
-                {/* ============ delete modal ends=============== */}
-                {/* ============ delete modal start=============== */}
-                <Modal isOpen={modal1} toggle={toggleModal1} centered={true} style={{ width: "300px" }}>
-                    <ModalBody >
-                        <div style={{ height: "100px" }}>
-                            <div style={{ textAlign: "center" }}>
-                                <h4>Are you sure?</h4>
-                            </div>
-                            <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: "30px" }}>
-                                <Button color="danger" type="submit" onClick={handleSubmit1}>
-                                    Yes
-                                </Button>{' '}
-                                <Button color="secondary" onClick={toggleModal1}>
-                                    No
-                                </Button>
-                            </div>
-                        </div>
-
-
-
-                    </ModalBody>
-                    <ModalFooter>
-
-                    </ModalFooter>
                 </Modal>
                 {/* ============ delete modal ends=============== */}
-
             </Container>
         </div>
     );
@@ -591,15 +368,17 @@ function ListingAllDocs(props) {
 
 const mapStateToProps = gstate => {
     const {
-        all_document_by_listing_data, listing_doc_name_loading, listing_doc_delete_loading
+        all_document_by_listing_data,
+        all_document_by_listing_loading
     } = gstate.Document;
     return {
-        all_document_by_listing_data, listing_doc_name_loading, listing_doc_delete_loading
+        all_document_by_listing_data,
+        all_document_by_listing_loading
     };
 };
 
 export default withRouter(
     connect(mapStateToProps, {
-        AllDocumentByListing, listingDocumentUpdateById, listingDocumentUpdateByIdFresh, listingDocumentDeleteById, listingDocumentDeleteByIdFresh
+        AllListingDocument
     })(ListingAllDocs)
 );

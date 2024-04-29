@@ -991,7 +991,7 @@ const setPropertyTenantAdd = props => {
                                       //   "Please Enter Communication"
                                       // ),
                                       abn: Yup.string().required(
-                                        "Please Enter ABN"
+                                        "Please Enter BIN"
                                       ),
                                       // notes:
                                       //   Yup.string().required(
@@ -2421,7 +2421,7 @@ const setPropertyTenantAdd = props => {
                                               ),
                                               bond_required:
                                                 Yup.string().required(
-                                                  "Bond is required"
+                                                  "Security Deposit is required"
                                                 ),
                                               move_in: Yup.date()
                                                 .typeError(
@@ -2716,7 +2716,7 @@ const setPropertyTenantAdd = props => {
                                                                 for="bond_required"
                                                                 className="form-label"
                                                               >
-                                                                Bond required
+                                                                Security Deposit required
                                                               </Label>
                                                             </Col>
                                                             <Col md={4}>
@@ -2758,7 +2758,7 @@ const setPropertyTenantAdd = props => {
                                                                 for="bond_held"
                                                                 className="form-label"
                                                               >
-                                                                Bond held
+                                                                Security Deposit held
                                                               </Label>
                                                             </Col>
                                                             <Col md={4}>

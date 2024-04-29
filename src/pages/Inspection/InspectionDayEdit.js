@@ -24,12 +24,23 @@ import {
 } from "@react-google-maps/api";
 import {
   Card,
+  CardBody,
   Col,
   Row,
+  CardText,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
   Button,
+  CardHeader,
+  CardTitle,
   Label,
   FormGroup,
+  Form,
   Input,
+  InputGroup,
 } from "reactstrap";
 
 import classnames from "classnames";
@@ -38,7 +49,7 @@ import {
   editInspectionScheduleFresh,
   getScheduleListFresh,
 } from "../../store/Inspections/actions";
-// import { arrayPush } from "redux-form";
+import { arrayPush } from "redux-form";
 import Board, { moveCard, removeCard } from "@lourenci/react-kanban";
 import "@lourenci/react-kanban/dist/styles.css";
 import Address from "common/Address/Address";
@@ -161,10 +172,6 @@ const InspectionDayEdit = props => {
       props.editInspectionScheduleFresh();
       props.getScheduleListFresh();
       history.push("/inspections");
-    } else if (props.inspection_schedule_edit_loading == "Failed") {
-      setLoader(false);
-      toastr.success("Inspection Re Schedule Failed");
-      props.editInspectionScheduleFresh();
     }
     setDurationTime(Number(location.state.duration));
     if (Number(location.state.duration) == 15) {

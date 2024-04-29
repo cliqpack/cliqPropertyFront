@@ -120,15 +120,15 @@ import QuotesDownModal from "./QuotesDownModal";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import Comment from "pages/Activity/Comment";
-// import MailTemplateModalMaintenance from "./Activity/MailTemplateModalMaintenance";
+import MailTemplateModalMaintenance from "./Activity/MailTemplateModalMaintenance";
 import ShowActivityData from "pages/Properties/Activity/ShowActivityData";
-// import Lightbox from "yet-another-react-lightbox";
+import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-// import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
 //import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
-// import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-// import Video from "yet-another-react-lightbox/plugins/video";
-// import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import Video from "yet-another-react-lightbox/plugins/video";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/captions.css";
 
 import "flatpickr/dist/themes/material_blue.css";
@@ -141,7 +141,6 @@ import { withTranslation, useTranslation } from "react-i18next";
 
 import CommentData from "pages/Activity/CommentData";
 //import {  } from 'react-router-dom';
-import Loder from "components/Loder/Loder";
 
 let propertyId = undefined;
 
@@ -208,8 +207,6 @@ const JobInfo = props => {
   const toggleDeleteModal = () => setDeleteModal(prev => !prev);
 
   const [msgModal, setMsgModal] = useState(false);
-  const [reject,setReject]=useState(false);
-  const [loader,setLoader]=useState(false);
 
   const toggleMsgModal = () => {
     setMsgModal(prev => !prev);
@@ -292,7 +289,6 @@ const JobInfo = props => {
     setShow(true)
   };
   const handleDocument = async e => {
-    setLoader(true);
     if (
       e.target.files[0].type !== "image/jpeg" &&
       e.target.files[0].type !== "image/png" &&
@@ -605,7 +601,6 @@ const JobInfo = props => {
     }
     if (props.job_info_image_add_loading === "Success") {
       toastr.success("Image Added Successfully");
-      setLoader(false);
       props.JobsListById(id);
       props.jobInfoImageAddFresh();
     }
@@ -653,12 +648,7 @@ const JobInfo = props => {
       callJobAllActivity();
     }
     if (props.job_status_loading === "Completed") {
-      if(reject) {
-        toastr.success("Job Rejected");
-        setReject(false);
-      } else {
-        toastr.success("Job Completed");
-      }
+      toastr.success("Job Completed");
       props.jobStatusFresh();
       props.JobsListByIdFresh();
       props.getQuoteFresh();
@@ -958,7 +948,6 @@ const JobInfo = props => {
 
   return (
     <React.Fragment>
-    {loader && <Loder status={loader} />}
       <div
         className="page-content"
       // onDragOver={drag}
@@ -1217,7 +1206,6 @@ const JobInfo = props => {
                             <DropdownItem
                               onClick={() => {
                                 props.jobCompleted(id);
-                                setReject(true);
                               }}
                             >
                               {" "}
@@ -1299,7 +1287,6 @@ const JobInfo = props => {
                             <i className="fas fa-calendar me-1 font-size-24" /> {jobData?.days_difference ? `${jobData?.days_difference} ${t('days')}` : ''}
                           </div>
                           <div className="d-flex flex-column justify-content-center text-white">
-                            {console.log(jobData?.due_by, '---------')}
                             {moment(jobData?.due_by).format('DD MMM')}
                             <span>{jobData?.due_status}</span>
                           </div>
@@ -1690,11 +1677,10 @@ const JobInfo = props => {
 
                         <Button
                           className="me-1"
-                          color="light"
-                          outline
-                          disabled
+                          color="labelColor"
+                        //onClick={() => inputFileProp.current.click()}
                         >
-                          <i className="fas fa-cloud-upload-alt font-size-16 text-info"></i>
+                          <i className="fas fa-cloud-upload-alt font-size-16 text-white"></i>
                         </Button>
 
 
@@ -2330,7 +2316,6 @@ const JobInfo = props => {
                     <button
                       className="btn btn-buttonCancelColor w-md"
                       type="submit"
-                      onClick={()=>{history.push("/maintenance");}}
                     >
                       <i className="fas fa-times me-1"></i> {t('Cancel')}
                     </button>

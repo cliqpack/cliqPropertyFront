@@ -11,6 +11,7 @@ import { withTranslation } from "react-i18next";
 import SidebarContent from "./SidebarContent";
 
 import logo from "../../assets/images/Asset-light.png";
+import logoCliqProperty from "../../assets/images/white_long.png";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
 // import logoDark from "../../assets/images/Myday.png";
@@ -30,17 +31,17 @@ class Sidebar extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="vertical-menu" style={{ backgroundColor: "#153D58" }}>
+        <div className="vertical-menu" style={{ backgroundColor: "#564BC6" }}>
           <div
             className="navbar-brand-box"
-            style={{ backgroundColor: "#153D58" }}
+            style={{ backgroundColor: "#564BC6" }}
           >
             <Link to="/" className="logo logo-dark">
               <span className="logo-sm">
-                <img src={logo} alt="" height="30" />
+                <img src={logoCliqProperty} alt="" height="30" />
               </span>
               <span className="logo-lg">
-                <img src={logoDarkNew} alt="" height="30" />
+                <img src={logoCliqProperty} alt="" height="30" />
               </span>
             </Link>
 
@@ -49,7 +50,7 @@ class Sidebar extends Component {
                 <img src={logo} alt="" height="30" />
               </span>
               <span className="logo-lg">
-                <img src={logoDarkNew} alt="" height="30" />
+                <img src={logoCliqProperty} alt="" height="30" />
               </span>
             </Link>
           </div>

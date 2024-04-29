@@ -361,7 +361,7 @@ const Contact = (props) => {
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
             const place = await autoCompleteRef.current.getPlace();
-            let unitN = "";
+            let unitN="";
             let country = '';
             let statename = '';
             let postal_codeN = ''
@@ -419,16 +419,16 @@ const Contact = (props) => {
 
 
             });
-            let u = unitN ? unitN + "/ " : "";
+             let u = unitN ? unitN + "/ " : "";
             let c = country ? country + " " : "";
             let st = statename ? statename + " " : "";
             let pc = postal_codeN ? postal_codeN + ", " : "";
             let sn = suburbN ? suburbN + " " : "";
             let s = streetN ? streetN + ", " : "";
             let n = street_numberN ? street_numberN + " " : "";
-            setFullPostalAddress(u + n + s + sn + pc + st + c);
+            setFullPostalAddress(u+ n + s + sn + pc + st + c);
             // setPostalAddressState({ ...postalAddressState, physical_country: country, physical_state: statename, physical_postcode: postal_codeN, physical_suburb: suburbN, physical_street: streetN, physical_number: street_numberN });
-            setPostalAddress({ ...postalAddress, postal_unit: unitN, postal_country: country, postal_state: statename, postal_postcode: postal_codeN, postal_suburb: suburbN, postal_street: streetN, postal_number: street_numberN });
+            setPostalAddress({ ...postalAddress,postal_unit:unitN, postal_country: country, postal_state: statename, postal_postcode: postal_codeN, postal_suburb: suburbN, postal_street: streetN, postal_number: street_numberN });
 
             setPostalAddForm(true);
         });
@@ -439,7 +439,7 @@ const Contact = (props) => {
         );
         autoCompletePostalRef.current.addListener("place_changed", async function () {
             const place = await autoCompletePostalRef.current.getPlace();
-            let unitN = "";
+            let unitN="";
             let country = '';
             let statename = '';
             let postal_codeN = ''
@@ -505,7 +505,7 @@ const Contact = (props) => {
             let sn = suburbN ? suburbN + " " : "";
             let s = streetN ? streetN + ", " : "";
             let n = street_numberN ? street_numberN + " " : "";
-            setFullPhysicalAddress(u + n + s + sn + pc + st + c);
+            setFullPhysicalAddress(u+ n + s + sn + pc + st + c);
             // setPhysicalAddressState({ ...physicalAddressState, postal_country: country, postal_state: statename, postal_postcode: postal_codeN, postal_suburb: suburbN, postal_street: streetN, postal_number: street_numberN });
             setPhysicalAddress({ ...physicalAddress, physical_unit: unitN, physical_country: country, physical_state: statename, physical_postcode: postal_codeN, physical_suburb: suburbN, physical_street: streetN, physical_number: street_numberN });
 

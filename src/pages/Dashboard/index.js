@@ -86,7 +86,7 @@ const Dashboard = props => {
 
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
-  // const toggleLoading = () => setIsLoading(prev => !prev);
+  const toggleLoading = () => setIsLoading(prev => !prev);
   const [state, setState] = useState({
     reports: [
       { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
@@ -199,20 +199,8 @@ const Dashboard = props => {
   };
 
   useEffect(() => {
-    props.getChartsData();
-  }, [])
-
-  useEffect(() => {
-    if (props.chartsDataLoading == 'Success') {
-      setIsLoading(false)
-    }
-  }, [props.chartsDataLoading])
-
-  console.log(props.chartsDataLoading, '-----------');
-
-  useEffect(() => {
     if (!seen) {
-      // props.getChartsData();
+      props.getChartsData();
       // localStorage.setItem("Menu", "Dashboard");
     }
     if (props.chartsData && !state.chartSeriesStatus) {
@@ -796,396 +784,296 @@ const Dashboard = props => {
                     md={state.selectedUser.label == "All" ? "12" : "8"}
                     className=""
                   >
+                    <Row
+                      className={`my-3 d-flex ${state.selectedUser.label == "All"
+                        ? ""
+                        : "justify-content-end"
+                        }`}
+                    >
+                      {upperMainData.map(item => (
+                        <Col
+                          sm={`${state.selectedUser.label == "All" ? "" : "3"}`}
+                          key={item.id}
+                        >
 
-                    {/* <div className="w-100 py-5 bg-danger d-flex justify-content-center align-items-center">
-                      <div
-                        className="spinner-border text-dark m-1"
-                        role="status"
-                      >
-                        <span className="sr-only">Loading...</span>
-                      </div>
-                    </div> */}
-                    {isLoading ?
-                      <div className="w-100 py-3 my-3 d-flex justify-content-center align-items-center">
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                      :
-                      <Row
-                        className={`my-3 d-flex ${state.selectedUser.label == "All"
-                          ? ""
-                          : "justify-content-end"
-                          }`}
-                      >
-                        {upperMainData.map(item => (
-                          <Col
-                            sm={`${state.selectedUser.label == "All" ? "" : "3"}`}
+                          <div
                             key={item.id}
+                            onClick={() => upperDataHistory(item.path)}
+                            style={{
+                              background:
+                                item.title == "WITHDRAWALS"
+                                  ? "#fde3dd"
+                                  : "#159b9c38",
+                              height: "100px",
+                              borderRadius: "8px"
+
+                            }}
+                            className="custom_dashboard_div_style"
                           >
-
+                            <div className="d-flex justify-content-end align-items-top pt-1 pe-2 text-muted">
+                              {item.title}
+                            </div>
                             <div
-                              key={item.id}
-                              onClick={() => upperDataHistory(item.path)}
-                              style={{
-                                background:
-                                  item.title == "WITHDRAWALS"
-                                    ? "#fde3dd"
-                                    : "#159b9c38",
-                                height: "100px",
-                                borderRadius: "8px"
-
-                              }}
-                              className="custom_dashboard_div_style"
+                              className="d-flex justisy-content-between align-items-center px-1 w-100 "
+                              style={{ height: "90px" }}
                             >
-                              <div className="d-flex justify-content-end align-items-top pt-1 pe-2 text-muted">
-                                {item.title}
-                              </div>
-                              <div
-                                className="d-flex justisy-content-between align-items-center px-1 w-100 "
-                                style={{ height: "90px" }}
-                              >
-                                <div className="col-md-6 d-flex justify-content-center">
-                                  {item.title == "WITHDRAWALS" ? (
-                                    <div
-                                      data-aos="zoom-in-up"
-                                      data-aos-once={true}
-                                      className="rounded-circle p-1"
-                                      style={{
-                                        background:
-                                          item.title == "WITHDRAWALS" &&
-                                          "#d2300e",
-                                      }}
-                                    >
-                                      <span
-                                        className="rounded-circle p-2"
-                                        style={{
-                                          color: "white",
-                                          fontSize: "20px",
-                                        }}
-                                      >
-                                        <i className={item.icon} />
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      className="rounded-circle p-1"
-                                      style={{
-                                        background:
-                                          item.title == "WITHDRAWALS"
-                                            ? "#d2300e"
-                                            : "#42bff5",
-                                      }}
-                                    >
-                                      <span
-                                        className="rounded-circle p-2"
-                                        style={{
-                                          color: "white",
-                                          fontSize: "20px",
-                                        }}
-                                      >
-                                        <i className={item.icon} />
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="col-md-6 d-flex justify-content-center">
-                                  <span
-
+                              <div className="col-md-6 d-flex justify-content-center">
+                                {item.title == "WITHDRAWALS" ? (
+                                  <div
+                                    data-aos="zoom-in-up"
+                                    data-aos-once={true}
+                                    className="rounded-circle p-1"
                                     style={{
-                                      color:
+                                      background:
                                         item.title == "WITHDRAWALS" &&
                                         "#d2300e",
-                                      fontSize: "26px",
                                     }}
                                   >
+                                    <span
+                                      className="rounded-circle p-2"
+                                      style={{
+                                        color: "white",
+                                        fontSize: "20px",
+                                      }}
+                                    >
+                                      <i className={item.icon} />
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="rounded-circle p-1"
+                                    style={{
+                                      background:
+                                        item.title == "WITHDRAWALS"
+                                          ? "#d2300e"
+                                          : "#42bff5",
+                                    }}
+                                  >
+                                    <span
+                                      className="rounded-circle p-2"
+                                      style={{
+                                        color: "white",
+                                        fontSize: "20px",
+                                      }}
+                                    >
+                                      <i className={item.icon} />
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="col-md-6 d-flex justify-content-center">
+                                <span
 
-                                    {
-                                      item.title == 'BANKING' ?
-                                        <span className="">{bankingDataShow(item.number)}</span> :
-                                        item.number ? item.number : "0"
-                                    }
+                                  style={{
+                                    color:
+                                      item.title == "WITHDRAWALS" &&
+                                      "#d2300e",
+                                    fontSize: "26px",
+                                  }}
+                                >
+
+                                  {
+                                    item.title == 'BANKING' ?
+                                      <span className="">{bankingDataShow(item.number)}</span> :
+                                      item.number ? item.number : "0"
+                                  }
 
 
 
-                                  </span>
-                                </div>
+                                </span>
                               </div>
                             </div>
+                          </div>
 
-                          </Col>
-                        ))}
-                      </Row>}
+                        </Col>
+                      ))}
+                    </Row>
 
-                    {isLoading ?
-                      <div className="w-100 py-3 my-3 d-flex justify-content-center align-items-center">
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
+                    <Row>
+                      <Col lg={6}>
+                        <Link
+                          to={{
+                            pathname: `/propertylist`,
+                            state: {
+                              tab: "5",
+                            },
+                          }}
+                          style={{ color: "black", cursor: "pointer" }}
                         >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
+                          <Card>
+                            <CardBody>
+                              <CardTitle className="mb-4">
+                                MONTHLY RENT ARREARS -{" "}
+                                {props?.chartsData?.arrears
+                                  ? Math.round(
+                                    props?.chartsData?.arrears
+                                  ).toFixed(2)
+                                  : "0.00"}{" "}
+                                %
+                              </CardTitle>
+                              <LineApexChart
+                                data={state?.totalPropArrears}
+                                category={state?.totalPropDate}
+                                xtitle={""}
+                                ytitle={""}
+                                min={0}
+                                max={props?.chartsData?.totalProperties}
+                                title={""}
+                                height="250"
+                              />
+                            </CardBody>
+                          </Card>
+                        </Link>
+                      </Col>
+                      <Col xl="6">
+                        {/* <TopCities data={props?.chartsData} /> */}
 
-                      </div>
-                      :
-                      <Row>
-                        <Col lg={6}>
+                        <Card>
+                          <CardBody>
+                            <Link to={{
+                              pathname: 'propertylist',
+                              state: {
+                                tab: '6'
+                              }
+                            }}>
+                              <div className="text-center" dir="ltr" >
+                                <div className="d-flex justify-content-between">
+                                  <span></span>
+                                  <span>VACANCIES</span>
+                                </div>
+                                <Knob
+                                  value={state.angle}
+                                  fgColor="#ea553d"
+                                  lineCap="round"
+                                  height={260}
+                                  width={200}
+                                  readOnly={true}
+                                  onChange={e => {
+                                    // setState({ ...state, angle: e });
+                                  }}
+                                />
+                              </div>
+                            </Link>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      {belowData.map(item => (
+                        <Col md={handleColumn(item)} key={item.id}>
                           <Link
                             to={{
-                              pathname: `/propertylist`,
+                              pathname: `/${item.path == 'reconciliationsList' ? '/dashboard' : item.path}`,
                               state: {
-                                tab: "5",
+                                tab:
+                                  item.title == "INVOICE ARREARS"
+                                    ? "5"
+                                    : item.title == "RENEWALS"
+                                      ? "7"
+                                      : "",
                               },
                             }}
                             style={{ color: "black", cursor: "pointer" }}
                           >
-                            <Card>
-                              <CardBody>
-                                <CardTitle className="mb-4">
-                                  MONTHLY RENT ARREARS -{" "}
-                                  {props?.chartsData?.arrears
-                                    ? Math.round(
-                                      props?.chartsData?.arrears
-                                    ).toFixed(2)
-                                    : "0.00"}{" "}
-                                  %
-                                </CardTitle>
-                                <LineApexChart
-                                  data={state?.totalPropArrears}
-                                  category={state?.totalPropDate}
-                                  xtitle={""}
-                                  ytitle={""}
-                                  min={0}
-                                  max={props?.chartsData?.totalProperties}
-                                  title={""}
-                                  height="250"
-                                />
-                              </CardBody>
-                            </Card>
+                            {item.title == "RECONCILIATION" ? (
+                              <Card
+                                body
+                                style={{
+                                  height: "190px",
+                                  borderRadius: "30px",
+                                }}
+                              >
+                                <div
+                                  className="d-flex justify-content-between"
+                                  style={{ height: "40px" }}
+                                >
+                                  <div className="col-md-3 d-flex justify-content-start align-items-top">
+                                    <i
+                                      className={`${item.icon} font-size-24 text-info`}
+                                    />
+                                  </div>
+                                  <div className="col-md-9 d-flex justify-content-end align-items-top text-muted">
+                                    <span>{item.title}</span>
+                                  </div>
+                                </div>
+
+                                <Row className="" style={{ height: "140px" }}>
+                                  <Col
+                                    md={6}
+                                    className="d-flex flex-column justify-content-center align-items-center"
+                                  >
+                                    <span className="text-muted">
+                                      {item.company}
+                                    </span>
+                                    <span className="mt-2 fw-bold">
+                                      {item.reconcile == 0 ?
+                                        <Link to={`/reconciliationsList`}>
+                                          <Button color='info'>
+                                            Reconcile
+                                          </Button>
+                                        </Link>
+                                        :
+                                        item.date}
+                                    </span>
+                                  </Col>
+                                  <Col
+                                    md={6}
+                                    className="d-flex flex-column justify-content-center align-items-center"
+                                  >
+                                    <span style={{ fontSize: "50px" }}>
+                                      {item.reconcile == 1 ? (
+                                        <i className="fas fa-check-circle text-info" />
+                                      ) : (
+                                        <i className="fas fa-balance-scale-right text-warning" />
+                                      )}
+                                    </span>
+                                    <span className="mt-2 text-muted">
+                                      {item.reconcile == 1
+                                        ? "Reconciled"
+                                        : "Unreconciled"}
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Card>
+                            ) : (
+                              <Card
+                                body
+                                style={{
+                                  height: "190px",
+                                  borderRadius: "30px",
+                                }}
+                              >
+                                <div
+                                  className="d-flex justify-content-between"
+                                  style={{ height: "40px" }}
+                                >
+                                  <div className="col-md-3 d-flex justify-content-start align-items-top">
+                                    <i
+                                      className={`${item.icon} font-size-24 text-info`}
+                                    />
+                                  </div>
+                                  <div className="col-md-9 d-flex justify-content-end align-items-top text-muted">
+                                    <span>{item.title}</span>
+                                  </div>
+                                </div>
+                                <div
+                                  className="d-flex flex-column justify-content-center align-items-center"
+                                  style={{ height: "140px" }}
+                                >
+                                  <span style={{ fontSize: "38px" }}>
+                                    {item.number}
+                                  </span>
+                                  <span className="text-muted">
+                                    {item.details}
+                                  </span>
+                                </div>
+                              </Card>
+                            )}
                           </Link>
                         </Col>
-                        <Col xl="6">
-                          {/* <TopCities data={props?.chartsData} /> */}
-
-                          <Card>
-                            <CardBody>
-                              <Link to={{
-                                pathname: 'propertylist',
-                                state: {
-                                  tab: '6'
-                                }
-                              }}>
-                                <div className="text-center" dir="ltr" >
-                                  <div className="d-flex justify-content-between">
-                                    <span></span>
-                                    <span>VACANCIES</span>
-                                  </div>
-                                  <Knob
-                                    value={state.angle}
-                                    fgColor="#ea553d"
-                                    lineCap="round"
-                                    height={260}
-                                    width={200}
-                                    readOnly={true}
-                                    onChange={e => {
-                                      // setState({ ...state, angle: e });
-                                    }}
-                                  />
-                                </div>
-                              </Link>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </Row>}
-
-                    {isLoading ?
-                      <div className="w-100 py-3 my-3 d-flex justify-content-center align-items-center">
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                        <div
-                          className="spinner-border text-dark m-1"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                      :
-                      <Row>
-                        {belowData.map(item => (
-                          <Col md={handleColumn(item)} key={item.id}>
-                            <Link
-                              to={{
-                                pathname: `/${item.path == 'reconciliationsList' ? '/dashboard' : item.path}`,
-                                state: {
-                                  tab:
-                                    item.title == "INVOICE ARREARS"
-                                      ? "5"
-                                      : item.title == "RENEWALS"
-                                        ? "7"
-                                        : "",
-                                },
-                              }}
-                              style={{ color: "black", cursor: "pointer" }}
-                            >
-                              {item.title == "RECONCILIATION" ? (
-                                <Card
-                                  body
-                                  style={{
-                                    height: "190px",
-                                    borderRadius: "30px",
-                                  }}
-                                >
-                                  <div
-                                    className="d-flex justify-content-between"
-                                    style={{ height: "40px" }}
-                                  >
-                                    <div className="col-md-3 d-flex justify-content-start align-items-top">
-                                      <i
-                                        className={`${item.icon} font-size-24 text-info`}
-                                      />
-                                    </div>
-                                    <div className="col-md-9 d-flex justify-content-end align-items-top text-muted">
-                                      <span>{item.title}</span>
-                                    </div>
-                                  </div>
-
-                                  <Row className="" style={{ height: "140px" }}>
-                                    <Col
-                                      md={6}
-                                      className="d-flex flex-column justify-content-center align-items-center"
-                                    >
-                                      <span className="text-muted">
-                                        {item.company}
-                                      </span>
-                                      <span className="mt-2 fw-bold">
-                                        {item.reconcile == 0 ?
-                                          <Link to={`/reconciliationsList`}>
-                                            <Button color='info'>
-                                              Reconcile
-                                            </Button>
-                                          </Link>
-                                          :
-                                          item.date}
-                                      </span>
-                                    </Col>
-                                    <Col
-                                      md={6}
-                                      className="d-flex flex-column justify-content-center align-items-center"
-                                    >
-                                      <span style={{ fontSize: "50px" }}>
-                                        {item.reconcile == 1 ? (
-                                          <i className="fas fa-check-circle text-info" />
-                                        ) : (
-                                          <i className="fas fa-balance-scale-right text-warning" />
-                                        )}
-                                      </span>
-                                      <span className="mt-2 text-muted">
-                                        {item.reconcile == 1
-                                          ? "Reconciled"
-                                          : "Unreconciled"}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                </Card>
-                              ) : (
-                                <Card
-                                  body
-                                  style={{
-                                    height: "190px",
-                                    borderRadius: "30px",
-                                  }}
-                                >
-                                  <div
-                                    className="d-flex justify-content-between"
-                                    style={{ height: "40px" }}
-                                  >
-                                    <div className="col-md-3 d-flex justify-content-start align-items-top">
-                                      <i
-                                        className={`${item.icon} font-size-24 text-info`}
-                                      />
-                                    </div>
-                                    <div className="col-md-9 d-flex justify-content-end align-items-top text-muted">
-                                      <span>{item.title}</span>
-                                    </div>
-                                  </div>
-                                  <div
-                                    className="d-flex flex-column justify-content-center align-items-center"
-                                    style={{ height: "140px" }}
-                                  >
-                                    <span style={{ fontSize: "38px" }}>
-                                      {item.number}
-                                    </span>
-                                    <span className="text-muted">
-                                      {item.details}
-                                    </span>
-                                  </div>
-                                </Card>
-                              )}
-                            </Link>
-                          </Col>
-                        ))}
-                      </Row>}
+                      ))}
+                    </Row>
                   </Col>
                   {state.selectedUser.label != "All" && (
                     <Col md={4} className="pt-3">
@@ -1631,7 +1519,7 @@ const Dashboard = props => {
 
 const mapStateToProps = gstate => {
   const {
-    chartsData, chartsDataLoading,
+    chartsData,
     insightsActiveProperties,
     insightsEntryInspection,
     insightsEntryInspectionLoading,
@@ -1658,7 +1546,7 @@ const mapStateToProps = gstate => {
     insightsConversationOpenLoading
   } = gstate.Dashboard;
   return {
-    chartsData, chartsDataLoading,
+    chartsData,
     insightsActiveProperties,
     insightsEntryInspection,
     insightsEntryInspectionLoading,

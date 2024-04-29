@@ -50,7 +50,6 @@ let counter = 0;
 
 
 const UserProfile = props => {
-  const [disable, setDisable] = useState(false)
   const [status, setStatus] = useState(false)
   const [tabState, setTabState] = useState({ activeTab: "1" });
   const [button, setButton] = useState(false)
@@ -308,38 +307,24 @@ const UserProfile = props => {
     if (tabState.activeTab !== tab) {
       setTabState({ activeTab: tab });
     }
-    // if (tab == 2) {
-    //   props.profileDetails();
-
-    // }
     if (tab == 5) {
       props.getSettingsNotification();
     }
   };
-
-  useEffect(() => {
-    if (props.profile_edit_status == "Success") {
-      toastr.success("User Profile Edit Successfull");
-      props.editProfileFresh();
-    } else if (props.profile_edit_status == "Failed") {
-      toastr.error("User Profile Edit Failed");
-      props.editProfileFresh();
-
-
-    }
-    if (props.password_update_status == "Success") {
-      toastr.success("Password Updated Successfull");
-      props.editPasswordFresh();
-      props.profileDetails();
-      setStatus(false)
-
-
-    } else if (props.password_update_status == "Failed") {
-      toastr.error("Password Updated Failed, Try again with a new password");
-      props.editPasswordFresh();
-      setStatus(false)
-    }
-  }, [props.profile_edit_status, props.password_update_status,])
+  if (props.profile_edit_status == "Success") {
+    toastr.success("User Profile Edit Successfull");
+    props.editProfileFresh();
+  } else if (props.profile_edit_status == "Failed") {
+    toastr.error("User Profile Edit Failed");
+    props.editProfileFresh();
+  }
+  if (props.password_update_status == "Success") {
+    toastr.success("User Profile Edit Successfull");
+    props.editPasswordFresh();
+  } else if (props.password_update_status == "Failed") {
+    toastr.error("User Profile Edit Failed");
+    props.editPasswordFresh();
+  }
 
   function inArray(needle, haystack) {
     var length = haystack.length;
@@ -395,20 +380,6 @@ const UserProfile = props => {
   }
 
   const cancelHandler = () => history.push('/dashboard')
-
-  const getCharacterValidationError = text => {
-    console.log(text);
-    if (text == 'digit') {
-      return 'Must Contain One Number Character'
-    } else {
-
-    }
-  }
-
-  const editPasswordHandler = values => {
-    setStatus(true)
-    props.editPassword(values)
-  }
 
   return (
     <React.Fragment>
@@ -698,7 +669,7 @@ const UserProfile = props => {
                                         Mobile Phone
                                       </Label>
                                       <InputGroup>
-                                        <div className="input-group-text">+61</div>
+                                        <div className="input-group-text">+880</div>
                                         <Field
                                           name="mobile_phone"
                                           type="text"
@@ -881,27 +852,13 @@ const UserProfile = props => {
                             validationSchema={Yup.object().shape({
                               password: Yup.string().required(
                                 "Please Enter Valid Password"
-                              )
-                              // .min(8, "Password must have at least 8 characters")
-                              // .max(16, "Password cannot have more than 16 characters")
-                              // .matches(/[0-9]/, 'Must Contain Minimum One Number')
-                              // .matches(/[a-z]/, 'Must Contain One Lowercase')
-                              // .matches(/[A-Z]/, 'Must Contain One Uppercase')
-                              ,
+                              ),
                               confirm_password: Yup.string().required(
                                 "Please Enter Valid Password"
-                              )
-                                .min(8, "Password must have at least 8 characters")
-                                .max(16, "Password cannot have more than 16 characters")
-                                .matches(/[0-9]/, 'Must Contain Minimum One Number')
-                                .matches(/[a-z]/, 'Must Contain One Lowercase')
-                                .matches(/[A-Z]/, 'Must Contain One Uppercase')
-                                .matches(/^\S*$/, "White Spaces are not allowed")
-                                .matches(/[@$!%*#?&]/, 'Must Contain One Special character'),
-
+                              ),
                             })}
                             onSubmit={values => {
-                              editPasswordHandler(values)
+                              props.editPassword(values);
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -1370,7 +1327,7 @@ const UserProfile = props => {
         </Container>
       </div>
       {status && <Loder status={status} />}
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 
@@ -1381,7 +1338,6 @@ UserProfile.propTypes = {
   success: PropTypes.any,
   profile_edit_status: PropTypes.any,
   password_update_status: PropTypes.any,
-
   resetProfileFlag: PropTypes.func,
 };
 
@@ -1402,7 +1358,6 @@ const mapStateToProps = state => {
     success,
     profile_edit_status,
     password_update_status,
-
     profile_details,
     pro_pic,
     pro_pic_status,

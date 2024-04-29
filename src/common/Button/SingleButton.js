@@ -5,10 +5,10 @@ import {
 
 } from "reactstrap";
 
-function SingleButton({ color, icon, handler, marginEndIcon, marginStart, text, marginEnd, disabled }) {
-    console.log(disabled);
+function SingleButton({ color, icon, handler, marginEndIcon, marginStart, text, marginEnd }) {
+    console.log(marginEndIcon);
     return (
-        <Button color={color} onClick={handler} className={`${marginEnd}`} disabled={disabled}>
+        <Button color={color} onClick={handler} className={`${marginEnd}`}>
             <i className={`${marginStart} ${icon} ${marginEndIcon}`}></i> {text}
         </Button>
     )

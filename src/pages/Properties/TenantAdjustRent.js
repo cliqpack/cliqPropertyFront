@@ -397,7 +397,7 @@ const TenantAdjustrent = props => {
                               md={2}
                             >
                               <span className="text-muted fw-bold d-flex justify-content-center">
-                                Bond Held
+                                Security Deposit Held
                               </span>
                               <span className="text-muted d-flex justify-content-center">
                                 {props.state2.bond_held

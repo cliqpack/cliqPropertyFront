@@ -98,7 +98,7 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
-        <header id="page-topbar" style={{ backgroundColor: "#153D58" }}>
+        <header id="page-topbar" >
           <div className="navbar-header" >
             <div className="d-flex" >
               {/* <div
@@ -329,7 +329,7 @@ class Header extends Component {
                   // style={{ width: "300px", textAlign: "center", backgroundColor: "#3A607A", borderRadius: "20px 0px 0px 20px", padding: "8px", border: "none", borderRight: "0px", color: "#FFFFFF", }}
                   className="custom_search_bar_input_field"
                 />
-                <button type="submit" style={{ textAlign: "center", backgroundColor: "#4C6E85", borderRadius: "0px 20px 20px 0px", padding: "8px", border: "none", color: "#FFFFFF" }}><i className="bx bx-search-alt font-size-20" ></i></button>
+                <button type="submit" style={{ textAlign: "center", backgroundColor: "#6E62E5", borderRadius: "0px 20px 20px 0px", padding: "8px", border: "none", color: "#FFFFFF" }}><i className="bx bx-search-alt font-size-20" ></i></button>
               </form>
             </div>
 

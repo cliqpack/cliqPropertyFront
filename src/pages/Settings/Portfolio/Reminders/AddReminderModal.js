@@ -57,7 +57,7 @@ const AddReminderModal = props => {
   });
   const [status, setStatus] = useState(false)
   console.log(state);
-  // console.log(props.data);
+  console.log(props.data);
 
 
   const [state2, setState2] = useState({ optionSupplier: [] })
@@ -72,9 +72,6 @@ const AddReminderModal = props => {
   });
 
   const stateHandler = e => {
-
-
-
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
@@ -129,41 +126,9 @@ const AddReminderModal = props => {
     });
   };
 
-
-  const checkField = state => {
-    console.log(state);
-
-    if (isNaN(state.frequency)) {
-
-      return false
-    } else {
-
-      return true
-    }
-
-  }
-
-
   const handleSave = () => {
-    // if (checkField(state)) {
-    //   return
-    //   setStatus(true)
-    //   props.addReminder(state, state2)
-    // } else {
-    //   toastr.warning('Please enter a default frequency value.')
-    //   return
-    // }
-
-    if (state.propertyBtn == false && state.ownerBtn == false && state.supplierBtn == false) {
-      toastr.warning('Please select a default contact type')
-    } else {
-      // return
-      setStatus(true)
-      props.addReminder(state, state2)
-    }
-
-
-
+    setStatus(true)
+    props.addReminder(state, state2)
   };
   const handleEdit = () => {
     setStatus(true)

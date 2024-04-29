@@ -2143,7 +2143,7 @@ const setPropertyOwnerAdd = props => {
                                                   for="abn"
                                                   className="form-label"
                                                 >
-                                                  BIN
+                                                  ABN
                                                 </Label>
                                               </Col>
 

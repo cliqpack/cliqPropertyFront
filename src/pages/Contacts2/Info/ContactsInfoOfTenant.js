@@ -311,7 +311,7 @@ const ContactsInfoOfTenant = ({
                         <Col>
                           <Row>
                             <Col md={5}>
-                              <p className="text-textTitleColor">Bond</p>
+                              <p className="text-textTitleColor">Security Deposit</p>
                             </Col>
                             <Col md={7}>
                               <p>

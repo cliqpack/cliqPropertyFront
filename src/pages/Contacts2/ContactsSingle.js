@@ -1946,7 +1946,7 @@ const ContactsSingle = props => {
                             </Card>
                             <Card>
                               <CardBody>
-                                <h4 className="text-primary mb-3">ABN</h4>
+                                <h4 className="text-primary mb-3">BIN</h4>
                                 <div
                                   className="w-75"
                                   style={{

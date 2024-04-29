@@ -2648,7 +2648,7 @@ const PropertyTanentAdd2 = props => {
                                                                       handlePropertyFormTwoValues
                                                                     }
                                                                   />
-                                                                  <label htmlFor="usr"> Bond required</label>
+                                                                  <label htmlFor="usr"> Security Deposit required</label>
                                                                 </div>
                                                                 <span className="input-group-append">
                                                                   <span
@@ -2714,7 +2714,7 @@ const PropertyTanentAdd2 = props => {
                                                                       handlePropertyFormTwoValues
                                                                     }
                                                                   />
-                                                                  <label htmlFor="usr">Bond held</label>
+                                                                  <label htmlFor="usr">Security Deposit held</label>
                                                                 </div>
                                                                 <span className="input-group-append rounded-start">
                                                                   <span

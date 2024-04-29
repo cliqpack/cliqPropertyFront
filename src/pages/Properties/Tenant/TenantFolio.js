@@ -1180,7 +1180,7 @@ function TenantFolio(props) {
                             }}
                           >
                             <span className="text-muted fw-bold">
-                              Bond held
+                              Security Deposit held
                             </span>
                             <span className="text-muted">
                               {tenantInfoData?.folio?.bond_held

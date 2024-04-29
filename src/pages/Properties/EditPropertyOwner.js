@@ -548,7 +548,7 @@ const EditPropertyOwnerAdd = props => {
                               // communication: Yup.string().required(
                               //   "Please Enter Communication"
                               // ),
-                              abn: Yup.string().required("Please Enter ABN"),
+                              abn: Yup.string().required("Please Enter BIN"),
                               notes:
                                 Yup.string().required("Please Enter Notes"),
                             })}

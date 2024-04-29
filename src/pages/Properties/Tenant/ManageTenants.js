@@ -287,7 +287,7 @@ const ManageTenant = props => {
                     <Col md={6}>
                       <Row className="py-1">
                         <Col md={5}>
-                          <span className="text-primary">Bond amount</span>
+                          <span className="text-primary">Security Deposit amount</span>
                         </Col>
                         <Col md={7}>
                           {data?.tenant_contact?.tenant_folio?.bond_amount}

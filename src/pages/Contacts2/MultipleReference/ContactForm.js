@@ -961,7 +961,7 @@ const ContactForm = props => {
                                 props.handlePostalFormFieldValues(e, props.idx)
                               }
                             />
-                            <label htmlFor="usr">Suburb</label>
+                            <label htmlFor="usr">District</label>
                           </div>
                         </Col>
                         <Col md={6}>
@@ -998,7 +998,7 @@ const ContactForm = props => {
                                 props.handlePostalFormFieldValues(e, props.idx)
                               }
                             />
-                            <label htmlFor="usr">State</label>
+                            <label htmlFor="usr">Division</label>
                           </div>
                         </Col>
 
@@ -1209,7 +1209,7 @@ const ContactForm = props => {
                                 )
                               }
                             />
-                            <label htmlFor="usr">Suburb</label>
+                            <label htmlFor="usr">District</label>
                           </div>
                         </Col>
                         <Col md={6}>
@@ -1252,7 +1252,7 @@ const ContactForm = props => {
                                 )
                               }
                             />
-                            <label htmlFor="usr"> State</label>
+                            <label htmlFor="usr"> Division</label>
                           </div>
                         </Col>
                         <Col md={6}>

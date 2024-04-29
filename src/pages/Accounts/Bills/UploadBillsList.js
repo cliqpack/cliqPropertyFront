@@ -123,9 +123,7 @@ function UploadBillsList(props) {
     const delRef = (cell, row) => (<span className="badge rounded-pill badge-soft-danger font-size-12" onClick={() => setDeleteState(prev => !prev)}>Delete</span>);
 
     const fileRef = (cell, row) => {
-        console.log(row.file.replace("local/Image/", ""));
         return <a href={process.env.REACT_APP_IMAGE + row.file} target="_blank" rel="noreferrer noopener">{row.file?.slice(0, 150)}</a>
-        // return <a href={process.env.REACT_APP_IMAGE + row.file} target="_blank" rel="noreferrer noopener">{row.file?.replace(/(local|live)\/Image\//, "")}</a>
     }
 
     const activeData = [

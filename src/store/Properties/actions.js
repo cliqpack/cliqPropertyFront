@@ -661,6 +661,7 @@ export const storeMultiplePicture = (file, id) => {
         dispatch({
           type: "UPLOAD_MULTIPLE_IMAGE",
           payload: percent,
+          status: "Success",
           detail: detail,
         });
       },
@@ -671,18 +672,17 @@ export const storeMultiplePicture = (file, id) => {
     axios
       .post(url, formData, options)
       .then(response => {
-        console.log('pass');
         dispatch(getPropertyInfo(id));
-        dispatch({
-          type: "UPLOAD_MULTIPLE_IMAGE",
-          payload: 100,
-          status: "Success",
-        });
+
+        // dispatch({
+        //   type: "USER_LIST",
+        //   payload: response,
+        //   status: "Success",
+        // });
       })
       .catch(error => {
-        console.log('failed');
         dispatch({
-          type: "UPLOAD_MULTIPLE_IMAGE",
+          type: "USER_LIST",
           payload: error,
           status: "Failed",
         });

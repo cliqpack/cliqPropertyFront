@@ -241,8 +241,7 @@ function PropertyAllDocument(props) {
 
     const handleSubmit1 = (e) => {
         e.preventDefault();
-        console.log(actionArray[0].id);
-        // return
+
         props.documentDeleteById(actionArray[0].id);
         setModal1(false)
 

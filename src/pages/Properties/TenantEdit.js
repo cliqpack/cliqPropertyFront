@@ -3189,7 +3189,7 @@ const TenantEdit = props => {
                                                                         }
                                                                       />
                                                                       <label htmlFor="usr">
-                                                                        Bond
+                                                                        Security Deposit
                                                                         required
                                                                       </label>
                                                                     </div>
@@ -3251,7 +3251,7 @@ const TenantEdit = props => {
                                                                       />
                                                                       <label htmlFor="usr">
                                                                         {" "}
-                                                                        Bond
+                                                                        Security Deposit
                                                                         receipted
                                                                       </label>
                                                                     </div>
@@ -3307,7 +3307,7 @@ const TenantEdit = props => {
                                                                         />
                                                                         <label htmlFor="usr">
                                                                           {" "}
-                                                                          Bond
+                                                                          Security Deposit
                                                                           held
                                                                         </label>
                                                                       </div>

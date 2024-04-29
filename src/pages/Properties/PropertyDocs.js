@@ -42,29 +42,14 @@ import {
     ModalBody,
     ModalFooter,
 } from "reactstrap";
-import TooltipVisibility from "./Documents/TooltipVisibility";
+import TooltipVisibility from './Documents/TooltipVisibility';
 import moment from "moment";
 
-export default function PropertyDocs({
-    documentModal,
-    documentToggle,
-    data,
-    id,
-    component,
-}) {
+
+export default function PropertyDocs({ documentModal, documentToggle, data, id, component }) {
     return (
-        <Modal
-            isOpen={documentModal}
-            toggle={documentToggle}
-            style={{ maxWidth: "700px" }}
-        >
-            <ModalHeader
-                style={{
-                    backgroundColor: "#153D58",
-                    height: "60px",
-                    maxWidth: "700px",
-                }}
-            >
+        <Modal isOpen={documentModal} toggle={documentToggle} style={{ maxWidth: '700px' }} >
+            <ModalHeader style={{ backgroundColor: "#153D58", height: "60px", maxWidth: '700px' }}>
                 <div
                     style={{
                         display: "flex",
@@ -74,7 +59,10 @@ export default function PropertyDocs({
                     }}
                 >
                     <div>
-                        <p className="fw-bold ps-2 font-size-16" style={{ color: "white" }}>
+                        <p
+                            className="fw-bold ps-2 font-size-16"
+                            style={{ color: "white" }}
+                        >
                             Documents
                         </p>
                     </div>
@@ -96,16 +84,9 @@ export default function PropertyDocs({
                                     borderRadius: "8px",
                                 }}
                             >
-                                <Link
-                                    to={`${component == "Property"
-                                        ? `/all-property-document/${id}`
-                                        : component == "Task"
-                                            ? `/all-task-document/${id}`
-                                            : component == "Jobs"
-                                                ? `/all-job-document/${id}`
-                                                : `/all-listing-document/${id}`
-                                        }`}
-                                >
+
+                                <Link to={`${component == 'Property' ? `/all-property-document/${id}` : component == 'Task' ? `/all-task-document/${id}` : component == 'Jobs' ? `/all-job-document/${id}` : `/all-listing-document/${id}`}`}>
+
                                     <div className="badge badge-soft-secondary d-flex align-items-start px-3 py-2 font-size-16 text-white">
                                         All
                                     </div>
@@ -131,102 +112,57 @@ export default function PropertyDocs({
                                 }}
                             >
                                 <Row>
-                                    {data?.map((element, idx) => {
-                                        return (
-                                            <Col md={12} key={element.id}>
-                                                <Card>
-                                                    <CardBody>
+                                    {data?.map(
+                                        (element, idx) => {
+                                            return (
 
-                                                        <Row>
-                                                            <Col
-                                                                md={1}
-                                                                className="d-flex justify-content-center align-items-center"
+                                                <Col md={12} key={element.id}>
+
+                                                    <Card>
+                                                        <CardBody>
+                                                            {/* <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "space-between",
+                                                                }}
                                                             >
-
-                                                            </Col>
-                                                            <Col md={11}>
-                                                                <Row>
-                                                                    <Col md={6} className="">
-                                                                        <Row className="d-flex">
-                                                                            <Col
-                                                                                md={2}
-                                                                                className="d-flex align-items-center"
-                                                                            >
-                                                                                {element.owner_id ||
-                                                                                    element.tenant_id ? (
-                                                                                    <div
-                                                                                        style={{
-                                                                                            background: "#F2F2F2",
-                                                                                        }}
-                                                                                        className="px-2 py-2 rounded"
-                                                                                    >
-                                                                                        {element.owner_id && (
-                                                                                            <i className="bx bxs-group font-size-22" />
-                                                                                        )}
-                                                                                        {element.tenant_id && (
-                                                                                            <i className="fas fa-home font-size-22" />
-                                                                                        )}
-                                                                                    </div>
-                                                                                ) : (
-                                                                                    ""
-                                                                                )}
-                                                                                {component == "Task" && (
-                                                                                    <i
-                                                                                        className="fas fa-file-alt
-                                                                                          font-size-24"
-                                                                                    />
-                                                                                )}
-                                                                                {component == "Jobs" && (
-                                                                                    <i className="fas fa-wrench font-size-24"></i>
-                                                                                )}
-                                                                            </Col>
-                                                                            <Col md={10} className="ps-3">
-                                                                                <Row className="d-flex flex-column">
-                                                                                    <Col className="">
-                                                                                        <div>
-                                                                                            <a
-                                                                                                href={
-                                                                                                    process.env.REACT_APP_IMAGE +
-                                                                                                    element.doc_path
-                                                                                                }
-                                                                                                target="_blank"
-                                                                                                rel="noreferrer noopener"
-                                                                                                style={{ fontSize: "14px" }}
-                                                                                                download={element.name}
-                                                                                            >
-                                                                                                {element.name == null
-                                                                                                    ? element.doc_path.slice(
-                                                                                                        0,
-                                                                                                        13
-                                                                                                    ) + "..."
-                                                                                                    : element.name}
-                                                                                            </a>
-                                                                                        </div>
-                                                                                    </Col>
-                                                                                    <Col className="pt-2">
-                                                                                        <div className="d-flex align-items-center">
-                                                                                            <i className="far fa-clock me-2" />
-                                                                                            {moment(
-                                                                                                element?.created_at
-                                                                                            ).format("DD MMM YYYY")}
-                                                                                        </div>
-                                                                                    </Col>
-                                                                                </Row>
-                                                                            </Col>
-                                                                        </Row>
-                                                                    </Col>
-                                                                    <Col
-                                                                        md={4}
-                                                                        className="d-flex justify-content-center"
-                                                                    >
+                                                                <div
+                                                                    style={{
+                                                                        width: "60%",
+                                                                        display: "flex",
+                                                                        justifyContent: "flex-start",
+                                                                    }}
+                                                                >
+                                                                    <div style={{ fontSize: "35px" }}>
+                                                                        <i className="bx bxs-file-pdf me-2 font-size-25" />
+                                                                    </div>
+                                                                    <div>
                                                                         <div>
+                                                                            <a
+                                                                                href={
+                                                                                    process.env.REACT_APP_IMAGE +
+                                                                                    element.doc_path
+                                                                                }
+                                                                                target="_blank"
+                                                                                rel="noreferrer noopener"
+                                                                                style={{ fontSize: "14px" }}
+                                                                            >
+                                                                                {element.name == null
+                                                                                    ? element.doc_path.slice(0, 13) +
+                                                                                    "..."
+                                                                                    : element.name}
+                                                                            </a>
+                                                                        </div>
+                                                                        <div
+                                                                            style={{ display: "flex", gap: "20px" }}
+                                                                        >
                                                                             <div className="d-flex align-items-center">
                                                                                 <i className="far fa-clock me-2" />
                                                                                 {moment(element?.created_at).format(
                                                                                     "DD MMM YYYY"
                                                                                 )}
                                                                             </div>
-                                                                            <div className="d-flex align-items-center pt-2">
+                                                                            <div className="d-flex align-items-center">
                                                                                 <i className="fas fa-file me-2"></i>
                                                                                 {(
                                                                                     Number(element.file_size) / 1024
@@ -235,33 +171,147 @@ export default function PropertyDocs({
                                                                                     "kb"}
                                                                             </div>
                                                                         </div>
-                                                                    </Col>
-                                                                    <Col md={2}>
-                                                                        {/* {element.owner_id && (
-                                                                            <TooltipVisibility
-                                                                                visibility={"visible"}
-                                                                                text="to owner"
-                                                                                placement="right"
-                                                                                direction="TooltipRight"
-                                                                            />
-                                                                        )}
-                                                                        {element.tenant_id && (
-                                                                            <TooltipVisibility
-                                                                                visibility={"visible"}
-                                                                                text="to tenant"
-                                                                                placement="bottom"
-                                                                                direction="TooltipBottom"
-                                                                            />
-                                                                        )} */}
-                                                                    </Col>
-                                                                </Row>
-                                                            </Col>
-                                                        </Row>
-                                                    </CardBody>
-                                                </Card>
-                                            </Col>
-                                        );
-                                    })}
+                                                                    </div>
+                                                                </div>
+                                                                {element.owner_id && (
+                                                                    <TooltipVisibility
+                                                                        visibility={"visible"}
+                                                                        text="to owner"
+                                                                        placement="right"
+                                                                        direction="TooltipRight"
+                                                                    />
+                                                                )}
+                                                                {element.tenant_id && (
+                                                                    <TooltipVisibility
+                                                                        visibility={"visible"}
+                                                                        text="to tenant"
+                                                                        placement="bottom"
+                                                                        direction="TooltipBottom"
+                                                                    />
+                                                                )}
+
+                                                            </div> */}
+                                                            <Row>
+                                                                <Col md={1} className="d-flex justify-content-center align-items-center">
+                                                                    {/* <div className="form-check">
+                                                                        <input
+                                                                            className="form-check-input"
+                                                                            type="checkbox"
+                                                                            value=""
+                                                                            id="defaultCheck1"
+                                                                        />
+
+                                                                    </div> */}
+                                                                </Col>
+                                                                <Col md={11}>
+                                                                    <Row>
+                                                                        <Col md={6} className="">
+                                                                            <Row className="d-flex">
+                                                                                <Col md={2} className="d-flex align-items-center">
+
+
+                                                                                    {element.owner_id || element.tenant_id ? <div style={{
+                                                                                        background: '#F2F2F2'
+                                                                                    }} className="px-2 py-2 rounded">
+                                                                                        {element.owner_id &&
+                                                                                            <i className="bx bxs-group font-size-22" />
+                                                                                        }
+                                                                                        {element.tenant_id &&
+                                                                                            <i className="fas fa-home font-size-22" />}
+
+                                                                                    </div> : ''}
+                                                                                    {component == 'Task' &&
+                                                                                        <i className="fas fa-file-alt
+                                                                                        font-size-24" />
+                                                                                    }
+                                                                                    {component == 'Jobs' &&
+                                                                                        <i className="fas fa-wrench font-size-24"></i>
+
+                                                                                    }
+
+                                                                                </Col>
+                                                                                <Col md={10} className="ps-3">
+                                                                                    <Row className="d-flex flex-column">
+                                                                                        <Col className="">
+                                                                                            <div>
+                                                                                                <a
+                                                                                                    href={
+                                                                                                        process.env.REACT_APP_IMAGE +
+                                                                                                        element.doc_path
+                                                                                                    }
+                                                                                                    target="_blank"
+                                                                                                    rel="noreferrer noopener"
+                                                                                                    style={{ fontSize: "14px" }}
+                                                                                                    download={element.name}
+
+                                                                                                >
+                                                                                                    {element.name == null
+                                                                                                        ? element.doc_path.slice(0, 13) +
+                                                                                                        "..."
+                                                                                                        : element.name}
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        </Col>
+                                                                                        <Col className="pt-2">
+                                                                                            <div className="d-flex align-items-center">
+                                                                                                <i className="far fa-clock me-2" />
+                                                                                                {moment(element?.created_at).format(
+                                                                                                    "DD MMM YYYY"
+                                                                                                )}
+                                                                                            </div>
+                                                                                        </Col>
+                                                                                    </Row>
+                                                                                </Col>
+                                                                            </Row>
+                                                                        </Col>
+                                                                        <Col md={4} className="d-flex justify-content-center">
+                                                                            <div
+
+                                                                            >
+                                                                                <div className="d-flex align-items-center">
+                                                                                    <i className="far fa-clock me-2" />
+                                                                                    {moment(element?.created_at).format(
+                                                                                        "DD MMM YYYY"
+                                                                                    )}
+                                                                                </div>
+                                                                                <div className="d-flex align-items-center pt-2">
+                                                                                    <i className="fas fa-file me-2"></i>
+                                                                                    {(
+                                                                                        Number(element.file_size) / 1024
+                                                                                    ).toFixed(2) +
+                                                                                        " " +
+                                                                                        "kb"}
+                                                                                </div>
+                                                                            </div>
+                                                                        </Col>
+                                                                        <Col md={2}>
+                                                                            {element.owner_id && (
+                                                                                <TooltipVisibility
+                                                                                    visibility={"visible"}
+                                                                                    text="to owner"
+                                                                                    placement="right"
+                                                                                    direction="TooltipRight"
+                                                                                />
+                                                                            )}
+                                                                            {element.tenant_id && (
+                                                                                <TooltipVisibility
+                                                                                    visibility={"visible"}
+                                                                                    text="to tenant"
+                                                                                    placement="bottom"
+                                                                                    direction="TooltipBottom"
+                                                                                />
+                                                                            )}
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Col>
+                                                            </Row>
+
+                                                        </CardBody>
+                                                    </Card>
+                                                </Col>
+                                            );
+                                        }
+                                    )}
                                 </Row>
                             </div>
                         </CardText>
@@ -269,5 +319,5 @@ export default function PropertyDocs({
                 </Row>
             </ModalBody>
         </Modal>
-    );
+    )
 }

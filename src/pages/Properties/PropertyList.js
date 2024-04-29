@@ -993,7 +993,7 @@ function PropertyList(props) {
     },
     {
       dataField: "tenant",
-      text: "Bond Arrears",
+      text: "Security Deposit Arrears",
       formatter: bondFormatter,
       sort: true,
     },

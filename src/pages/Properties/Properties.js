@@ -257,7 +257,7 @@ const Properties = props => {
 
     let optionManager;
     if (props.user_list_data) {
-      optionManager = props.user_list_data?.data?.map(item => ({
+      optionManager = props.user_list_data?.data.map(item => ({
         label: item.full_name,
         value: item.id,
       }));

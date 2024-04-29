@@ -188,15 +188,13 @@ function JobAllDocument(props) {
         if (props.maintenance_document_name_update_loading === "Success") {
             toastr.success('Edited Successfull');
             props.maintenanceDocumentUpdateByIdFresh();
-            // props.AllJobDocument(id);
-            toggle(state.activeTab)
+            props.AllJobDocument(id);
         }
 
         if (props.maintenance_document_delete_loading === "Success") {
             toastr.success('Deleted Successfull');
             props.maintenanceDocumentDeleteByIdFresh();
-            // props.AllJobDocument(id);
-            toggle(state.activeTab)
+            props.AllJobDocument(id);
         }
     }, [props.all_document_by_job_loading, props.maintenance_document_name_update_loading, props.maintenance_document_delete_loading]);
 

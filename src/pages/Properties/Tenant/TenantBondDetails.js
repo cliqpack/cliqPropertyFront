@@ -16,7 +16,7 @@ const TenantBondDetails = (props) => {
                 onClick={toggle}
                 className="text-primary hoverBondDetails"
             >
-                Edit bond details {" "}<i className="fas fa-pen"></i>
+                Edit Security Deposit details {" "}<i className="fas fa-pen"></i>
             </div>
 
             <Modal
@@ -25,7 +25,7 @@ const TenantBondDetails = (props) => {
             >
                 <div className="modal-header">
                     <h5 className="modal-title mt-0" id="myModalLabel">
-                        Bond Details
+                        Security Deposit Details
                     </h5>
                     <button
                         type="button"
@@ -48,7 +48,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_required"
                                         className="form-label text-dark"
                                     >
-                                        Bond required
+                                        Security Deposit required
                                     </Label>
                                 </Col>
                                 <Col md={3}>
@@ -85,7 +85,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_paid"
                                         className="form-label text-dark"
                                     >
-                                        Bond already paid
+                                        Security Deposit already paid
                                     </Label>
                                 </Col>
                                 <Col md={3}>
@@ -117,7 +117,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col>
                                     <p className="text-muted">
-                                        Bond money already paid to the bond authority
+                                        Security Deposit money already paid to the authority
                                     </p>
                                 </Col>
                             </Row>
@@ -128,7 +128,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_receipted"
                                         className="form-label text-dark"
                                     >
-                                        Bond receipted
+                                        Security Deposit receipted
                                     </Label>
                                 </Col>
                                 <Col md={3}>
@@ -169,7 +169,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_held"
                                         className="form-label text-dark"
                                     >
-                                        Bond held
+                                        Security Deposit held
                                     </Label>
                                 </Col>
                                 <Col md={3}>
@@ -208,7 +208,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_held"
                                         className="form-label text-dark"
                                     >
-                                        Bond arrears
+                                        Security Deposit arrears
                                     </Label>
                                 </Col>
                                 <Col md={3}>
@@ -247,7 +247,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_reference"
                                         className="form-label text-dark"
                                     >
-                                        Bond reference
+                                        Security Deposit reference
                                     </Label>
                                 </Col>
                                 <Col md={7}>

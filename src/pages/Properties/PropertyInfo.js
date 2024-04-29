@@ -254,7 +254,6 @@ const PropertyInfo = props => {
     props.getPropertyInfo(property_id);
     props.getPropertyTenantInfo(property_id);
     props.getPropertyOwnerInfo(property_id);
-    props.AllPropertyDocument(id);
 
     props.getPropertyKey(property_id);
     props.getMessageProperties(property_id);
@@ -322,10 +321,6 @@ const PropertyInfo = props => {
       props.percentage_multiple == 100
     ) {
       toastr.success("Uploaded successfully");
-      props.uploadMultipleImagePercentageFresh();
-    }
-    if (props.percentage_multiple_loading === "Failed") {
-      toastr.error("Upload Failed. too large file!!");
       props.uploadMultipleImagePercentageFresh();
     }
     if (props.store_property_document_loading === "Success") {
@@ -551,8 +546,8 @@ const PropertyInfo = props => {
 
   let userData = undefined;
   if (props.user_list_data) {
-    if (typeof props.user_list_data?.data !== "undefined") {
-      userData = props.user_list_data?.data?.map((item, key) => (
+    if (typeof props.user_list_data.data !== "undefined") {
+      userData = props.user_list_data.data.map((item, key) => (
         <tr key={key}>
           <th scope="row">{item.id}</th>
           <td>{item.first_name + " " + item.last_name}</td>
@@ -3208,12 +3203,12 @@ const PropertyInfo = props => {
                                   <Row className="py-1">
                                     <Col md={5}>
                                       <span className="text-primary">
-                                        Bond{" "}
+                                        Security Deposit{" "}
                                       </span>
                                     </Col>
                                     <Col md={7}>
                                       <span>
-                                        {`${tenantInfoData?.folio?.bond_required}৳ bond required, ${tenantInfoData?.folio?.bond_held}৳ held`}
+                                        {`${tenantInfoData?.folio?.bond_required}৳ Security Deposit required, ${tenantInfoData?.folio?.bond_held}৳ held`}
                                       </span>
                                     </Col>
                                   </Row>{" "}

@@ -11,7 +11,6 @@ const initialState = {
   success: "",
   profile_edit_status: false,
   password_update_status: false,
-  password_update_error: null,
   pro_pic: undefined,
   pro_pic_status: false,
   profile_details: undefined,
@@ -28,8 +27,8 @@ const profile = (state = initialState, action) => {
       state = { ...state, profile_edit_status: action.status, profile_details: undefined };
       break;
     case EDIT_PASSWORD:
-      { console.log(action) }
-      state = { ...state, password_update_status: action.status, password_update_error: action.error };
+
+      state = { ...state, password_update_status: action.status };
       break;
     case PROFILE_SUCCESS:
       state = { ...state, success: action.payload };

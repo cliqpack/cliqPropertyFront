@@ -61,7 +61,7 @@ const InspectionDetails = props => {
   };
 
 
-  const scheduleEdit = (selState, prop, date, time, id, address,duration) => {
+  const scheduleEdit = (selState, prop, date, time, id, address) => {
     history.push({
       pathname: "/inspectionDayEdit/" + date,
       state: {
@@ -71,7 +71,6 @@ const InspectionDetails = props => {
         start_time: time,
         insId: id,
         address: address,
-        duration:duration
       },
     });
   };
@@ -104,8 +103,7 @@ const InspectionDetails = props => {
       props.text.date,
       props.text.start_time,
       props.text.id,
-      address,
-      props.text.duration
+      address
     );
   }
 

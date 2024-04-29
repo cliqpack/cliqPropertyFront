@@ -98,7 +98,7 @@ const PrintRecieptInvoice = (props) => {
                                             Bondi Beach NSW 2026 <br />
                                         </div>
                                         <div>
-                                            BIN:
+                                            ABN:
                                         </div>
                                         <div>
                                             Licence:

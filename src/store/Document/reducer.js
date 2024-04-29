@@ -107,10 +107,6 @@ const INITIAL_STATE = {
     all_document_by_listing_data: null,
     all_document_by_listing_loading: false,
 
-    listing_doc_name_loading: false,
-    listing_doc_delete_loading: false
-
-
 }
 
 const Document = (state = INITIAL_STATE, action) => {
@@ -469,49 +465,13 @@ const Document = (state = INITIAL_STATE, action) => {
                 all_document_by_job_loading: action.status,
             }
             break;
-        case "ALL_DOCUMENT_BY_LISTING":
+        case "ALL_LISTING_DOCUMENT":
             state = {
                 ...state,
                 all_document_by_listing_data: action.payload,
                 all_document_by_listing_loading: action.status,
             }
             break;
-        case "LISTING_DOCUMENT_NAME_UPDATE":
-            state = {
-                ...state,
-                // listing_doc_name_data: action.payload,
-                listing_doc_name_loading: action.status,
-            }
-            break;
-        case "LISTING_DOCUMENT_NAME_UPDATE_FRESH":
-            state = {
-                ...state,
-                // listing_doc_name_data: action.payload,
-                listing_doc_name_loading: action.status,
-            }
-            break;
-        case "LISTING_DOCUMENT_DELETE":
-            state = {
-                ...state,
-                // listing_doc_name_data: action.payload,
-                listing_doc_delete_loading: action.status,
-            }
-            break;
-        case "LISTING_DOCUMENT_DELETE":
-            state = {
-                ...state,
-                // listing_doc_name_data: action.payload,
-                listing_doc_delete_loading: action.status,
-            }
-            break;
-        case "LISTING_DOCUMENT_DELETE_FRESH":
-            state = {
-                ...state,
-                // listing_doc_name_data: action.payload,
-                listing_doc_delete_loading: action.status,
-            }
-            break;
-
 
         default:
             state = { ...state };

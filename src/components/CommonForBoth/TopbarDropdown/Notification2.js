@@ -51,11 +51,11 @@ const Notification2 = props => {
 
     // should uncomment the below api call
 
-    // let interval = setInterval(() => {
-    //   props.getNotification();
-    // }, 10000);
+    let interval = setInterval(() => {
+      props.getNotification();
+    }, 10000);
 
-    // return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, [
     props.read_notification_loading,
     props.read_all_notification_loading,
@@ -184,7 +184,7 @@ const Notification2 = props => {
           id="page-header-notifications-dropdown"
 
         >
-          <i className="bx bx-bell bx-tada" style={{ color: "#FFF", fontSize: "25px" }} />
+          <i className="bx bx-bell bx-tada" style={{ color: "gray", fontSize: "25px" }} />
           <span className="badge bg-danger rounded-pill">
             {props.notification_list_details?.data?.data?.unread?.length}
           </span>

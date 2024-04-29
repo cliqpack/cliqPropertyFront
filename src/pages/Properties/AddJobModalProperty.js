@@ -195,7 +195,7 @@ const AddJobModalProperty = props => {
   useEffect(() => {
     let optionManager;
     if (props.user_list_data) {
-      optionManager = props.user_list_data?.data?.map(item => ({
+      optionManager = props.user_list_data?.data.map(item => ({
         label: item.first_name + " " + item.last_name,
         value: item.id,
       }));

@@ -459,7 +459,7 @@ const Contacts = props => {
                         "Please Enter Country"
                       ),
 
-                      abn: Yup.string().required("Please Enter ABN"),
+                      abn: Yup.string().required("Please Enter BIN"),
                       notes: Yup.string().required("Please Enter Notes"),
                     })}
                     onSubmit={(values, onSubmitProps) => {

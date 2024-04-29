@@ -207,7 +207,6 @@ const ListingInfo = props => {
   if (init) {
     props.ListingListInfo(id);
     props.listAllActivity(id);
-    props.getListingDoc(id);
 
     setInit(false);
     setCall(true);
@@ -232,10 +231,10 @@ const ListingInfo = props => {
         activeTab: tab,
       });
     }
-    // console.log(tab);
-    // if (tab == '2') {
-    //   props.getListingDoc(id)
-    // }
+    console.log(tab);
+    if (tab == '2') {
+      props.getListingDoc(id)
+    }
   };
 
   console.log(props.get_list_feature_image?.data?.data, 'props.get_list_feature_image------');
@@ -262,7 +261,7 @@ const ListingInfo = props => {
         return
       }
       if (bond == null) {
-        toastr.warning('Please enter Bond')
+        toastr.warning('Please enter Security Deposit')
         return
 
       }

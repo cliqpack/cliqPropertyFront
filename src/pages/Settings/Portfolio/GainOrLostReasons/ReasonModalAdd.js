@@ -46,8 +46,6 @@ const ReasonModalAdd = props => {
 
   console.log(state);
 
-  const [disable, setDisable] = useState(false)
-
   const stateHandler = e => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -70,12 +68,9 @@ const ReasonModalAdd = props => {
 
   const handleSave = () => {
     props.addReason(state)
-    setDisable(true)
   };
   const handleEdit = () => {
     props.editReason(state, props.data?.id)
-    setDisable(true)
-
   };
 
   useEffect(() => {
@@ -83,8 +78,6 @@ const ReasonModalAdd = props => {
       toastr.success('Success');
       props.editReasonFresh()
       props.getReasons()
-      setDisable(false)
-
       props.toggle()
     }
     if (props.edit_reason_loading == 'Failed') {
@@ -95,17 +88,7 @@ const ReasonModalAdd = props => {
       toastr.success('Success');
       props.addReasonFresh();
       props.getReasons();
-      setDisable(false)
-
       props.toggle();
-    }
-    if (props.add_reason_loading == "Failed") {
-      toastr.success('Failed');
-      props.addReasonFresh();
-      // props.getReasons();
-      setDisable(false)
-
-      // props.toggle();
     }
     if (props.data) {
       console.log('in');
@@ -199,7 +182,7 @@ const ReasonModalAdd = props => {
           }
         </ModalFooter>
       </Modal>
-      {disable && <Loder status={disable} />}
+
     </>
   );
 };

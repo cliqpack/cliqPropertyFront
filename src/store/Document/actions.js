@@ -142,40 +142,6 @@ export const AllDocumentByJob = (id, data) => {
             });
     };
 };
-export const AllDocumentByListing = (id, data) => {
-    var authUser = JSON.parse(localStorage.getItem("authUser"));
-    const newUrl = `${process.env.REACT_APP_LOCALHOST}`;
-
-    let url = `${newUrl}/listing/generatedAndUploadedDoc/${id}`;
-    const formData = {
-        name: data,
-    };
-
-
-    return dispatch => {
-        const headers = {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            Authorization: "Bearer " + authUser.token,
-        };
-        axios
-            .post(url, formData, { headers: headers })
-            .then(response => {
-                dispatch({
-                    type: "ALL_DOCUMENT_BY_LISTING",
-                    payload: response,
-                    status: "Success",
-                });
-            })
-            .catch(error => {
-                dispatch({
-                    type: "ALL_DOCUMENT_BY_LISTING",
-                    error: error,
-                    status: "Failed",
-                });
-            });
-    };
-};
 
 export const documentUpdateById = (data, id) => {
 
@@ -570,103 +536,7 @@ export const maintenanceDocumentDeleteByIdFresh = () => {
 /*
 * All action for Maintenance document name edit & delete -ends here
 */
-export const listingDocumentUpdateById = (rowData, docID) => {
-    console.log(rowData, docID);
-    var authUser = JSON.parse(localStorage.getItem("authUser"));
-    const newUrl = `${process.env.REACT_APP_LOCALHOST}`;
 
-    let url = `${newUrl}/listing/listingDocEdit/${docID}`;
-    const formData = {
-        name: rowData,
-
-    };
-
-    return dispatch => {
-        const headers = {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            Authorization: "Bearer " + authUser.token,
-        };
-        axios
-            .post(url, formData, { headers: headers })
-            .then(response => {
-                dispatch({
-                    type: "LISTING_DOCUMENT_NAME_UPDATE",
-                    payload: response,
-                    status: "Success",
-                });
-            })
-            .catch(error => {
-                dispatch({
-                    type: "LISTING_DOCUMENT_NAME_UPDATE",
-                    error: error,
-                    status: "Failed",
-                });
-            });
-    };
-};
-
-export const listingDocumentUpdateByIdFresh = () => {
-    return dispatch =>
-        dispatch({
-            type: "LISTING_DOCUMENT_NAME_UPDATE_FRESH",
-            payload: null,
-            error: null,
-            status: false,
-        });
-};
-
-export const listingDocumentDeleteById = (docID) => {
-
-    const listingId = docID.map((item) => item.id)
-    console.log(docID, listingId);
-    // return
-    var authUser = JSON.parse(localStorage.getItem("authUser"));
-    const newUrl = `${process.env.REACT_APP_LOCALHOST}`;
-
-    let url = `${newUrl}/listing/docDelete/${docID}`;
-    const formData = {
-        id: listingId,
-
-    };
-
-    console.log(formData);
-    // return
-
-    return dispatch => {
-        const headers = {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            Authorization: "Bearer " + authUser.token,
-        };
-        axios
-            .post(url, formData, { headers: headers })
-            .then(response => {
-                dispatch({
-                    type: "LISTING_DOCUMENT_DELETE",
-                    payload: response,
-                    status: "Success",
-                });
-            })
-            .catch(error => {
-                dispatch({
-                    type: "LISTING_DOCUMENT_DELETE",
-                    error: error,
-                    status: "Failed",
-                });
-            });
-    };
-};
-
-export const listingDocumentDeleteByIdFresh = () => {
-    return dispatch =>
-        dispatch({
-            type: "LISTING_DOCUMENT_DELETE_FRESH",
-            payload: null,
-            error: null,
-            status: false,
-        });
-};
 
 /*
 * All action for task document name edit & delete - start from here
@@ -940,7 +810,41 @@ export const AllTaskDocument = (id) => {
             });
     };
 };
+export const AllListingDocument = (id, data) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    const newUrl = `${process.env.REACT_APP_LOCALHOST}`;
 
+    let url = `${newUrl}/generatedAndUploadedDoc/${id}`;
+
+    const formData = {
+        name: data,
+    };
+
+
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .post(url, formData, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "ALL_LISTING_DOCUMENT",
+                    payload: response,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "ALL_LISTING_DOCUMENT",
+                    error: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
 
 export const AllJobDocument = (id) => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));

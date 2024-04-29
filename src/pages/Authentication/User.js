@@ -140,7 +140,6 @@ const AdminRegister = props => {
       });
       props.userList();
     } else if (props.loading === "Faild") {
-      setState({ ...state, loader: false });
       toastr.error(props.registrationError.message);
       props.registerStatusClear();
     }
@@ -620,7 +619,7 @@ const AdminRegister = props => {
                                         : "")
                                     }
                                     value={data.user_type}
-                                    disabled={true}
+
                                   >
 
                                   </Field>

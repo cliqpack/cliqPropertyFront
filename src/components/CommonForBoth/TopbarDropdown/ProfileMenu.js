@@ -87,7 +87,7 @@ class ProfileMenu extends Component {
           isOpen={this.state.menu}
           toggle={this.toggle}
           className="d-inline-block"
-          style={{ borderRadius: "30px", height: "40px", margin: "auto", backgroundColor: "#3A607A", color: "#FFF" }}
+          style={{ borderRadius: "30px", height: "40px", margin: "auto", color: "#FFF !important", border: "1px solid gray" }}
         >
           <DropdownToggle
             className="btn header-item"
@@ -109,7 +109,7 @@ class ProfileMenu extends Component {
               }
               alt="Header Avatar"
             />{" "}
-            <div style={{ marginTop: "-30px", color: "#FFF" }}>
+            <div style={{ marginTop: "-30px", color: "gray" }}>
               <span className="d-none d-xl-inline-block ms-1" >
                 {/* {this.state.name} */}
                 {/* {checkAccess?.user?.user_type} */}

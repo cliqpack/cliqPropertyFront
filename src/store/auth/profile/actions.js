@@ -114,7 +114,6 @@ export const editPassword = user => {
         dispatch({
           type: EDIT_PASSWORD,
           status: "Failed",
-          payload: error
         });
       });
   };

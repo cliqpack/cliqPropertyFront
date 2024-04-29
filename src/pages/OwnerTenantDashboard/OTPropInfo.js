@@ -9,12 +9,7 @@ import OTHeader from "./OTHeader";
 const OTPropInfo = props => {
   const id = useParams();
   const [init, setInit] = useState(true);
-  let authUser = JSON.parse(localStorage.getItem("authUser"));
-
-  if (authUser.user?.user_type != 'Property Manager') {
-    console.log(authUser.user?.user_type, 'in--')
-    localStorage.setItem('owner_property_id', id.id);
-  }
+  localStorage.setItem('owner_property_id', id.id);
 
   if (init) {
     props.MenuListDataOT(id.id)

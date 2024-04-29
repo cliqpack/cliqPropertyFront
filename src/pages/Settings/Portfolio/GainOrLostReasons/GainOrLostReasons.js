@@ -88,11 +88,6 @@ const GainOrLostReasons = props => {
       dataField: "type",
       text: "Type",
       sort: true,
-      events: {
-        onClick: (e, column, columnIndex, row, rowIndex) => {
-          labelDetails(e, column, columnIndex, row, rowIndex);
-        },
-      },
     },
 
     {

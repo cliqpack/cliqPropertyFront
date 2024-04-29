@@ -574,7 +574,7 @@ const TenantDInfo = props => {
                       </Row>
                       <Row className="py-1 mt-2 mb-4">
                         <Col md={4}>
-                          <b>Bond held</b>
+                          <b>Security Deposit held</b>
                         </Col>
                         <Col md={8}>
                           {tenantFolio?.bond_held ? "$" + tenantFolio?.bond_held : ""}

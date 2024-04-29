@@ -215,23 +215,8 @@ const OTInspectionInfo = props => {
                     <hr />
                     <Card className="custom_card_border_design me-2">
                       <CardBody>
-                        {console.log(props.inspection_info_ot_data?.inspection, '--------------')}
                         <div className="py-1">
                           <span>{t('Documents')}</span>
-                          <div className="py-1">
-                            {props.inspection_info_ot_data?.inspection?.documents?.map((item) =>
-                              <a
-                                href={process.env.REACT_APP_DOCUMENT_2 + item.doc_path}
-                                target="_blank"
-                                rel="noreferrer"
-                                key={item.id}
-                                className="py-1"
-                              >
-                                <i className="fas fa-file me-2"></i> {t('Document')} #
-                                {item.id}{" "}{item.name}
-                              </a>
-                            )}
-                          </div>
                         </div>
                       </CardBody>
                     </Card>

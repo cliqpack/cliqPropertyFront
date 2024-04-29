@@ -126,7 +126,7 @@ const TenantDocuments = props => {
       </div>
 
       <Header />
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "100px" }}>
         <div>
           <CardImg
             src={
@@ -177,11 +177,15 @@ const TenantDocuments = props => {
                       <span>
                         {address?.country ? (
                           <span>
-                            <span>{`${address?.building_name || ""} ${address?.unit || ""
-                              }/${address?.number || ""} ${address?.street || ""
-                              } ${address?.suburb || ""} ${address?.postcode || ""
-                              } ${address?.state || ""} ${address?.country || ""
-                              }`}</span>
+                            <span>{`${address?.building_name || ""} ${
+                              address?.unit || ""
+                            }/${address?.number || ""} ${
+                              address?.street || ""
+                            } ${address?.suburb || ""} ${
+                              address?.postcode || ""
+                            } ${address?.state || ""} ${
+                              address?.country || ""
+                            }`}</span>
                           </span>
                         ) : (
                           ""
@@ -228,40 +232,17 @@ const TenantDocuments = props => {
                 </CardBody>
               </Card>
 
-
-              {console.log(props.tenant_all_doc_data?.property_docs
-                , '----')}
-              {props.tenant_all_doc_data?.property_docs?.map((data, i) => (
+              {props.tenant_all_doc_data?.invoice?.map((data, i) => (
                 <>
                   <Card key={i}>
-                    <CardHeader className="h5 bg-transparent border-bottom text-uppercase">
-                      document is avaliable on {moment(data).format('DD MMM yyyy')} <i>{(
-                        Number(data.file_size) / 1024
-                      ).toFixed(2) +
-                        " " +
-                        "kb"}</i>
-                    </CardHeader>
+                    {/* <CardHeader className="h5 bg-transparent border-bottom text-uppercase">
+                                        document is avaliable on 22 Feb 2023 76.05 KB
+                                        </CardHeader> */}
                     <CardBody>
                       <Row>
                         <Col md={6}>
                           <i className="fas fa-file-alt me-2" />{" "}
-                          <a
-                            href={
-                              process.env.REACT_APP_IMAGE +
-                              data.doc_path
-                            }
-                            target="_blank"
-                            rel="noreferrer noopener"
-                            style={{ fontSize: "14px" }}
-                            download={data.name}
-                          >
-                            {data.name == null
-                              ? data.doc_path.slice(
-                                0,
-                                13
-                              ) + "..."
-                              : data.name}
-                          </a>
+                          <span className="h5">{data?.details}</span>
                         </Col>
                         <Col md={6}>
                           <a
@@ -275,26 +256,6 @@ const TenantDocuments = props => {
                         </Col>
                       </Row>
                     </CardBody>
-
-                    {/* <div>
-                      <a
-                        href={
-                          process.env.REACT_APP_IMAGE +
-                          element.doc_path
-                        }
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        style={{ fontSize: "14px" }}
-                        download={element.name}
-                      >
-                        {element.name == null
-                          ? element.doc_path.slice(
-                            0,
-                            13
-                          ) + "..."
-                          : element.name}
-                      </a>
-                    </div> */}
                   </Card>
                 </>
               ))}

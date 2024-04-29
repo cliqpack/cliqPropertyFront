@@ -515,7 +515,7 @@ const Properties = props => {
 
   if (props.user_list_data != null) {
     if (typeof props.user_list_data.data != "undefined") {
-      userData = props.user_list_data?.data?.map((item, key) => (
+      userData = props.user_list_data.data.map((item, key) => (
         <option key={key} value={item.id}>
           {item.first_name + " " + item.last_name}
         </option>

@@ -137,7 +137,7 @@ const InspectionExitReport = props => {
     }
     if (props.inspection_preview_loading === "Failed") {
       // endLoader();
-      toastr.warning("Something went wrong! Please Setup the Document Settings");
+      toastr.warning("Something went wrong!");
       props.reportPrintFresh();
     }
   }, [

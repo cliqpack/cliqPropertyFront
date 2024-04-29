@@ -380,163 +380,162 @@ const KeyManagement = props => {
 
 
     return (
-        <React.Fragment></React.Fragment>
-        // <React.Fragment>
-        //     <div className="page-content">
-        //         <Container fluid={true}>
-        //             <Row>
-        //                 <Col lg={12}>
-        //                     <Card>
-        //                         <CardBody>
-        //                             <h4 className="ms-2 text-primary mb-4">
-        //                                 Key Management
-        //                             </h4>
-        //                             <div
-        //                                 className="w-100 mt-2 mb-4"
-        //                                 style={{
-        //                                     borderBottom: "1.2px dotted #c9c7c7",
-        //                                 }}
-        //                             ></div>
-        //                             <div className="button-groups">
-        //                                 <button
-        //                                     type="button"
-        //                                     className="btn btn-info me-1"
-        //                                 // onClick={toggleModalRemiinder}
-        //                                 >
-        //                                     Check In
-        //                                 </button>
-        //                                 <button
-        //                                     type="button"
-        //                                     className="btn btn-info me-1"
-        //                                 // onClick={toggleModalRemiinder}
-        //                                 >
-        //                                     Check Out
-        //                                 </button>
+        <React.Fragment>
+            <div className="page-content">
+                <Container fluid={true}>
+                    <Row>
+                        <Col lg={12}>
+                            <Card>
+                                <CardBody>
+                                    <h4 className="ms-2 text-primary mb-4">
+                                        Key Management
+                                    </h4>
+                                    <div
+                                        className="w-100 mt-2 mb-4"
+                                        style={{
+                                            borderBottom: "1.2px dotted #c9c7c7",
+                                        }}
+                                    ></div>
+                                    <div className="button-groups">
+                                        <button
+                                            type="button"
+                                            className="btn btn-info me-1"
+                                        // onClick={toggleModalRemiinder}
+                                        >
+                                            Check In
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-info me-1"
+                                        // onClick={toggleModalRemiinder}
+                                        >
+                                            Check Out
+                                        </button>
 
-        //                                 <Button
-        //                                     className="btn w-md me-1"
-        //                                     color="info"
-        //                                 // onClick={toggleMsgModal}
-        //                                 >
-        //                                     <i className="fas fa-paper-plane me-1"></i>
-        //                                     Message
-        //                                     <i className="fas fa-angle-down ms-1" />
-        //                                 </Button>
+                                        <Button
+                                            className="btn w-md me-1"
+                                            color="info"
+                                        // onClick={toggleMsgModal}
+                                        >
+                                            <i className="fas fa-paper-plane me-1"></i>
+                                            Message
+                                            <i className="fas fa-angle-down ms-1" />
+                                        </Button>
 
-        //                                 <ButtonDropdown
-        //                                     isOpen={state.drp_link}
-        //                                     toggle={() =>
-        //                                         setState(prev => ({ ...prev, drp_link: !prev.drp_link }))
-        //                                     }
-        //                                 >
-        //                                     <DropdownToggle caret color="secondary" disabled={actionArray?.length > 0 ? false : true}
-        //                                     >
-        //                                         Actions <i className="mdi mdi-chevron-down"></i>
-        //                                     </DropdownToggle>
-        //                                     <DropdownMenu>
+                                        <ButtonDropdown
+                                            isOpen={state.drp_link}
+                                            toggle={() =>
+                                                setState(prev => ({ ...prev, drp_link: !prev.drp_link }))
+                                            }
+                                        >
+                                            <DropdownToggle caret color="secondary" disabled={actionArray?.length > 0 ? false : true}
+                                            >
+                                                Actions <i className="mdi mdi-chevron-down"></i>
+                                            </DropdownToggle>
+                                            <DropdownMenu>
 
-        //                                         <DropdownItem
-        //                                             // onClick={toggleCompleteReminder} 
-        //                                             disabled={state.activeTab != '4' ? false : true}>
-        //                                             Mark Complete
-        //                                         </DropdownItem>
-
+                                                <DropdownItem
+                                                    // onClick={toggleCompleteReminder} 
+                                                    disabled={state.activeTab != '4' ? false : true}>
+                                                    Mark Complete
+                                                </DropdownItem>
 
 
 
-        //                                     </DropdownMenu>
-        //                                 </ButtonDropdown>
-        //                             </div>
-        //                         </CardBody>
-        //                     </Card>
 
-        //                     <Card>
-        //                         <CardBody>
-        //                             <CardText className="mb-0">
-        //                                 {allData &&
-        //                                     <PaginationProvider
-        //                                         pagination={paginationFactory(pageOptions)}
-        //                                         keyField="id"
-        //                                         columns={activeData}
-        //                                         data={allData}
-        //                                     >
-        //                                         {({ paginationProps, paginationTableProps }) => (
-        //                                             <ToolkitProvider
-        //                                                 keyField="id"
-        //                                                 columns={activeData}
-        //                                                 data={allData}
-        //                                                 search
-        //                                             >
-        //                                                 {toolkitProps => (
-        //                                                     <React.Fragment>
-        //                                                         <Row className="mb-2">
-        //                                                             <Col md={2}></Col>
-        //                                                             <Col md={10}></Col>
-        //                                                         </Row>
+                                            </DropdownMenu>
+                                        </ButtonDropdown>
+                                    </div>
+                                </CardBody>
+                            </Card>
 
-        //                                                         <Row>
-        //                                                             <Col xl="12">
-        //                                                                 <div className="table-responsive">
-        //                                                                     <div className="d-flex justify-content-end align-items-center search-box">
-        //                                                                         <SearchBar
-        //                                                                             {...toolkitProps.searchProps}
-        //                                                                         />
-        //                                                                     </div>
-        //                                                                     <BootstrapTable
-        //                                                                         ref={n => (node = n)}
-        //                                                                         keyField={"id"}
-        //                                                                         responsive
-        //                                                                         bordered={false}
-        //                                                                         striped={false}
-        //                                                                         defaultSorted={defaultSorted}
-        //                                                                         selectRow={selectRow}
-        //                                                                         tabIndexCell
-        //                                                                         classes={
-        //                                                                             "table align-middle table-nowrap"
-        //                                                                         }
-        //                                                                         headerWrapperClasses={"thead-light"}
-        //                                                                         {...toolkitProps.baseProps}
-        //                                                                         {...paginationTableProps}
-        //                                                                     />
-        //                                                                 </div>
-        //                                                             </Col>
-        //                                                         </Row>
+                            <Card>
+                                <CardBody>
+                                    <CardText className="mb-0">
+                                        {allData &&
+                                            <PaginationProvider
+                                                pagination={paginationFactory(pageOptions)}
+                                                keyField="id"
+                                                columns={activeData}
+                                                data={allData}
+                                            >
+                                                {({ paginationProps, paginationTableProps }) => (
+                                                    <ToolkitProvider
+                                                        keyField="id"
+                                                        columns={activeData}
+                                                        data={allData}
+                                                        search
+                                                    >
+                                                        {toolkitProps => (
+                                                            <React.Fragment>
+                                                                <Row className="mb-2">
+                                                                    <Col md={2}></Col>
+                                                                    <Col md={10}></Col>
+                                                                </Row>
 
-        //                                                         <Row className="align-items-md-center mt-30">
-        //                                                             <Col className="inner-custom-pagination d-flex">
-        //                                                                 <div className="d-inline">
-        //                                                                     <SizePerPageDropdownStandalone
-        //                                                                         {...paginationProps}
-        //                                                                     />
-        //                                                                 </div>
-        //                                                                 <div className="text-md-right ms-auto">
-        //                                                                     <PaginationListStandalone
-        //                                                                         {...paginationProps}
-        //                                                                     />
-        //                                                                 </div>
-        //                                                             </Col>
-        //                                                         </Row>
-        //                                                     </React.Fragment>
-        //                                                 )}
-        //                                             </ToolkitProvider>
-        //                                         )}
-        //                                     </PaginationProvider>}
-        //                             </CardText>
-        //                         </CardBody>
-        //                     </Card>
-        //                 </Col>
-        //             </Row>
-        //         </Container>
-        //     </div>
+                                                                <Row>
+                                                                    <Col xl="12">
+                                                                        <div className="table-responsive">
+                                                                            <div className="d-flex justify-content-end align-items-center search-box">
+                                                                                <SearchBar
+                                                                                    {...toolkitProps.searchProps}
+                                                                                />
+                                                                            </div>
+                                                                            <BootstrapTable
+                                                                                ref={n => (node = n)}
+                                                                                keyField={"id"}
+                                                                                responsive
+                                                                                bordered={false}
+                                                                                striped={false}
+                                                                                defaultSorted={defaultSorted}
+                                                                                selectRow={selectRow}
+                                                                                tabIndexCell
+                                                                                classes={
+                                                                                    "table align-middle table-nowrap"
+                                                                                }
+                                                                                headerWrapperClasses={"thead-light"}
+                                                                                {...toolkitProps.baseProps}
+                                                                                {...paginationTableProps}
+                                                                            />
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
 
-        //     {keyModal &&
-        //         <PropertyKey
-        //             keyModal={keyModal}
-        //             toggle={tog_key_modal}
-        //             text={keyText}
-        //         ></PropertyKey>}
+                                                                <Row className="align-items-md-center mt-30">
+                                                                    <Col className="inner-custom-pagination d-flex">
+                                                                        <div className="d-inline">
+                                                                            <SizePerPageDropdownStandalone
+                                                                                {...paginationProps}
+                                                                            />
+                                                                        </div>
+                                                                        <div className="text-md-right ms-auto">
+                                                                            <PaginationListStandalone
+                                                                                {...paginationProps}
+                                                                            />
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                            </React.Fragment>
+                                                        )}
+                                                    </ToolkitProvider>
+                                                )}
+                                            </PaginationProvider>}
+                                    </CardText>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
 
-        // </React.Fragment>
+            {keyModal &&
+                <PropertyKey
+                    keyModal={keyModal}
+                    toggle={tog_key_modal}
+                    text={keyText}
+                ></PropertyKey>}
+
+        </React.Fragment>
     );
 };
 

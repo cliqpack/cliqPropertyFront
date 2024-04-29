@@ -71,12 +71,6 @@ function TaskList(props) {
   const ref = (cell, row) => {
     return <span className="text-primary">{cell}</span>;
   };
-  const status = (cell, row) => {
-    if(cell=='due'){return <span >Due</span>};
-    if(cell=='due_later'){return <span >Due Later</span>};
-    if(cell=='pending' || cell=='Pending'){return <span >To Do</span>};
-    if(cell=='Closed'){return <span >Completed</span>};
-  };
   const dateRef = (cell, row) => {
     var date = new Date(cell);
     var year = date.toLocaleString("default", { year: "numeric" });
@@ -114,12 +108,6 @@ function TaskList(props) {
         },
       },
       sort: true,
-    },
-    {
-      dataField: "status",
-      text: "Status",
-      formatter: status,
-      // sort: true,
     },
     {
       dataField: "reference",
