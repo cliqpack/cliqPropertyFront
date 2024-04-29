@@ -275,7 +275,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                     <Col md={6}>
                                         <Row className="d-flex">
                                             <Col md={5}>
-                                                <p className="text-textTitleColor">ABN</p>
+                                                <p className="text-textTitleColor">BIN</p>
                                             </Col>
                                             <Col md={7}>
                                                 <p>{item.supplier_details?.abn ? item.supplier_details?.abn : ''}</p>

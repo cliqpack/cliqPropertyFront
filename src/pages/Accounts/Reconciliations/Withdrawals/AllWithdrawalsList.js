@@ -504,18 +504,18 @@ function AllWithdrawalsList(props) {
                                                         {/* <EditChequeModal state={state} setState={setState} /> */}
 
                                                     </>}
-                                                    {state.activeTab === '3' &&
+                                                    {/* {state.activeTab === '3' &&
                                                         <>
                                                             <button type="button" className="btn btn-sm btn-info" onClick={BPayHandler}>
                                                                 <i className="fas fa-cloud-download-alt me-2" />Create BPay file
                                                             </button>  {" "}
-                                                            {/* <button type="button" className="btn btn-sm btn-info">
+                                                            <button type="button" className="btn btn-sm btn-info">
                                                                 <i className="fas fa-cloud-download-alt me-2" />Last BPay file report
                                                             </button>
 
-                                                            <EditBPayCRNModal state={state} setState={setState} /> */}
+                                                            <EditBPayCRNModal state={state} setState={setState} />
                                                         </>
-                                                    }
+                                                    } */}
                                                 </div>
                                             </Col>
                                         </Row>
@@ -551,7 +551,7 @@ function AllWithdrawalsList(props) {
                                                     Cheques
                                                 </NavLink>
                                             </NavItem>
-                                            <NavItem>
+                                            {/* <NavItem>
                                                 <NavLink
                                                     style={{ cursor: "pointer" }}
                                                     className={classnames({
@@ -563,7 +563,7 @@ function AllWithdrawalsList(props) {
                                                 >
                                                     BPay
                                                 </NavLink>
-                                            </NavItem>
+                                            </NavItem> */}
                                             <NavItem>
                                                 <NavLink
                                                     style={{ cursor: "pointer" }}

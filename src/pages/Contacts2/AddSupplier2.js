@@ -239,7 +239,7 @@ const AddSupplier2 = props => {
         { label: "None", value: "None" },
         { label: "Cheque", value: "Cheque" },
         { label: "EFT", value: "EFT" },
-        { label: "BPay", value: "BPay" },
+        // { label: "BPay", value: "BPay" },
       ],
     },
   ]);
@@ -2691,7 +2691,7 @@ const AddSupplier2 = props => {
                                                                     }
                                                                   />
                                                                   <label htmlFor="usr">
-                                                                    ABN
+                                                                    BIN
                                                                   </label>
                                                                 </div>
                                                                 <ErrorMessage

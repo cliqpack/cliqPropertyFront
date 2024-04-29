@@ -1199,14 +1199,14 @@ const ContactForm = props => {
                                 </div>
 
                                 <CardTitle className="text-primary mb-3">
-                                    ABN
+                                    BIN
                                     <div className="w-25 mb-3 border-bottom border-primary"></div>
                                 </CardTitle>{" "}
                                 <div className="mb-3 w-75">
                                     <Row>
                                         <Col md={2}>
                                             <Label for="abn" className="form-label">
-                                                ABN
+                                                BIN
                                             </Label>
                                         </Col>
 

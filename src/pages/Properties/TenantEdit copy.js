@@ -2576,7 +2576,7 @@ const TenantEdit = props => {
                                                                 }}
                                                               />
                                                               <label htmlFor="usr">
-                                                                ABN
+                                                                BIN
                                                               </label>
                                                             </div>
                                                             <ErrorMessage

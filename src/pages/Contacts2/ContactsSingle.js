@@ -1957,7 +1957,7 @@ const ContactsSingle = props => {
                                   <Row className="mt-3 d-flex justify-content-evenly align-items-center">
                                     <Col md={2}>
                                       <Label for="abn" className="form-label">
-                                        ABN
+                                        BIN
                                       </Label>
                                     </Col>
 

@@ -2307,7 +2307,7 @@ const PropertyOwnerAdd2 = props => {
                                                                   handlePropertyFormValues
                                                                 }
                                                               />
-                                                              <label htmlFor="usr">ABN</label>
+                                                              <label htmlFor="usr">BIN</label>
                                                             </div>
                                                             <ErrorMessage
                                                               name="abn"

@@ -1255,7 +1255,7 @@ const ContactEdit = props => {
                                   <Col xs={10} sm={9} md={11} lg={11}>
                                     <CardBody style={{ paddingLeft: "0px" }}>
                                       <CardTitle tag="h5">
-                                        ABN
+                                        BIN
                                       </CardTitle>
                                       <div className="my-3">
                                         <Row className="d-flex justify-content-evenly align-items-center">
@@ -1274,7 +1274,7 @@ const ContactEdit = props => {
                                                 }
                                                 onChange={handlePropertyFormValues}
                                               />
-                                              <label htmlFor="usr">ABN</label>
+                                              <label htmlFor="usr">BIN</label>
                                             </div>
                                             <ErrorMessage
                                               name="abn"

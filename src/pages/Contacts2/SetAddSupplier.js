@@ -116,7 +116,7 @@ const SetAddSupplier = props => {
         { label: "None", value: "None" },
         { label: "Cheque", value: "Cheque" },
         { label: "EFT", value: "EFT" },
-        { label: "Bpay", value: "Bpay" },
+        // { label: "Bpay", value: "Bpay" },
       ],
     },
   ]);
@@ -2155,7 +2155,7 @@ const SetAddSupplier = props => {
                                                                 for="abn"
                                                                 className="form-label"
                                                               >
-                                                                ABN
+                                                                BIN
                                                               </Label>
                                                             </Col>
 

@@ -2109,7 +2109,7 @@ const PropertyTanentAdd2 = props => {
                                                                   : "")
                                                               }
                                                             />
-                                                            <label htmlFor="usr"> ABN</label>
+                                                            <label htmlFor="usr"> BIN</label>
                                                           </div>
                                                           <ErrorMessage
                                                             name="abn"

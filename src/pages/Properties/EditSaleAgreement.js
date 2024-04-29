@@ -3055,7 +3055,7 @@ const EditSaleAgreement = props => {
                                                   for="abn"
                                                   className="form-label"
                                                 >
-                                                  ABN
+                                                  BIN
                                                 </Label>
                                               </Col>
 
@@ -3599,7 +3599,7 @@ const EditSaleAgreement = props => {
                                                     for="abn"
                                                     className="form-label"
                                                   >
-                                                    ABN
+                                                    BIN
                                                   </Label>
                                                 </Col>
 

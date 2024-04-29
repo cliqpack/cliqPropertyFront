@@ -87,7 +87,7 @@ const JobInfoWorkOrderActionInvoice = (props) => {
 
                                         </div>
                                         <div>
-                                            ABN:
+                                            BIN:
                                         </div>
                                         <div>
                                             Licence:
@@ -314,7 +314,7 @@ const JobInfoWorkOrderActionInvoice = (props) => {
 
                                                 </div>
                                                 <div>
-                                                    ABN:
+                                                    BIN:
                                                 </div>
                                                 <div>
                                                     Licence:

@@ -2406,7 +2406,7 @@ const SaleAgreement = props => {
                                                   for="abn"
                                                   className="form-label"
                                                 >
-                                                  ABN
+                                                  BIN
                                                 </Label>
                                               </Col>
 

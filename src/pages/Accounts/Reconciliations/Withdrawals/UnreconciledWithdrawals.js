@@ -163,7 +163,7 @@ function AllWithdrawalsList
                                                         <EditChequeModal state={state} setState={setState} toggle={chequeToggle} />
 
                                                     </>}
-                                                    {state.activeTab === '3' &&
+                                                    {/* {state.activeTab === '3' &&
                                                         <>
                                                             <button type="button" className="btn btn-info">
                                                                 <i className="fas fa-check-square me-2" />Create BPay file
@@ -172,7 +172,7 @@ function AllWithdrawalsList
                                                                 <i className="fas fa-pen me-2" />Edit BPay CRN
                                                             </button>
                                                         </>
-                                                    }
+                                                    } */}
                                                 </div>
                                             </Col>
                                             <Col md={6}></Col>
@@ -213,7 +213,7 @@ function AllWithdrawalsList
                                                     Cheques
                                                 </NavLink>
                                             </NavItem>
-                                            <NavItem>
+                                            {/* <NavItem>
                                                 <NavLink
                                                     style={{ cursor: "pointer" }}
                                                     className={classnames({
@@ -225,7 +225,7 @@ function AllWithdrawalsList
                                                 >
                                                     BPay
                                                 </NavLink>
-                                            </NavItem>
+                                            </NavItem> */}
                                             <NavItem>
                                                 <NavLink
                                                     style={{ cursor: "pointer" }}

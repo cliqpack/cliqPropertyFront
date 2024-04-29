@@ -84,7 +84,7 @@ const EditSupplier = props => {
         { label: "None", value: "None" },
         { label: "Cheque", value: "Cheque" },
         { label: "EFT", value: "EFT" },
-        { label: "BPay", value: "BPay" },
+        // { label: "BPay", value: "BPay" },
       ],
     },
   ]);
@@ -134,7 +134,7 @@ const EditSupplier = props => {
         { label: "None", value: "None" },
         { label: "Check", value: "Check" },
         { label: "EFT", value: "EFT" },
-        { label: "Bpay", value: "Bpay" },
+        // { label: "Bpay", value: "Bpay" },
       ],
     },
   ]);
@@ -2610,7 +2610,7 @@ const EditSupplier = props => {
                                                                       }
                                                                     />
                                                                     <label htmlFor="usr">
-                                                                      ABN
+                                                                      BIN
                                                                     </label>
                                                                   </div>
                                                                   <ErrorMessage
