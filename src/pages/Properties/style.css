@@ -1,0 +1,36 @@
+#date-format-change-to {
+    position: relative;
+    width: 130px;
+
+
+    padding: 15px 30px 15px 30px;
+    border-radius: 3px;
+    border-color: #ccc;
+    border: 1px solid #ccc;
+
+
+
+}
+
+#date-format-change-to:before {
+    position: absolute;
+    top: 5px;
+    left: 3px;
+    content: attr(data-date);
+    display: inline-block;
+    color: rgb(123, 119, 119);
+}
+
+#date-format-change-to::-webkit-datetime-edit,
+#date-format-change-to::-webkit-inner-spin-button,
+#date-format-change-to::-webkit-clear-button {
+    display: none;
+}
+
+#date-format-change-to::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    color: black;
+    opacity: 1;
+}

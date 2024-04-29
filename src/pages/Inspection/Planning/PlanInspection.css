@@ -1,0 +1,12 @@
+.link_underline {
+    text-decoration: underline;
+}
+.card_bg_color {
+    background-color: #dee2e8;
+}
+
+.card_text {
+    color: #31708f;
+    font-weight: 800;
+    font-size: 14px;
+}

@@ -1,0 +1,482 @@
+// Icon nav
+.icon-tab {
+  border: 1px solid #e9e9e9;
+  border-radius: 20px !important;
+  z-index: 100 !important;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-wrap: wrap !important;
+  margin-bottom: -54px;
+  position: relative;
+}
+
+.icon-tab-listing {
+  border-radius: 17px !important;
+  z-index: 100 !important;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-wrap: wrap !important;
+  margin-bottom: -54px;
+  position: relative;
+}
+
+// style={{
+//   marginBottom: "-54px",
+//   position: "relative",
+//   height: "38px",
+//   display: "flex",
+//   justifyContent: "space-between",
+//   gap: "0px",
+// }}
+
+.custom-tab-navitem {
+  margin-bottom: -54px;
+  position: relative;
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0px;
+}
+
+//320px — 480
+@media screen and (min-width: 320px) and (max-width: 567px) {
+  .custom-element-navItem {
+    margin-top: 70px !important;
+  }
+}
+
+@media screen and (min-width: 568px) and (max-width: 992px) {
+  .custom-element-navItem {
+    margin-top: 30px !important;
+  }
+}
+
+@media screen and (min-width: 993px) and (max-width: 2400px) {
+  .custom-element-navItem {
+    margin-top: -16px !important;
+  }
+}
+
+// button font size
+
+@media screen and (min-width: 320px) and (max-width: 567px) {
+  .custom-button-side-row-font-size {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+
+  }
+}
+
+@media screen and (min-width: 568px) and (max-width: 992px) {
+  .custom-button-side-row-font-size {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 12px !important;
+  }
+}
+
+@media screen and (min-width: 993px) and (max-width: 2400px) {
+  .custom-button-side-row-font-size {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+  }
+}
+
+// for inspection
+@media screen and (min-width: 568px) and (max-width: 992px) {
+  .custom-button-side-row-font-size-inspection {
+    font-size: 12px !important;
+  }
+}
+
+
+// add property Routine inspection frequency section
+@media screen and (min-width: 320px) and (max-width: 567px) {
+  .custom-space-creation {
+    margin-bottom: 30px !important;
+  }
+}
+
+@media screen and (min-width: 568px) and (max-width: 992px) {
+  .custom-space-creation {
+    margin-bottom: -15px !important;
+  }
+}
+
+@media screen and (min-width: 993px) and (max-width: 2400px) {
+  .custom-space-creation {
+    margin-bottom: -15px !important;
+  }
+}
+
+
+
+
+.icon-tab .nav-link {
+  //border: 1px solid #e9e9e9;
+  //color: #495057;
+  border-radius: 50px !important;
+  margin-left: 0px;
+  padding: 8px 10px;
+
+}
+
+.icon-tab .active.nav-link {
+  background: #153D58;
+  color: #fff;
+  border-radius: 50px !important;
+}
+
+.icon-tab li {
+  border: 0px solid white !important;
+
+}
+
+// .icon-tab li {
+//   border: 0px solid white !important;
+// }
+
+.icon-tab li:first-child .nav-link {
+  // border-top-left-radius: 21px !important;
+  // border-bottom-left-radius: 21px !important;
+  margin-left: 0px;
+  margin-right: 0px;
+
+}
+
+.icon-tab li:last-child .nav-link {
+  // border-top-right-radius: 21px !important;
+  // border-bottom-right-radius: 21px !important;
+  margin-left: 0px;
+}
+
+.icon-tab .nav-link i,
+.vertical-icon .nav-link i {
+  padding-right: 3px;
+  font-size: 14px;
+}
+
+.vertical-icon .active.nav-link {
+  border: 1px solid #153D58;
+  border-radius: 21px;
+  background: #153D58;
+  color: #fff;
+}
+
+.vertical-icon .nav-link {
+  color: #495057;
+}
+
+// 
+// _nav.scss
+// 
+
+.nav-tabs,
+.nav-pills {
+  >li {
+    >a {
+      color: $gray-700;
+      font-weight: $fw-medium;
+    }
+  }
+}
+
+.nav-pills {
+  >a {
+    color: $gray-700;
+    font-weight: $fw-medium;
+  }
+}
+
+
+.nav-tabs-custom {
+  border-bottom: 2px solid $gray-300;
+
+  .nav-item {
+    position: relative;
+    //color: $dark;
+    color: #6B6B6B !important;
+
+    .nav-link {
+      border: none;
+
+
+      &::after {
+        content: "";
+        background: $primary;
+        height: 2px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: -1px;
+        transition: all 250ms ease 0s;
+        transform: scale(0);
+      }
+
+      &.active {
+        color: $primary !important;
+        //border: 5px solid red;
+        border-radius: 16.5px;
+        background-color: #D2E7FF;
+
+        &:after {
+          transform: scale(1);
+        }
+      }
+
+    }
+  }
+}
+
+.nav-tabs-custom-dashboard {
+  border-bottom: 2px solid $gray-300;
+
+  .nav-item {
+    position: relative;
+    //color: $dark;
+    color: #6B6B6B !important;
+
+    .nav-link {
+      border: none;
+
+
+      &::after {
+        content: "";
+        background: $primary;
+        height: 2px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: -1px;
+        transition: all 250ms ease 0s;
+        transform: scale(0);
+      }
+
+      &.active {
+        color: $primary !important;
+        //border: 5px solid red;
+        // border-radius: 16.5px;
+        // background-color: #D2E7FF;
+
+        &:after {
+          transform: scale(1);
+        }
+      }
+
+    }
+  }
+}
+
+
+
+// css for communication
+.communication-module-sidebar-item-design {
+  margin-bottom: -50px;
+}
+
+// vertical nav
+
+.vertical-nav {
+  .nav {
+    .nav-link {
+      padding: 24px 8px;
+      text-align: center;
+      margin-bottom: 8px;
+
+      .nav-icon {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+
+  //style={{ cursor: "pointer", width: "14.2%", justifyContent: "center", alignItems: "center" }}
+  .property_tab_nav {
+    cursor: pointer;
+    width: 14.2%;
+
+    .property_tab_nav_item {
+      text-align: center;
+    }
+  }
+}
+
+
+// modal width issue
+@media screen and (min-width: 300px) and (max-width: 567px) {
+  .custom-modal-width {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 330px !important;
+  }
+}
+
+@media screen and (min-width: 568px) and (max-width: 992px) {
+  .custom-modal-width {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 470px !important;
+  }
+}
+
+@media screen and (min-width: 993px) and (max-width: 2400px) {
+  .custom-modal-width {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 760px !important;
+  }
+}
+
+
+// document modal
+@media screen and (min-width: 300px) and (max-width: 567px) {
+  .custom-modal-width-document-modal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 330px !important;
+  }
+}
+
+@media screen and (min-width: 568px) and (max-width: 992px) {
+  .custom-modal-width-document-modal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 470px !important;
+  }
+}
+
+@media screen and (min-width: 993px) and (max-width: 2400px) {
+  .custom-modal-width-document-modal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 470px !important;
+  }
+}
+
+
+
+
+
+// for new tab in tenant
+
+
+// Icon nav
+.icon-tab-tenant {
+  //border: 1px solid #e9e9e9;
+  border-radius: 25px !important;
+  //width: 72%;
+  z-index: 100 !important;
+  display: flex;
+  //justify-content: space-between;
+  gap: 5px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.icon-tab-tenant .nav-link {
+
+  border-radius: 50px !important;
+  padding: 8px 10px;
+
+
+}
+
+.icon-tab-tenant-number {
+  // style={{
+  //   display: "inline-flex",
+  //   borderRadius: "50%",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   background: "#153D58",
+  //   color: "white",
+  //   border: "1px solid gray",
+  //   height: "30px",
+  //   width: "30px"
+  // }}
+
+  display: inline-flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: #153D58;
+  color: white;
+  border: 1px solid gray;
+  height: 30px;
+  width: 30px;
+}
+
+.icon-tab-tenant-number-active {
+
+
+  display: inline-flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: #A3B7D3;
+  color: white;
+  border: 1px solid gray;
+  height: 30px;
+  width: 30px;
+}
+
+
+
+.icon-tab-tenant .active.nav-link {
+  background: #3A607A;
+  color: #fff;
+  border-radius: 50px !important;
+
+}
+
+.icon-tab-tenant li {
+  border: 0px solid white !important;
+
+}
+
+.custom_card_border_design {
+  border-radius: 15px;
+  background-color: #F2F6FA;
+  border: 8px solid white;
+
+}
+
+.react-tel-input .form-control {
+  width: 100%;
+}
+
+.custom_search_bar_input_field {
+  width: 300px;
+  text-align: center;
+  background-color: #3A607A;
+  border-radius: 20px 0px 0px 20px;
+  padding: 8px;
+  border: none;
+  border-right: 0px;
+  color: #fff;
+}
+
+@media screen and (min-width: 300px) and (max-width: 567px) {
+  .custom_search_bar_input_field {
+    width: 80px;
+  }
+}
