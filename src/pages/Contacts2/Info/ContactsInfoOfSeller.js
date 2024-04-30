@@ -195,7 +195,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                           <p className="text-primary">Asking price</p>
                         </Col>
                         <Col md={7}>
-                          ${item?.seller_folio.asking_price || "0.00৳"}
+                          ৳{item?.seller_folio.asking_price || "0.00"}
                         </Col>
                       </Row>
                       <div
@@ -232,7 +232,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           <span className="">
-                            {item?.seller_folio?.commission || "0.00"}৳
+                            ৳{item?.seller_folio?.commission || "0.00"}
                           </span>
                         </Col>
                       </Row>
@@ -251,7 +251,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           <span className="">
-                            {item?.seller_folio?.balance || "0.00"}৳
+                            ৳{item?.seller_folio?.balance || "0.00"}
                           </span>
                         </Col>
                       </Row>
@@ -270,7 +270,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           <span className="">
-                            0.00৳
+                            ৳0.00
                           </span>
                         </Col>
                       </Row>
@@ -342,7 +342,7 @@ const ContactsInfoOfSeller = ({ item }) => {
 
                                 {item.seller_payment.length === 0 ? 'None' : item.seller_payment.length === 1 ? item.seller_payment[0]?.method : `Split(
                                             ${item.seller_payment.map(item =>
-                                  item.split_type == '৳' ? `${item.split}.00৳` : ` ${item.split}%`
+                                  item.split_type == '৳' ? `৳${item.split}.00` : ` ${item.split}%`
                                 )}
                                           )`
                                 }

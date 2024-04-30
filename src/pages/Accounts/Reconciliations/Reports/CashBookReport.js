@@ -113,7 +113,7 @@ const CashBookReport = (props) => {
                                                                                         `${item?.supplier_folio?.supplier_contact?.reference} (${item?.supplier_folio?.folio_code}) ${(item.type === 'Withdraw' || item.type === 'Folio Withdraw') ? r_item.description && r_item.description : ''}`
                                                                                     }
                                                                                 </td>
-                                                                                <td>{item.type === 'Withdraw' || item.type === 'Folio Withdraw' ? `${item.amount} ৳` : ''}</td>
+                                                                                <td>{item.type === 'Withdraw' || item.type === 'Folio Withdraw' ? `৳${item.amount}` : ''}</td>
                                                                                 <td>{" "}</td>
                                                                             </tr>
                                                                         }
@@ -126,7 +126,7 @@ const CashBookReport = (props) => {
                                                                                 <td></td>
                                                                                 <td>to: {`${r_item.contact_reference.reference} (${r_item.folioCode})`}{r_item.description && `-${r_item.description}`}</td>
                                                                                 <td>{" "}</td>
-                                                                                <td>{r_item.amount}৳</td>
+                                                                                <td>৳{r_item.amount}</td>
                                                                             </tr>
                                                                         }
                                                                         {
@@ -153,7 +153,7 @@ const CashBookReport = (props) => {
                                                                 <td></td>
                                                                 <td></td>
                                                                 <td></td>
-                                                                <td className="fw-bold">A banking for {item.total}৳ was completed on {item.deposit_date}</td>
+                                                                <td className="fw-bold">A banking for ৳{item.total} was completed on {item.deposit_date}</td>
                                                                 <td></td>
                                                                 <td></td>
                                                             </tr>
@@ -167,8 +167,8 @@ const CashBookReport = (props) => {
                                                         <td >	</td>
                                                         <td >		</td>
                                                         <td >		</td>
-                                                        <td className="fw-bold">    {props.crd_data?.cashBookDebitBalance}৳</td>
-                                                        <td className="fw-bold">{props.crd_data?.cashBookCreditBalance}৳</td>
+                                                        <td className="fw-bold">    ৳{props.crd_data?.cashBookDebitBalance}</td>
+                                                        <td className="fw-bold">৳{props.crd_data?.cashBookCreditBalance}</td>
                                                     </tr>
                                                 </tfoot>
                                             </Table>

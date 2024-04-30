@@ -326,7 +326,7 @@ const AddJobModal = props => {
 
       <Modal isOpen={inspectionModal} toggle={toggleOff} scrollable={true}>
 
-        <ModalHeader style={{ backgroundColor: "#153D58" }}>
+        <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
           {/* <i className="fas fa-wrench font-size-20 me-2 text-info"></i>
           <span className="text-info">New Job</span> */}
 

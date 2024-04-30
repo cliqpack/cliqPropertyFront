@@ -11,7 +11,8 @@ import { withTranslation } from "react-i18next";
 import SidebarContent from "./SidebarContent";
 
 import logo from "../../assets/images/Asset-light.png";
-import logoCliqProperty from "../../assets/images/white_long.png";
+// import logoCliqProperty from "../../assets/images/white_long.png";
+import logoCliqProperty from "../../assets/images/logo_cliq.png";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
 // import logoDark from "../../assets/images/Myday.png";

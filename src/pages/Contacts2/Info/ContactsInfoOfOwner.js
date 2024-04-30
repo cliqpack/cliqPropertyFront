@@ -228,13 +228,13 @@ const ContactsInfoOfOwner = ({
                                 items?.owner_properties?.current_owner_folio?.regular_intervals ? (
                                 <p>
                                   on balance of 
-                                  {items?.owner_properties?.current_owner_folio?.balance
+                                  ৳{items?.owner_properties?.current_owner_folio?.balance
                                     ? items?.owner_properties?.current_owner_folio?.balance
-                                    : ""}৳{" "}
+                                    : ""}{" "}
                                   /on total money in of 
-                                  {items?.owner_properties?.current_owner_folio?.balance
+                                  ৳{items?.owner_properties?.current_owner_folio?.balance
                                     ? items?.owner_properties?.current_owner_folio?.total_money
-                                    : ""}৳
+                                    : ""}
                                   /at
                                   {items?.owner_properties?.current_owner_folio?.regular_intervals} intervals
                                 </p>
@@ -320,9 +320,9 @@ const ContactsInfoOfOwner = ({
                           </Col>
                           <Col md={7}>
                             <p>
-                              {items?.owner_properties?.current_owner_folio?.balance
+                            ৳{items?.owner_properties?.current_owner_folio?.balance
                                 ? items?.owner_properties?.current_owner_folio?.balance
-                                : "0.00"}৳
+                                : "0.00"}
                             </p>
                           </Col>
                         </Row>{" "}
@@ -340,9 +340,9 @@ const ContactsInfoOfOwner = ({
                           </Col>
                           <Col md={7}>
                             <p>
-                              {items?.owner_properties?.current_owner_folio?.withhold_amount
+                            ৳{items?.owner_properties?.current_owner_folio?.withhold_amount
                                 ? items?.owner_properties?.current_owner_folio?.withhold_amount
-                                : "0.00"}৳
+                                : "0.00"}
                             </p>
                           </Col>
                         </Row>{" "}
@@ -367,7 +367,7 @@ const ContactsInfoOfOwner = ({
                                 <p>
                                   {item.owner_payment.length === 0 ? 'None' : item.owner_payment.length === 1 ? item.owner_payment[0]?.method : `Split(
                                             ${item.owner_payment.map(item =>
-                                    item.split_type == '৳' ? `${item.split ? item.split : '0'}.00৳` : ` ${item.split}%`
+                                    item.split_type == '৳' ? `৳${item.split ? item.split : '0'}.00` : ` ${item.split}%`
                                   )}
                                           )`
                                   }

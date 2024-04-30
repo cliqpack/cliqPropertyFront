@@ -4062,7 +4062,7 @@ const EditSaleAgreement = props => {
                                                       id="purchase_price"
                                                       name="purchase_price"
                                                       type="number"
-                                                      placeholder="0.00৳"
+                                                      placeholder="৳0.00"
                                                       className={
                                                         "form-control" +
                                                         (errors.purchase_price &&

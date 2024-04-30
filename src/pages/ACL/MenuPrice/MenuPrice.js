@@ -63,7 +63,7 @@ const MenuPrice = props => {
       <tr key={key}>
         <th scope="row">{key + 1}</th>
         <td>{item.menu.menu_title}</td>
-        <td>{item.price}৳</td>
+        <td>৳{item.price}</td>
         <td>
           <button
             type="submit"

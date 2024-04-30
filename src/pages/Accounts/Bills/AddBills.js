@@ -756,7 +756,7 @@ const AddBillsModal = props => {
                             <Card>
                               <CardBody className="border-3 border-start border-danger">
                                 <p className="fw-bold">
-                                  Available tenant funds {state.tenantDepositAmount}৳.
+                                  Available tenant funds ৳{state.tenantDepositAmount}.
                                 </p>
                                 <p>
                                   Would you like to allocate an amount towards

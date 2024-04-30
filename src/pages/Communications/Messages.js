@@ -137,7 +137,7 @@ const Messages = props => {
 
   const [state, setState] = useState({
     optionManager: [],
-    optionContacts:[],
+    optionContacts: [],
     modal: false,
     modal1: false,
     mailBodyModal: false,
@@ -692,8 +692,8 @@ const Messages = props => {
   let allSenrMail = props.mail_list_sent_data
     ? props.mail_list_sent_data.data
       ? props.mail_list_sent_data.data.filter(
-          mail => mail.status == "sent" && mail.type != "sms"
-        )
+        mail => mail.status == "sent" && mail.type != "sms"
+      )
       : null
     : null;
 
@@ -787,9 +787,9 @@ const Messages = props => {
 
   const currentPostsForSMS = props.sms_list_data?.data
     ? props.sms_list_data?.data.slice(
-        indexOfFirstPostForSMS,
-        indexOfLastPostForSMS
-      )
+      indexOfFirstPostForSMS,
+      indexOfLastPostForSMS
+    )
     : null;
 
   // ============= sms outbox ===========
@@ -804,16 +804,16 @@ const Messages = props => {
 
   const currentPostsForSMSOutbox = props.sms_outbox_data?.data
     ? props.sms_outbox_data?.data.slice(
-        indexOfFirstPostForSMSOutbox,
-        currentPageForSMSOutbox
-      )
+      indexOfFirstPostForSMSOutbox,
+      currentPageForSMSOutbox
+    )
     : null;
 
   const currentPostsForSMSSent = props.sms_sent_data?.data
     ? props.sms_sent_data?.data.slice(
-        indexOfFirstPostForSMSSent,
-        currentPageForSMSSent
-      )
+      indexOfFirstPostForSMSSent,
+      currentPageForSMSSent
+    )
     : null;
   const allSMSOutboxLength = props.sms_outbox_data?.data
     ? props.sms_outbox_data?.data.length > 0
@@ -866,9 +866,9 @@ const Messages = props => {
 
   const currentPostsForMailTemp = props.tmp_list_data?.template
     ? props.tmp_list_data?.template.slice(
-        indexOfFirstPostForMailTemp,
-        indexOfLastPostForMailTemp
-      )
+      indexOfFirstPostForMailTemp,
+      indexOfLastPostForMailTemp
+    )
     : null;
   const allReplySortById = props.inbox_list_data?.data?.reply;
 
@@ -911,9 +911,9 @@ const Messages = props => {
 
   const currentPostsForSMSTemp = props.tmp_list_sms_data?.template
     ? props.tmp_list_sms_data?.template.slice(
-        indexOfFirstPostForSMSTemp,
-        indexOfLastPostForSMSTemp
-      )
+      indexOfFirstPostForSMSTemp,
+      indexOfLastPostForSMSTemp
+    )
     : null;
   const allSMSTempLength = props.tmp_list_data?.template
     ? props.tmp_list_data?.template.length > 0
@@ -954,9 +954,9 @@ const Messages = props => {
 
   const currentPostsForUndelivered = props.mail_list_undelivered_data?.data
     ? props.mail_list_undelivered_data?.data.slice(
-        indexOfFirstPostUndelivered,
-        indexOfLastPostUndelivered
-      )
+      indexOfFirstPostUndelivered,
+      indexOfLastPostUndelivered
+    )
     : null;
   const allUndeliveredLength = props.mail_list_undelivered_data?.data
     ? props.mail_list_undelivered_data?.data.length > 0
@@ -1172,7 +1172,7 @@ const Messages = props => {
     <span
       className={
         (row.watch == 1 && row.reply_to == authUser.user.email) ||
-        row.details_status == "Unread"
+          row.details_status == "Unread"
           ? "fw-bold text-info"
           : "text-info"
       }
@@ -1271,7 +1271,7 @@ const Messages = props => {
     <span
       className={
         (row.watch == 1 && row.reply_to == authUser.user.email) ||
-        row.details_status == "Unread"
+          row.details_status == "Unread"
           ? "fw-bold text-mute"
           : "text-mute"
       }
@@ -2786,7 +2786,7 @@ const Messages = props => {
                     className="w-100"
                   >
                     <DropdownToggle
-                      className="btn btn-cyan d-flex justify-content-between align-items-center w-100"
+                      className="btn btn-buttonColor d-flex justify-content-between align-items-center w-100"
                       caret
                     >
                       {/* <i className="fas fa-edit me-1 font-size-14" /> */}
@@ -3562,14 +3562,14 @@ const Messages = props => {
                   >
                     {authUser.user.user_type == "Property Manager" && (
                       <Select
-                              value={state.selectedContacts}
-                              options={state.optionContacts}
-                              onChange={selectHandlerForMessage}
-                              placeholder="Select a Contacts..."
-                              className="form-control-new w-100"
-                              style={{ position: "absolute" }}
-                            />
-                  
+                        value={state.selectedContacts}
+                        options={state.optionContacts}
+                        onChange={selectHandlerForMessage}
+                        placeholder="Select a Contacts..."
+                        className="form-control-new w-100"
+                        style={{ position: "absolute" }}
+                      />
+
                     )}
                     {/* <input
                         type="to"
@@ -3767,19 +3767,19 @@ const Messages = props => {
             <div className="mt-3">
               {attached.length > 0
                 ? attached.map((item, key) => (
-                    <div key={key} className="bg-info mb-2 p-1">
-                      <a
-                        className="text-light"
-                        href={`${process.env.REACT_APP_DOCUMENT}` + item.path}
-                        target="blank"
-                      >
-                        {key + 1}
-                        {`.`} {item.name} {` (`}
-                        {floor(Number(item?.file_size) / 1024)}
-                        {` kb)`}
-                      </a>
-                    </div>
-                  ))
+                  <div key={key} className="bg-info mb-2 p-1">
+                    <a
+                      className="text-light"
+                      href={`${process.env.REACT_APP_DOCUMENT}` + item.path}
+                      target="blank"
+                    >
+                      {key + 1}
+                      {`.`} {item.name} {` (`}
+                      {floor(Number(item?.file_size) / 1024)}
+                      {` kb)`}
+                    </a>
+                  </div>
+                ))
                 : null}
             </div>
           </ModalBody>
@@ -3828,7 +3828,7 @@ const Messages = props => {
         centered={true}
         className="exampleModal"
         tabIndex="-1"
-        // toggle={this.togglemodal}
+      // toggle={this.togglemodal}
       >
         <div className="modal-content">
           <ModalHeader>
@@ -3890,7 +3890,7 @@ const Messages = props => {
                         message: e.target.value,
                       })
                     }
-                    //onChange={selectHandlerForSMS}
+                  //onChange={selectHandlerForSMS}
                   />
                 </Col>
               </div>
@@ -3996,7 +3996,7 @@ const Messages = props => {
         centered={true}
         className="exampleModal"
         tabIndex="-1"
-        // toggle={this.togglemodal}
+      // toggle={this.togglemodal}
       >
         <div className="modal-content">
           <ModalHeader>
@@ -4091,7 +4091,7 @@ const Messages = props => {
         centered={true}
         className="exampleModal"
         tabIndex="-1"
-        // toggle={this.togglemodal}
+      // toggle={this.togglemodal}
       >
         <div className="modal-content">
           <ModalBody style={{ padding: 0, margin: 0 }}>
@@ -4111,7 +4111,7 @@ const Messages = props => {
                           src={
                             x.user
                               ? "http://backend-myday.cliqpack.com/public/Image/" +
-                                x.user.profile
+                              x.user.profile
                               : avatar2
                           }
                           alt="skote"
@@ -4305,13 +4305,13 @@ const Messages = props => {
 
               {state.reply?.length > 0
                 ? state.reply.map((item, key) => (
-                    <ReplyCard
-                      item={item}
-                      key={key}
-                      from={state.reply_from}
-                      to={state.reply_to}
-                    />
-                  ))
+                  <ReplyCard
+                    item={item}
+                    key={key}
+                    from={state.reply_from}
+                    to={state.reply_to}
+                  />
+                ))
                 : ""}
 
               {/* =============== showing reply mail ends ============= */}
@@ -4415,12 +4415,12 @@ const Messages = props => {
         <ModalFooter>
           <div
             className="d-flex justify-content-between align-items-top"
-            // style={{
-            //   display: "flex",
-            //   justifyContent: "right",
-            //   gap: "10px",
-            //   marginTop: "20px",
-            // }}
+          // style={{
+          //   display: "flex",
+          //   justifyContent: "right",
+          //   gap: "10px",
+          //   marginTop: "20px",
+          // }}
           >
             {state.activeTab == "0" && (
               <div
@@ -4428,7 +4428,7 @@ const Messages = props => {
               >
                 <Button
                   onClick={handleReply}
-                  //  style={{ marginBottom: "10px" }}
+                //  style={{ marginBottom: "10px" }}
                 >
                   {sendReply
                     ? `${localizeItem("Close")} ${localizeItem("Reply")}`
@@ -4446,18 +4446,18 @@ const Messages = props => {
             </Button>{" "}
             {sendReply
               ? state.activeTab == "0" && (
-                  <Button
-                    type="button"
-                    color="primary"
-                    //onClick={handleSubmitMail}
-                    onClick={sendReply ? handleReplyMail : ""}
-                    className="ms-1"
-                  >
-                    {/* {sendReply ? "Reply" : "Send"} */}
-                    {localizeItem("Reply")}
-                    <i className="fab fa-telegram-plane ms-1"></i>
-                  </Button>
-                )
+                <Button
+                  type="button"
+                  color="primary"
+                  //onClick={handleSubmitMail}
+                  onClick={sendReply ? handleReplyMail : ""}
+                  className="ms-1"
+                >
+                  {/* {sendReply ? "Reply" : "Send"} */}
+                  {localizeItem("Reply")}
+                  <i className="fab fa-telegram-plane ms-1"></i>
+                </Button>
+              )
               : null}
             {state.activeTab == "0" ? (
               ""
@@ -4499,7 +4499,7 @@ const Messages = props => {
                     subject: e.target.value,
                   })
                 }
-                //onChange={(e) => handleSubjectUpdate(e)}
+              //onChange={(e) => handleSubjectUpdate(e)}
               />
             </div>
             <CKEditor
@@ -4538,7 +4538,7 @@ const Messages = props => {
                 });
               }}
 
-              // onChange={selectHandlerForProperty}
+            // onChange={selectHandlerForProperty}
             />
             <div
               style={{
@@ -4741,9 +4741,9 @@ const Messages = props => {
                   color="info"
                   disabled={
                     schedule.name &&
-                    schedule.selectTo &&
-                    schedule.selectRegarding &&
-                    schedule.selectFrom
+                      schedule.selectTo &&
+                      schedule.selectRegarding &&
+                      schedule.selectFrom
                       ? false
                       : true
                   }

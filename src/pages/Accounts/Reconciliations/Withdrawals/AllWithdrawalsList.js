@@ -171,7 +171,7 @@ function AllWithdrawalsList(props) {
     }
     const amountRef = (cell, row) => {
         return <span>
-            {row.amount}৳
+            ৳{row.amount}
         </span>
     }
 

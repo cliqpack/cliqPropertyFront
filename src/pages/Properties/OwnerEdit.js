@@ -2285,7 +2285,7 @@ const OwnerEdit = props => {
                                         id: (state2 && state2.id) || "",
                                         total_money:
                                           (state2 && state2.total_money) ||
-                                          "0.00৳",
+                                          "৳0.00",
                                         balance:
                                           (state2 && state2.balance) || "",
                                         regular_intervals:

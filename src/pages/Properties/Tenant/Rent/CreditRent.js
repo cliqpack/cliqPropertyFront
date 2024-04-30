@@ -97,7 +97,7 @@ const CreditRent = (props) => {
                                 <div className="d-flex flex-column">
                                     <Input
                                         disabled={props.data ? true : false}
-                                        placeholder="0.00৳"
+                                        placeholder="৳0.00"
                                         className="form-control "
                                         type="text"
                                         name="amount"

@@ -118,7 +118,7 @@ const UnreconcileItems = props => {
                               <td className="col-md-2">{item.status}</td>
                               <td className="col-md-2">{ }</td>
                               <td className="col-md-5">{ } </td>
-                              <td className="col-md-1">{item.amount}৳ </td>
+                              <td className="col-md-1">৳{item.amount} </td>
                             </tr>
                           ))}
                         </tbody>
@@ -130,7 +130,7 @@ const UnreconcileItems = props => {
                         md={6}
                         className="d-flex justify-content-end pe-4 fw-bold"
                       >
-                        {depositTotal}৳
+                        ৳{depositTotal}
                       </Col>
                     </Row>
                   </div>
@@ -164,7 +164,7 @@ const UnreconcileItems = props => {
                                 <td className="col-md-7">
                                   {item.statement}
                                 </td>
-                                <td className="col-md-1">{item.amount}৳</td>
+                                <td className="col-md-1">৳{item.amount}</td>
                               </tr>
                             })
                           }
@@ -177,7 +177,7 @@ const UnreconcileItems = props => {
                         md={6}
                         className="d-flex justify-content-end pe-4 fw-bold"
                       >
-                        {props.uir_list_data?.unreconcilliedWithdrawlAmount}৳
+                        ৳{props.uir_list_data?.unreconcilliedWithdrawlAmount}
                       </Col>
                     </Row>
                   </div>
@@ -211,7 +211,7 @@ const UnreconcileItems = props => {
                                 </td>
                                 <td className="col-md-9">{item.reason}</td>
 
-                                <td className="col-md-1">{item.amount}৳</td>
+                                <td className="col-md-1">৳{item.amount}</td>
                               </tr>
                             )
                           )}
@@ -224,7 +224,7 @@ const UnreconcileItems = props => {
                         md={6}
                         className="d-flex justify-content-end pe-4 fw-bold"
                       >
-                        {adjustmentTotal}৳
+                        ৳{adjustmentTotal}
                       </Col>
                     </Row>
                   </div>
@@ -260,7 +260,7 @@ const UnreconcileItems = props => {
                                   {item.removed_reason}
                                 </td>
 
-                                <td className="col-md-1"> {item.amount}৳ </td>
+                                <td className="col-md-1"> ৳{item.amount} </td>
                               </tr>
                             )
                           )}
@@ -273,7 +273,7 @@ const UnreconcileItems = props => {
                         md={6}
                         className="d-flex justify-content-end pe-4 fw-bold"
                       >
-                        {rmvAdjustmentTotal}৳
+                        ৳{rmvAdjustmentTotal}
                       </Col>
                     </Row>
                   </div>

@@ -396,7 +396,7 @@ function PropertyList(props) {
     }
   };
   const arrRent = cell => {
-    return <span className="text-secondery">{cell}৳</span>;
+    return <span className="text-secondery">৳{cell}</span>;
   };
   const invArrs = (cell, row) => {
     let due_amount = Number(cell ? cell : 0);
@@ -404,7 +404,7 @@ function PropertyList(props) {
       row.due_invoice_sum_paid ? row.due_invoice_sum_paid : 0
     );
     let total = due_amount - paid_amount;
-    return <span className="text-secondery">{total ? total : 0}৳</span>;
+    return <span className="text-secondery">৳{total ? total : 0}</span>;
   };
   const rentArrs = (cell, row) => {
     let end = moment(row?.tenant?.[0]?.tenant_folio?.paid_to);
@@ -419,7 +419,7 @@ function PropertyList(props) {
       perDayRent = row?.tenant?.[0]?.tenant_folio?.rent / 30;
     }
     let arrears = Math.abs(Math.round(perDayRent * dif));
-    return <span className="text-secondery">{arrears}৳</span>;
+    return <span className="text-secondery">৳{arrears}</span>;
   };
   const totalArrs = (cell, row) => {
     let end = moment(row?.tenant?.[0].tenant_folio?.paid_to);
@@ -452,7 +452,7 @@ function PropertyList(props) {
     return (
       <span className="text-secondery">
         {/* ${Number(inv) + Number(cell.tenant_folio?.due)} */}
-        {total ? total : 0}৳
+        ৳{total ? total : 0}
       </span>
     );
   };
@@ -687,7 +687,7 @@ function PropertyList(props) {
     );
   };
   const salePrice = cell => {
-    return <span className="text-secondery">{cell}৳</span>;
+    return <span className="text-secondery">৳{cell}</span>;
   };
   const vacanciesOwner = (cell, row) => {
     return (
@@ -730,10 +730,10 @@ function PropertyList(props) {
       ? Math.abs(row.tenant?.[0]?.tenant_folio?.bond_arreas)
       : 0;
     // setTotalArrears(prev => prev + bond_arreas);
-    return <span>{bond_arreas}৳</span>;
+    return <span>৳{bond_arreas}</span>;
   };
   const rent = (cell, row) => {
-    return <span>{row.tenant?.[0]?.tenant_folio?.rent}৳</span>;
+    return <span>৳{row.tenant?.[0]?.tenant_folio?.rent}</span>;
   };
   const rentType = (cell, row) => {
     return <span>{row.tenant?.[0]?.tenant_folio?.rent_type}</span>;
@@ -748,9 +748,9 @@ function PropertyList(props) {
   const partPaid = (cell, row) => {
     return (
       <span>
-        {row.tenant?.[0]?.tenant_folio?.part_paid
+        ৳{row.tenant?.[0]?.tenant_folio?.part_paid
           ? row.tenant?.[0]?.tenant_folio?.part_paid
-          : 0}৳
+          : 0}
       </span>
     );
   };

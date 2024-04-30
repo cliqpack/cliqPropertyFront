@@ -106,7 +106,7 @@ function FolioLedgerApiReport(props) {
                                                                                     // colSpan="3"
                                                                                     className="fw-bold"
                                                                                 >
-                                                                                    {item2?.opening_balance ? item2?.opening_balance : 0}৳
+                                                                                    ৳{item2?.opening_balance ? item2?.opening_balance : 0}
                                                                                 </td>
                                                                             </tr>
 
@@ -154,9 +154,9 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "debit"
+                                                                                                    ৳{item3.type == "debit"
                                                                                                         ? item3.amount
-                                                                                                        : 0}৳
+                                                                                                        : 0}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     className={
@@ -168,9 +168,9 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "credit"
+                                                                                                    ৳{item3.type == "credit"
                                                                                                         ? item3.amount
-                                                                                                        : 0}৳
+                                                                                                        : 0}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     className={
@@ -182,7 +182,7 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "credit"
+                                                                                                    ৳{item3.type == "credit"
                                                                                                         ? (balance =
                                                                                                             parseInt(item3.amount) +
                                                                                                             parseInt(balance))
@@ -192,7 +192,7 @@ function FolioLedgerApiReport(props) {
                                                                                                                 parseInt(
                                                                                                                     item3.amount
                                                                                                                 )
-                                                                                                                : 0)}৳
+                                                                                                                : 0)}
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </>
@@ -207,10 +207,10 @@ function FolioLedgerApiReport(props) {
                                                                                 <th></th>
                                                                                 <th></th>
                                                                                 <th>Closing Balance:</th>
-                                                                                <th>{debitTotal ? debitTotal : 0}৳</th>
-                                                                                <th>{creditTotal ? creditTotal : 0}৳</th>
+                                                                                <th>৳{debitTotal ? debitTotal : 0}</th>
+                                                                                <th>৳{creditTotal ? creditTotal : 0}</th>
 
-                                                                                <th>{item2?.closing_balance ? item2?.closing_balance : 0}৳</th>
+                                                                                <th>৳{item2?.closing_balance ? item2?.closing_balance : 0}</th>
                                                                             </tr>
                                                                         </>
                                                                     );
@@ -281,7 +281,7 @@ function FolioLedgerApiReport(props) {
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td className="fw-bold">
-                                                                                    {item2.opening_balance ? item2.opening_balance : 0}৳
+                                                                                    ৳{item2.opening_balance ? item2.opening_balance : 0}
                                                                                 </td>
                                                                             </tr>
 
@@ -326,9 +326,9 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "debit"
+                                                                                                    ৳{item3.type == "debit"
                                                                                                         ? item3.amount
-                                                                                                        : 0}৳
+                                                                                                        : 0}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     className={
@@ -340,9 +340,9 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "credit"
+                                                                                                    ৳{item3.type == "credit"
                                                                                                         ? item3.amount
-                                                                                                        : 0}৳
+                                                                                                        : 0}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     className={
@@ -354,7 +354,7 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "credit"
+                                                                                                    ৳{item3.type == "credit"
                                                                                                         ? (balance =
                                                                                                             parseInt(item3.amount) +
                                                                                                             parseInt(balance))
@@ -364,7 +364,7 @@ function FolioLedgerApiReport(props) {
                                                                                                                 parseInt(
                                                                                                                     item3.amount
                                                                                                                 )
-                                                                                                                : 0)}৳
+                                                                                                                : 0)}
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </>
@@ -381,10 +381,10 @@ function FolioLedgerApiReport(props) {
                                                                                 <th></th>
                                                                                 <th></th>
                                                                                 <th>Closing Balance</th>
-                                                                                <th>{debitTotal ? debitTotal : 0}৳</th>
-                                                                                <th>{creditTotal ? creditTotal : 0}৳</th>
+                                                                                <th>৳{debitTotal ? debitTotal : 0}</th>
+                                                                                <th>৳{creditTotal ? creditTotal : 0}</th>
 
-                                                                                <th>{item2.closing_balance ? item2.closing_balance : 0}৳</th>
+                                                                                <th>৳{item2.closing_balance ? item2.closing_balance : 0}</th>
                                                                             </tr>
                                                                         </>
                                                                     );
@@ -454,7 +454,7 @@ function FolioLedgerApiReport(props) {
                                                                                 <td></td>
                                                                                 <td></td>
                                                                                 <td className="fw-bold">
-                                                                                    {item2?.opening_balance ? item2?.opening_balance : 0}৳
+                                                                                    ৳{item2?.opening_balance ? item2?.opening_balance : 0}
                                                                                 </td>
                                                                             </tr>
 
@@ -499,9 +499,9 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "debit"
+                                                                                                    ৳{item3.type == "debit"
                                                                                                         ? item3.amount
-                                                                                                        : 0}৳
+                                                                                                        : 0}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     className={
@@ -513,9 +513,9 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "credit"
+                                                                                                    ৳{item3.type == "credit"
                                                                                                         ? item3.amount
-                                                                                                        : 0}৳
+                                                                                                        : 0}
                                                                                                 </td>
                                                                                                 <td
                                                                                                     className={
@@ -527,7 +527,7 @@ function FolioLedgerApiReport(props) {
                                                                                                             : ""
                                                                                                     }
                                                                                                 >
-                                                                                                    {item3.type == "credit"
+                                                                                                    ৳{item3.type == "credit"
                                                                                                         ? (balance =
                                                                                                             parseInt(item3.amount) +
                                                                                                             parseInt(balance))
@@ -537,7 +537,7 @@ function FolioLedgerApiReport(props) {
                                                                                                                 parseInt(
                                                                                                                     item3.amount
                                                                                                                 )
-                                                                                                                : 0)}৳
+                                                                                                                : 0)}
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </>
@@ -554,10 +554,10 @@ function FolioLedgerApiReport(props) {
                                                                                 <th></th>
                                                                                 <th></th>
                                                                                 <th>Closing Balance</th>
-                                                                                <th>{debitTotal ? debitTotal : 0}৳</th>
-                                                                                <th>{creditTotal ? creditTotal : 0}৳</th>
+                                                                                <th>৳{debitTotal ? debitTotal : 0}</th>
+                                                                                <th>৳{creditTotal ? creditTotal : 0}</th>
 
-                                                                                <th>{item2.closing_balance ? item2.closing_balance : 0}৳</th>
+                                                                                <th>৳{item2.closing_balance ? item2.closing_balance : 0}</th>
                                                                             </tr>
                                                                         </>
                                                                     );

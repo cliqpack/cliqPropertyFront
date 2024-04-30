@@ -104,7 +104,7 @@ function TransactionList(props) {
         toggleModalTransactions();
     };
     const amountRef = (cell, row) => {
-        return <span>{cell}৳</span>
+        return <span>৳{cell}</span>
     }
     const typeFormatter = (cell, row) => {
         return <span>
@@ -257,7 +257,7 @@ function TransactionList(props) {
                                                 setState(prev => ({ ...prev, drp_link: !prev.drp_link }))
                                             }
                                         >
-                                            <DropdownToggle caret color="secondary">
+                                            <DropdownToggle caret color="buttonColor">
                                                 Actions <i className="mdi mdi-chevron-down"></i>
                                             </DropdownToggle>
                                             <DropdownMenu>

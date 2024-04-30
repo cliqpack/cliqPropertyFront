@@ -65,6 +65,7 @@ const RemotePagination = ({
                             borderBottomLeftRadius: 50,
                             borderTopRightRadius: 0,
                             borderBottomRightRadius: 0,
+                            color: "red !important"
                             //marginTop: { sm: "50px", md: "-17px", lg: "-17px" },
 
                           }}

@@ -63,7 +63,7 @@ function UnpaidBills(props) {
         } else return ''
     }
     const amountRef = (cell, row) => {
-        return <span>{cell}৳</span>
+        return <span>${cell}</span>
     }
 
     const activeData = [

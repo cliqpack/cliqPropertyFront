@@ -98,7 +98,7 @@ const PrintRecieptInvoice = (props) => {
                                             Bondi Beach NSW 2026 <br />
                                         </div>
                                         <div>
-                                            ABN:
+                                            BIN:
                                         </div>
                                         <div>
                                             Licence:
@@ -164,16 +164,16 @@ const PrintRecieptInvoice = (props) => {
                                     {data?.receipt_details?.map((item, i) => (
                                         <tr key={i}>
                                             <td className="col-md-7">{item.allocation}</td>
-                                            <td className="col-md-2 border-secondary">0.00৳</td>
-                                            <td className="col-md-2 border-secondary">{item.amount}৳</td>
+                                            <td className="col-md-2 border-secondary">৳0.00</td>
+                                            <td className="col-md-2 border-secondary">৳{item.amount}</td>
                                         </tr>
                                     ))
                                     }
 
                                     <tr className="border-secondary">
                                         <td className="col-md-7">Total</td>
-                                        <td className="col-md-2">0.00৳</td>
-                                        <td className="col-md-2">{totalAmount}৳</td>
+                                        <td className="col-md-2">৳0.00</td>
+                                        <td className="col-md-2">৳{totalAmount}</td>
                                     </tr>
 
                                 </tbody>

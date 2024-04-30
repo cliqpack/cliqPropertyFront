@@ -85,7 +85,7 @@ const FolioWithdraw = props => {
         } else if (state.amount < 0) {
             toastr.warning('Amount cannot be less then 0');
         } else if (state.amount > folioBalance?.balance) {
-            toastr.warning(`A withdrawal of ${state.amount}৳ exceeds the cleared balance of ${folioBalance?.balance}৳`);
+            toastr.warning(`A withdrawal of ৳${state.amount} exceeds the cleared balance of ৳${folioBalance?.balance}`);
             return;
         } else {
             setShowModal(true);
@@ -285,10 +285,10 @@ const FolioWithdraw = props => {
                                                 <span className={`${folioBalance?.available_balance > 0 ? 'text-success' : 'text-danger'}`}>Available balance</span>
                                             </div>
                                             <div>
-                                                {folioBalance?.balance}৳ <br />
-                                                {folioBalance?.outstanding_bill}৳ <br />
-                                                {folioBalance?.withhold ? <>{folioBalance?.withhold}৳ <br /></> : ''}
-                                                <span className={`${folioBalance?.available_balance > 0 ? 'text-success' : 'text-danger'}`}>{folioBalance?.available_balance}৳</span>
+                                                ৳{folioBalance?.balance} <br />
+                                                ৳{folioBalance?.outstanding_bill} <br />
+                                                ৳{folioBalance?.withhold ? <>{folioBalance?.withhold} <br /></> : ''}
+                                                <span className={`${folioBalance?.available_balance > 0 ? 'text-success' : 'text-danger'}`}>৳{folioBalance?.available_balance}</span>
                                             </div>
                                         </div>
                                     </Col>

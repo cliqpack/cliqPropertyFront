@@ -169,13 +169,13 @@ const AddDepositReceipt = (props) => {
                                         </Row>
                                         <Row className="pb-3 border-bottom border-2">
                                             <label className="col-sm-4">Details</label>
-                                            <div className="col-sm-8"><p>{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent}৳ {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent_type}</p></div>
+                                            <div className="col-sm-8"><p>৳{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent} {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent_type}</p></div>
                                         </Row>
                                     </Col>
                                     <Col md="6">
                                         <Row className="pb-3">
                                             <Col md={6}></Col>
-                                            <Col md={6}><b>Deposit balance {props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit}৳</b></Col>
+                                            <Col md={6}><b>Deposit balance ৳{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit}</b></Col>
                                         </Row>
                                     </Col>
                                 </Row>
@@ -239,7 +239,7 @@ const AddDepositReceipt = (props) => {
                                                             <td>Security Deposit</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_due_date}</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_part_paid_description}</td>
-                                                            <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}৳</td>
+                                                            <td>৳{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}</td>
                                                             <td>
                                                                 <div
                                                                     className="d-flex"
@@ -281,7 +281,7 @@ const AddDepositReceipt = (props) => {
                                                                     <td>Invoices</td>
                                                                     <td>{item.invoice_billing_date}</td>
                                                                     <td>Invoice-ID:{item.id}</td>
-                                                                    <td>{item.paid === 0 ? item.amount : item.amount - item.paid}৳</td>
+                                                                    <td>৳{item.paid === 0 ? item.amount : item.amount - item.paid}</td>
                                                                     <td>
                                                                         <div
                                                                             className="d-flex"

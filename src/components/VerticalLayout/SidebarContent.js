@@ -166,14 +166,14 @@ const SidebarContent = props => {
                                     : null
                 }
                 style={{
-                  color: "/" + item.slug == props.match.path ? "#A9F4E0" : "",
+                  color: "/" + item.slug == props.match.path ? "#FFC233" : "",
                   //'rgba(255, 254, 255, 0.6)',
                 }}
               />
 
               <span
                 style={{
-                  color: "/" + item.slug == props.match.path ? "#A9F4E0" : "", //'rgba(255, 254, 255, 0.6)',
+                  color: "/" + item.slug == props.match.path ? "#FFC233" : "", //'rgba(255, 254, 255, 0.6)',
                 }}
               >
                 {t(item.menu_title)}

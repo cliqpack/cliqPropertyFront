@@ -3449,11 +3449,11 @@ const TenantEdit = props => {
                                                                           Tenant
                                                                           has due
                                                                           of
-                                                                          {
+                                                                          ৳{
                                                                             props
                                                                               .tenant_move_out_data
                                                                               ?.due
-                                                                          }৳
+                                                                          }
                                                                         </UncontrolledAlert>
                                                                       )}
                                                                   </div>

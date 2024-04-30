@@ -219,7 +219,7 @@ function OwnerFolio(props) {
       {" "}
       {/* {row?.type == "Bill" && `$${cell}`}
       {row?.type == "Payment" && `$${cell}`} */}
-      {cell && `${cell}৳`}
+      {cell && `৳${cell}`}
     </span>
   );
   const checkingRefCredit = (cell, row) => (
@@ -227,7 +227,7 @@ function OwnerFolio(props) {
       {" "}
       {/* {row?.type == "Tenant Receipt" && `$${cell}`}
       {row?.type == "Folio Receipt" && `$${cell}`} */}
-      {cell && `${cell}৳`}
+      {cell && `৳${cell}`}
     </span>
   );
   const statusRef = (row, cell) => {
@@ -357,13 +357,13 @@ function OwnerFolio(props) {
         className={`badge rounded-pill p-1 ${balance >= cell ? "bg-success" : "bg-danger"
           }`}
       >
-        {cell}৳
+        ৳{cell}
       </span>
     );
     return amount;
   };
   const invAmountFormatter = (cell, row) => {
-    let amount = <span>{cell}৳</span>;
+    let amount = <span>৳{cell}</span>;
     return amount;
   };
 
@@ -604,9 +604,9 @@ function OwnerFolio(props) {
   };
 
   const folioBalanceFormatter = (cell, row) => (
-    <span>{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}৳</span>
+    <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
   );
-  const paidFormatter = (cell, row) => <span>{row.paid ? row.paid : 0}৳</span>;
+  const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
 
   const pendingInvoiceData = [
     {
@@ -979,7 +979,7 @@ function OwnerFolio(props) {
                           >
                             <span className="text-muted fw-bold">Opening</span>
                             <span className="text-muted">
-                              {ownerInfoData?.folio?.opening_balance || "0.00"}৳
+                              ৳{ownerInfoData?.folio?.opening_balance || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -996,7 +996,7 @@ function OwnerFolio(props) {
                           >
                             <span className="text-muted fw-bold">Money in</span>
                             <span className="text-muted">
-                              {ownerInfoData?.folio?.money_in || "0.00"}৳
+                              ৳{ownerInfoData?.folio?.money_in || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1015,7 +1015,7 @@ function OwnerFolio(props) {
                               Money out
                             </span>
                             <span className="text-muted">
-                              {ownerInfoData?.folio?.money_out || "0.00"}৳
+                              ৳{ownerInfoData?.folio?.money_out || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1034,7 +1034,7 @@ function OwnerFolio(props) {
                               Uncleared
                             </span>
                             <span className="text-muted">
-                              {ownerInfoData?.folio?.uncleared || "0.00"}৳
+                              ৳{ownerInfoData?.folio?.uncleared || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1053,11 +1053,11 @@ function OwnerFolio(props) {
                               Bills pending
                             </span>
                             <span className="text-muted">
-                              {ownerInfoData?.ownerPendingBill
+                              ৳{ownerInfoData?.ownerPendingBill
                                 ?.total_bills_amount_sum_amount
                                 ? ownerInfoData?.ownerPendingBill
                                   ?.total_bills_amount_sum_amount
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1076,9 +1076,9 @@ function OwnerFolio(props) {
                               Invoices pending
                             </span>
                             <span className="text-muted">
-                              {ownerInfoData?.pending_invoice_bill
+                              ৳{ownerInfoData?.pending_invoice_bill
                                 ? ownerInfoData?.pending_invoice_bill
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1095,9 +1095,9 @@ function OwnerFolio(props) {
                           >
                             <span className="text-muted fw-bold">Withhold</span>
                             <span className="text-muted">
-                              {ownerInfoData?.folio?.withhold_amount
+                              ৳{ownerInfoData?.folio?.withhold_amount
                                 ? ownerInfoData?.folio?.withhold_amount
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1114,7 +1114,7 @@ function OwnerFolio(props) {
                           >
                             <span className="text-muted fw-bold">Balance</span>
                             <span className="text-muted">
-                              {totalBalance > 0 ? totalBalance : "0.00"}৳
+                              ৳{totalBalance > 0 ? totalBalance : "0.00"}
                             </span>
                           </Col>
                         </Row>

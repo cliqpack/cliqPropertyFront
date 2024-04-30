@@ -91,27 +91,27 @@ const ReconciliationReport = (props) => {
                                                 {/* {moment(data?.bank_statement_balance_date).format("dddd, MMMM Do YYYY")}</b> */}
                                                 {moment().format("dddd, MMMM Do YYYY")}</b>
                                             </Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.bank_statement_balance}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.bank_statement_balance}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Add: unreconciled deposits</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.unreconciled_deposits}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.unreconciled_deposits}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Less: unreconciled withdrawals</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.unreconciled_withdrawals}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.unreconciled_withdrawals}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Add: adjustments	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.adjustment}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.adjustment}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Add: cash not banked	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.cash_not_banked}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.cash_not_banked}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Less: withdrawals not processed		</Col>
-                                            <Col md={6} className='d-flex justify-content-end'><span>{data?.withdrawals_not_processed}৳</span></Col>
+                                            <Col md={6} className='d-flex justify-content-end'><span>৳{data?.withdrawals_not_processed}</span></Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}></Col>
@@ -121,7 +121,7 @@ const ReconciliationReport = (props) => {
                                             <Col md={6}>
                                                 Reconciled bank statement balance
                                             </Col>
-                                            <Col md={6} className='d-flex justify-content-end fw-bold'> {reconciledBankStatementBalance > 0 ? reconciledBankStatementBalance : '0.00'}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end fw-bold'> ৳{reconciledBankStatementBalance > 0 ? reconciledBankStatementBalance : '0.00'}</Col>
                                         </Row>
                                     </div>
                                 </CardBody>
@@ -136,15 +136,15 @@ const ReconciliationReport = (props) => {
                                         </div>
                                         <Row className="py-1 ">
                                             <Col md={6}>Balance brought forward from: Tuesday, November 1, 2022		</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.cashbook_amount}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.cashbook_amount}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Add: new receipts	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.new_receipts}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.new_receipts}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}>Less: new withdrawals	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>{data?.new_withdrawals}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end'>৳{data?.new_withdrawals}</Col>
                                         </Row>
                                         <Row className="py-1 ps-3">
                                             <Col md={6}></Col>
@@ -152,7 +152,7 @@ const ReconciliationReport = (props) => {
                                         </Row>
                                         <Row className="py-1">
                                             <Col md={6}>Balance as at {moment().format('dddd, MMMM Do YYYYY')}	</Col>
-                                            <Col md={6} className='d-flex justify-content-end fw-bold'>{cashBookBalance}৳</Col>
+                                            <Col md={6} className='d-flex justify-content-end fw-bold'>৳{cashBookBalance}</Col>
                                         </Row>
 
                                     </div>

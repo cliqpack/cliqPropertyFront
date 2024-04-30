@@ -232,7 +232,7 @@ function SellerFolio(props) {
       {" "}
       {/* {row?.type == "Bill" && `$${cell}`}
       {row?.type == "Payment" && `$${cell}`} */}
-      {cell && `${cell}৳`}
+      {cell && `৳${cell}`}
     </span>
   );
   const checkingRefCredit = (cell, row) => (
@@ -240,7 +240,7 @@ function SellerFolio(props) {
       {" "}
       {/* {row?.type == "Tenant Receipt" && `$${cell}`}
       {row?.type == "Folio Receipt" && `$${cell}`} */}
-      {cell && `${cell}৳`}
+      {cell && `৳${cell}`}
     </span>
   );
   const statusRef = (row, cell) => {
@@ -367,17 +367,16 @@ function SellerFolio(props) {
         +row?.owner?.owner_folio?.uncleared);
     let amount = (
       <span
-        className={`badge rounded-pill p-1 ${
-          balance >= cell ? "bg-success" : "bg-danger"
-        }`}
+        className={`badge rounded-pill p-1 ${balance >= cell ? "bg-success" : "bg-danger"
+          }`}
       >
-        {cell}৳
+        ৳{cell}
       </span>
     );
     return amount;
   };
   const invAmountFormatter = (cell, row) => {
-    let amount = <span>{cell}৳</span>;
+    let amount = <span>৳{cell}</span>;
     return amount;
   };
 
@@ -615,9 +614,9 @@ function SellerFolio(props) {
   };
 
   const folioBalanceFormatter = (cell, row) => (
-    <span>{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}৳</span>
+    <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
   );
-  const paidFormatter = (cell, row) => <span>{row.paid ? row.paid : 0}৳</span>;
+  const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
 
   const pendingInvoiceData = [
     {
@@ -971,7 +970,7 @@ function SellerFolio(props) {
                               >
                                 Add Buyer
                               </DropdownItem>}
-                              
+
                               <DropdownItem onClick={toggleDisburse}>
                                 Disburse
                               </DropdownItem>
@@ -1009,8 +1008,8 @@ function SellerFolio(props) {
                           >
                             <span className="text-muted fw-bold">Money in</span>
                             <span className="text-muted">
-                              {saleInfoData?.sales_contact?.seller_folio
-                                ?.money_in || "0.00"}৳
+                              ৳{saleInfoData?.sales_contact?.seller_folio
+                                ?.money_in || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1029,8 +1028,8 @@ function SellerFolio(props) {
                               Money out
                             </span>
                             <span className="text-muted">
-                              {saleInfoData?.sales_contact?.seller_folio
-                                ?.money_out || "0.00"}৳
+                              ৳{saleInfoData?.sales_contact?.seller_folio
+                                ?.money_out || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1049,8 +1048,8 @@ function SellerFolio(props) {
                               Uncleared
                             </span>
                             <span className="text-muted">
-                              {saleInfoData?.sales_contact?.seller_folio
-                                ?.uncleared || "0.00"}৳
+                              ৳{saleInfoData?.sales_contact?.seller_folio
+                                ?.uncleared || "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1069,7 +1068,7 @@ function SellerFolio(props) {
                               Bills pending
                             </span>
                             <span className="text-muted">
-                              {props.seller_info_property_data?.data?.total_bill?props.seller_info_property_data?.data?.total_bill:'0.00'}৳
+                              ৳{props.seller_info_property_data?.data?.total_bill ? props.seller_info_property_data?.data?.total_bill : '0.00'}
                             </span>
                           </Col>
 
@@ -1087,7 +1086,7 @@ function SellerFolio(props) {
                           >
                             <span className="text-muted fw-bold">Balance</span>
                             <span className="text-muted">
-                              {totalBalance > 0 ? totalBalance : "0.00"}৳
+                              ৳{totalBalance > 0 ? totalBalance : "0.00"}
                             </span>
                           </Col>
                         </Row>
@@ -1213,7 +1212,7 @@ function SellerFolio(props) {
                         <Col sm="12">
                           <CardText className="mb-0">
                             {props.transaction_list_id_seller_folio_data !=
-                            null ? (
+                              null ? (
                               <DatatableTables2
                                 products={
                                   props.transaction_list_id_seller_folio_data ||
@@ -1233,7 +1232,7 @@ function SellerFolio(props) {
                         <Col sm="12">
                           <CardText className="mb-0">
                             {props.transaction_list_id_seller_folio_data !=
-                            null ? (
+                              null ? (
                               <DatatableTables2
                                 products={
                                   props.transaction_list_id_seller_folio_data ||
@@ -1258,7 +1257,7 @@ function SellerFolio(props) {
                                   props.pending_bills_seller_folio_data || []
                                 }
                                 columnData={pendingBillData}
-                                // url={url}
+                              // url={url}
                               />
                             ) : (
                               []
@@ -1311,11 +1310,11 @@ function SellerFolio(props) {
         </Row>
       </Container>
       {state.disburseModal &&
-          <DisburseModal toggle={toggleDisburse} state={state} folioId={fId} folio={saleInfoData?.sales_contact?.seller_folio} propertyId={propertyId} seller_contact_id={saleInfoData?.sales_contact?.id} />
-        }
+        <DisburseModal toggle={toggleDisburse} state={state} folioId={fId} folio={saleInfoData?.sales_contact?.seller_folio} propertyId={propertyId} seller_contact_id={saleInfoData?.sales_contact?.id} />
+      }
       {/* <ReverseModal toggle={toggleReverse} state={state} /> */}
       {state.archiveModal &&
-          <SellerArchiveModal toggle={toggleArchive} state={state} id={fId} propertyId={propertyId} folio_code={saleInfoData?.sales_contact?.seller_folio?.folio_code} />
+        <SellerArchiveModal toggle={toggleArchive} state={state} id={fId} propertyId={propertyId} folio_code={saleInfoData?.sales_contact?.seller_folio?.folio_code} />
       }
 
       <TransactionsInfoModal

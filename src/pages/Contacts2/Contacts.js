@@ -1298,6 +1298,7 @@ const Contacts = props => {
                                                   ? true
                                                   : false
                                               }
+                                              style={{ backgroundColor: "buttonColor" }}
                                             >
                                               Add
                                             </Button>

@@ -137,7 +137,7 @@ const AddonList = props => {
                                     <div className="button-groups">
                                         <button
                                             type="button"
-                                            className="btn btn-labelColor w-100 d-flex justify-content-between"
+                                            className="btn btn-buttonColor w-100 d-flex justify-content-between"
                                             onClick={toggleModalFee}
                                         >
                                             New Addon

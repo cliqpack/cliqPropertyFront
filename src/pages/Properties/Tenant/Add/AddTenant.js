@@ -1126,7 +1126,7 @@ const AddTenant = props => {
                                                                                                         <Field
                                                                                                             name="rent"
                                                                                                             type="text"
-                                                                                                            placeholder="0.00৳"
+                                                                                                            placeholder="৳0.00"
                                                                                                             className={
                                                                                                                 "form-control" +
                                                                                                                 (errors.rent &&
@@ -1279,7 +1279,7 @@ const AddTenant = props => {
                                                                                                                 name="bond_required"
                                                                                                                 id="bond_required"
                                                                                                                 type="text"
-                                                                                                                placeholder="0.00৳"
+                                                                                                                placeholder="৳0.00"
                                                                                                                 className={
                                                                                                                     "form-control" +
                                                                                                                     (errors.bond_required &&
@@ -1357,7 +1357,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='0.00৳'
+                                                                                placeholder='৳0.00'
                                                                                 name="bond_required"
                                                                                 id="bond_required"
                                                                                 type="number"
@@ -1394,7 +1394,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='0.00৳'
+                                                                                placeholder='৳0.00'
                                                                                 name="bond_already_paid"
                                                                                 id="bond_already_paid"
                                                                                 type="number"
@@ -1436,7 +1436,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='0.00৳'
+                                                                                placeholder='৳0.00'
                                                                                 name="bond_receipted"
                                                                                 id="bond_receipted"
                                                                                 type="number"
@@ -1478,7 +1478,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='0.00৳'
+                                                                                placeholder='৳0.00'
                                                                                 name="bond_held"
                                                                                 id="bond_held"
                                                                                 type="number"
@@ -1518,7 +1518,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='0.00৳'
+                                                                                placeholder='৳0.00'
                                                                                 name="bond_held"
                                                                                 id="bond_held"
                                                                                 type="number"

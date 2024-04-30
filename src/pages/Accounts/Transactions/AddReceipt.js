@@ -310,13 +310,13 @@ const AddReceipt = (props) => {
                                         </Row>
                                         <Row className="pb-3 border-bottom border-2">
                                             <label className="col-sm-4">Details</label>
-                                            <div className="col-sm-8"><p>{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent}৳ {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent_type}</p></div>
+                                            <div className="col-sm-8"><p>৳{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent} {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent_type}</p></div>
                                         </Row>
                                         {
                                             (!props.bank_data_id && props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit) &&
                                             <Row className="pb-3 border-bottom border-2 mt-1">
                                                 <label className="col-sm-4">Deposited</label>
-                                                <div className="col-sm-3"><p>{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit ? props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit : '0.00'}৳</p></div>
+                                                <div className="col-sm-3"><p>৳{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit ? props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit : '0.00'}</p></div>
                                                 <div className="col-sm-5">
                                                     <Button className="btn btn-sm" color="secondary" onClick={props.toggleDepositModal}>
                                                         Transfer Deposit <i className="fas fa-arrow-right"></i>
@@ -339,7 +339,7 @@ const AddReceipt = (props) => {
                                                         name="total_amount"
                                                         className="form-control"
                                                         classNamePrefix="select2-selection"
-                                                        placeholder='0.00৳'
+                                                        placeholder='৳0.00'
                                                         disabled={props.amount ? true : false}
                                                         style={{
                                                             borderTopRightRadius: 0,
@@ -484,7 +484,7 @@ const AddReceipt = (props) => {
                                         props.tenant_info_data?.rentManagement?.rent_adjustment?.rent_amount &&
                                         <Col md="12">
                                             <Alert color="info">
-                                                <i className="fas fa-exclamation-circle"></i> Rent increases to {props.tenant_info_data?.rentManagement?.rent_adjustment?.rent_amount}৳ on {props.tenant_info_data?.rentManagement?.rent_adjustment?.active_date}
+                                                <i className="fas fa-exclamation-circle"></i> Rent increases to ৳{props.tenant_info_data?.rentManagement?.rent_adjustment?.rent_amount} on {props.tenant_info_data?.rentManagement?.rent_adjustment?.active_date}
                                             </Alert>
                                         </Col>
                                     }
@@ -492,7 +492,7 @@ const AddReceipt = (props) => {
                                         props.tenant_info_data?.rentManagement?.rent_discount?.discount_amount > 0 &&
                                         <Col md="12">
                                             <Alert color="info">
-                                                <i className="fas fa-exclamation-circle"></i> Rent discount of {props.tenant_info_data?.rentManagement?.rent_discount?.discount_amount}৳ will be applied from {props.tenant_info_data?.rentManagement?.from_date}
+                                                <i className="fas fa-exclamation-circle"></i> Rent discount of ৳{props.tenant_info_data?.rentManagement?.rent_discount?.discount_amount} will be applied from {props.tenant_info_data?.rentManagement?.from_date}
                                             </Alert>
                                         </Col>
                                     }
@@ -672,7 +672,7 @@ const AddReceipt = (props) => {
                                                             <td>Security Deposit</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_due_date}</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_part_paid_description}</td>
-                                                            <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}৳</td>
+                                                            <td>৳{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}</td>
                                                             <td>
                                                                 <div
                                                                     className="d-flex"
@@ -712,7 +712,7 @@ const AddReceipt = (props) => {
                                                                     <td>Invoices</td>
                                                                     <td>{item.invoice_billing_date}</td>
                                                                     <td>{item.details}</td>
-                                                                    <td>{item.paid === 0 ? item.amount : item.amount - item.paid}৳</td>
+                                                                    <td>৳{item.paid === 0 ? item.amount : item.amount - item.paid}</td>
                                                                     <td>
                                                                         <div
                                                                             className="d-flex"
@@ -967,7 +967,7 @@ const AddReceipt = (props) => {
                             disabled={((+state.total_allocated_amount === +state.total_amount) && +state.total_allocated_amount > 0) ? false : true}
 
                         >
-                            <i className="fas fa-file-alt me-1"></i> {+state.total_allocated_amount > 0 ? +state.total_allocated_amount : '0.00'}৳
+                            <i className="fas fa-file-alt me-1"></i> ৳{+state.total_allocated_amount > 0 ? +state.total_allocated_amount : '0.00'}
                         </button>
                     </div>
                 </ModalFooter>

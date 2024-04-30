@@ -911,10 +911,10 @@ const PropertyOwnerAdd2 = props => {
     var blur = null;
     var data = 0;
     if (lol.length == 2 && dollar != "") {
-      blur = `${lol[1]}৳`;
+      blur = `৳${lol[1]}`;
       data = lol[1];
     } else if (lol.length == 1 && dollar != "") {
-      blur = `${lol[0]}৳`;
+      blur = `৳${lol[0]}`;
       data = lol[0];
     }
 
@@ -929,10 +929,10 @@ const PropertyOwnerAdd2 = props => {
     var blur;
     var data = 0;
     if (lol.length == 2 && dollar != "") {
-      blur = `${lol[1]}৳`;
+      blur = `৳${lol[1]}`;
       data = lol[1];
     } else if (lol.length == 1 && dollar != "") {
-      blur = `${lol[0]}৳`;
+      blur = `৳${lol[0]}`;
       data = lol[0];
     }
 
@@ -947,10 +947,10 @@ const PropertyOwnerAdd2 = props => {
     var blur = null;
     var data = 0;
     if (lol.length == 2 && dollar != "") {
-      blur = `${lol[1]}৳`;
+      blur = `৳${lol[1]}`;
       data = lol[1];
     } else if (lol.length == 1 && dollar != "") {
-      blur = `${lol[0]}৳`;
+      blur = `৳${lol[0]}`;
       data = lol[0];
     }
 

@@ -338,13 +338,13 @@ const ManageOwner = props => {
                                     </Col>
                                     <Col md={7}>
                                       {item?.owner_folios?.balance
-                                        ? `on balance of ${item?.owner_folios?.balance || "0.00"
-                                        }৳/`
+                                        ? `on balance of ৳${item?.owner_folios?.balance || "0.00"
+                                        }/`
                                         : ""}{" "}
                                       {item?.owner_folios?.total_money
-                                        ? ` on total money in of ${item?.owner_folios?.total_money ||
+                                        ? ` on total money in of ৳${item?.owner_folios?.total_money ||
                                         "0.00"
-                                        }৳`
+                                        }`
                                         : ""}{" "}
                                       {item?.owner_folios?.regular_intervals
                                         ? `/ at ${item?.owner_folios?.regular_intervals} intervals`

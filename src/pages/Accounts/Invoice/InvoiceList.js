@@ -122,9 +122,9 @@ console.log(selectedFolio);
         toggleModal();
     }
 
-    const amountFormatter = (cell, row) => <span>{row.amount ? row.amount : 0}৳</span>
-    const paidFormatter = (cell, row) => <span>{row.paid ? row.paid : 0}৳</span>
-    const folioBalanceFormatter = (cell, row) => <span>{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}৳</span>
+    const amountFormatter = (cell, row) => <span>৳{row.amount ? row.amount : 0}</span>
+    const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>
+    const folioBalanceFormatter = (cell, row) => <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
     const docPathFormatter = (cell, row) => {
         return <a href={process.env.REACT_APP_DOCUMENT + row.doc_path} target="_blank"
             rel="noreferrer noopener"><i className="fab fa-dochub"></i></a>

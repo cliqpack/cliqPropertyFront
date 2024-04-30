@@ -101,7 +101,7 @@ function ReceiptsList(props) {
 
 
     const amountRef = (cell, row) => {
-        return <span>{row.amount}৳</span>
+        return <span>৳{row.amount}</span>
     }
 
     const uploadBillDetails = (row) => {

@@ -53,7 +53,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="bond_required"
                                         id="bond_required"
                                         type="number"
@@ -90,7 +90,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="bond_paid"
                                         id="bond_paid"
                                         type="number"
@@ -133,7 +133,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="bond_receipted"
                                         id="bond_receipted"
                                         type="number"
@@ -174,7 +174,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="bond_held"
                                         id="bond_held"
                                         type="number"
@@ -213,7 +213,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="bond_arrears"
                                         id="bond_arrears"
                                         type="number"

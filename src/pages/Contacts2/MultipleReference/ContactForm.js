@@ -629,7 +629,7 @@ const ContactForm = props => {
               <div className="form-group-new">
                 <Button
                   className="d-flex justify-content-evenly align-items-start"
-                  style={{ marginTop: -30 }}
+                  style={{ marginTop: -30, backgroundColor: "#564BC6" }}
                   onClick={e => setAddAditionalEmail(prev => prev + 1)}
                   disabled={addAditionalEmail < 3 ? false : true}
                 >

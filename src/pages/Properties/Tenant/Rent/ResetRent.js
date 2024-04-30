@@ -146,7 +146,7 @@ const ResetRent = (props) => {
                             >
                                 <div className="d-flex flex-column">
                                     <Input
-                                        placeholder="0.00৳"
+                                        placeholder="৳0.00"
                                         className="form-control "
                                         type="text"
                                         name="rent"
@@ -261,7 +261,7 @@ const ResetRent = (props) => {
                             >
                                 <div className="d-flex flex-column">
                                     <Input
-                                        placeholder="0.00৳"
+                                        placeholder="৳0.00"
                                         className="form-control "
                                         type="text"
                                         name="part_paid"

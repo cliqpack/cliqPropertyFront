@@ -134,7 +134,7 @@ const CreatePlan = props => {
             </tr>
           ))}
         </td>
-        <td>{item?.price}৳</td>
+        <td>৳{item?.price}</td>
         <td>
           <button
             type="submit"

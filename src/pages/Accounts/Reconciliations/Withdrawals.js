@@ -54,7 +54,7 @@ function Withdrawals(props) {
         }
     };
     const amountRef = (cell, row) => {
-        return <span>{cell}৳</span>
+        return <span>৳{cell}</span>
     }
     const uploadBillDetails = (row) => {
 
@@ -103,7 +103,7 @@ function Withdrawals(props) {
                                     {row?.supplier_folio?.supplier_contact?.reference}
                                 </td>
                                 <td></td>
-                                <td>{row?.amount}৳</td>
+                                <td>৳{row?.amount}</td>
                             </tr>
 
                         </tbody>

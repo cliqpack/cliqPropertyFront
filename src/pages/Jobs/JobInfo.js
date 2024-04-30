@@ -2050,7 +2050,7 @@ const JobInfo = props => {
                                     {item?.reference}
                                   </td>
                                   <td style={{ width: "24%" }}>
-                                    {item?.amount ? `${item?.amount}৳` : ''}
+                                    {item?.amount ? `৳${item?.amount}` : ''}
                                   </td>
                                   <td style={{ width: "20%" }}>
                                     {item?.status == "init" ? (
@@ -2126,7 +2126,7 @@ const JobInfo = props => {
                                 "DD/MM/yyyy"
                               )})`}</th>
                             <td>{jobData?.bill?.details || ""}</td>
-                            <td>{jobData?.bill?.amount}৳</td>
+                            <td>৳{jobData?.bill?.amount}</td>
                             <td></td>
                           </tr>
                         </tbody>

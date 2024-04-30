@@ -379,7 +379,7 @@ const NewAddonModal = props => {
 
 
 
-                <ModalHeader style={{ backgroundColor: "#153D58" }}>
+                <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", width: "470px", marginTop: "10px" }}>
                         <div>
 
@@ -451,7 +451,7 @@ const NewAddonModal = props => {
                                     <div className="btn-group btn-group-justified">
                                         <div className="btn-group">
                                             <Button
-                                                color={state.propertyBtn ? "secondary" : "light"}
+                                                color={state.propertyBtn ? "buttonColor" : "light"}
                                             //onClick={togglePropertyBtn}
                                             >
                                                 {state.propertyBtn ? (
@@ -759,7 +759,7 @@ const NewAddonModal = props => {
                                         <div className="btn-group btn-group-justified">
                                             <div className="btn-group">
                                                 <Button
-                                                    color={state.percentBtn ? "secondary" : "light"}
+                                                    color={state.percentBtn ? "#6E62E5" : "light"}
                                                     onClick={togglePercentBtn}
                                                     disabled={state.ownerBtn && true || state.disableBtn && true}
                                                 // disabled={!state.ownerBtn ? false : true }
@@ -772,7 +772,7 @@ const NewAddonModal = props => {
                                             </div>
                                             <div className="btn-group">
                                                 <Button
-                                                    color={state.amountBtn ? "secondary" : "light"}
+                                                    color={state.amountBtn ? "#6E62E5" : "light"}
                                                     onClick={toggleAmountBtn}
                                                     disabled={!state.ownerBtn ? false : true}
                                                 >

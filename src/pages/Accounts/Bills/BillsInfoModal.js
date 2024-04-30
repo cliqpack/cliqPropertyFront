@@ -147,11 +147,11 @@ const BillsInfoModal = props => {
                                 </div>
                                 <div style={{ borderRight: '1px dotted #757575', borderBottom: '1px dotted #757575' }} className={`d-flex flex-column justify-content-between align-items-center p-2 ${folioBalance?.balance >= billData?.amount ? 'text-success' : 'text-danger'}`}>
                                     <span>Available</span>
-                                    <span>{folioBalance?.balance}৳</span>
+                                    <span>৳{folioBalance?.balance}</span>
                                 </div>
                                 <div style={{ borderRight: '1px dotted #757575', borderBottom: '1px dotted #757575' }} className="d-flex flex-column justify-content-between align-items-center p-2">
                                     <span>Bills Due</span>
-                                    <span>{folioBalance?.outstanding_bill}৳</span>
+                                    <span>৳{folioBalance?.outstanding_bill}</span>
                                 </div>
                             </div>
 
@@ -251,7 +251,7 @@ const BillsInfoModal = props => {
                         </div>
                         <div className="d-flex justify-content-end align-items-center py-2 pe-4 pb-4">
                             <span className="pe-5 h4">Total</span>
-                            <span className="me-3 h4">{billData?.amount}৳</span>
+                            <span className="me-3 h4">৳{billData?.amount}</span>
                         </div>
                     </div>
                     {
@@ -285,7 +285,7 @@ const BillsInfoModal = props => {
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center py-2 pe-4 pb-4">
                                     <span className="pe-5 h4">Total</span>
-                                    <span className="me-3 h4">{billData?.amount}৳</span>
+                                    <span className="me-3 h4">৳{billData?.amount}</span>
                                 </div>
                             </div> :
                             <div className="d-flex justify-content-start align-items-center border py-2 ps-2 my-2 mx-1">

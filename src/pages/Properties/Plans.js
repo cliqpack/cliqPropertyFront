@@ -279,7 +279,7 @@ const Plans = (props) => {
                                         </div>
                                         <div className="fw-bold">
                                             <span className="text-info" style={{ fontSize: "16px" }}>
-                                                {item?.price}৳
+                                                ৳{item?.price}
                                             </span>{" "}
                                             <span className="text-info">
                                                 { item.frequency_type === 'Yearly' && 'py' }

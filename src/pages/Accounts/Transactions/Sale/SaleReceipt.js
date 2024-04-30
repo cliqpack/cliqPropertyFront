@@ -401,7 +401,7 @@ export default function SaleReceipt() {
                                 type="text"
                                 name="amount"
                                 value={state.amount}
-                                placeholder="0.00৳"
+                                placeholder="৳0.00"
                                 onChange={stateHandler}
                               />
                               <span className="input-group-append rounded-end">
@@ -647,7 +647,7 @@ export default function SaleReceipt() {
                                         borderTopRightRadius: 0,
                                         borderBottomRightRadius: 0,
                                       }}
-                                      placeholder="0.00৳"
+                                      placeholder="৳0.00"
                                       onChange={stateHandler}
                                     />
                                     <span className="input-group-append rounded-end">

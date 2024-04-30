@@ -525,7 +525,7 @@ const AddInvoiceModal = props => {
                                     {state.tenantDepositAmount > 0 && <>
                                         <Card>
                                             <CardBody className="border-3 border-start border-danger">
-                                                <p className="fw-bold">Available tenant funds {state.tenantDepositAmount}৳.</p>
+                                                <p className="fw-bold">Available tenant funds ৳{state.tenantDepositAmount}.</p>
                                                 <p>Would you like to allocate an amount towards this invoice? If yes, please fill in the allocated amount.</p>
 
                                                 <div className="mb-3 row">
@@ -538,7 +538,7 @@ const AddInvoiceModal = props => {
                                                                         className="form-control"
                                                                         type="text"
                                                                         name="allocatedAmount"
-                                                                        placeholder="0.00৳"
+                                                                        placeholder="৳0.00"
                                                                         value={state.allocatedAmount}
                                                                         onChange={handleState}
                                                                         style={{
@@ -568,7 +568,7 @@ const AddInvoiceModal = props => {
                                                             <p className="text-danger">* {errorMessage}</p>
                                                         </div> : ''
                                                 }
-                                                <p>Remaining amount payable will be <span className="fw-bold">{state.remainingAllocatedAmount}৳</span></p>
+                                                <p>Remaining amount payable will be <span className="fw-bold">৳{state.remainingAllocatedAmount}</span></p>
                                             </CardBody>
                                         </Card>
                                     </>}

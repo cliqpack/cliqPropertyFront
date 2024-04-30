@@ -155,7 +155,7 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                       </Col>
                       <Col md={7}>
                         <span className="">
-                          {item?.buyer_folio?.purchase_price || "0.00"}৳
+                          ৳{item?.buyer_folio?.purchase_price || "0.00"}
                         </span>
                       </Col>
                     </Row>
@@ -174,7 +174,7 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                       </Col>
                       <Col md={7}>
                         <span className="">
-                          {item?.buyer_folio?.commission || "0.00"}৳
+                          ৳{item?.buyer_folio?.commission || "0.00"}
                         </span>
                       </Col>
                     </Row>

@@ -110,11 +110,11 @@ const CashBookReportReceipt = (props) => {
                                                                             {console.log(item)}
 
                                                                             {i === 0 && <td className="col-md-5">From: {item.folioCode} {item.description}</td>}
-                                                                            {i === 0 && <td className="col-md-3">{item.amount}৳</td>}
+                                                                            {i === 0 && <td className="col-md-3">৳{item.amount}</td>}
                                                                             {i === 0 && <td className="col-md-3">{" "}</td>}
                                                                             {i === 1 && <td className="col-md-6">to: {item.folioCode} {item.description}</td>}
                                                                             {i === 1 && <td className="col-md-3">{" "}</td>}
-                                                                            {i === 1 && <td className="col-md-3">{item.amount}৳</td>
+                                                                            {i === 1 && <td className="col-md-3">৳{item.amount}</td>
 
                                                                             }
                                                                         </tr>

@@ -31,13 +31,13 @@ function BankingListData(props) {
     }, [props.deposit_outstanding_one_list_loading]);
 
     const cashRef = (cell, row) => {
-        return <span>{row?.receipt?.payment_method === 'cash' ? <>{row?.receipt?.amount}৳</> : ''}</span>
+        return <span>{row?.receipt?.payment_method === 'cash' ? <>৳{row?.receipt?.amount}</> : ''}</span>
     }
     const cardRef = (cell, row) => {
-        return <span>{row?.receipt?.payment_method === 'card' ? <>{row?.receipt?.amount}৳</> : ''}</span>
+        return <span>{row?.receipt?.payment_method === 'card' ? <>৳{row?.receipt?.amount}</> : ''}</span>
     }
     const chequeRef = (cell, row) => {
-        return <span>{row?.receipt?.payment_method === 'cheque' ? <>{row?.receipt?.amount}৳</> : ''}</span>
+        return <span>{row?.receipt?.payment_method === 'cheque' ? <>৳{row?.receipt?.amount}</> : ''}</span>
     }
 
     const receiptRef = (cell, row) => {

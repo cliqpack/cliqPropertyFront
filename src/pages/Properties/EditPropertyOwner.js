@@ -1911,7 +1911,7 @@ const EditPropertyOwnerAdd = props => {
                                                       <Field
                                                         name="total_money"
                                                         type="number"
-                                                        placeholder="0.00৳"
+                                                        placeholder="৳0.00"
                                                         className={
                                                           "form-control" +
                                                           (errors.total_money &&
@@ -1945,7 +1945,7 @@ const EditPropertyOwnerAdd = props => {
                                                       <Field
                                                         name="balance"
                                                         type="number"
-                                                        placeholder="0.00৳"
+                                                        placeholder="৳0.00"
                                                         className={
                                                           "form-control" +
                                                           (errors.balance &&
@@ -2059,7 +2059,7 @@ const EditPropertyOwnerAdd = props => {
                                                       <Field
                                                         name="withhold_amount"
                                                         type="text"
-                                                        placeholder="0.00৳"
+                                                        placeholder="৳0.00"
                                                         className={
                                                           "form-control" +
                                                           (errors.withhold_amount &&

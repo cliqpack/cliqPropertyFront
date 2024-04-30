@@ -53,7 +53,7 @@ const TenantMoveOutDetails = (props) => {
                                 </Col>
                                 <Col md={5}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="move_out"
                                         id="move_out"
                                         type="date"
@@ -90,7 +90,7 @@ const TenantMoveOutDetails = (props) => {
                                 </Col>
                                 <Col md={5}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="break_lease"
                                         id="break_lease"
                                         type="date"
@@ -128,7 +128,7 @@ const TenantMoveOutDetails = (props) => {
                                 </Col>
                                 <Col md={5}>
                                     <input
-                                        placeholder='0.00৳'
+                                        placeholder='৳0.00'
                                         name="termination"
                                         id="termination"
                                         type="date"

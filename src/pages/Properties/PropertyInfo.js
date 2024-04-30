@@ -1309,10 +1309,10 @@ const PropertyInfo = props => {
                                         </p>
                                         <p className="mb-0 text-light text-start">
                                           <b>
-                                            {parseFloat(
+                                            ৳{parseFloat(
                                               tenantInfoData?.folio?.rent_arrers
                                                 ?.rent_due
-                                            ).toFixed(2)}৳
+                                            ).toFixed(2)}
                                           </b>
                                         </p>
                                       </div>
@@ -2272,10 +2272,10 @@ const PropertyInfo = props => {
                                   Money in
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {
+                                  ৳{
                                     salesAndBuyerData?.sales_contact
                                       ?.seller_folio?.money_in
-                                  }৳
+                                  }
                                 </span>
                               </Col>
                               <Col
@@ -2294,10 +2294,10 @@ const PropertyInfo = props => {
                                   Money out
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {
+                                  ৳{
                                     salesAndBuyerData?.sales_contact
                                       ?.seller_folio?.money_out
-                                  }৳
+                                  }
                                 </span>
                               </Col>
                               <Col
@@ -2316,11 +2316,11 @@ const PropertyInfo = props => {
                                   Bills pending
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {props.seller_info_property_data?.data
+                                  ৳{props.seller_info_property_data?.data
                                     ?.total_bill
                                     ? props.seller_info_property_data?.data
                                       ?.total_bill
-                                    : "0.00"}৳
+                                    : "0.00"}
                                 </span>
                               </Col>
 
@@ -2340,10 +2340,10 @@ const PropertyInfo = props => {
                                   Balance
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {
+                                  ৳{
                                     salesAndBuyerData?.sales_contact
                                       ?.seller_folio?.balance
-                                  }৳
+                                  }
                                 </span>
                               </Col>
                               <Col
@@ -2571,8 +2571,8 @@ const PropertyInfo = props => {
                                       <span className="text-primary">
                                         {saleInfoData?.seller_folio
                                           ?.asking_price
-                                          ? `${saleInfoData?.seller_folio?.asking_price}৳`
-                                          : "0.00৳"}
+                                          ? `৳${saleInfoData?.seller_folio?.asking_price}`
+                                          : "৳0.00"}
                                       </span>
                                     </Col>
                                   </Row>
@@ -2632,8 +2632,8 @@ const PropertyInfo = props => {
                                         <span className="text-primary">
                                           {salesAndBuyerData?.buyer_contact
                                             ?.buyer_folio?.purchase_price
-                                            ? `${salesAndBuyerData?.buyer_contact?.buyer_folio?.purchase_price}৳`
-                                            : "0.00৳"}
+                                            ? `৳${salesAndBuyerData?.buyer_contact?.buyer_folio?.purchase_price}`
+                                            : "৳0.00"}
                                         </span>
                                       </Col>
                                     </Row>
@@ -2800,7 +2800,7 @@ const PropertyInfo = props => {
                                         <span>
                                           {salesAndBuyerData?.buyer_contact
                                             ?.buyer_folio?.commission
-                                            ? `${salesAndBuyerData?.buyer_contact?.buyer_folio?.commission}৳`
+                                            ? `৳${salesAndBuyerData?.buyer_contact?.buyer_folio?.commission}`
                                             : ""}
                                         </span>
                                       </Col>
@@ -3008,9 +3008,9 @@ const PropertyInfo = props => {
                                 Part Paid
                               </span>
                               <span className="text-muted d-flex justify-content-center">
-                                {tenantInfoData?.folio?.part_paid
+                                ৳{tenantInfoData?.folio?.part_paid
                                   ? tenantInfoData?.folio?.part_paid
-                                  : "0.00"}৳
+                                  : "0.00"}
                               </span>
                             </Col>
 
@@ -3032,8 +3032,8 @@ const PropertyInfo = props => {
                               </span>
                               <span className="text-muted d-flex justify-content-center">
                                 {tenantInfoData?.folio?.deposit
-                                  ? tenantInfoData?.folio?.deposit + "৳"
-                                  : "0.00৳"}
+                                  ? "৳" + tenantInfoData?.folio?.deposit
+                                  : "৳0.00"}
                               </span>
                             </Col>
 
@@ -3186,7 +3186,7 @@ const PropertyInfo = props => {
                                   </Col>
                                   <Col md={7}>
                                     <span>
-                                      {tenantInfoData?.folio?.rent || "0.00"}৳
+                                      ৳{tenantInfoData?.folio?.rent || "0.00"}
                                     </span>
                                   </Col>
                                 </Row>
@@ -3208,7 +3208,7 @@ const PropertyInfo = props => {
                                     </Col>
                                     <Col md={7}>
                                       <span>
-                                        {`${tenantInfoData?.folio?.bond_required}৳ Security Deposit required, ${tenantInfoData?.folio?.bond_held}৳ held`}
+                                        {`৳${tenantInfoData?.folio?.bond_required} Security Deposit required, ৳${tenantInfoData?.folio?.bond_held} held`}
                                       </span>
                                     </Col>
                                   </Row>{" "}
@@ -3605,8 +3605,8 @@ const PropertyInfo = props => {
                                   Opening
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_owner_info_data?.opening_balance ||
-                                    "0.00"}৳
+                                  ৳{property_owner_info_data?.opening_balance ||
+                                    "0.00"}
                                 </span>
                               </Col>
 
@@ -3628,7 +3628,7 @@ const PropertyInfo = props => {
                                   Money in
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_owner_info_data?.money_in || "0.00"}৳
+                                  ৳{property_owner_info_data?.money_in || "0.00"}
                                 </span>
                               </Col>
 
@@ -3650,8 +3650,8 @@ const PropertyInfo = props => {
                                   Money out
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_owner_info_data?.money_out ||
-                                    "0.00"}৳
+                                ৳{property_owner_info_data?.money_out ||
+                                    "0.00"}
                                 </span>
                               </Col>
 
@@ -3673,8 +3673,8 @@ const PropertyInfo = props => {
                                   Uncleared
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_owner_info_data?.uncleared ||
-                                    "0.00"}৳
+                                ৳{property_owner_info_data?.uncleared ||
+                                    "0.00"}
                                 </span>
                               </Col>
 
@@ -3696,9 +3696,9 @@ const PropertyInfo = props => {
                                   Bills pending
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_pending_bill?.total_bills_amount_sum_amount
+                                ৳{property_pending_bill?.total_bills_amount_sum_amount
                                     ? property_pending_bill?.total_bills_amount_sum_amount
-                                    : "0.00"}৳
+                                    : "0.00"}
                                 </span>
                               </Col>
 
@@ -3721,9 +3721,9 @@ const PropertyInfo = props => {
                                 </span>
 
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_data?.pending_invoice_bill
+                                ৳{property_data?.pending_invoice_bill
                                     ? property_data?.pending_invoice_bill
-                                    : "0.00"}৳
+                                    : "0.00"}
                                 </span>
                               </Col>
 
@@ -3745,9 +3745,9 @@ const PropertyInfo = props => {
                                   Withhold
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {property_owner_info_data?.withhold_amount
+                                ৳{property_owner_info_data?.withhold_amount
                                     ? property_owner_info_data?.withhold_amount
-                                    : "0.00"}৳
+                                    : "0.00"}
                                 </span>
                               </Col>
 
@@ -3769,7 +3769,7 @@ const PropertyInfo = props => {
                                   Balance
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                  {+property_owner_info_data?.money_in +
+                                ৳{+property_owner_info_data?.money_in +
                                     (property_owner_info_data?.opening_balance
                                       ? +property_owner_info_data?.opening_balance
                                       : 0) ==
@@ -3777,7 +3777,7 @@ const PropertyInfo = props => {
                                     ? "0.00"
                                     : totalBalance > 0
                                       ? totalBalance
-                                      : "0.00"}৳
+                                      : "0.00"}
                                 </span>
                               </Col>
                             </Row>
@@ -3944,14 +3944,14 @@ const PropertyInfo = props => {
                                           <span>{`on balance of ${property_owner_info_data?.balance}/ on total money in of ${property_owner_info_data?.total_money} / at ${property_owner_info_data?.regular_intervals}`}</span>
                                         )} */}
                                           {property_owner_info_data?.balance
-                                            ? `on balance of ${property_owner_info_data?.balance ||
+                                            ? `on balance of ৳${property_owner_info_data?.balance ||
                                             ""
-                                            }৳/`
+                                            }/`
                                             : ""}{" "}
                                           {property_owner_info_data?.total_money
-                                            ? ` on total money in of ${property_owner_info_data?.total_money ||
+                                            ? ` on total money in of ৳${property_owner_info_data?.total_money ||
                                             ""
-                                            }৳`
+                                            }`
                                             : ""}{" "}
                                           {property_owner_info_data?.regular_intervals
                                             ? `/ at ${property_owner_info_data?.regular_intervals} intervals`
@@ -4132,10 +4132,10 @@ const PropertyInfo = props => {
                                             ${property_data?.data?.current_owner?.owner_payment.map(
                                                       item =>
                                                         item.split_type == "৳"
-                                                          ? `${item.split
+                                                          ? `৳${item.split
                                                             ? item.split
                                                             : "0"
-                                                          }.00৳ ${item.method}`
+                                                          }.00 ${item.method}`
                                                           : ` ${item.split}% ${item.method}`
                                                     )}
                                             )`}

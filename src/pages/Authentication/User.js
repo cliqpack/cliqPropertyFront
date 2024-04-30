@@ -336,8 +336,8 @@ const AdminRegister = props => {
 
                     color={
                       modal
-                        ? "modalButtonColor"
-                        : "labelColor"
+                        ? "buttonColor"
+                        : "buttonColor"
                     }
 
                   >
@@ -756,7 +756,7 @@ const AdminRegister = props => {
 
           {/* ============== Register user modal starts from here ================ */}
           <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader style={{ backgroundColor: "#153D58" }}>
+            <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
               <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
                 <div>
                   <span className="text-white">Register User</span>
@@ -971,7 +971,7 @@ const AdminRegister = props => {
 
 
                             <PhoneInput
-                              country={"au"}
+                              country={"bd"}
                               value={phone.mobile_phone}
                               onChange={value =>
                                 setPhone({ ...phone, mobile_phone: value })
@@ -988,7 +988,7 @@ const AdminRegister = props => {
 
 
                             <PhoneInput
-                              country={"au"}
+                              country={"bd"}
                               value={phone.work_phone}
                               onChange={value =>
                                 setPhone({ ...phone, work_phone: value })

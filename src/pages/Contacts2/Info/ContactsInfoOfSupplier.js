@@ -232,7 +232,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                                 <p className="text-textTitleColor">Balances</p>
                                             </Col>
                                             <Col md={7}>
-                                                <p>{item.supplier_details?.balance ? item.supplier_details?.balance : 0.00}৳</p>
+                                                <p>৳{item.supplier_details?.balance ? item.supplier_details?.balance : 0.00}</p>
                                             </Col>
                                         </Row>{" "}
                                         <div
@@ -262,7 +262,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                                 <p className="text-textTitleColor">Bills pending</p>
                                             </Col>
                                             <Col md={7}>
-                                                <p>{item?.total_bills_amount_sum_amount ? `${item?.total_bills_amount_sum_amount}৳` : '0.00'}৳</p>
+                                                <p>{item?.total_bills_amount_sum_amount ? `৳${item?.total_bills_amount_sum_amount}` : '৳0.00'}</p>
                                             </Col>
                                         </Row>{" "}
                                         <div
@@ -293,7 +293,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                             </Col>
                                             <Col md={7}>
                                                 {" "}
-                                                <p>{item.total_due_invoice_sum_amount ? `${(item.total_due_invoice_sum_amount - item.total_part_paid_invoice_sum_paid)}৳` : '0.00৳'}</p>
+                                                <p>{item.total_due_invoice_sum_amount ? `৳${(item.total_due_invoice_sum_amount - item.total_part_paid_invoice_sum_paid)}` : '৳0.00'}</p>
                                             </Col>
                                         </Row>{" "}
                                         <div
@@ -350,7 +350,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                                     <div className='d-flex'>
                                                         <p>
                                                             {item.supplier_payments.length === 0 ? 'None' : item.supplier_payments.length === 1 ? item.supplier_payments[0]?.payment_method : `Split(${item.supplier_payments.map(item =>
-                                                                item.split_type == '৳' ? `${item.split ? item.split : '0'}.00৳` : ` ${item.split}%`
+                                                                item.split_type == '৳' ? `৳${item.split ? item.split : '0'}.00` : ` ${item.split}%`
                                                             )}
                                           )`
                                                             }

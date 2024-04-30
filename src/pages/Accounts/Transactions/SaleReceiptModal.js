@@ -181,7 +181,7 @@ const SaleReceiptModal = props => {
                                             <input
                                                 className="form-control"
                                                 type="text"
-                                                placeholder="0.00৳"
+                                                placeholder="৳0.00"
                                                 name="amount"
                                                 onChange={handleState}
                                                 value={state.amount}
@@ -383,7 +383,7 @@ const SaleReceiptModal = props => {
                                                 type="text"
                                                 className="form-control"
                                                 id="formrow-InputCity"
-                                                placeholder="0.00৳"
+                                                placeholder="৳0.00"
                                                 name="amount"
                                                 value={state.amount}
                                                 onChange={handleState}
@@ -416,7 +416,7 @@ const SaleReceiptModal = props => {
                                 type="text"
                                 className="form-control"
                                 id="formrow-InputCity"
-                                placeholder="0.00৳"
+                                placeholder="৳0.00"
                                 name="amount"
                                 value={state.amount}
                                 onChange={handleState}

@@ -115,7 +115,7 @@ function UploadBillsList(props) {
         <span className="fw-bold">{cell?.slice(0, 12).concat("...")}</span>
     );
     const detailRef = (cell, row) => <span className="">{cell}</span>;
-    const amountRef = (cell, row) => <span className="">{cell}৳</span>;
+    const amountRef = (cell, row) => <span className="">৳{cell}</span>;
     const billDetails = (e, column, columnIndex, row, rowIndex) => {
         setId(row.id);
         setModalData(row);

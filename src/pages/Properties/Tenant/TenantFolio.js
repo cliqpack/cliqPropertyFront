@@ -201,29 +201,29 @@ function TenantFolio(props) {
   };
 
   const amountRef = (cell, row) => {
-    return <span>{row.amount}৳</span>;
+    return <span>৳{row.amount}</span>;
   };
 
   const amountC = (cell, row) => {
     if (row.type == "Tenant Receipt") {
-      return <span>{row.amount}৳</span>;
+      return <span>৳{row.amount}</span>;
     }
     if (row.type == "Reversal") {
-      return <span>{row.amount}৳</span>;
+      return <span>৳{row.amount}</span>;
     }
     if (row.type == "Journal") {
-      return <span>{row.amount}৳</span>;
+      return <span>৳{row.amount}</span>;
     }
   };
   const amountD = (cell, row) => {
     if (row.type == "Folio Withdraw") {
-      return <span>{row.amount}৳</span>;
+      return <span>৳{row.amount}</span>;
     }
     if (row.type == "Withdraw") {
-      return <span>{row.amount}৳</span>;
+      return <span>৳{row.amount}</span>;
     }
     if (row.type == "Journal") {
-      return <span>{row.amount}৳</span>;
+      return <span>৳{row.amount}</span>;
     }
   };
 
@@ -389,7 +389,7 @@ function TenantFolio(props) {
   };
 
   const amountFormatter = (cell, row) => {
-    return <span>{row.amount}৳</span>;
+    return <span>৳{row.amount}</span>;
   };
 
   const taxRef = (cell, row) => {
@@ -410,7 +410,7 @@ function TenantFolio(props) {
   const folioBalanceFormatter = (cell, row) => {
     return (
       <span>
-        {row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}৳
+        ৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}
       </span>
     );
   };
@@ -538,7 +538,7 @@ function TenantFolio(props) {
     toggleModalInvoice();
   };
 
-  const paidFormatter = (cell, row) => <span>{row.paid ? row.paid : 0}৳</span>;
+  const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
 
   const invoicePendingdData = [
     {
@@ -1122,9 +1122,9 @@ function TenantFolio(props) {
                               Part Paid
                             </span>
                             <span className="text-muted">
-                              {tenantInfoData?.folio?.part_paid
+                              ৳{tenantInfoData?.folio?.part_paid
                                 ? tenantInfoData?.folio?.part_paid
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1141,9 +1141,9 @@ function TenantFolio(props) {
                           >
                             <span className="text-muted fw-bold">Deposits</span>
                             <span className="text-muted">
-                              {tenantInfoData?.folio?.deposit
+                              ৳{tenantInfoData?.folio?.deposit
                                 ? tenantInfoData?.folio?.deposit
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1162,9 +1162,9 @@ function TenantFolio(props) {
                               Uncleared
                             </span>
                             <span className="text-muted">
-                              {tenantInfoData?.folio?.uncleared
+                              ৳{tenantInfoData?.folio?.uncleared
                                 ? tenantInfoData?.folio?.uncleared
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
                           <Col
@@ -1183,9 +1183,9 @@ function TenantFolio(props) {
                               Security Deposit held
                             </span>
                             <span className="text-muted">
-                              {tenantInfoData?.folio?.bond_held
+                              ৳{tenantInfoData?.folio?.bond_held
                                 ? tenantInfoData?.folio?.bond_held
-                                : "0.00"}৳
+                                : "0.00"}
                             </span>
                           </Col>
 

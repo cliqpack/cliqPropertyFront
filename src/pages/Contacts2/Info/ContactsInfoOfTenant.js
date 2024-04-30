@@ -216,9 +216,9 @@ const ContactsInfoOfTenant = ({
                             <Col md={7}>
                               {" "}
                               <p>
-                                {item.tenant_folio?.rent
+                                ৳{item.tenant_folio?.rent
                                   ? item.tenant_folio?.rent
-                                  : 0.0}৳
+                                  : 0.0}
                               </p>
                             </Col>
                           </Row>
@@ -323,7 +323,7 @@ const ContactsInfoOfTenant = ({
                                   item.tenant_folio?.bond_held ? item.tenant_folio?.bond_held : '' +
                                   " " +
                                 "held"} */}
-                                {`${item.tenant_folio?.bond_required && `${item.tenant_folio?.bond_required}৳ required`} ${item.tenant_folio?.bond_held == null ? '' : `, ${item.tenant_folio?.bond_held}৳ held`}`}
+                                {`${item.tenant_folio?.bond_required && `৳${item.tenant_folio?.bond_required} required`} ${item.tenant_folio?.bond_held == null ? '' : `, ৳${item.tenant_folio?.bond_held} held`}`}
                               </p>
                             </Col>
                           </Row>
@@ -409,9 +409,9 @@ const ContactsInfoOfTenant = ({
                               <Col md={7}>
                                 {" "}
                                 <p>
-                                  {item.tenant_folio?.invoice_days_in_advance
+                                  ৳{item.tenant_folio?.invoice_days_in_advance
                                     ? item.tenant_folio?.invoice_days_in_advance
-                                    : "0.00"}৳
+                                    : "0.00"}
                                 </p>
                               </Col>
                             </Row>
@@ -458,9 +458,9 @@ const ContactsInfoOfTenant = ({
                               <Col md={7}>
                                 {" "}
                                 <p>
-                                  {item.tenant_folio?.part_paid
+                                  ৳{item.tenant_folio?.part_paid
                                     ? item.tenant_folio?.part_paid
-                                    : "0.00"}৳
+                                    : "0.00"}
                                 </p>
                               </Col>
                             </Row>

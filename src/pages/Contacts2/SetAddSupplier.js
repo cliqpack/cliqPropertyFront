@@ -2511,6 +2511,7 @@ const SetAddSupplier = props => {
                               toggleTab(tabState.activeTab - 1);
                               setFormSubmitBtnState(formSubmitBtnState - 1);
                             }}
+
                           >
                             Previous
                           </Link>

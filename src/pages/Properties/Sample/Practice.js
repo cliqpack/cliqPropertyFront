@@ -2525,7 +2525,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                                     <Field
                                                                                                                         name="total_money"
                                                                                                                         type="number"
-                                                                                                                        placeholder="0.00৳"
+                                                                                                                        placeholder="৳0.00"
                                                                                                                         className={
                                                                                                                             "form-control" +
                                                                                                                             (errors.total_money &&
@@ -2559,7 +2559,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                                     <Field
                                                                                                                         name="balance"
                                                                                                                         type="number"
-                                                                                                                        placeholder="0.00৳"
+                                                                                                                        placeholder="৳0.00"
                                                                                                                         className={
                                                                                                                             "form-control" +
                                                                                                                             (errors.balance &&
@@ -2682,7 +2682,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                                         <Field
                                                                                                                             name="withhold_amount"
                                                                                                                             type="number"
-                                                                                                                            placeholder="0.00৳"
+                                                                                                                            placeholder="৳0.00"
                                                                                                                             className={
                                                                                                                                 "form-control" +
                                                                                                                                 (errors.withhold_amount &&

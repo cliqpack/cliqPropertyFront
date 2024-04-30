@@ -140,7 +140,7 @@ function BillsList(props) {
     let balance = (+row?.owner?.owner_folio?.money_in + (row?.owner?.owner_folio?.opening_balance ? +row?.owner?.owner_folio?.opening_balance : 0)) - (+row?.owner?.owner_folio?.money_out + +row?.owner?.owner_folio?.uncleared)
     let amount;
     if (row.status === 'Paid') {
-      amount = <span>{cell}৳</span>;
+      amount = <span>৳{cell}</span>;
     } else {
       amount = <span className={`badge rounded-pill p-1 ${balance >= cell ? 'bg-success' : 'bg-danger'}`}>৳{cell}</span>;
     }

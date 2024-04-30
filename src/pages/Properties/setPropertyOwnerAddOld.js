@@ -510,7 +510,7 @@ const setPropertyOwnerAdd = props => {
       values[idx]['income_account_2'] = 'Letting fee (inc. tax)';
       values[idx]['fee_trigger_2'] = 'First rent receipt';
       values[idx]['notes_2'] = '';
-      values[idx]['amountPlaceholder'] = '0.00৳';
+      values[idx]['amountPlaceholder'] = '৳0.00';
     } else if (e.value === "3") {
       values[idx]['income_account_2'] = 'Management fee (inc. tax)';
       values[idx]['fee_trigger_2'] = 'Rental receipt';
@@ -2367,7 +2367,7 @@ const setPropertyOwnerAdd = props => {
                                                         <Field
                                                           name="total_money"
                                                           type="number"
-                                                          placeholder="0.00৳"
+                                                          placeholder="৳0.00"
                                                           className={
                                                             "form-control" +
                                                             (errors.total_money &&
@@ -2401,7 +2401,7 @@ const setPropertyOwnerAdd = props => {
                                                         <Field
                                                           name="balance"
                                                           type="number"
-                                                          placeholder="0.00৳"
+                                                          placeholder="৳0.00"
                                                           className={
                                                             "form-control" +
                                                             (errors.balance &&
@@ -2520,7 +2520,7 @@ const setPropertyOwnerAdd = props => {
                                                         <Field
                                                           name="withhold_amount"
                                                           type="number"
-                                                          placeholder="0.00৳"
+                                                          placeholder="৳0.00"
                                                           className={
                                                             "form-control" +
                                                             (errors.withhold_amount &&

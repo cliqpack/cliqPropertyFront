@@ -85,20 +85,20 @@ function BankingList(props) {
     }
 
     const totalRef = (cell, row) => {
-        return <span>{row.total}৳</span>
+        return <span>৳{row.total}</span>
     }
 
     const monthRef = (cell, row) => {
         return <span className="text-primary" onClick={() => pushToBankDepositedList(row.id)}>{moment(row.deposit_date).format("MMMM YYYY")}</span>
     }
     const cashRef = (cell, row) => {
-        return <span>{row.cash}৳</span>
+        return <span>৳{row.cash}</span>
     }
     const cardRef = (cell, row) => {
-        return <span>{row.card}৳</span>
+        return <span>৳{row.card}</span>
     }
     const chequeRef = (cell, row) => {
-        return <span>{row.cheque}৳</span>
+        return <span>৳{row.cheque}</span>
     }
 
     const columnData = [
@@ -197,7 +197,7 @@ function BankingList(props) {
                                             </h5>
                                             <h5 className="font-size-15 mb-2">
                                                 <span className="badge badge-soft-success">
-                                                    <b>{item.amount}৳</b>
+                                                    <b>৳{item.amount}</b>
                                                 </span>
                                             </h5>
                                             <p className="mb-0 text-muted">
@@ -218,7 +218,7 @@ function BankingList(props) {
                                                 </span>
                                             </h5>
                                             <h5 className="font-size-15 mb-2">
-                                                <span className="badge badge-soft-success"><b>{item.amount}৳</b></span>
+                                                <span className="badge badge-soft-success"><b>৳{item.amount}</b></span>
                                             </h5>
                                             <p className="mb-0 text-muted">
                                                 <i className="fas fa-file-invoice-dollar"></i> Cheque
@@ -238,7 +238,7 @@ function BankingList(props) {
                                                 </span>
                                             </h5>
                                             <h5 className="font-size-15 mb-2">
-                                                <span className="badge badge-soft-success"><b>{item.amount}৳</b></span>
+                                                <span className="badge badge-soft-success"><b>৳{item.amount}</b></span>
                                             </h5>
                                             <p className="mb-0 text-muted">
                                                 <i className="far fa-credit-card"></i> Card

@@ -206,14 +206,14 @@ const TenantAdjustrent = props => {
     let output = Number(e.target.value) - Number(rent);
 
     if (e.target.value > rent) {
-      let value = `Incresed of ${output}৳`;
+      let value = `Incresed of ৳${output}`;
       setState2({
         ...state2,
         new_rent_value: e.target.value,
         rent_change: value,
       });
     } else {
-      let value = `Decrease of ${Number(output) * -1}৳`;
+      let value = `Decrease of ৳${Number(output) * -1}`;
       setState2({
         ...state2,
         new_rent_value: e.target.value,
@@ -318,7 +318,7 @@ const TenantAdjustrent = props => {
                               <span className="text-muted d-flex justify-content-center">
                                 {props.state2.rent
                                   ? "৳" + props.state2.rent
-                                  : "0.00"}
+                                  : "৳0.00"}
                               </span>
                             </Col>
                             <Col
@@ -382,7 +382,7 @@ const TenantAdjustrent = props => {
                               <span className="text-muted d-flex justify-content-center">
                                 {props.state2.part_paid
                                   ? "৳" + props.state2.part_paid
-                                  : "0.00৳"}
+                                  : "৳0.00"}
                               </span>
                             </Col>
 
@@ -402,7 +402,7 @@ const TenantAdjustrent = props => {
                               <span className="text-muted d-flex justify-content-center">
                                 {props.state2.bond_held
                                   ? "৳" + props.state2.bond_held
-                                  : "0.00৳"}
+                                  : "৳0.00"}
                               </span>
                             </Col>
 
@@ -673,9 +673,9 @@ const TenantAdjustrent = props => {
                           Part Paid
                         </Col>
                         <Col md={7} className="py-2">
-                          {props.state2?.part_paid
+                          ৳{props.state2?.part_paid
                             ? props.state2.part_paid
-                            : "0.00"}৳
+                            : "0.00"}
                         </Col>
                         <div style={{ borderBottom: "1.2px dotted #c9c7c7" }} />
                       </Row>
@@ -695,9 +695,9 @@ const TenantAdjustrent = props => {
                           Deposits
                         </Col>
                         <Col md={7} className="py-2">
-                          {props.state2?.deposits
+                          ৳{props.state2?.deposits
                             ? props.state2.deposits
-                            : "0.00"}৳
+                            : "0.00"}
                         </Col>
                         <div style={{ borderBottom: "1.2px dotted #c9c7c7" }} />
                       </Row>
@@ -757,7 +757,7 @@ const TenantAdjustrent = props => {
                             Rent Review
                           </Col>
                           <Col md={7} className="py-2">
-                            {"0.00"}৳
+                            ৳{"0.00"}
                           </Col>
                           <div
                             style={{ borderBottom: "1.2px dotted #c9c7c7" }}
