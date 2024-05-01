@@ -37,6 +37,8 @@ import logoDark from "../../assets/images/new_myday_image.svg";
 import logoDarkNew from "../../assets/images/my_day_logo.png";
 import animation from "../../assets/images/Animation.gif";
 import property from "../../assets/images/property.png";
+import logoCliqProperty from '../../assets/images/color.png'
+import logoLongCliqProperty from '../../assets/images/color_long.png'
 
 
 const Login = props => {
@@ -128,13 +130,13 @@ const Login = props => {
                   </div>
                 </Link> */}
                 {/* <Link to="/" className="auth-logo-dark"> */}
-                <div className="avatar-lg profile-user-wid mb-2 " >
+                <div className="avatar-lg profile-user-wid mb-2" style={{width: '200vw'}} >
                   {/* <span
                       className="avatar-title rounded-circle bg-light"
                       style={{ borderRadius: "20% !important" }}
                     > */}
                   <img
-                    src={logoDarkNew}
+                    src={logoCliqProperty}
                     alt=""
                     className="p-1"
                     height="100%"
@@ -268,7 +270,7 @@ const Login = props => {
                     </Link>
                   </p> */}
                 <p>
-                  © {new Date().getFullYear()} myday. Crafted with
+                  © {new Date().getFullYear()} CliqProperty. Crafted with
                   <i className="mdi mdi-heart text-danger" /> by CliqPack
                 </p>
               </div>
