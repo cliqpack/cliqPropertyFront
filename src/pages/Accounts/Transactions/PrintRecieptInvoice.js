@@ -22,9 +22,9 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 // import Pdf from "react-to-pdf";
 import jsPDF from "jspdf";
 
-document.title = "CliqProperty";
 
 const PrintRecieptInvoice = (props) => {
+    document.title = "CliqProperty";
     const { id } = useParams();
     const history = useHistory();
     const [init, setInit] = useState(true)

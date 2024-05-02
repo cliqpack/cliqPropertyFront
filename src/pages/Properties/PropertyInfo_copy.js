@@ -134,9 +134,8 @@ import RentCalculation from "./Tenant/RentCalculation";
 import PropertyDocs from "./PropertyDocs";
 import TooltipVisibility from "./Documents/TooltipVisibility";
 
-document.title = "CliqProperty";
-
 const PropertyInfo = props => {
+  document.title = "CliqProperty";
   const { id } = useParams();
   const [state, setState] = useState({
     customIconActiveTab: "1",

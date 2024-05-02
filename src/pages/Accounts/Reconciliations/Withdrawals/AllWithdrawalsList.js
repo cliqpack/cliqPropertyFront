@@ -32,9 +32,9 @@ import toastr from "toastr";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import Loder from "components/Loder/Loder";
 
-document.title = "Reconciliations";
 
 function AllWithdrawalsList(props) {
+    document.title = "Reconciliations";
     const { month, year } = useParams();
     let history = useHistory();
     const [loader, setLoader] = useState(false);

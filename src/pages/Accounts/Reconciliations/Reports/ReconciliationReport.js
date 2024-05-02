@@ -15,10 +15,10 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
 
-document.title = "CliqProperty";
 
 
 const ReconciliationReport = (props) => {
+    document.title = "CliqProperty";
     const { id } = useParams();
 
     function printDiv(divName) {

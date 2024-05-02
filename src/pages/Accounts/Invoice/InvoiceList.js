@@ -32,9 +32,9 @@ import Loder from "components/Loder/Loder";
 import AddReceipt from "../Transactions/AddReceipt";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "Invoices";
 
 function InvoiceList(props) {
+    document.title = "Invoices";
     const [state, setState] = useState({
         activeTab: "1", loader: false
     });

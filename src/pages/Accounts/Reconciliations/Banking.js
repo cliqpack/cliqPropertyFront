@@ -35,11 +35,11 @@ import { logDOM } from "@testing-library/react";
 import AdjustmentModal from "./Adjustments/AdjustmentModal";
 
 
-document.title = "Reconciliations";
 
 
 
 function Banking(props) {
+    document.title = "Reconciliations";
     const [state, setState] = useState({
         showModal: false
     })

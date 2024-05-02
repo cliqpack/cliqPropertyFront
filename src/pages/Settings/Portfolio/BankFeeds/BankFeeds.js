@@ -42,9 +42,9 @@ import paginationFactory, {
   SizePerPageDropdownStandalone,
 } from "react-bootstrap-table2-paginator";
 
-document.title = "Settings | My Day";
 
 function BankFeeds(props) {
+  document.title = "Settings | My Day";
   const [state, setState] = useState({
     removeBtnStatus: true,
     showModalAdd: false,

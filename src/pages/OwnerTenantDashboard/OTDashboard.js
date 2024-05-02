@@ -31,8 +31,6 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import PropertyList from "pages/Properties/PropertyList";
 import { withTranslation, useTranslation } from "react-i18next";
 
-document.title = "CliqProperty";
-
 const otDashboard = {
     position: "relative",
     top: "100px"
@@ -56,6 +54,7 @@ const fixedTop = {
 };
 
 const OTDashboard = (props) => {
+    document.title = "CliqProperty";
     const { id } = useParams();
     const { t } = useTranslation();
     const location = useLocation();

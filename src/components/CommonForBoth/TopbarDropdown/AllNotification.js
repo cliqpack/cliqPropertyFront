@@ -34,9 +34,9 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-document.title = "cliqproperty";
 
 const PropertyReminders = props => {
+    document.title = "CliqProperty";
     const history = useHistory();
     const { id } = useParams();
     const [state, setState] = useState({ reminderModal: false, init: true });

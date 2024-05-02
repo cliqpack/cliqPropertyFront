@@ -33,9 +33,9 @@ import {
 import toastr from "toastr";
 import moment from 'moment';
 
-document.title = "Banking";
 
 function BankingReceiptList(props) {
+    document.title = "Banking";
     let date = moment().format("dddd, DD");
     let node;
     const { month, year } = useParams();

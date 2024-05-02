@@ -39,9 +39,9 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "CliqProperty";
 
 function Adjustments(props) {
+  document.title = "Adjustments";
   const [state, setState] = useState({
     removeBtnStatus: true,
     showModalAdd: false,

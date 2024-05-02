@@ -14,10 +14,10 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
 
-document.title = "CliqProperty";
 
 
 const CashBookReport = (props) => {
+    document.title = "CashBook Report";
     const { month, year } = useParams();
 
     function printDiv(divName) {

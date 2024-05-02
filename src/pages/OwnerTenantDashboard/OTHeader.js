@@ -9,6 +9,7 @@ import logoDark from "../../assets/images/Myday.png";
 import logoSamll from "../../assets/images/Asset-light.png";
 import Header from "components/VerticalLayout/Header";
 import SidebarContactOT from "./SidebarContactOT";
+import logoCliqProperty from '../../assets/images/logo_cliq.png'
 
 const OTHeader = props => {
   const [state, setState] = useState({
@@ -34,14 +35,14 @@ const OTHeader = props => {
         <div className="vertical-menu" >
           <div
             className="navbar-brand-box"
-            style={{ backgroundColor: "#153D58" }}
+            style={{ backgroundColor: "#564BC6" }}
           >
             <Link to="/owner-tenant-dashboard" className="logo logo-dark">
               <span className="logo-sm">
                 <img src={logo} alt="" height="22" />
               </span>
               <span className="logo-lg">
-                <img src={logoDark} alt="" height="30" />
+                <img src={logoCliqProperty} alt="" height="30" />
               </span>
             </Link>
 
@@ -50,7 +51,7 @@ const OTHeader = props => {
                 <img src={logo} alt="" height="22" />
               </span>
               <span className="logo-lg">
-                <img src={logoDark} alt="" height="30" />
+                <img src={logoCliqProperty} alt="" height="30" />
               </span>
             </Link>
           </div>
@@ -92,7 +93,7 @@ const OTHeader = props => {
             top: 0,
             left: 0,
             //backgroundColor: "#153D58 !important",
-            backgroundColor: "#153D58",
+            backgroundColor: "#564BC6",
             //color: "red",
             zIndex: 999,
             //border: "1px solid red"

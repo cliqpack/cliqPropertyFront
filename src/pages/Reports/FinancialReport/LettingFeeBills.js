@@ -24,9 +24,9 @@ import Loder from "components/Loder/Loder";
 import ReportHeader from "../ReportHeader";
 import FilterReport from "../FilterReport";
 
-document.title = "Bills - Letting Fees";
 
 function LettingFeeBills(props) {
+    document.title = "Bills - Letting Fees";
     const [loader, setLoader] = useState(false);
 
     const date = moment().format("yyyy-MM-DD");

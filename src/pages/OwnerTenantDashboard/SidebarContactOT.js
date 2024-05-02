@@ -182,7 +182,7 @@ const SidebarContentOT = props => {
 
   return (
     <React.Fragment>
-      <div data-simplebar className="h-100" style={{ backgroundColor: "#153D58" }}>
+      <div data-simplebar className="h-100" style={{ backgroundColor: "#564BC6" }}>
         <SimpleBar className="h-100" ref={refDiv} >
           <div id="sidebar-menu" >
             <ul className="metismenu list-unstyled" id="side-menu">

@@ -19,10 +19,10 @@ import toastr from "toastr";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 
 
-document.title = "CliqProperty";
 
 
 const NewWithDrawalsReport = (props) => {
+    document.title = "CliqProperty";
     const { month, year } = useParams();
     const history = useHistory();
 

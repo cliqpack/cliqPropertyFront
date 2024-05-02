@@ -19,9 +19,9 @@ import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
-document.title = "CliqProperty";
 
 const UnreconcileItems = props => {
+  document.title = "CliqProperty";
   const { date, id } = useParams();
 
   const month = date.slice(5, 7);

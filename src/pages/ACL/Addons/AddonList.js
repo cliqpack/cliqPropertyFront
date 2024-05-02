@@ -13,9 +13,9 @@ import NewAddonModal from "./NewAddonModal";
 import DatatableTables2 from '../../Tables/DatatableTables2';
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "CliqProperty";
 
 const AddonList = props => {
+    document.title = "CliqProperty";
     const [state, setState] = useState({ newFeesModal: false });
     const [data, setData] = useState('');
     const [seen, setSeen] = useState(false);

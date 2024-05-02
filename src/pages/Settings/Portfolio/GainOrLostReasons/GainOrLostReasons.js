@@ -35,9 +35,9 @@ import paginationFactory, {
 import ReasonModalAdd from "./ReasonModalAdd";
 import RemoveReasonModal from "./RemoveReasonModal";
 
-document.title = "CliqProperty";
 
 const GainOrLostReasons = props => {
+  document.title = "CliqProperty";
   const history = useHistory();
   const [state, setState] = useState({ reasonModal: false, init: true, removeModal: false });
   const removeModalToggle = () => setState({ ...state, removeModal: !state.removeModal })
