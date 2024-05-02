@@ -25,9 +25,9 @@ import toastr from "toastr";
 import { integrationsList } from 'store/actions'
 import Img from '../../../assets/images/icon-realestate.svg'
 
-document.title = "CliqProperty";
 
 const Integrations = props => {
+  document.title = "CliqProperty";
 
   const dispatch = useDispatch()
   const { integrationListData, integrationListLoading } = useSelector(state => state.Portfolio)

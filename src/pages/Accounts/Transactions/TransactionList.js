@@ -35,10 +35,10 @@ import AddDepositReceipt from "./AddDepositReceipt";
 
 
 
-document.title = "Transactions";
 
 
 function TransactionList(props) {
+    document.title = "Transactions";
     const history = useHistory()
     const inputRef = useRef();
     const [state, setState] = useState({

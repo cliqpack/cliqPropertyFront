@@ -20,10 +20,10 @@ import moment from "moment";
 import toastr from "toastr";
 
 
-document.title = "Work order";
 
 
 const JobInfoWorkOrderActionInvoice = (props) => {
+    document.title = "Work order";
     const { id } = useParams();
     let history = useHistory();
 

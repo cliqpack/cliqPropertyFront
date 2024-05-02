@@ -36,9 +36,9 @@ import NewLabelModal from "./NewLabelModal";
 import LabelEditModal from "./LabelEditModal";
 import RemoveLabelModal from "./RemoveLabelModal";
 
-document.title = "CliqProperty";
 
 const PortfolioLabels = props => {
+  document.title = "CliqProperty";
   const history = useHistory();
   const [state, setState] = useState({
     labelModal: false,

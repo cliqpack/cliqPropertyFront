@@ -19,9 +19,9 @@ import { connect } from "react-redux";
 import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 
-document.title = "CliqProperty";
 
 const TransactionAuditReport = props => {
+  document.title = "CliqProperty";
   const { month, year } = useParams();
 
   const goBack = () => window.close();

@@ -34,9 +34,9 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "Reconciliations";
 
 function UnreconciledWithdrawals2(props) {
+  document.title = "Reconciliations";
   const { year, month } = useParams();
   const [state, setState] = useState({
     activeTab: "1",

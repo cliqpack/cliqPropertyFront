@@ -12,7 +12,8 @@ import SidebarContent from "./SidebarContent";
 
 import logo from "../../assets/images/Asset-light.png";
 // import logoCliqProperty from "../../assets/images/white_long.png";
-import logoCliqProperty from "../../assets/images/logo_cliq.png";
+import logoCliqProperty from "../../assets/images/logo_stroke.svg";
+import logoFavCliqProperty from "../../assets/images/strokedlogo_purple.svg";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
 // import logoDark from "../../assets/images/Myday.png";
@@ -39,7 +40,7 @@ class Sidebar extends Component {
           >
             <Link to="/" className="logo logo-dark">
               <span className="logo-sm">
-                <img src={logoCliqProperty} alt="" height="30" />
+                <img src={logoFavCliqProperty} alt="" height="30" />
               </span>
               <span className="logo-lg">
                 <img src={logoCliqProperty} alt="" height="30" />
@@ -48,7 +49,7 @@ class Sidebar extends Component {
 
             <Link to="/" className="logo logo-light">
               <span className="logo-sm">
-                <img src={logo} alt="" height="30" />
+                <img src={logoFavCliqProperty} alt="" height="30" />
               </span>
               <span className="logo-lg">
                 <img src={logoCliqProperty} alt="" height="30" />

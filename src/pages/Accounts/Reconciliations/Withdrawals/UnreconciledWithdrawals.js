@@ -38,10 +38,6 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import EditChequeModal from "./EditChequeModal";
 
-document.title = "Reconciliations";
-
-
-
 function AllWithdrawalsList
     (props) {
     const [state, setState] = useState({ activeTab: "1", checkModal: false, });
@@ -131,7 +127,7 @@ function AllWithdrawalsList
 
     }, []);
 
-
+    document.title = "Reconciliations";
     return (
         <>
             <div className="page-content">

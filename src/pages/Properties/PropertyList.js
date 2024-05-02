@@ -57,9 +57,8 @@ import ImageModal from "pages/Image/ImageModal";
 import moment from "moment";
 import RemotePagination from "pages/Task/RemotePagination";
 
-document.title = "CliqProperty";
-
 function PropertyList(props) {
+  document.title = "CliqProperty";
   const location = useLocation();
   const history = useHistory();
   console.log(location);

@@ -16,9 +16,9 @@ import Loder from "components/Loder/Loder";
 import ReportHeader from "../../ReportHeader";
 import TransactionAuditFilter from "./TransactionAuditFilter";
 
-document.title = "Bills";
 
 function TransactionAuditApiReport(props) {
+    document.title = "Bills";
     const [loader, setLoader] = useState(false);
 
     const date = moment().format("yyyy-MM-DD");

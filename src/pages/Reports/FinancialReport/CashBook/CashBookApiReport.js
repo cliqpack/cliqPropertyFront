@@ -16,9 +16,9 @@ import Loder from "components/Loder/Loder";
 import ReportHeader from "../../ReportHeader";
 import CashBookFilter from "./CashBookFilter";
 
-document.title = "Bills";
 
 function CashBookApiReport(props) {
+    document.title = "Bills";
     const [loader, setLoader] = useState(false);
 
     const date = moment().format("yyyy-MM-DD");

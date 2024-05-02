@@ -15,10 +15,10 @@ import moment from "moment";
 import Loder from "components/Loder/Loder";
 import ReportHeader from "../../ReportHeader";
 
-document.title = "Bills";
 import FolioLedgerFilter from "./FolioLedgerFilter";
 
 function FolioLedgerApiReport(props) {
+    document.title = "Bills";
     const [loader, setLoader] = useState(false);
 
     const date = moment().format("yyyy-MM-DD");

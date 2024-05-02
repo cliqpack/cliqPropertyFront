@@ -45,9 +45,9 @@ import ColorBtn from "common/Button/ColorBtn";
 import SelectSearch from "common/Select-Search/SelectSearch";
 
 
-document.title = "CliqProperty";
 
 const Email = props => {
+    document.title = "CliqProperty";
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false)
 

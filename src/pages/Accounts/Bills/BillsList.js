@@ -47,9 +47,9 @@ import toastr from "toastr";
 import Loder from "components/Loder/Loder";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "cliqproperty";
 
 function BillsList(props) {
+  document.title = "CliqProperty";
   const [state, setState] = useState({
     activeTab: "1",
     disabled: true,

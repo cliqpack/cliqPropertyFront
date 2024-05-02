@@ -50,9 +50,9 @@ import CreateJobReminder from "./CreateJobReminder";
 import ReminderMessageModal from "./ReminderMessageModal";
 
 
-document.title = "CliqProperty";
 
 const AllReminder = props => {
+    document.title = "CliqProperty";
     const history = useHistory();
     const { id } = useParams();
     const [state, setState] = useState({

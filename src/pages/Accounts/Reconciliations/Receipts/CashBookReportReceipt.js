@@ -19,10 +19,10 @@ import toastr from "toastr";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 
 
-document.title = "CliqProperty";
 
 
 const CashBookReportReceipt = (props) => {
+    document.title = "CliqProperty";
     const { month, year } = useParams();
     const history = useHistory();
 

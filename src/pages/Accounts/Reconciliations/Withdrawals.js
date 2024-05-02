@@ -21,8 +21,8 @@ import paginationFactory, {
     PaginationListStandalone,
     SizePerPageDropdownStandalone,
 } from "react-bootstrap-table2-paginator";
-document.title = "Reconciliations";
 function Withdrawals(props) {
+    document.title = "Reconciliations";
     const { month, year } = useParams();
     const [state, setState] = useState({
         activeTab: "1", showReverse: true

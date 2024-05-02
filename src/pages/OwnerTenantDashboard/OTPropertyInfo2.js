@@ -220,7 +220,7 @@ const OTPropertyInfo2 = props => {
                           {t('pays')}{" "}
                           {tenantFolioData?.rent && (
                             <b>
-                              ${tenantFolioData?.rent}{" "}
+                              ৳{tenantFolioData?.rent}{" "}
 
                               {t(tenantFolioData?.rent_type)}
                             </b>
@@ -338,25 +338,25 @@ const OTPropertyInfo2 = props => {
 
                               <td>
                                 <span className="text-muted">
-                                  $
+                                ৳
                                   {ownerInfoData?.data?.owner_folio?.opening_balance == null ? "0.00" : ownerInfoData?.data?.owner_folio?.opening_balance}
                                 </span>
                               </td>
                               <td>
                                 <span className="text-muted">
-                                  $
+                                ৳
                                   {ownerInfoData?.data?.owner_folio?.money_in ? ownerInfoData?.data?.owner_folio?.money_in : "0.00"}
                                 </span>
                               </td>
                               <td>
                                 <span className="text-muted">
                                   { }
-                                  ${ownerInfoData?.data?.owner_folio?.money_out ? ownerInfoData?.data?.owner_folio?.money_out : "0.00"}
+                                  ৳{ownerInfoData?.data?.owner_folio?.money_out ? ownerInfoData?.data?.owner_folio?.money_out : "0.00"}
                                 </span>
                               </td>
                               <td>
                                 <span className="text-muted">
-                                  $
+                                ৳
                                   {ownerInfoData?.ownerPendingBill
                                     ?.total_bills_amount_sum_amount
                                     ? ownerInfoData?.ownerPendingBill
@@ -366,7 +366,7 @@ const OTPropertyInfo2 = props => {
                               </td>
                               <td>
                                 <span className="text-muted">
-                                  $
+                                ৳
                                   {ownerInfoData?.data?.owner_folio?.money_in == 0
                                     ? "0.00"
                                     : props.current_balance_ownerPanel_data?.folio?.money_in ? props.current_balance_ownerPanel_data?.folio?.money_in : 0 -

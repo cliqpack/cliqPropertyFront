@@ -19,9 +19,9 @@ import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
-document.title = "CliqProperty";
 
 const FolioLedger = props => {
+  document.title = "FolioLedger";
   const { year, month, day } = useParams();
 
   function printDiv(divName) {

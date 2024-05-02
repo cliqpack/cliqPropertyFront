@@ -23,9 +23,9 @@ import { dueDisbursementList, dueDisbursementListFresh, previewDisbursement, pre
 import moment from "moment";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import RemotePagination from "pages/Task/RemotePagination";
-document.title = "CliqProperty";
 
 function DisbursementList(props) {
+    document.title = "CliqProperty";
     const [loader, setLoader] = useState(false);
     const [dataState, setDataState] = useState({
         page: 1,

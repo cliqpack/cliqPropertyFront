@@ -43,9 +43,9 @@ import img from '../../../assets/images/Logo realtyme.png'
 import RemoveBrandPhoto from "./RemoveBrandPhoto";
 import ColorBtn from "common/Button/ColorBtn";
 
-document.title = "CliqProperty";
 
 const Statements = props => {
+  document.title = "CliqProperty";
   const [isLoading, setIsLoading] = useState(false)
   const inputFile = useRef(null);
   const [showDropZone, setShowDropZone] = useState(false);

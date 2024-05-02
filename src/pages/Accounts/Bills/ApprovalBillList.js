@@ -25,9 +25,9 @@ import {
 import DeleteUploadBillsModal from "./DeleteUploadBillsModal";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import Loder from "components/Loder/Loder";
-document.title = "Approval Bill List";
 
 function UploadBillsList(props) {
+    document.title = "Approval Bill List";
     const [loader, setLoader] = useState(false);
     const [state, setState] = useState({
         activeTab: "1", deleteModal: false, selected: [],

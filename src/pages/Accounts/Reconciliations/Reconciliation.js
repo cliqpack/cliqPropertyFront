@@ -20,9 +20,9 @@ import BankStatementModal from "./BankStatementModal";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import toastr from "toastr";
 
-document.title = "Reconciliations";
 
 function Reconciliation(props) {
+    document.title = "Reconciliations";
     const { location } = useHistory();
     const params = useParams();
     const [seen, setSeen] = useState(false);

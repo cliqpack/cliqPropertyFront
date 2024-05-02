@@ -20,9 +20,9 @@ import moment from 'moment';
 import CancelDepositModal from "./CancelDepositModal";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "Banking";
 
 function BankingList(props) {
+    document.title = "Banking";
     let date = moment().format("YYYY");
     const history = useHistory();
 

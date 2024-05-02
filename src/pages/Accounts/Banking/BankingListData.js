@@ -14,9 +14,9 @@ import {
 import toastr from "toastr";
 import moment from 'moment';
 
-document.title = "Banking";
 
 function BankingListData(props) {
+    document.title = "Banking";
     let date = moment().format("YYYY");
     const { id } = useParams();
     const [seen, setSeen] = useState(false);

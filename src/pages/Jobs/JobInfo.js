@@ -144,9 +144,9 @@ import CommentData from "pages/Activity/CommentData";
 
 let propertyId = undefined;
 
-document.title = "CliqProperty";
 
 const JobInfo = props => {
+  document.title = "CliqProperty";
   const { t } = useTranslation();
   const localizeItem = text => `${t(text)}`
   //const navigate = usenavigate();

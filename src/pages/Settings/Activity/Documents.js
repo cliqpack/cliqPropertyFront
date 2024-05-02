@@ -42,9 +42,9 @@ import EditFileNameModal from "./EditFileNameModal";
 import RemoveDocModal from "./RemoveDocModal";
 
 
-document.title = "CliqProperty";
 
 const Documents = props => {
+  document.title = "CliqProperty";
   const history = useHistory();
   const [state, setState] = useState({ activeTab: "1", reasonModal: false, editModal: false, removeDoc: false, init: true });
   const [init, setInit] = useState(true)
