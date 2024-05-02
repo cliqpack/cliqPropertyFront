@@ -339,12 +339,12 @@ const SidebarContent = props => {
                     <i
                       className="bx bxs-dashboard"
                       style={{
-                        color: location.pathname == "/dashboard" ? "white" : "",
+                        color: location.pathname == "/dashboard" ? "#FFC233" : "",
                       }}
                     />
                     <span
                       style={{
-                        color: location.pathname == "/dashboard" ? "white" : "",
+                        color: location.pathname == "/dashboard" ? "#FFC233" : "",
                       }}
                       onClick={dashboardHandler}
                     >
@@ -388,8 +388,12 @@ const SidebarContent = props => {
                       <>
                         <li>
                           <Link to="/users">
-                            <i className="fas fa-users" />
-                            <span>{t("Users")}</span>
+                            <i className="fas fa-users" style={{
+                              color: location.pathname == "/users" ? "#FFC233" : "",
+                            }} />
+                            <span style={{
+                              color: location.pathname == "/users" ? "#FFC233" : "",
+                            }}>{t("Users")}</span>
                           </Link>
                         </li>
                         <li>

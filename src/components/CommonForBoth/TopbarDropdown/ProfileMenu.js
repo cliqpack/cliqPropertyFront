@@ -107,7 +107,7 @@ class ProfileMenu extends Component {
                     : user1
                   : user1
               }
-              alt="Header Avatar"
+
             />{" "}
             <div style={{ marginTop: "-30px", color: "gray" }}>
               <span className="d-none d-xl-inline-block ms-1" >

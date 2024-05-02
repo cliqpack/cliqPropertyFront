@@ -127,7 +127,7 @@ class Header extends Component {
                   onClick={this.toggleMenu}
                   className="btn btn-sm px-3 font-size-20 header-item"
                   id="vertical-menu-btn"
-                  style={{ color: "#FFFFFF" }}
+                  style={{ color: "#000" }}
                 >
                   <i className="fa fa-fw fa-bars"></i>
                 </button>

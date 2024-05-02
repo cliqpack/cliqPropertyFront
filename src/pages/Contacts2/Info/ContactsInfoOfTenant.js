@@ -112,7 +112,7 @@ const ContactsInfoOfTenant = ({
                   md={6}
                   className="d-flex justify-content-end align-items-center"
                 >
-                  <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "#0F2E5A", borderRadius: "5px" }} />
+                  <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "labelColor", borderRadius: "5px" }} />
                   <input
                     type="file"
                     onChange={handleUploadFiles}

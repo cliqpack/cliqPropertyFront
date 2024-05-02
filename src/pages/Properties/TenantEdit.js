@@ -3277,57 +3277,57 @@ const TenantEdit = props => {
                                                                     md={4}
                                                                     className="d-flex gap-2"
                                                                   >
-                                                                    <div className="d-flex flex-column">
-                                                                      <div className="form-group-new">
-                                                                        <Field
-                                                                          name="bond_held"
-                                                                          type="text"
-                                                                          id="bond_held"
-                                                                          disabled={
-                                                                            true
-                                                                          }
-                                                                          placeholder="0.00"
-                                                                          className={
-                                                                            "form-control" +
-                                                                            (errors.bond_held &&
-                                                                              touched.bond_held
-                                                                              ? " is-invalid"
-                                                                              : "")
-                                                                          }
-                                                                          style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
-                                                                          }}
-                                                                          value={
-                                                                            state2.bond_held
-                                                                          }
-                                                                          onChange={
-                                                                            handlePropertyFormTwoValues
-                                                                          }
-                                                                        />
-                                                                        <label htmlFor="usr">
-                                                                          {" "}
-                                                                          Security Deposit
-                                                                          held
-                                                                        </label>
-                                                                      </div>
-                                                                      <span className="input-group-append rounded-start">
-                                                                        <span
-                                                                          className="input-group-text"
-                                                                          style={{
-                                                                            borderTopLeftRadius: 0,
-                                                                            borderBottomLeftRadius: 0,
-                                                                          }}
-                                                                        >
-                                                                          ৳
-                                                                        </span>
-                                                                      </span>
-                                                                      <ErrorMessage
+
+                                                                    <div className="form-group-new">
+                                                                      <Field
                                                                         name="bond_held"
-                                                                        component="div"
-                                                                        className="invalid-feedback"
+                                                                        type="text"
+                                                                        id="bond_held"
+                                                                        disabled={
+                                                                          true
+                                                                        }
+                                                                        placeholder="0.00"
+                                                                        className={
+                                                                          "form-control" +
+                                                                          (errors.bond_held &&
+                                                                            touched.bond_held
+                                                                            ? " is-invalid"
+                                                                            : "")
+                                                                        }
+                                                                        style={{
+                                                                          borderTopRightRadius: 0,
+                                                                          borderBottomRightRadius: 0,
+                                                                        }}
+                                                                        value={
+                                                                          state2.bond_held
+                                                                        }
+                                                                        onChange={
+                                                                          handlePropertyFormTwoValues
+                                                                        }
                                                                       />
+                                                                      <label htmlFor="usr">
+                                                                        {" "}
+                                                                        Security Deposit
+                                                                        held
+                                                                      </label>
                                                                     </div>
+                                                                    <span className="input-group-append rounded-start">
+                                                                      <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                          borderTopLeftRadius: 0,
+                                                                          borderBottomLeftRadius: 0,
+                                                                        }}
+                                                                      >
+                                                                        ৳
+                                                                      </span>
+                                                                    </span>
+                                                                    <ErrorMessage
+                                                                      name="bond_held"
+                                                                      component="div"
+                                                                      className="invalid-feedback"
+                                                                    />
+
                                                                   </Col>
                                                                 </Row>
                                                               </div>
