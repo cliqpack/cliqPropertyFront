@@ -21,16 +21,17 @@ import {
   MenuListDataOTFresh,
 } from "store/Menu/action";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom/cjs/react-router-dom";
+import { useLocation, useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const SidebarContent = props => {
   const { t } = useTranslation();
   const refDiv = React.createRef();
   const location = useLocation();
+  const history = useHistory();
+  console.log(location);
   let authUser = JSON.parse(localStorage.getItem("authUser"));
   // let language = localStorage.getItem("i18nextLng");
   let language = props.get_select_language_data?.data?.data
-  // console.log(language);
   const sideBarName = localStorage.getItem("Menu");
 
   const [state, setState] = useState({
@@ -68,18 +69,23 @@ const SidebarContent = props => {
   };
 
   const handleExpand = () => {
-    console.log(expand);
     setExpand(!expand);
     // localStorage.setItem("Menu", "Dashboard");
   };
   const handleExpand2 = () => {
-    console.log(expand2);
     setExpand2(!expand2);
     // localStorage.setItem("Menu", "Dashboard");
   };
 
   const handleExpandPortfolio = () => {
-    setSettings(prev => ({ ...prev, portfolio: !prev.portfolio }));
+    // setSettings(prev => ({ ...prev, portfolio: !prev.portfolio }));
+    // history.push(location.pathname, {
+    //   portfolio: true,
+    //   brand: false,
+    //   messages: false,
+    //   studio: false,
+    //   activity: false,
+    // });
   };
   const dashboardHandler = () => {
     // localStorage.setItem("Menu", "Dashboard");
@@ -126,16 +132,11 @@ const SidebarContent = props => {
 
   // const colorMenu= async(slug) => {
   //   setState({ ...state, selected: slug });
-
-  //   // console.log("inside selected")
   // }
-  // console.log(props.menu_data_ot);
 
   if (props.menu_data != null && init) {
     var jsxTool = undefined;
     jsxTool = props.menu_data?.data?.map((item, key) => {
-      // console.log("/"+item.slug)
-      // console.log(this.props.match.path)
 
       return (
         <li key={key}>
@@ -193,11 +194,8 @@ const SidebarContent = props => {
   ) {
     // if (props.menu_data_ot != null && init) {
     if (props.menu_data_ot != null && init) {
-      // console.log(props.menu_data);
       var jsxTool_ot = undefined;
       jsxTool_ot = props.menu_data_ot?.data?.map((item, key) => {
-        // console.log("/"+item.slug)
-        // console.log(this.props.match.path)
         if (item.addon_menu_check?.menu?.slug) {
           return (
             <li key={key}>
@@ -232,11 +230,6 @@ const SidebarContent = props => {
                         : "white", //'rgba(255, 254, 255, 0.6)',
                   }}
                 >
-                  {console.log(item?.addon_menu_check?.menu?.menu_title)}
-                  {console.log(
-                    `${t(item?.addon_menu_check?.menu?.menu_title)}`
-                  )}
-
                   {t(item?.addon_menu_check?.menu?.menu_title)}
                 </span>
               </Link>
@@ -324,7 +317,7 @@ const SidebarContent = props => {
     return false;
   };
 
-  const showActiveLink = data => location.pathname == data && "white";
+  const showActiveLink = data => location.pathname == data && "#FFC233";
 
   return (
     <React.Fragment>
@@ -355,7 +348,6 @@ const SidebarContent = props => {
                 </li>
 
                 {/* <li className="menu-title">Apps</li> */}
-                {/* {console.log(state.jsx)} */}
 
                 {state.jsx}
 
@@ -398,29 +390,47 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="#"
+                            // to="#"
+                            to={{
+                              pathname: location.pathname,
+                              state:
+                              {
+                                plan: true,
+                              }
+                            }}
                             className="has-arrow"
-                            style={{ color: expand === true ? "white" : "" }}
+                            style={{ color: location.state?.plan ? "#FFC233" : "" }}
                             aria-expanded="false"
-                            onClick={handleExpand}
                           >
                             <i className="bx bxs-file" />
                             <span>{t("Plan")}</span>
                           </Link>
-                          {expand ? (
+                          {location.state?.plan ? (
                             <ul className="sub-menu" aria-expanded="false">
                               <li>
                                 <Link
-                                  to="/addon-list"
-                                  style={{ color: "white" }}
+                                  to={{
+                                    pathname: "/addon-list",
+                                    state:
+                                    {
+                                      plan: true,
+                                    }
+                                  }}
+                                  style={{ color: showActiveLink("/addon-list") }}
                                 >
                                   {t("Addons")}
                                 </Link>
                               </li>
                               <li>
                                 <Link
-                                  to="/pre-menu-set"
-                                  style={{ color: "white" }}
+                                  to={{
+                                    pathname: "/pre-menu-set",
+                                    state:
+                                    {
+                                      plan: true,
+                                    }
+                                  }}
+                                  style={{ color: showActiveLink("/pre-menu-set") }}
                                 >
                                   {t("Prerequisite Addons")}
                                 </Link>
@@ -431,15 +441,30 @@ const SidebarContent = props => {
                             </Link>
                           </li> */}
                               <li>
-                                <Link to="/acl-plan" style={{ color: "white" }}>
+                                <Link
+                                  to={{
+                                    pathname: "/acl-plan",
+                                    state:
+                                    {
+                                      plan: true,
+                                    }
+                                  }}
+                                  style={{ color: showActiveLink("/acl-plan") }}
+                                >
                                   {t("Plan")}
                                 </Link>
                               </li>
 
                               <li>
                                 <Link
-                                  to="/user-plan"
-                                  style={{ color: "white" }}
+                                  to={{
+                                    pathname: "/user-plan",
+                                    state:
+                                    {
+                                      plan: true,
+                                    }
+                                  }}
+                                  style={{ color: showActiveLink("/user-plan") }}
                                 >
                                   {t("User Plans")}
                                 </Link>
@@ -451,37 +476,63 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="#"
+                            to={{
+                              pathname: location.pathname,
+                              state:
+                              {
+                                accounts: true,
+                              }
+                            }}
                             className="has-arrow"
-                            style={{ color: expand2 ? "white" : "" }}
+                            style={{ color: location.state?.accounts ? "#FFC233" : "" }}
                             aria-expanded="false"
-                            onClick={handleExpand2}
                           >
                             <i className="fas fa-book" />
                             <span>{t("Accounts")}</span>
                           </Link>
-                          {expand2 ? (
+                          {location.state?.accounts ? (
                             <ul className="sub-menu" aria-expanded="false">
                               <ul className="sub-menu" aria-expanded="false">
                                 <li>
                                   <Link
-                                    to="/transactions"
-                                    style={{ color: "white" }}
+                                    to={{
+                                      pathname: "/transactions",
+                                      state:
+                                      {
+                                        accounts: true,
+                                      }
+                                    }}
+                                    style={{ color: showActiveLink("/transactions") }}
                                   >
                                     {t("Transactions")}
                                   </Link>
                                 </li>
 
                                 <li>
-                                  <Link to="/bills" style={{ color: "white" }}>
+                                  <Link
+                                    to={{
+                                      pathname: "/bills",
+                                      state:
+                                      {
+                                        accounts: true,
+                                      }
+                                    }}
+                                    style={{ color: showActiveLink("/bills") }}
+                                  >
                                     {t("Bills")}
                                   </Link>
                                 </li>
 
                                 <li>
                                   <Link
-                                    to="/invoices"
-                                    style={{ color: "white" }}
+                                    to={{
+                                      pathname: "/invoices",
+                                      state:
+                                      {
+                                        accounts: true,
+                                      }
+                                    }}
+                                    style={{ color: showActiveLink("/invoices") }}
                                   >
                                     {t("Invoices")}
                                   </Link>
@@ -489,24 +540,42 @@ const SidebarContent = props => {
 
                                 <li>
                                   <Link
-                                    to="/banking-list"
-                                    style={{ color: "white" }}
+                                    to={{
+                                      pathname: "/banking-list",
+                                      state:
+                                      {
+                                        accounts: true,
+                                      }
+                                    }}
+                                    style={{ color: showActiveLink("/banking-list") }}
                                   >
                                     {t("Banking")}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link
-                                    to="/reconciliationsList"
-                                    style={{ color: "white" }}
+                                    to={{
+                                      pathname: "/reconciliationsList",
+                                      state:
+                                      {
+                                        accounts: true,
+                                      }
+                                    }}
+                                    style={{ color: showActiveLink("/reconciliationsList") }}
                                   >
                                     {t("Reconciliation")}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link
-                                    to="/disbursement/list"
-                                    style={{ color: "white" }}
+                                    to={{
+                                      pathname: "/disbursement/list",
+                                      state:
+                                      {
+                                        accounts: true,
+                                      }
+                                    }}
+                                    style={{ color: showActiveLink("/disbursement/list") }}
                                   >
                                     {t("Disbursement")}
                                   </Link>
@@ -552,27 +621,43 @@ const SidebarContent = props => {
                 <>
                   <li>
                     <Link
-                      to="/portfolioEditCompany"
+                      to={{
+                        pathname: location.pathname,
+                        state:
+                        {
+                          portfolio: true,
+                        }
+                      }}
                       className="has-arrow"
-                      style={{ color: settings.portfolio ? "white" : "" }}
+                      style={{ color: location.state?.portfolio ? "#FFC233" : "" }}
                       aria-expanded="false"
-                      onClick={handleExpandPortfolio}
+                    // onClick={handleExpandPortfolio}
                     >
                       <i
                         className="bx bx-cog"
-                        style={{ color: settings.portfolio ? "white" : "" }}
+                        style={{ color: location.state?.portfolio ? "#FFC233" : "" }}
                       />
                       <span
-                        style={{ color: settings.portfolio ? "white" : "" }}
+                        style={{ color: location.state?.portfolio ? "#FFC233" : "" }}
                       >
                         {t("Portfolio")}
                       </span>
                     </Link>
-                    {settings.portfolio ? (
+                    {location.state?.portfolio ? (
                       <ul className="sub-menu" aria-expanded="false">
                         <li>
                           <Link
-                            to="/portfolioEditCompany"
+                            to={{
+                              pathname: '/portfolioEditCompany',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/portfolioEditCompany"),
                             }}
@@ -582,7 +667,17 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="/portfolioBanking"
+                            to={{
+                              pathname: '/portfolioBanking',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/portfolioBanking"),
                             }}
@@ -593,7 +688,17 @@ const SidebarContent = props => {
 
                         <li>
                           <Link
-                            to="/portfolioLabels"
+                            to={{
+                              pathname: '/portfolioLabels',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/portfolioLabels"),
                             }}
@@ -603,7 +708,17 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="/portfolioAccounts"
+                            to={{
+                              pathname: '/portfolioAccounts',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/portfolioAccounts"),
                             }}
@@ -613,7 +728,17 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="/portfolioFees"
+                            to={{
+                              pathname: '/portfolioFees',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{ color: showActiveLink("/portfolioFees") }}
                           >
                             {t("Fees")}
@@ -621,7 +746,17 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="/portfolioReasons"
+                            to={{
+                              pathname: '/portfolioReasons',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/portfolioReasons"),
                             }}
@@ -631,7 +766,17 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="/portfolioReminders"
+                            to={{
+                              pathname: '/portfolioReminders',
+                              state:
+                              {
+                                portfolio: true,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/portfolioReminders"),
                             }}
@@ -647,25 +792,41 @@ const SidebarContent = props => {
 
                   <li>
                     <Link
-                      to="#"
+                      to={{
+                        pathname: location.pathname,
+                        state:
+                        {
+                          brand: true,
+                        }
+                      }}
                       className="has-arrow"
-                      style={{ color: settings.brand ? "white" : "" }}
+                      style={{ color: location.state?.brand ? "#FFC233" : "" }}
                       aria-expanded="false"
                       onClick={settingsToggleBrand}
                     >
                       <i
                         className="bx bxs-edit-alt"
-                        style={{ color: settings.brand ? "white" : "" }}
+                      // style={{ color: location.state?.brand ? "white" : "" }}
                       />
-                      <span style={{ color: settings.brand ? "white" : "" }}>
+                      <span>
                         {t("Brand")}
                       </span>
                     </Link>
-                    {settings.brand == true ? (
+                    {location.state?.brand == true ? (
                       <ul className="sub-menu" aria-expanded="false">
                         <li>
                           <Link
-                            to="/brandStatement"
+                            to={{
+                              pathname: '/brandStatement',
+                              state:
+                              {
+                                portfolio: false,
+                                brand: true,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{ color: showActiveLink("/brandStatement") }}
                           >
                             {t("Statements")}
@@ -674,7 +835,17 @@ const SidebarContent = props => {
 
                         <li>
                           <Link
-                            to="/emailSettings"
+                            to={{
+                              pathname: '/emailSettings',
+                              state:
+                              {
+                                portfolio: false,
+                                brand: true,
+                                messages: false,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
                             style={{ color: showActiveLink("/emailSettings") }}
                           >
                             {t("Email")}
@@ -687,7 +858,9 @@ const SidebarContent = props => {
                   </li>
 
                   <li>
-                    <Link to="/admin-register">
+                    <Link to="/admin-register"
+                      style={{ color: showActiveLink("/admin-register") }}
+                    >
                       <i className="fas fa-users" />
                       <span>{t("Teams")}</span>
                     </Link>
@@ -695,20 +868,36 @@ const SidebarContent = props => {
 
                   <li>
                     <Link
-                      to="#"
+                      to={{
+                        pathname: location.pathname,
+                        state:
+                        {
+                          activity: true,
+                        }
+                      }}
                       className="has-arrow"
-                      style={{ color: settings.activity && "white" }}
+                      style={{ color: location.state?.activity ? "#FFC233" : "" }}
                       aria-expanded="false"
                       onClick={settingsToggleActivity}
                     >
                       <i className="bx bx-wifi" />
                       <span>{t("Activity")}</span>
                     </Link>
-                    {settings.activity == true ? (
+                    {location.state?.activity == true ? (
                       <ul className="sub-menu" aria-expanded="false">
                         <li>
                           <Link
-                            to="/activityLog"
+                            to={{
+                              pathname: '/activityLog',
+                              state:
+                              {
+                                portfolio: false,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: true,
+                              }
+                            }}
                             style={{ color: showActiveLink("/activityLog") }}
                           >
                             {t("Log")}
@@ -716,7 +905,17 @@ const SidebarContent = props => {
                         </li>
                         <li>
                           <Link
-                            to="/activityDocuments"
+                            to={{
+                              pathname: '/activityDocuments',
+                              state:
+                              {
+                                portfolio: false,
+                                brand: false,
+                                messages: false,
+                                studio: false,
+                                activity: true,
+                              }
+                            }}
                             style={{
                               color: showActiveLink("/activityDocuments"),
                             }}
@@ -765,19 +964,40 @@ const SidebarContent = props => {
 
                   <li>
                     <Link
-                      to="#"
+                      to={{
+                        pathname: location.pathname,
+                        state:
+                        {
+                          messages: true,
+                        }
+                      }}
                       className="has-arrow"
-                      style={{ color: "white" }}
+                      style={{ color: location.state?.messages ? "#FFC233" : "" }}
                       aria-expanded="false"
                       onClick={settingsToggleMessages}
                     >
                       <i className="bx bxs-message-dots" />
                       <span>{t("Messages")}</span>
                     </Link>
-                    {settings.messages == true ? (
+                    {location.state?.messages == true ? (
                       <ul className="sub-menu" aria-expanded="false">
                         <li>
-                          <Link to="/messageOptions" style={{ color: "white" }}>
+                          <Link
+                            to={{
+                              pathname: '/messageOptions',
+                              state:
+                              {
+                                portfolio: false,
+                                brand: false,
+                                messages: true,
+                                studio: false,
+                                activity: false,
+                              }
+                            }}
+                            style={{
+                              color: showActiveLink("/messageOptions"),
+                            }}
+                          >
                             {t("Options")}
                           </Link>
                         </li>

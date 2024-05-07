@@ -572,11 +572,13 @@ function JobsTaskList(props) {
         dataLength: props.jobs_list_data?.length,
         loading: false,
       }));
-      props.JobsListFresh();
+      console.log('reported');
     }
-    if (props.job_message_data_loading === "Success") {
-      props.getMessageJobFresh();
-    }
+  }, [props.jobs_list_loading]);
+  console.log(props.jobs_list_loading);
+  console.log(state.loading);
+  console.log(props.jobs_list_data);
+  useEffect(() => {
     if (props.property_list_loading === false) {
       props.propertyList();
       props.addJobModalFresh();
@@ -584,50 +586,22 @@ function JobsTaskList(props) {
       props.propertyAddFresh();
       props.propertyList();
     }
+  }, [props.property_list_loading, props.property_add_loading]);
 
+  useEffect(() => {
+    if (props.job_message_data_loading === "Success") {
+      props.getMessageJobFresh();
+    }
+  }, [props.job_message_data_loading]);
+
+  useEffect(() => {
     if (props.jobListById_show_loading === "Success") {
-      console.log("im in fresh state");
       props.JobsListByIdFresh();
     }
-  }, [props.jobs_list_loading, props.jobListById_show_loading]);
-
-  let activeTable, data;
-  data = props.jobs_list_data?.data?.filter(item => item?.status !== "Closed");
-  activeTable = { data };
-
-  let reprtedDataTable;
-  data = props.jobs_list_data?.data?.filter(
-    item => item?.status === "Reported"
-  );
-  reprtedDataTable = { data };
-
-  let quotedDataTable;
-  data = props.jobs_list_data?.data?.filter(item => item?.status === "Quoted");
-  quotedDataTable = { data };
-
-  let approvedDataTable;
-  data = props.jobs_list_data?.data?.filter(
-    item => item?.status === "Approved"
-  );
-  approvedDataTable = { data };
-
-  let assignedDataTable;
-  data = props.jobs_list_data?.data?.filter(
-    item => item?.status === "Assigned"
-  );
-  assignedDataTable = { data };
-
-  let finishedDataTable;
-  data = props.jobs_list_data?.data?.filter(
-    item => item?.status === "Finished"
-  );
-  finishedDataTable = { data };
-
-  let closedDataTable;
-  data = props.jobs_list_data?.data?.filter(item => item?.status === "Closed");
-  closedDataTable = { data };
+  }, [props.jobListById_show_loading]);
 
   const toggle = tab => {
+    props.JobsListFresh();
     if (state.activeTab !== tab) {
       setState({
         ...state,
@@ -913,7 +887,7 @@ function JobsTaskList(props) {
                                   sizePerPage={state.sizePerPage}
                                   totalSize={state.dataLength}
                                   onTableChange={handleTableChange}
-                                  columns={activeData}
+                                  columns={reportedData}
                                   search={search}
                                   onSearchState={handleSearchState}
                                   loading={state.loading}
@@ -921,12 +895,6 @@ function JobsTaskList(props) {
                                   defaultSorted={jobDefaultSorted}
                                 />
                               )}
-                              {/* {props.jobs_list_data ? (
-                              <DatatableTables2
-                                products={reprtedDataTable}
-                                columnData={activeData}
-                              />
-                            ) : null} */}
                             </CardText>
                           </Col>
                         </Row>
@@ -950,12 +918,6 @@ function JobsTaskList(props) {
                                   defaultSorted={jobDefaultSorted}
                                 />
                               )}
-                              {/* {props.jobs_list_data ? (
-                              <DatatableTables2
-                                products={quotedDataTable}
-                                columnData={quotedData}
-                              />
-                            ) : null} */}
                             </CardText>
                           </Col>
                         </Row>
@@ -979,12 +941,6 @@ function JobsTaskList(props) {
                                   defaultSorted={jobDefaultSorted}
                                 />
                               )}
-                              {/* {props.jobs_list_data ? (
-                              <DatatableTables2
-                                products={approvedDataTable}
-                                columnData={approvedData}
-                              />
-                            ) : null} */}
                             </CardText>
                           </Col>
                         </Row>
@@ -1008,12 +964,6 @@ function JobsTaskList(props) {
                                   defaultSorted={jobDefaultSorted}
                                 />
                               )}
-                              {/* {props.jobs_list_data ? (
-                              <DatatableTables2
-                                products={assignedDataTable}
-                                columnData={assignedData}
-                              />
-                            ) : null} */}
                             </CardText>
                           </Col>
                         </Row>
@@ -1037,12 +987,6 @@ function JobsTaskList(props) {
                                   defaultSorted={jobDefaultSorted}
                                 />
                               )}
-                              {/* {props.jobs_list_data ? (
-                              <DatatableTables2
-                                products={finishedDataTable}
-                                columnData={finishedData}
-                              />
-                            ) : null} */}
                             </CardText>
                           </Col>
                         </Row>
@@ -1066,12 +1010,6 @@ function JobsTaskList(props) {
                                   defaultSorted={jobDefaultSorted}
                                 />
                               )}
-                              {/* {props.jobs_list_data ? (
-                              <DatatableTables2
-                                products={closedDataTable}
-                                columnData={closedData}
-                              />
-                            ) : null} */}
                             </CardText>
                           </Col>
                         </Row>

@@ -66,7 +66,13 @@ class ProfileMenu extends Component {
 
   settingsHandler = () => {
     // localStorage.setItem("Menu", "Settings");
-    this.props.history.push("/portfolioEditCompany");
+    this.props.history.push("/portfolioEditCompany", {
+      portfolio: true,
+      brand: false,
+      messages: false,
+      studio: false,
+      activity: false,
+    });
   };
 
   homeHandler = () => {

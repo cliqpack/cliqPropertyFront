@@ -946,6 +946,10 @@ const JobInfo = props => {
     history.push("/tasks")
   }
 
+  const handleCancelBtn = () => {
+    history.goBack();
+  }
+
   return (
     <React.Fragment>
       <div
@@ -2315,7 +2319,7 @@ const JobInfo = props => {
                   >
                     <button
                       className="btn btn-buttonCancelColor w-md"
-                      type="submit"
+                      onClick={handleCancelBtn}
                     >
                       <i className="fas fa-times me-1"></i> {t('Cancel')}
                     </button>
@@ -2332,17 +2336,6 @@ const JobInfo = props => {
             </Card>
           </Col>
         </Row>
-
-
-
-
-
-
-
-
-
-
-
 
         {/* ================= activity modal start ===================*/}
         <Modal
