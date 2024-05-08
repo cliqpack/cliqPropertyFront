@@ -722,8 +722,6 @@ function JobsTaskList(props) {
     hideSelectColumn: true,
   };
 
-
-
   return (
     <div className="page-content">
       {/* <Breadcrumbs title="Maintenance" breadcrumbItem="Maintenance" /> */}
