@@ -266,8 +266,6 @@ const SidebarContent = props => {
     }
   };
 
-  // componentDidUpdate() {}
-
   const scrollElement = item => {
     setTimeout(() => {
       if (refDiv.current !== null) {
