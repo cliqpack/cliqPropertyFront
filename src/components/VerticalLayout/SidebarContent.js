@@ -249,8 +249,6 @@ const SidebarContent = props => {
     }
   }
 
-  //#1186fc
-
   const initMenu = () => {
     new MetisMenu("#side-menu");
 
