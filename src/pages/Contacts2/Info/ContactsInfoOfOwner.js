@@ -31,7 +31,7 @@ const ContactsInfoOfOwner = ({
 
   const ownerEditHandler = (id, tabId, fId, proId) => {
     dispatch(OwnerInfoFresh());
-    history.push({pathname: `/owner/edit/${id}/${fId}/${tabId}`, state: {proId: proId}});
+    history.push({ pathname: `/owner/edit/${id}/${fId}/${tabId}`, state: { proId: proId } });
   };
 
   const ownerFolioHandler = (contactId, oId, folioCode, fId) => {
@@ -94,7 +94,7 @@ const ContactsInfoOfOwner = ({
                 className="d-flex justify-content-end align-items-center"
               >
 
-                <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "#0F2E5A", borderRadius: "5px" }} />
+                <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "labelColor", borderRadius: "5px" }} />
 
                 <input
                   type="file"
@@ -227,11 +227,11 @@ const ContactsInfoOfOwner = ({
                                 items?.owner_properties?.current_owner_folio?.total_money &&
                                 items?.owner_properties?.current_owner_folio?.regular_intervals ? (
                                 <p>
-                                  on balance of 
+                                  on balance of
                                   ৳{items?.owner_properties?.current_owner_folio?.balance
                                     ? items?.owner_properties?.current_owner_folio?.balance
                                     : ""}{" "}
-                                  /on total money in of 
+                                  /on total money in of
                                   ৳{items?.owner_properties?.current_owner_folio?.balance
                                     ? items?.owner_properties?.current_owner_folio?.total_money
                                     : ""}
@@ -320,7 +320,7 @@ const ContactsInfoOfOwner = ({
                           </Col>
                           <Col md={7}>
                             <p>
-                            ৳{items?.owner_properties?.current_owner_folio?.balance
+                              ৳{items?.owner_properties?.current_owner_folio?.balance
                                 ? items?.owner_properties?.current_owner_folio?.balance
                                 : "0.00"}
                             </p>
@@ -340,7 +340,7 @@ const ContactsInfoOfOwner = ({
                           </Col>
                           <Col md={7}>
                             <p>
-                            ৳{items?.owner_properties?.current_owner_folio?.withhold_amount
+                              ৳{items?.owner_properties?.current_owner_folio?.withhold_amount
                                 ? items?.owner_properties?.current_owner_folio?.withhold_amount
                                 : "0.00"}
                             </p>

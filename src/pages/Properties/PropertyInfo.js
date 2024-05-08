@@ -1429,7 +1429,7 @@ const PropertyInfo = props => {
                               className="mt-4 mt-sm-0"
                             >
                               <DropdownToggle
-                                className="btn btn-secondary btn-sm"
+                                className="btn btn-labelColor btn-sm"
                                 caret
                                 style={{ padding: "10px" }}
                               >
@@ -3650,7 +3650,7 @@ const PropertyInfo = props => {
                                   Money out
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                ৳{property_owner_info_data?.money_out ||
+                                  ৳{property_owner_info_data?.money_out ||
                                     "0.00"}
                                 </span>
                               </Col>
@@ -3673,7 +3673,7 @@ const PropertyInfo = props => {
                                   Uncleared
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                ৳{property_owner_info_data?.uncleared ||
+                                  ৳{property_owner_info_data?.uncleared ||
                                     "0.00"}
                                 </span>
                               </Col>
@@ -3696,7 +3696,7 @@ const PropertyInfo = props => {
                                   Bills pending
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                ৳{property_pending_bill?.total_bills_amount_sum_amount
+                                  ৳{property_pending_bill?.total_bills_amount_sum_amount
                                     ? property_pending_bill?.total_bills_amount_sum_amount
                                     : "0.00"}
                                 </span>
@@ -3721,7 +3721,7 @@ const PropertyInfo = props => {
                                 </span>
 
                                 <span className="text-muted d-flex justify-content-center">
-                                ৳{property_data?.pending_invoice_bill
+                                  ৳{property_data?.pending_invoice_bill
                                     ? property_data?.pending_invoice_bill
                                     : "0.00"}
                                 </span>
@@ -3745,7 +3745,7 @@ const PropertyInfo = props => {
                                   Withhold
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                ৳{property_owner_info_data?.withhold_amount
+                                  ৳{property_owner_info_data?.withhold_amount
                                     ? property_owner_info_data?.withhold_amount
                                     : "0.00"}
                                 </span>
@@ -3769,7 +3769,7 @@ const PropertyInfo = props => {
                                   Balance
                                 </span>
                                 <span className="text-muted d-flex justify-content-center">
-                                ৳{+property_owner_info_data?.money_in +
+                                  ৳{+property_owner_info_data?.money_in +
                                     (property_owner_info_data?.opening_balance
                                       ? +property_owner_info_data?.opening_balance
                                       : 0) ==

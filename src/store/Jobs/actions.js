@@ -119,7 +119,6 @@ export const getJobPropertyAccessFresh = (id) => {
 export const JobsList = (status, page, sizePerPage, search = null, sortField = null, sortValue = null) => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));
     let property_id = localStorage.getItem("owner_property_id");
-    // var url = `${process.env.REACT_APP_LOCALHOST}/jobs/index/with/status`;
     var url = `${process.env.REACT_APP_LOCALHOST}/jobs/index/with/status_ssr`;
     const formData = {
         status: status,
@@ -130,7 +129,6 @@ export const JobsList = (status, page, sizePerPage, search = null, sortField = n
         sortValue: sortValue,
         property_id: property_id,
     };
-    console.log(formData);
     return dispatch => {
         const headers = {
             "Content-Type": "application/json",
