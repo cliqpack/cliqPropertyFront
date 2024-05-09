@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.390e8594.css",
-    "main.js": "/static/js/main.7f6f6a5f.js",
+    "main.css": "/static/css/main.e8a27279.css",
+    "main.js": "/static/js/main.d4e90cd3.js",
     "static/js/498.20febb92.chunk.js": "/static/js/498.20febb92.chunk.js",
     "static/js/703.29855915.chunk.js": "/static/js/703.29855915.chunk.js",
     "static/js/513.bb30b1f2.chunk.js": "/static/js/513.bb30b1f2.chunk.js",
@@ -10,6 +10,7 @@
     "static/media/materialdesignicons-webfont.eot": "/static/media/materialdesignicons-webfont.52adde0de9840940801f.eot",
     "static/media/materialdesignicons-webfont.ttf?v=5.8.55": "/static/media/materialdesignicons-webfont.506bc8215df8660d8f04.ttf",
     "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.3a909e9bcf105f28ebe7.svg",
+    "static/media/newProperty.png": "/static/media/newProperty.0d7b4a6e4036ecd0e133.png",
     "static/media/boxicons.svg": "/static/media/boxicons.3e906787d0915a1e482c.svg",
     "static/media/fa-brands-400.svg": "/static/media/fa-brands-400.5f363d3d71c36033aff0.svg",
     "static/media/materialdesignicons-webfont.woff?v=5.8.55": "/static/media/materialdesignicons-webfont.d06df622bc47f0db9812.woff",
@@ -72,7 +73,6 @@
     "static/media/Logo realtyme.png": "/static/media/Logo realtyme.9eceb8a11fb3d76452d5.png",
     "static/media/profile-img.png": "/static/media/profile-img.43b59e598ba15abe6eab.png",
     "static/media/fa-regular-400.eot": "/static/media/fa-regular-400.0747be4cba2f8600544f.eot",
-    "static/media/color.png": "/static/media/color.57a83605a7418cc8e817.png",
     "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.c3146b3524e97475c094.ttf",
     "static/media/mail_realty_me_logo.png": "/static/media/mail_realty_me_logo.b761bb2ebfaa03a6af92.png",
     "static/media/dripicons-v2.woff": "/static/media/dripicons-v2.f19dcc0358afed69d277.woff",
@@ -102,14 +102,14 @@
     "static/media/logo.svg": "/static/media/logo.9901a8a015a7c672ad758f00c081e10c.svg",
     "static/media/icon-realestate.svg": "/static/media/icon-realestate.89b3968c3cd2e4c81dc2edb16cf3daf4.svg",
     "static/media/index.cjs": "/static/media/index.cd351d7c31d0d3fccf96.cjs",
-    "main.390e8594.css.map": "/static/css/main.390e8594.css.map",
-    "main.7f6f6a5f.js.map": "/static/js/main.7f6f6a5f.js.map",
+    "main.e8a27279.css.map": "/static/css/main.e8a27279.css.map",
+    "main.d4e90cd3.js.map": "/static/js/main.d4e90cd3.js.map",
     "498.20febb92.chunk.js.map": "/static/js/498.20febb92.chunk.js.map",
     "703.29855915.chunk.js.map": "/static/js/703.29855915.chunk.js.map",
     "513.bb30b1f2.chunk.js.map": "/static/js/513.bb30b1f2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.390e8594.css",
-    "static/js/main.7f6f6a5f.js"
+    "static/css/main.e8a27279.css",
+    "static/js/main.d4e90cd3.js"
   ]
 }
