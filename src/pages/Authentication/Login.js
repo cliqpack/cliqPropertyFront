@@ -37,7 +37,8 @@ import logoDark from "../../assets/images/new_myday_image.svg";
 import logoDarkNew from "../../assets/images/my_day_logo.png";
 import animation from "../../assets/images/Animation.gif";
 import property from "../../assets/images/property.png";
-import logoCliqProperty from '../../assets/images/color.png'
+import propertyNew from "../../assets/images/newProperty.png";
+import logoCliqProperty from '../../assets/images/logo_purple_large.png';
 import logoLongCliqProperty from '../../assets/images/color_long.png'
 
 
@@ -108,47 +109,24 @@ const Login = props => {
 
       <div className="my-5 pt-sm-5">
         <Container style={{ backgroundColor: "#F2F6FA" }}>
-          <Row className="justify-content-center gap-0" style={{ height: "600px" }}>
-            <Col md={6} className="p-0 m-0">
-              <div style={{ height: "100%", width: "100%", backgroundColor: "#153D58" }}>
-                <img src={property} height="100%" width="100%" style={{ objectFit: "contain" }} />
+          <Row className="justify-content-center gap-0" >
+            <Col md={6} className="backgroundImageLogin p-0 m-0" style={{ height: "600px" }}>
+              <div style={{ margin: "30px 0px 0px 30px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "550px" }}>
+                <div>
+                  <img src={logoCliqProperty} />
+                  <p style={{ color: "#FFF", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "50px" }}>Welcome to</p>
+                  <p style={{ color: "#FAB446", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "-15px" }}>CliqProperty</p>
+                </div>
+                <div>
+                  <p style={{ color: "#FFF", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>© 2024 All right reserved. Developed by <span style={{ color: "#FFC233", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>CliqPack Limited</span></p>
+                </div>
               </div>
             </Col>
-            {/* <Col md={6} lg={6} xl={5}> */}
             <Col md={6} className="p-0 m-0 my-auto" style={{ backgroundColor: "#F2F6FA", alignItems: "center", justifyContent: "center" }}>
               <div style={{ display: "flex", justifyContent: "center" }}>
-                {/* <Link to="/" className="auth-logo-light">
-                  <div className="avatar-md profile-user-wid mb-4">
-                    <span className="avatar-title rounded-circle bg-light">
-                      <img
-                            src={lightlogo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                    </span>
-                  </div>
-                </Link> */}
-                {/* <Link to="/" className="auth-logo-dark"> */}
-                <div className="avatar-lg profile-user-wid mb-2" style={{width: '200vw'}} >
-                  {/* <span
-                      className="avatar-title rounded-circle bg-light"
-                      style={{ borderRadius: "20% !important" }}
-                    > */}
-                  <img
-                    src={logoCliqProperty}
-                    alt=""
-                    className="p-1"
-                    height="100%"
-                    width="100%"
-                    style={{ marginTop: "-30px", objectFit: "contain" }}
-
-                  />
-                  {/* </span> */}
+                <div className="avatar-lg profile-user-wid mb-2" style={{ width: '200vw' }} >
                 </div>
-                {/* </Link> */}
               </div>
-              {/* <Card className="overflow-hidden" style={{ border: "none" }}> */}
               <div className="pt-0 align-items-center" style={{ backgroundColor: "#F2F6FA", padding: "0px 70px 0px 70px" }}>
                 <p style={{ fontSize: "25px" }}>Sign In</p>
                 <div className="p-2">
@@ -175,10 +153,9 @@ const Login = props => {
                   >
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
-                        <div className="mb-3">
-                          <Label for="email" className="form-label">
-                            Email
-                          </Label>
+
+                        <div className="form-group-new">
+
                           <Field
                             name="email"
                             type="text"
@@ -189,17 +166,21 @@ const Login = props => {
                                 : "")
                             }
                           />
+
+                          <Label for="email" className="form-label">
+                            Email
+                          </Label>
+
                           <ErrorMessage
                             name="email"
                             component="div"
                             className="invalid-feedback"
                           />
                         </div>
-                        <div className="mb-3">
-                          <Label for="password" className="form-label">
-                            Password
-                          </Label>
+
+                        <div className="form-group-new">
                           <div className="input-group auth-pass-inputgroup">
+
                             <Field
                               name="password"
                               type={show ? "password" : "text"}
@@ -220,13 +201,18 @@ const Login = props => {
                             >
                               <i className="mdi mdi-eye-outline"></i>
                             </button>
+
                           </div>
-                          <ErrorMessage
-                            name="password"
-                            component="div"
-                            className="invalid-feedback"
-                          />
+                          <Label for="password" className="form-label">
+                            Password
+                          </Label>
                         </div>
+                        <ErrorMessage
+                          name="password"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+
 
                         <div className="form-check">
                           <input
@@ -262,18 +248,18 @@ const Login = props => {
                 </div>
               </div>
               {/* </Card> */}
-              <div className="mt-5 text-center">
-                {/* <p>
+              {/* <div className="mt-5 text-center">
+                <p>
                     Don&apos;t have an account ?
                     <Link to="register" className="fw-medium text-primary">
                       Signup Now
                     </Link>
-                  </p> */}
+                  </p>
                 <p>
                   © {new Date().getFullYear()} CliqProperty. Crafted with
                   <i className="mdi mdi-heart text-danger" /> by CliqPack
                 </p>
-              </div>
+              </div> */}
             </Col>
           </Row>
         </Container>

@@ -31,6 +31,8 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import profileImg from "../../../assets/images/profile-img.png";
 import logoImg from "../../../assets/images/Asset-col.png";
 import toastr from "toastr";
+import logoCliqProperty from '../../../assets/images/logo_purple_large.png';
+
 
 const Reg = props => {
   const { id } = useParams();
@@ -60,12 +62,24 @@ const Reg = props => {
         </Link>
       </div>
       <div className="account-pages my-5 pt-sm-5">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={8}>
-              <Card className="overflow-hidden">
-                <div className="bg-primary bg-soft">
-                  <Row>
+        <Container style={{ backgroundColor: "#F2F6FA" }}>
+          <Row className="justify-content-center gap-0" >
+            <Col md={6} className="backgroundImageLogin p-0 m-0" style={{ height: "600px" }}>
+              <div style={{ margin: "30px 0px 0px 30px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "550px" }}>
+                <div>
+                  <img src={logoCliqProperty} />
+                  <p style={{ color: "#FFF", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "50px" }}>Welcome to</p>
+                  <p style={{ color: "#FAB446", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "-15px" }}>CliqProperty</p>
+                </div>
+                <div>
+                  <p style={{ color: "#FFF", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>© 2024 All right reserved. Developed by <span style={{ color: "#FFC233", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>CliqPack Limited</span></p>
+                </div>
+              </div>
+            </Col>
+            <Col md={6} className="p-4 m-0 my-auto" style={{ backgroundColor: "#F2F6FA", alignItems: "center", justifyContent: "center" }}>
+              {/* <Card className="overflow-hidden"> */}
+              <div>
+                {/* <Row>
                     <Col className="col-7">
                       <div className="text-primary p-4">
                         <h5 className="text-primary">CliqProperty Register</h5>
@@ -75,10 +89,10 @@ const Reg = props => {
                     <Col className="col-5 align-self-end">
                       <img src={profileImg} alt="" className="img-fluid" />
                     </Col>
-                  </Row>
-                </div>
-                <CardBody className="pt-0">
-                  <div>
+                  </Row> */}
+              </div>
+              {/* <CardBody className="pt-0"> */}
+              {/* <div>
                     <Link to="/">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
@@ -91,260 +105,263 @@ const Reg = props => {
                         </span>
                       </div>
                     </Link>
-                  </div>
-                  <div className="p-2 ">
-                    <Formik
-                      innerRef={ref}
-                      enableReinitialize={true}
-                      initialValues={{
-                        password: (state && state.password) || "",
-                        confirm_password:
-                          (state && state.confirm_password) || "",
-                        fname: (state && state.fname) || "",
-                        lname: (state && state.lname) || "",
-                        work_phone: (state && state.work_phone) || "",
-                        mobile_phone: (state && state.mobile_phone) || "",
-                        user_type: (state && state.user_type) || "",
-                      }}
-                      validationSchema={Yup.object().shape({
-                        password: Yup.string().required(
-                          "Please Enter Valid Password"
-                        ),
-                        confirm_password: Yup.string()
-                          .oneOf(
-                            [Yup.ref("password"), ""],
-                            "Password Must Match"
-                          )
-                          .required("Please Confirm Your Password"),
-                        fname: Yup.string().required(
-                          "Please Enter Valid First Name"
-                        ),
-                        lname: Yup.string().required(
-                          "Please Enter Valid Last Name"
-                        ),
-                        user_type: Yup.string().required(
-                          "Please Select User Type"
-                        ),
-                      })}
-                      onSubmit={values => {
-                        props.registerOwnerTenant(values, id);
-                      }}
-                    >
-                      {({ errors, status, touched }) => (
-                        <Form className="form-horizontal">
-                          <Row>
-                            <Col md={4} lg={4} xl={4}>
-                              <div className="mb-3">
-                                <Label for="fname" className="form-label">
-                                  First Name
-                                </Label>
-                                <Field
-                                  name="fname"
-                                  type="text"
-                                  placeholder='First Name'
-                                  className={
-                                    "form-control" +
-                                    (errors.fname && touched.fname
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <ErrorMessage
-                                  name="fname"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col md={4} lg={4} xl={4}>
-                              <div className="mb-3">
-                                <Label for="lname" className="form-label">
-                                  Last Name
-                                </Label>
-                                <Field
-                                  name="lname"
-                                  type="text"
-                                  placeholder='Last Name'
+                  </div> */}
+              <div className="p-2 ">
+                <Formik
+                  innerRef={ref}
+                  enableReinitialize={true}
+                  initialValues={{
+                    password: (state && state.password) || "",
+                    confirm_password:
+                      (state && state.confirm_password) || "",
+                    fname: (state && state.fname) || "",
+                    lname: (state && state.lname) || "",
+                    work_phone: (state && state.work_phone) || "",
+                    mobile_phone: (state && state.mobile_phone) || "",
+                    user_type: (state && state.user_type) || "",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    password: Yup.string().required(
+                      "Please Enter Valid Password"
+                    ),
+                    confirm_password: Yup.string()
+                      .oneOf(
+                        [Yup.ref("password"), ""],
+                        "Password Must Match"
+                      )
+                      .required("Please Confirm Your Password"),
+                    fname: Yup.string().required(
+                      "Please Enter Valid First Name"
+                    ),
+                    lname: Yup.string().required(
+                      "Please Enter Valid Last Name"
+                    ),
+                    user_type: Yup.string().required(
+                      "Please Select User Type"
+                    ),
+                  })}
+                  onSubmit={values => {
+                    props.registerOwnerTenant(values, id);
+                  }}
+                >
+                  {({ errors, status, touched }) => (
+                    <Form className="form-horizontal">
+                      <Row>
+                        <Col md={4} lg={4} xl={4}>
+                          <div className="form-group-new">
 
-                                  className={
-                                    "form-control" +
-                                    (errors.lname && touched.lname
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <ErrorMessage
-                                  name="lname"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col md={4} lg={4} xl={4}>
-                              <div className="mb-3">
-                                <label className="form-label">
-                                  Customer Type
-                                </label>
+                            <Field
+                              name="fname"
+                              type="text"
+                              placeholder='First Name'
+                              className={
+                                "form-control" +
+                                (errors.fname && touched.fname
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage
+                              name="fname"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <Label for="fname" className="form-label">
+                              First Name
+                            </Label>
+                          </div>
+                        </Col>
+                        <Col md={4} lg={4} xl={4}>
+                          <div className="form-group-new">
 
-                                <select
-                                  name="user_type"
-                                  className={
-                                    "form-control" +
-                                    (errors.user_type && touched.user_type
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={e => {
-                                    handleChange(e);
-                                  }}
-                                >
-                                  <option value={""}>Select User</option>
-                                  <option value={"Owner"}>Owner</option>
-                                  <option value={"Tenant"}>Tenant</option>
-                                </select>
-                                <ErrorMessage
-                                  name="user_type"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col md={6} lg={6} xl={6}>
-                              <div className="mb-3">
-                                <Label for="email" className="form-label">
-                                  Mobile Phone
-                                </Label>
-                                <Field
-                                  name="mobile_phone"
-                                  type="number"
-                                  placeholder='Mobile Phone'
-                                  className={
-                                    "form-control" +
-                                    (errors.mobile_phone && touched.mobile_phone
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <ErrorMessage
-                                  name="mobile_phone"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col md={6} lg={6} xl={6}>
-                              <div className="mb-3">
-                                <Label for="email" className="form-label">
-                                  Work Phone
-                                </Label>
-                                <Field
-                                  name="work_phone"
-                                  type="number"
-                                  placeholder='Work Phone'
+                            <Field
+                              name="lname"
+                              type="text"
+                              placeholder='Last Name'
 
-                                  className={
-                                    "form-control" +
-                                    (errors.work_phone && touched.work_phone
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <ErrorMessage
-                                  name="work_phone"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col md={6} lg={6} xl={6}>
-                              <div className="mb-3">
-                                <Label for="password" className="form-label">
-                                  Password
-                                </Label>
-                                <Field
-                                  name="password"
-                                  autoComplete="true"
-                                  type="password"
-                                  placeholder='********'
-
-                                  className={
-                                    "form-control" +
-                                    (errors.password && touched.password
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <ErrorMessage
-                                  name="password"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col md={6} lg={6} xl={6}>
-                              <div className="mb-3">
-                                <Label
-                                  for="confirm_password"
-                                  className="form-label"
-                                >
-                                  Confirm Password
-                                </Label>
-                                <Field
-                                  name="confirm_password"
-                                  autoComplete="true"
-                                  type="password"
-                                  placeholder='********'
-                                  className={
-                                    "form-control" +
-                                    (errors.confirm_password &&
-                                      touched.confirm_password
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <ErrorMessage
-                                  name="confirm_password"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-
-                          <div className="mt-4 d-grid">
-                            <button
-                              className="btn btn-info btn-block"
-                              type="submit"
+                              className={
+                                "form-control" +
+                                (errors.lname && touched.lname
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage
+                              name="lname"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <Label for="lname" className="form-label">
+                              Last Name
+                            </Label>
+                          </div>
+                        </Col>
+                        <Col md={4} lg={4} xl={4}>
+                          <div className="form-group-new">
+                            <select
+                              name="user_type"
+                              className={
+                                "form-control" +
+                                (errors.user_type && touched.user_type
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={e => {
+                                handleChange(e);
+                              }}
                             >
-                              Register
-                            </button>
+                              <option value={""}>Select User</option>
+                              <option value={"Owner"}>Owner</option>
+                              <option value={"Tenant"}>Tenant</option>
+                            </select>
+                            <ErrorMessage
+                              name="user_type"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <label className="form-label">
+                              Customer Type
+                            </label>
                           </div>
 
-                          <div className="mt-4 text-center">
-                            <p className="mb-0">
-                              By registering you agree to the My Day{" "}
-                              <Link to="#" className="text-primary">
-                                Terms of Use
-                              </Link>
-                            </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6} lg={6} xl={6}>
+                          <div className="form-group-new">
+                            <Field
+                              name="mobile_phone"
+                              type="number"
+                              placeholder='Mobile Phone'
+                              className={
+                                "form-control" +
+                                (errors.mobile_phone && touched.mobile_phone
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage
+                              name="mobile_phone"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <Label for="email" className="form-label">
+                              Mobile Phone
+                            </Label>
                           </div>
-                        </Form>
-                      )}
-                    </Formik>
-                  </div>
-                </CardBody>
-              </Card>
-              <div className="mt-5 text-center">
+                        </Col>
+                        <Col md={6} lg={6} xl={6}>
+                          <div className="form-group-new">
+                            <Field
+                              name="work_phone"
+                              type="number"
+                              placeholder='Work Phone'
+
+                              className={
+                                "form-control" +
+                                (errors.work_phone && touched.work_phone
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage
+                              name="work_phone"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <Label for="email" className="form-label">
+                              Work Phone
+                            </Label>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6} lg={6} xl={6}>
+                          <div className="form-group-new">
+                            <Field
+                              name="password"
+                              autoComplete="true"
+                              type="password"
+                              placeholder='********'
+
+                              className={
+                                "form-control" +
+                                (errors.password && touched.password
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage
+                              name="password"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <Label for="password" className="form-label">
+                              Password
+                            </Label>
+                          </div>
+                        </Col>
+                        <Col md={6} lg={6} xl={6}>
+                          <div className="form-group-new">
+
+                            <Field
+                              name="confirm_password"
+                              autoComplete="true"
+                              type="password"
+                              placeholder='********'
+                              className={
+                                "form-control" +
+                                (errors.confirm_password &&
+                                  touched.confirm_password
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage
+                              name="confirm_password"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                            <Label
+                              for="confirm_password"
+                              className="form-label"
+                            >
+                              Confirm Password
+                            </Label>
+                          </div>
+                        </Col>
+                      </Row>
+
+                      <div className="mt-2 d-grid">
+                        <button
+                          className="btn btn-info btn-block"
+                          type="submit"
+                        >
+                          Register
+                        </button>
+                      </div>
+
+                      {/* <div className="mt-4 text-center">
+                        <p className="mb-0">
+                          By registering you agree to the My Day{" "}
+                          <Link to="#" className="text-primary">
+                            Terms of Use
+                          </Link>
+                        </p>
+                      </div> */}
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+              {/* </CardBody>
+              </Card> */}
+              <div className="mt-3 text-center">
                 <p>
                   Already have an account ?{" "}
                   <Link to="/login" className="fw-medium text-primary">
@@ -352,10 +369,10 @@ const Reg = props => {
                     Login
                   </Link>{" "}
                 </p>
-                <p>
+                {/* <p>
                   © {new Date().getFullYear()} CliqProperty. Crafted with{" "}
                   <i className="mdi mdi-heart text-danger" /> by CliqTech
-                </p>
+                </p> */}
               </div>
             </Col>
           </Row>

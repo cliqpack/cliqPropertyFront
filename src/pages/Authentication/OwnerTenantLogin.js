@@ -21,6 +21,7 @@ import animation from "../../assets/images/Animation.gif";
 import logoDark from "../../assets/images/new_myday_image.svg";
 import logoDarkNew from "../../assets/images/my_day_logo.png";
 import property from "../../assets/images/property.png";
+import logoCliqProperty from '../../assets/images/logo_purple_large.png';
 
 const OwnerTenantLogin = props => {
   const [state, setState] = useState();
@@ -50,29 +51,27 @@ const OwnerTenantLogin = props => {
       <div className="account-pages my-5 pt-sm-5">
         <Container style={{ backgroundColor: "#F2F6FA" }}>
           <Row className="justify-content-center gap-0" style={{ height: "600px" }}>
-            <Col md={6} className="p-0 m-0">
+            {/* <Col md={6} className="p-0 m-0">
               <div style={{ height: "100%", width: "100%", backgroundColor: "#153D58" }}>
                 <img src={property} height="100%" width="100%" style={{ objectFit: "contain" }} />
+              </div>
+            </Col> */}
+            <Col md={6} className="backgroundImageLogin p-0 m-0" style={{ height: "600px" }}>
+              <div style={{ margin: "30px 0px 0px 30px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "550px" }}>
+                <div>
+                  <img src={logoCliqProperty} />
+                  <p style={{ color: "#FFF", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "50px" }}>Welcome to</p>
+                  <p style={{ color: "#FAB446", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "-15px" }}>CliqProperty</p>
+                </div>
+                <div>
+                  <p style={{ color: "#FFF", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>© 2024 All right reserved. Developed by <span style={{ color: "#FFC233", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>CliqPack Limited</span></p>
+                </div>
               </div>
             </Col>
             <Col md={6} className="p-0 m-0 my-auto" style={{ backgroundColor: "#F2F6FA", alignItems: "center", justifyContent: "center" }}>
 
               <CardBody className="pt-0">
                 <div style={{ display: "flex", justifyContent: "center" }}>
-
-
-                  <div className="avatar-lg profile-user-wid mb-2 " >
-
-                    <img
-                      src={logoDarkNew}
-                      alt=""
-                      className="p-1"
-                      style={{ width: "100%", height: "100%", marginTop: "-30px", objectFit: "contain" }}
-                      height={50}
-                    />
-
-                  </div>
-
                 </div>
                 <div className="pt-0 align-items-center" style={{ backgroundColor: "#F2F6FA", padding: "0px 70px 0px 70px" }}>
                   <p style={{ fontSize: "25px" }}>Sign Up</p>
@@ -98,10 +97,8 @@ const OwnerTenantLogin = props => {
                   >
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
-                        <div className="mb-3">
-                          <Label for="email" className="form-label">
-                            Email
-                          </Label>
+                        <div className="form-group-new">
+
                           <Field
                             name="email"
                             type="text"
@@ -118,9 +115,12 @@ const OwnerTenantLogin = props => {
                             component="div"
                             className="invalid-feedback"
                           />
+                          <Label for="email" className="form-label">
+                            Email
+                          </Label>
                         </div>
 
-                        <div className="mt-3 d-grid">
+                        <div className="d-grid">
                           {mailStatus == 1 && (
                             <>
                               <button
@@ -196,12 +196,12 @@ const OwnerTenantLogin = props => {
                 </div>
               </CardBody>
 
-              <div className="mt-5 text-center">
+              {/* <div className="mt-5 text-center">
                 <p>
                   © {new Date().getFullYear()} myday. Crafted with
                   <i className="mdi mdi-heart text-danger" /> by CliqPack
                 </p>
-              </div>
+              </div> */}
             </Col>
           </Row>
         </Container>

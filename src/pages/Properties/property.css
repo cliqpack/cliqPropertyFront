@@ -48,6 +48,11 @@
     z-index: 20;
 }
 
+.backgroundImageLogin {
+    background-image: url('../../assets/images/newProperty.png');
+    height: 600px;
+    width: 100%;
+}
 
 .form-group-new>label {
     bottom: 50px;
