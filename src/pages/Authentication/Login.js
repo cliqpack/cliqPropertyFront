@@ -178,42 +178,54 @@ const Login = props => {
                           />
                         </div>
 
-                        <div className="form-group-new">
-                          <div className="input-group auth-pass-inputgroup">
+                        <Row>
+                          <Col md={12} style={{ display: "flex", }}>
+                            <Col md={11}>
+                              <div className="form-group-new">
+                                {/* <div className="input-group auth-pass-inputgroup"> */}
 
-                            <Field
-                              name="password"
-                              type={show ? "password" : "text"}
-                              autoComplete="true"
-                              className={
-                                "form-control" +
-                                (errors.password && touched.password
-                                  ? " is-invalid"
-                                  : "")
-                              }
-                            />
-                            <button
-                              className="btn btn-light "
-                              type="button"
-                              id="password-addon"
-                              onClick={() => setShow(prev => !prev)}
-                              style={{ border: "1px solid #ced4da" }}
-                            >
-                              <i className="mdi mdi-eye-outline"></i>
-                            </button>
-
-                          </div>
-                          <Label for="password" className="form-label">
-                            Password
-                          </Label>
-                        </div>
-                        <ErrorMessage
-                          name="password"
-                          component="div"
-                          className="invalid-feedback"
-                        />
+                                <Field
+                                  name="password"
+                                  type={show ? "password" : "text"}
+                                  autoComplete="true"
+                                  className={
+                                    "form-control" +
+                                    (errors.password && touched.password
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <Label for="password" className="form-label">
+                                  Password
+                                </Label>
 
 
+                                <ErrorMessage
+                                  name="password"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+
+                              </div>
+
+                              {/* </div> */}
+                            </Col>
+                            <Col md={1}>
+                              <button
+                                className="btn btn-light "
+                                type="button"
+                                id="password-addon"
+                                onClick={() => setShow(prev => !prev)}
+                                style={{ border: "1px solid #ced4da" }}
+                              >
+                                <i className="mdi mdi-eye-outline"></i>
+                              </button>
+                            </Col>
+
+
+
+                          </Col>
+                        </Row>
                         <div className="form-check">
                           <input
                             type="checkbox"
@@ -248,18 +260,7 @@ const Login = props => {
                 </div>
               </div>
               {/* </Card> */}
-              {/* <div className="mt-5 text-center">
-                <p>
-                    Don&apos;t have an account ?
-                    <Link to="register" className="fw-medium text-primary">
-                      Signup Now
-                    </Link>
-                  </p>
-                <p>
-                  © {new Date().getFullYear()} CliqProperty. Crafted with
-                  <i className="mdi mdi-heart text-danger" /> by CliqPack
-                </p>
-              </div> */}
+
             </Col>
           </Row>
         </Container>

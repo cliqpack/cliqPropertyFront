@@ -149,39 +149,47 @@ const OwnerLogin = props => {
                         </div>
 
 
-                        <div className="form-group-new">
-                          <div className="input-group auth-pass-inputgroup">
-                            <Field
-                              name="password"
-                              type={show ? "password" : "text"}
-                              autoComplete="true"
-                              className={
-                                "form-control" +
-                                (errors.password && touched.password
-                                  ? " is-invalid"
-                                  : "")
-                              }
-                            />
-                            <button
-                              className="btn btn-light "
-                              type="button"
-                              id="password-addon"
-                              onClick={() => setShow(prev => !prev)}
-                              style={{ border: "1px solid #ced4da" }}
-                            >
-                              <i className="mdi mdi-eye-outline"></i>
-                            </button>
-                          </div>
-                          <Label for="password" className="form-label">
-                            Password
-                          </Label>
-                        </div>
-                        <ErrorMessage
-                          name="password"
-                          component="div"
-                          className="invalid-feedback"
-                        />
+                        <Row>
+                          <Col md={12} style={{ display: "flex", }}>
+                            <Col md={11}>
+                              <div className="form-group-new">
+                                <Field
+                                  name="password"
+                                  type={show ? "password" : "text"}
+                                  autoComplete="true"
+                                  className={
+                                    "form-control" +
+                                    (errors.password && touched.password
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
 
+
+
+                                <Label for="password" className="form-label">
+                                  Password
+                                </Label>
+                                <ErrorMessage
+                                  name="password"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
+                            </Col>
+                            <Col md={1}>
+                              <button
+                                className="btn btn-light "
+                                type="button"
+                                id="password-addon"
+                                onClick={() => setShow(prev => !prev)}
+                                style={{ border: "1px solid #ced4da" }}
+                              >
+                                <i className="mdi mdi-eye-outline"></i>
+                              </button>
+                            </Col>
+                          </Col>
+                        </Row>
 
                         <div className="form-check">
                           <input

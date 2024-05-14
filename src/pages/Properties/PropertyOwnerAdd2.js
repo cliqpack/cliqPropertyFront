@@ -2595,16 +2595,8 @@ const PropertyOwnerAdd2 = props => {
                                                                 state2.new_folio ==
                                                                   false ? (
                                                                   <Row className="d-flex mb-2 my-3">
-                                                                    <Col md={3}>
-                                                                      {/* <Label
-                                                                for="folio"
-                                                                className="form-label"
-                                                              >
-                                                                Choose folio
-                                                              </Label> */}
-                                                                    </Col>
 
-                                                                    <Col md={3}>
+                                                                    <Col md={6}>
                                                                       <div className="form-group-new">
                                                                         <Select
                                                                           value={
@@ -3176,57 +3168,61 @@ const PropertyOwnerAdd2 = props => {
                                                               <div className="w-100">
                                                                 <Row className="mt-4 mb-3 justify-content-evenly align-items-start">
                                                                   <Col
-                                                                    md={12}
+                                                                    md={12} style={{ display: "flex" }}
                                                                   >
-                                                                    <div className="d-flex">
-                                                                      <div className="d-flex flex-column w-100">
-                                                                        <div className="form-group-new">
-                                                                          <Field
-                                                                            name="withhold_amount"
-                                                                            type="text"
-                                                                            placeholder="0.00"
-                                                                            className={
-                                                                              "form-control" +
-                                                                              (errors.withhold_amount &&
-                                                                                touched.withhold_amount
-                                                                                ? " is-invalid"
-                                                                                : "")
-                                                                            }
-                                                                            value={
-                                                                              state2.withhold_amount
-                                                                            }
-                                                                            style={{
-                                                                              borderTopRightRadius: 0,
-                                                                              borderBottomRightRadius: 0,
-                                                                            }}
 
-                                                                            onChange={
-                                                                              handlePropertyFormValues2
-                                                                            }
-                                                                          />
-                                                                          <label htmlFor="usr">   Withhold amount </label>
-
-                                                                        </div>
-                                                                        <span className="input-group-append rounded-start">
-                                                                          <span
-                                                                            className="input-group-text"
-                                                                            style={{
-                                                                              borderTopLeftRadius: 0,
-                                                                              borderBottomLeftRadius: 0,
-                                                                            }}
-                                                                          >
-                                                                            ৳
-                                                                          </span>
-                                                                        </span>
-
-
-                                                                        <ErrorMessage
+                                                                    <Col
+                                                                      md={11}
+                                                                    >
+                                                                      <div className="form-group-new">
+                                                                        <Field
                                                                           name="withhold_amount"
-                                                                          component="div"
-                                                                          className="invalid-feedback"
+                                                                          type="text"
+                                                                          placeholder="0.00"
+                                                                          className={
+                                                                            "form-control" +
+                                                                            (errors.withhold_amount &&
+                                                                              touched.withhold_amount
+                                                                              ? " is-invalid"
+                                                                              : "")
+                                                                          }
+                                                                          value={
+                                                                            state2.withhold_amount
+                                                                          }
+                                                                          style={{
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
+                                                                          }}
+
+                                                                          onChange={
+                                                                            handlePropertyFormValues2
+                                                                          }
                                                                         />
+                                                                        <label htmlFor="usr">Withhold amount </label>
+
                                                                       </div>
-                                                                    </div>
+                                                                    </Col>
+                                                                    <Col md={1}>
+                                                                      <span className="input-group-append rounded-start">
+                                                                        <span
+                                                                          className="input-group-text"
+                                                                          style={{
+                                                                            borderTopLeftRadius: 0,
+                                                                            borderBottomLeftRadius: 0,
+                                                                          }}
+                                                                        >
+                                                                          ৳
+                                                                        </span>
+                                                                      </span>
+                                                                    </Col>
+
+                                                                    <ErrorMessage
+                                                                      name="withhold_amount"
+                                                                      component="div"
+                                                                      className="invalid-feedback"
+                                                                    />
+
+
                                                                   </Col>
                                                                 </Row>
 
