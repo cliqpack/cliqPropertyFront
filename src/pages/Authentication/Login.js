@@ -113,13 +113,13 @@ const Login = props => {
           <div style={{ padding: "50px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100vh" }}>
             <div>
               <div style={{ width: '80px' }}>
-                <img src={logoCliqProperty} style={{ width: '100%' }}/>
+                <img src={logoCliqProperty} style={{ width: '100%' }} />
               </div>
               <p style={{ color: "#FFF", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "50px" }}>Welcome to</p>
               <p style={{ color: "#FAB446", fontSize: "46px", fontStyle: "normal", fontWeight: "600", lineHeight: "132%", marginTop: "-15px" }}>CliqProperty</p>
             </div>
             <div style={{ display: 'flex', flexDirection: "column", justifyContent: "flex-end" }}>
-              <p style={{ color: "#FFF", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>© { moment().year() } All right reserved. Developed by <span style={{ color: "#FFC233", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>CliqPack Limited</span></p>
+              <p style={{ color: "#FFF", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>© {moment().year()} All right reserved. Developed by <span style={{ color: "#FFC233", fontSize: "14px", fontStyle: "normal", fontWeight: "400" }}>CliqPack Limited</span></p>
             </div>
           </div>
         </Col>
@@ -179,42 +179,54 @@ const Login = props => {
                       />
                     </div>
 
-                    <div className="form-group-new">
-                      <div className="input-group auth-pass-inputgroup">
+                    <Row>
+                      <Col md={12} style={{ display: "flex", }}>
+                        <Col md={11}>
+                          <div className="form-group-new">
+                            {/* <div className="input-group auth-pass-inputgroup"> */}
 
-                        <Field
-                          name="password"
-                          type={show ? "password" : "text"}
-                          autoComplete="true"
-                          className={
-                            "form-control" +
-                            (errors.password && touched.password
-                              ? " is-invalid"
-                              : "")
-                          }
-                        />
-                        <button
-                          className="btn btn-light "
-                          type="button"
-                          id="password-addon"
-                          onClick={() => setShow(prev => !prev)}
-                          style={{ border: "1px solid #ced4da" }}
-                        >
-                          <i className="mdi mdi-eye-outline"></i>
-                        </button>
-
-                      </div>
-                      <Label for="password" className="form-label">
-                        Password
-                      </Label>
-                    </div>
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="invalid-feedback"
-                    />
+                            <Field
+                              name="password"
+                              type={show ? "password" : "text"}
+                              autoComplete="true"
+                              className={
+                                "form-control" +
+                                (errors.password && touched.password
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                            />
+                            <Label for="password" className="form-label">
+                              Password
+                            </Label>
 
 
+                            <ErrorMessage
+                              name="password"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+
+                          </div>
+
+                          {/* </div> */}
+                        </Col>
+                        <Col md={1}>
+                          <button
+                            className="btn btn-light "
+                            type="button"
+                            id="password-addon"
+                            onClick={() => setShow(prev => !prev)}
+                            style={{ border: "1px solid #ced4da" }}
+                          >
+                            <i className="mdi mdi-eye-outline"></i>
+                          </button>
+                        </Col>
+
+
+
+                      </Col>
+                    </Row>
                     <div className="form-check">
                       <input
                         type="checkbox"
@@ -249,18 +261,7 @@ const Login = props => {
             </div>
           </div>
           {/* </Card> */}
-          {/* <div className="mt-5 text-center">
-                <p>
-                    Don&apos;t have an account ?
-                    <Link to="register" className="fw-medium text-primary">
-                      Signup Now
-                    </Link>
-                  </p>
-                <p>
-                  © {new Date().getFullYear()} CliqProperty. Crafted with
-                  <i className="mdi mdi-heart text-danger" /> by CliqPack
-                </p>
-              </div> */}
+
         </Col>
       </Row>
     </Container>

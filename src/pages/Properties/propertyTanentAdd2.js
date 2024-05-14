@@ -2621,7 +2621,7 @@ const PropertyTanentAdd2 = props => {
                                                                 </Label>
                                                               </Col> */}
                                                               <Col
-                                                                md={3}
+                                                                md={4}
                                                                 className="d-flex"
                                                               >
                                                                 <div className="form-group-new">
@@ -2648,7 +2648,7 @@ const PropertyTanentAdd2 = props => {
                                                                       handlePropertyFormTwoValues
                                                                     }
                                                                   />
-                                                                  <label htmlFor="usr"> Security Deposit required</label>
+                                                                  <label htmlFor="usr"> Security Deposit </label>
                                                                 </div>
                                                                 <span className="input-group-append">
                                                                   <span
