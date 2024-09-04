@@ -226,7 +226,7 @@ export default function SupplierFolio() {
             {" "}
             {/* {row?.type == "Bill" && `$${cell}`}
           {row?.type == "Payment" && `$${cell}`} */}
-            {cell && `$${cell}`}
+            {cell && `৳${cell}`}
         </span>
     );
 
@@ -235,7 +235,7 @@ export default function SupplierFolio() {
             {" "}
             {/* {row?.type == "Tenant Receipt" && `$${cell}`}
           {row?.type == "Folio Receipt" && `$${cell}`} */}
-            {cell && `$${cell}`}
+            {cell && `৳${cell}`}
         </span>
     );
 
@@ -366,7 +366,7 @@ export default function SupplierFolio() {
                 className={`badge rounded-pill p-1 ${balance >= cell ? "bg-success" : "bg-danger"
                     }`}
             >
-                ${cell}
+                ৳{cell}
             </span>
         );
         return amount;
@@ -374,9 +374,9 @@ export default function SupplierFolio() {
 
 
     const folioBalanceFormatter = (cell, row) => (
-        <span>${row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
+        <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
     );
-    const paidFormatter = (cell, row) => <span>${row.paid ? row.paid : 0}</span>;
+    const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
 
 
     const pendingBillData = [
@@ -610,7 +610,7 @@ export default function SupplierFolio() {
     ];
 
     const invAmountFormatter = (cell, row) => {
-        let amount = <span>${cell}</span>;
+        let amount = <span>৳{cell}</span>;
         return amount;
     };
 
@@ -895,7 +895,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Opening</span>
                                                         <span className="text-muted">
-                                                            ${supplier_folio_info_data?.data?.opening || "0.00"}
+                                                        ৳{supplier_folio_info_data?.data?.opening || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -912,7 +912,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Money in</span>
                                                         <span className="text-muted">
-                                                            ${supplier_folio_info_data?.data?.money_in || "0.00"}
+                                                        ৳{supplier_folio_info_data?.data?.money_in || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -932,7 +932,7 @@ export default function SupplierFolio() {
                                                         </span>
                                                         <span className="text-muted">
                                                             {console.log(supplier_folio_info_data?.data?.money_out, '----')}
-                                                            ${supplier_folio_info_data?.data?.money_out || "0.00"}
+                                                            ৳{supplier_folio_info_data?.data?.money_out || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -951,7 +951,7 @@ export default function SupplierFolio() {
                                                             Uncleared
                                                         </span>
                                                         <span className="text-muted">
-                                                            ${supplier_folio_info_data?.data?.uncleared || "0.00"}
+                                                        ৳{supplier_folio_info_data?.data?.uncleared || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -970,7 +970,7 @@ export default function SupplierFolio() {
                                                             Payments pending
                                                         </span>
                                                         <span className="text-muted">
-                                                            $
+                                                        ৳
                                                             {supplier_folio_info_data?.data
                                                                 ?.total_bills_amount_sum_amount
                                                                 ? supplier_folio_info_data?.data
@@ -994,7 +994,7 @@ export default function SupplierFolio() {
                                                             Invoices pending
                                                         </span>
                                                         <span className="text-muted">
-                                                            $
+                                                            ৳
                                                             {supplier_folio_info_data?.data?.pending_invoice_bill
                                                                 ? supplier_folio_info_data?.data?.pending_invoice_bill
                                                                 : "0.00"}
@@ -1014,7 +1014,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Withhold</span>
                                                         <span className="text-muted">
-                                                            $
+                                                            ৳
                                                             {supplier_folio_info_data?.data?.withhold_amount
                                                                 ? supplier_folio_info_data?.data?.withhold_amount
                                                                 : "0.00"}
@@ -1034,7 +1034,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Balance</span>
                                                         <span className="text-muted">
-                                                            ${supplier_folio_info_data?.data?.balance > 0 ? supplier_folio_info_data?.data?.balance : "0.00"}
+                                                        ৳{supplier_folio_info_data?.data?.balance > 0 ? supplier_folio_info_data?.data?.balance : "0.00"}
                                                         </span>
                                                     </Col>
                                                 </Row>

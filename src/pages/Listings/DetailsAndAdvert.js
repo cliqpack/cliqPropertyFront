@@ -1112,9 +1112,9 @@ const DetailsAndAdvert = props => {
                             <Row className="d-flex justify-content-between">
                               <Col>
                                 <span className="card-title text-primary">
-                                  {rentalListingData?.rent ? `$${rentalListingData?.rent}` : ""} per week
+                                  {rentalListingData?.rent ? `৳${rentalListingData?.rent}` : ""} per week
                                 </span>{" "}
-                                <br />{rentalListingData?.bond ? `$${rentalListingData?.bond}` : ''} Security Deposit
+                                <br />{rentalListingData?.bond ? `৳${rentalListingData?.bond}` : ''} Security Deposit
 
                               </Col>
                               <Col className="d-flex justify-content-end">

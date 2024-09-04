@@ -208,7 +208,7 @@ const OTJobInfo = props => {
                               <Row key={key} className='px-2 mt-1 py-3 rounded' >
                                 <Col md={6}>
                                   <div className="fw-bold">{item.supplier.first_name} {item.supplier.last_name}</div>
-                                  <div>{t('Amount')} <span className="fw-bold">${item.amount}</span></div>
+                                  <div>{t('Amount')} <span className="fw-bold">৳{item.amount}</span></div>
                                   <div>{t('Reference')} <span className="fw-bold">{item.reference}</span></div>
                                 </Col>
                                 <Col md={6} className='d-flex justify-content-end'>
@@ -236,7 +236,7 @@ const OTJobInfo = props => {
                             <Row className="px-2 mt-1 py-3 rounded" >
                               <Col md={6} className='d-flex flex-column'>
                                 <span>{t(`Bills`)} <b>#{jobData?.bill?.id}</b></span>
-                                <span>{t(`Amount`)} <b>${jobData?.bill?.amount}</b></span>
+                                <span>{t(`Amount`)} <b>৳{jobData?.bill?.amount}</b></span>
                                 <span>{t(`Details`)} <b>{jobData?.bill?.details}</b></span>
                               </Col>
                               <Col md={6} className='d-flex justify-content-end'>

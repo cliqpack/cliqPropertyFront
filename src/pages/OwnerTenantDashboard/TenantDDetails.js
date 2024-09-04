@@ -3,10 +3,10 @@ import TenantDInfo from "./TenantDInfo";
 import { useParams, withRouter, Link } from "react-router-dom";
 import Header from "components/VerticalLayout/Header";
 
-import logo from "../../assets/images/Asset-light.png";
+import logo from "../../assets/images/logo.svg";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/logo_cliq.png";
 import { Col, Row } from "reactstrap";
 
 const TenantDDetails = () => {
@@ -30,7 +30,7 @@ const TenantDDetails = () => {
           position: "fixed",
           top: 0,
           left: 0,
-          backgroundColor: "#153D58",
+          backgroundColor: "#564BC6",
           zIndex: 999,
         }}
         className="navbar-brand-box"

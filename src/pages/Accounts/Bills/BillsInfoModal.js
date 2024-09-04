@@ -243,7 +243,7 @@ const BillsInfoModal = props => {
                                         <td>{billData?.details}</td>
                                         <td>{billData?.file && <a href={`${process.env.REACT_APP_IMAGE}${billData?.file}`} rel="noreferrer" target="_blank"><i className="fas fa-paperclip" /></a>}</td>
                                         <td>{billData?.include_tax === 1 ? <i className="fas fa-check" /> : ""}</td>
-                                        <td>${billData?.amount}</td>
+                                        <td>৳{billData?.amount}</td>
                                     </tr>
 
                                 </tbody>

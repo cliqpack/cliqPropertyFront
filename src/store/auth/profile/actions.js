@@ -35,6 +35,7 @@ export const editProfile = user => {
         dispatch({
           type: EDIT_PROFILE,
           status: "Success",
+          payload: response.data
         });
       })
       .catch(error => {

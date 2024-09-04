@@ -85,7 +85,6 @@ const UserProfile = props => {
     deviceYesBtn: true,
     deviceNoBtn: false
   });
-  console.log(state5);
 
   const [uploadStatus, setUploadStatus] = useState(false);
   const {
@@ -114,12 +113,9 @@ const UserProfile = props => {
   const inputRef = useRef();
   const options = {};
 
-  console.log(props.notification_loading);
-
   useEffect(() => {
     if (props.notification_loading == "Success") {
       props.getSettingsNotificationFresh()
-      console.log(props.notification_data);
 
       setState5(prev => ({
         ...prev,
@@ -141,8 +137,6 @@ const UserProfile = props => {
     }
 
     if (props.add_notification_loading == 'Success') {
-
-
       toastr.success('Success');
       props.addNotificationProfileFresh();
       setStatus(false)
@@ -155,7 +149,6 @@ const UserProfile = props => {
       setStatus(false)
     }
     if (props.profile_details == undefined) {
-      console.log("hello 00000");
       props.profileDetails();
     }
     if (props.pro_pic_status == "Success") {
@@ -213,9 +206,6 @@ const UserProfile = props => {
       let suburbN = "";
       let streetN = "";
       let street_numberN = "";
-      console.log("====================================");
-      console.log(place.address_components);
-      console.log("====================================");
       place.address_components.forEach(element => {
         let checkCountry = inArray("country", element.types);
 
@@ -291,9 +281,6 @@ const UserProfile = props => {
   };
 
   const fileHandle = e => {
-    console.log("====================================");
-    console.log(e.target.files[0].size);
-    console.log("====================================");
     if (e.target.files[0].size / 1024 < 2048) {
       setUploadStatus(true);
       props.addProPic(e.target.files[0]);
@@ -302,7 +289,7 @@ const UserProfile = props => {
       toastr.warning("Select a image below 2MB");
     }
   };
-
+  console.log(props.profile_edit_data);
   const toggle = tab => {
     if (tabState.activeTab !== tab) {
       setTabState({ activeTab: tab });
@@ -312,6 +299,10 @@ const UserProfile = props => {
     }
   };
   if (props.profile_edit_status == "Success") {
+    let authUser = JSON.parse(localStorage.getItem('authUser'))
+    authUser = { ...authUser, user: { ...props.profile_edit_data?.user } }
+    localStorage.removeItem('authUser')
+    localStorage.setItem('authUser', JSON.stringify(authUser))
     toastr.success("User Profile Edit Successfull");
     props.editProfileFresh();
   } else if (props.profile_edit_status == "Failed") {
@@ -380,6 +371,7 @@ const UserProfile = props => {
   }
 
   const cancelHandler = () => history.push('/dashboard')
+
 
   return (
     <React.Fragment>
@@ -1347,6 +1339,7 @@ const mapStateToProps = state => {
     error,
     success,
     profile_edit_status,
+    profile_edit_data,
     password_update_status,
     profile_details,
     pro_pic,
@@ -1357,6 +1350,7 @@ const mapStateToProps = state => {
     error,
     success,
     profile_edit_status,
+    profile_edit_data,
     password_update_status,
     profile_details,
     pro_pic,

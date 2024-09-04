@@ -256,7 +256,7 @@ const QuotesModal = (props) => {
                                             type="text"
                                             value={state.amount}
                                             className='form-control'
-                                            placeholder='$0.00'
+                                            placeholder='৳0.00'
                                             onChange={selectHandler}
 
                                         />
@@ -277,7 +277,7 @@ const QuotesModal = (props) => {
                                                     borderBottomRightRadius: 0,
                                                 }}
                                             >
-                                                $
+                                                ৳
                                             </span>
                                         </span>
                                         <Input

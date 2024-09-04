@@ -1303,7 +1303,7 @@ const PropertyInfo = props => {
                                         <p className="mb-0 text-light text-start">
                                           <b>
 
-                                            $
+                                          ৳
                                             {parseFloat(
                                               tenantInfoData?.folio?.rent_arrers
                                                 ?.rent_due

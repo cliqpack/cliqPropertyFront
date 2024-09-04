@@ -987,20 +987,6 @@ const Contacts = props => {
                         onSubmitProps.resetForm();
 
                       }
-                      // return
-                      dispatch(
-                        addContact(
-                          values,
-                          "123",
-                          state,
-                          physicalAddress,
-                          postalAddress,
-                          contactId
-                        )
-                      );
-                      setStatus(true)
-                      props.ContactListFresh();
-                      onSubmitProps.resetForm();
                     }}
                   >
                     {({ errors, status, touched }) => (

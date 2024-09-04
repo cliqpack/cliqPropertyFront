@@ -661,7 +661,7 @@ const InspectionEntryReport = props => {
                                     color: "#127afa !important",
                                   }}
                                 >
-                                  $
+                                  ৳
                                 </span>
                               </span>
 

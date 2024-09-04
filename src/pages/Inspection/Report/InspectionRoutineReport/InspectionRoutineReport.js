@@ -462,7 +462,7 @@ const InspectionRoutineReport = props => {
                                       color: "#127afa !important",
                                     }}
                                   >
-                                    $
+                                    ৳
                                   </span>
                                 </span>
                                 <div className="form-group">

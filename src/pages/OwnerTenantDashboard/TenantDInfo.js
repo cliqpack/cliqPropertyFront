@@ -170,7 +170,7 @@ const TenantDInfo = props => {
                 <div>
                   <span>
 
-                    <b>${tenantFolio?.part_paid <= 0 ? tenantFolio?.rent : tenantFolio?.rent - tenantFolio?.part_paid}</b>
+                    <b>৳{tenantFolio?.part_paid <= 0 ? tenantFolio?.rent : tenantFolio?.rent - tenantFolio?.part_paid}</b>
                   </span>
                 </div>
               </div>
@@ -182,7 +182,7 @@ const TenantDInfo = props => {
                   <b>Amount</b>
                 </Col>
                 <Col md={6}>
-                  ${tenantFolio?.rent}
+                ৳{tenantFolio?.rent}
                 </Col>
               </Row>
               <Row>
@@ -190,7 +190,7 @@ const TenantDInfo = props => {
                   <b>Less paid</b>
                 </Col>
                 <Col md={6}>
-                  {"-"}${tenantFolio?.part_paid}
+                  {"-"}৳{tenantFolio?.part_paid}
                 </Col>
               </Row>
 
@@ -240,7 +240,7 @@ const TenantDInfo = props => {
               </div>
               <div>
                 <span>
-                  <b>${item?.rent_amount}</b>
+                  <b>৳{item?.rent_amount}</b>
                 </span>
               </div>
             </div>
@@ -524,7 +524,7 @@ const TenantDInfo = props => {
                           <b>Part paid</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.part_paid ? "$" + tenantFolio?.part_paid : ""}
+                          {tenantFolio?.part_paid ? "৳" + tenantFolio?.part_paid : ""}
                         </Col>
                       </Row>
                       <Row className="py-1 mt-2">
@@ -532,7 +532,7 @@ const TenantDInfo = props => {
                           <b>Deposits</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.deposit ? "$" + tenantFolio?.deposit : ""}
+                          {tenantFolio?.deposit ? "৳" + tenantFolio?.deposit : ""}
                         </Col>
                       </Row>
                       <Row className="py-1 mt-2">
@@ -540,7 +540,7 @@ const TenantDInfo = props => {
                           <b>Rent</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.rent ? "$" + tenantFolio?.rent : ""}
+                          {tenantFolio?.rent ? "৳" + tenantFolio?.rent : ""}
                         </Col>
                       </Row>
                       <Row className="py-1 mt-2">
@@ -577,7 +577,7 @@ const TenantDInfo = props => {
                           <b>Security Deposit held</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.bond_held ? "$" + tenantFolio?.bond_held : ""}
+                          {tenantFolio?.bond_held ? "৳" + tenantFolio?.bond_held : ""}
                         </Col>
                       </Row>
                     </Col>

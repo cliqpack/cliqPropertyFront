@@ -564,6 +564,7 @@ function JobsTaskList(props) {
 
   useEffect(() => {
     if (props.jobs_list_loading === "Success") {
+      props.JobsListFresh()
       setState(prev => ({
         ...prev,
         page: Number(props.jobs_list_data?.page),
@@ -572,12 +573,10 @@ function JobsTaskList(props) {
         dataLength: props.jobs_list_data?.length,
         loading: false,
       }));
-      console.log('reported');
     }
   }, [props.jobs_list_loading]);
   console.log(props.jobs_list_loading);
   console.log(state.loading);
-  console.log(props.jobs_list_data);
   useEffect(() => {
     if (props.property_list_loading === false) {
       props.propertyList();
