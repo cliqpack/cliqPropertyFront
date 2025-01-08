@@ -811,7 +811,7 @@ const TaskShow = props => {
 
                     <Col md={6} className="mt-2">
                       <Row>
-                        <Col className="text-textTitleColor" md={4}>
+                        <Col className="text-primary" md={4}>
                           Tenant
                         </Col>
                         <Col md={8}>

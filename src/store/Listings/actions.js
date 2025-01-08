@@ -948,7 +948,7 @@ export const deleteListingFresh = () => {
   };
 };
 
-export const getMessageTemplatesForListingBySelect = (data, query = null) => {
+export const getMessageTemplatesForListingBySelect = (data, query = null, listingType) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   const newData = data.map((item) => item.label);
 
@@ -956,7 +956,8 @@ export const getMessageTemplatesForListingBySelect = (data, query = null) => {
   const formData = {
     trigger_to: data,
     trigger_to2: newData,
-    query: query
+    query: query,
+    type: listingType
   }
   console.log(formData);
   return dispatch => {

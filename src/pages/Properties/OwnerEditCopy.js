@@ -2509,7 +2509,7 @@ const OwnerEdit = props => {
                                                               />
                                                               <label htmlFor="usr">
                                                                 {" "}
-                                                                BIN
+                                                                ABN
                                                               </label>
                                                             </div>
                                                             <ErrorMessage

@@ -6929,8 +6929,8 @@ input[type="submit"].btn-block {
 .page-item.active .page-link {
   z-index: 1;
   color: #fff;
-  background-color: #564BC6;
-  border-color: #564BC6;
+  background-color: #0648b3;
+  border-color: #0648b3;
 }
 
 .page-item.disabled .page-link {

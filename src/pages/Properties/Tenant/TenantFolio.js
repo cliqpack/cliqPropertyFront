@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumbs from "components/Common/Breadcrumb";
+import axios from "axios";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import { Link, withRouter, useHistory, useParams } from "react-router-dom";
-
+import { withRouter, useHistory, useParams } from "react-router-dom";
 import classnames from "classnames";
 import Loder from "components/Loder/Loder";
 import moment from "moment";
@@ -17,13 +14,14 @@ import {
   invoiceUnpaidListFreshById,
   invoicePaidListById,
   invoicePaidListFreshById,
-  getPropertyTenantInfo,
+  getPropTenantInfo,
   transactionsInfoListFresh,
   deleteInvoice,
   deleteInvoiceFresh,
   RentActionList,
   RentActionListFresh,
   tenantInfoFresh,
+  tenantRestore, tenantRestoreFresh
 } from "store/actions";
 import {
   Card,
@@ -67,9 +65,9 @@ import DisbursementModal from "./DisbursementModal";
 import TenantAdjustRent from "../TenantAdjustRent";
 import RentDiscount from "./RentDiscount";
 
+document.title = "myday";
 
 function TenantFolio(props) {
-  document.title = "CliqProperty";
   const { propertyId, contactId, id, folioId } = useParams();
   const [seen, setSeen] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
@@ -85,6 +83,7 @@ function TenantFolio(props) {
     archiveModal: false,
   });
   const [state2, setState2] = useState();
+  const [loader, setLoader] = useState(false);
 
   const [modalState, setModalState] = useState({
     creditRent: false,
@@ -163,7 +162,6 @@ function TenantFolio(props) {
       ...prev,
       transactionInfoModal: !prev.transactionInfoModal,
     }));
-    // props.transactionsInfoListFresh();
   };
   const toggleModalTransactionsReverse = id => {
     setState(prev => ({
@@ -201,29 +199,29 @@ function TenantFolio(props) {
   };
 
   const amountRef = (cell, row) => {
-    return <span>৳{row.amount}</span>;
+    return <span>${row.amount}</span>;
   };
 
   const amountC = (cell, row) => {
     if (row.type == "Tenant Receipt") {
-      return <span>৳{row.amount}</span>;
+      return <span>${row.amount}</span>;
     }
     if (row.type == "Reversal") {
-      return <span>৳{row.amount}</span>;
+      return <span>${row.amount}</span>;
     }
     if (row.type == "Journal") {
-      return <span>৳{row.amount}</span>;
+      return <span>${row.amount}</span>;
     }
   };
   const amountD = (cell, row) => {
     if (row.type == "Folio Withdraw") {
-      return <span>৳{row.amount}</span>;
+      return <span>${row.amount}</span>;
     }
     if (row.type == "Withdraw") {
-      return <span>৳{row.amount}</span>;
+      return <span>${row.amount}</span>;
     }
     if (row.type == "Journal") {
-      return <span>৳{row.amount}</span>;
+      return <span>${row.amount}</span>;
     }
   };
 
@@ -389,7 +387,7 @@ function TenantFolio(props) {
   };
 
   const amountFormatter = (cell, row) => {
-    return <span>৳{row.amount}</span>;
+    return <span>${row.amount}</span>;
   };
 
   const taxRef = (cell, row) => {
@@ -410,7 +408,7 @@ function TenantFolio(props) {
   const folioBalanceFormatter = (cell, row) => {
     return (
       <span>
-        ৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}
+        ${row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}
       </span>
     );
   };
@@ -538,7 +536,7 @@ function TenantFolio(props) {
     toggleModalInvoice();
   };
 
-  const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
+  const paidFormatter = (cell, row) => <span>${row.paid ? row.paid : 0}</span>;
 
   const invoicePendingdData = [
     {
@@ -809,7 +807,7 @@ function TenantFolio(props) {
   useEffect(() => {
     if (!seen) {
       props.transactionsListById("this_month", propertyId, contactId, folioId);
-      props.getPropertyTenantInfo(propertyId);
+      props.getPropTenantInfo(id);
     }
     if (props.property_tenant_info_loading === "Success") {
       setState(prev => ({
@@ -899,12 +897,10 @@ function TenantFolio(props) {
       } else if (state.activeTab == "2") {
         props.transactionsListById("All", propertyId, contactId, folioId);
       }
-      props.getPropertyTenantInfo(propertyId);
+      props.getPropTenantInfo(id);
     }
     if (props.archive_tenant_loading === "Success") {
-      toastr.success("Success");
-      props.getPropertyTenantInfo(propertyId);
-      props.tenantArchiveFresh();
+      props.getPropTenantInfo(id);
     }
     setSeen(true);
   }, [
@@ -918,11 +914,43 @@ function TenantFolio(props) {
     props.archive_tenant_loading,
   ]);
 
-  const handleUndoArchive = () => {
-    props.tenantArchive(id, "true");
+  useEffect(() => {
+    if (props.restore_tenant_loading === 'Success') {
+      setLoader(false)
+      toastr.success('Tenant Restored Successfully')
+      props.getPropTenantInfo(id);
+      props.tenantRestoreFresh()
+    } else if (props.restore_tenant_loading === 'Failed') {
+      setLoader(false)
+      toastr.error('Something went wrong!')
+      props.tenantRestoreFresh()
+    }
+  }, [props.restore_tenant_loading])
+
+
+  const handleUndoArchive = async () => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const Url = `${process.env.REACT_APP_LOCALHOST}/restore-tenant/${id}`;
+    setLoader(true)
+    try {
+      const response = await axios.get(Url, { headers: headers });
+      toastr.success(response.data.message);
+      setLoader(false)
+      props.getPropTenantInfo(id);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred while archiving the tenant.";
+      toastr.warning(errorMessage);
+      setLoader(false)
+    }
   };
+
   return (
     <div className="page-content">
+      {loader && <Loder status={loader} />}
       {modalState.creditRent && (
         <CreditRent
           folioId={folioId}
@@ -983,7 +1011,7 @@ function TenantFolio(props) {
                         </h4>
                       </div>
                       <div className="d-flex justify-content-center">
-                        {tenantInfoData?.data?.status != "false" && (
+                        {tenantInfoData?.folio?.archive === 0 && (
                           <Dropdown
                             isOpen={state.dropDownBtn}
                             toggle={() =>
@@ -1052,172 +1080,139 @@ function TenantFolio(props) {
                             </DropdownMenu>
                           </Dropdown>
                         )}
-
-                        {/* <Dropdown
-                          isOpen={state.dropDownBtn1}
-                          toggle={() =>
-                            setState(prev => {
-                              return {
-                                ...prev,
-                                dropDownBtn1: !prev.dropDownBtn1,
-                              };
-                            })
-                          }
-                          className="mt-4 mt-sm-0"
-                        >
-                          <DropdownToggle className="btn btn-info btn-md" caret>
-                            <i className="fas fa-file-alt me-1" /> Reports{" "}
-                            <i className="mdi mdi-chevron-down"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <DropdownItem>Tenant History</DropdownItem>
-                            <DropdownItem>Tenant Activity</DropdownItem>
-                            <DropdownItem>Folio Ledger</DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown> */}
                       </div>
                     </Col>
                   </Row>
                 </CardBody>
               </Card>
 
-              {tenantInfoData?.data?.status != "false" && (
-                <Card style={{ borderRadius: "14px" }}>
-                  <CardBody>
-                    <Row>
-                      <Col md={12}>
-                        <Row className="p-1 d-flex flex-column gap-3">
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              border: "1px solid gray",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              height: "70px",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Paid to</span>
-                            <span className="text-muted">
-                              {" "}
-                              {paidToData ? paidToData : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              border: "1px solid gray",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Part Paid
-                            </span>
-                            <span className="text-muted">
-                              ৳{tenantInfoData?.folio?.part_paid
-                                ? tenantInfoData?.folio?.part_paid
-                                : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              border: "1px solid gray",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Deposits</span>
-                            <span className="text-muted">
-                              ৳{tenantInfoData?.folio?.deposit
-                                ? tenantInfoData?.folio?.deposit
-                                : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              border: "1px solid gray",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Uncleared
-                            </span>
-                            <span className="text-muted">
-                              ৳{tenantInfoData?.folio?.uncleared
-                                ? tenantInfoData?.folio?.uncleared
-                                : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              border: "1px solid gray",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Security Deposit held
-                            </span>
-                            <span className="text-muted">
-                              ৳{tenantInfoData?.folio?.bond_held
-                                ? tenantInfoData?.folio?.bond_held
-                                : "0.00"}
-                            </span>
-                          </Col>
-
-                          {/* <Col
+              <Card style={{ borderRadius: "14px" }}>
+                <CardBody>
+                  <Row>
+                    <Col md={12}>
+                      <Row className="p-1 d-flex flex-column gap-3">
+                        <Col
                           className="d-flex flex-column justify-content-center"
                           style={{
-                            borderTop: "dotted",
+                            border: "1px solid gray",
                             borderWidth: "thin",
                             borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            height: "70px",
                             padding: "10px",
                             borderRadius: "10px",
-                            textAlign: "center"
+                            textAlign: "center",
                           }}
-                        ></Col> */}
-                        </Row>
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              )}
+                        >
+                          <span className="text-muted fw-bold">Paid to</span>
+                          <span className="text-muted">
+                            {" "}
+                            {paidToData ? paidToData : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            border: "1px solid gray",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Part Paid
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {tenantInfoData?.folio?.part_paid
+                              ? tenantInfoData?.folio?.part_paid
+                              : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            border: "1px solid gray",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Deposits</span>
+                          <span className="text-muted">
+                            $
+                            {tenantInfoData?.folio?.deposit
+                              ? tenantInfoData?.folio?.deposit
+                              : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            border: "1px solid gray",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Uncleared
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {tenantInfoData?.folio?.uncleared
+                              ? tenantInfoData?.folio?.uncleared
+                              : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            border: "1px solid gray",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Bond held
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {tenantInfoData?.folio?.bond_held
+                              ? tenantInfoData?.folio?.bond_held
+                              : "0.00"}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
             </div>
           </Col>
           <Col md={10} style={{ padding: "0px" }}>
             <div>
               <Card style={{ borderRadius: "15px" }}>
                 <CardBody>
-                  {tenantInfoData?.data?.status === "false" && (
+                  {tenantInfoData?.folio?.archive === 1 && (
                     <Alert color="info">
                       <div className="d-flex justify-content-between">
                         <span className="font-size-20">
                           <i className="fas fa-archive"></i> Archived on{" "}
-                          {moment(tenantInfoData?.data?.updated_at).format(
+                          {moment(tenantInfoData?.folio?.updated_at).format(
                             "DD MMM YYYY"
                           )}
                         </span>
@@ -1406,6 +1401,7 @@ function TenantFolio(props) {
           state={state}
           setState={setState}
           toggle={toggleArchive}
+          setLoader={setLoader}
           id={id}
         />
       )}
@@ -1509,6 +1505,7 @@ const mapStateToProps = gstate => {
     tenant_deposit_receipt_loading,
 
     disburse_tenant_loading,
+    restore_tenant_loading,
   } = gstate.AccountsTransactions;
 
   const { property_tenant_info_data, property_tenant_info_loading } =
@@ -1546,6 +1543,7 @@ const mapStateToProps = gstate => {
     tenant_deposit_receipt_loading,
 
     disburse_tenant_loading,
+    restore_tenant_loading,
   };
 };
 
@@ -1558,12 +1556,13 @@ export default withRouter(
     invoiceUnpaidListFreshById,
     invoicePaidListById,
     invoicePaidListFreshById,
-    getPropertyTenantInfo,
+    getPropTenantInfo,
     transactionsInfoListFresh,
     deleteInvoice,
     RentActionList,
     RentActionListFresh,
     tenantInfoFresh,
     deleteInvoiceFresh,
+    tenantRestore, tenantRestoreFresh
   })(TenantFolio)
 );

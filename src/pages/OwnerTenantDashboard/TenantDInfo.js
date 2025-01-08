@@ -39,12 +39,11 @@ import TenantMaintenanceModal from "./TenantMaintenanceModal";
 import { date } from "yup";
 import AddJobModal from "pages/Jobs/AddJobModal";
 
+document.title = "MyDay";
 
 const TenantDInfo = props => {
-  document.title = "CliqProperty";
   const [init, setInit] = useState(true);
   const { id } = useParams();
-  console.log(id);
 
   const [state, setState] = useState({
     activeTab: "1",
@@ -83,34 +82,51 @@ const TenantDInfo = props => {
     }
   }, []);
 
-  // console.log(props.property_list_tenant_id_data?.data);
   const tenantData = props.property_list_tenant_id_data?.data[0];
-  // console.log(props.property_list_tenant_id_data);
-  // console.log(tenantData);
   const tenantFolio = tenantData?.tenant_contact?.tenant_folio;
+
   const tenantImage = tenantData?.tenant_properties?.property_images?.[tenantData?.tenant_properties?.property_images?.length - 1]?.property_image
     ;
 
-  console.log(tenantImage, 'tenantImage-----');
   const address = tenantData?.tenant_properties?.property_address;
-  // console.log(address);
   const propertyData = tenantData?.tenant_properties;
+  console.log(propertyData);
+
   const receipt = props.property_list_tenant_id_data?.receipt;
+  console.log(receipt);
   const maintenance = props.property_list_tenant_id_data?.maintenance;
   const inspection = props.property_list_tenant_id_data?.inspection;
-  // console.log(propertyData);
+  const handleDownload = async () => {
+    const pdfUrl = process.env.REACT_APP_IMAGE + selectedDate.value;
+    try {
+        const response = await fetch(pdfUrl);
+        const blob = await response.blob();
+        
+        // Create a temporary URL and trigger a download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'statement.pdf'; // Set a default filename
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error("Error downloading the PDF:", error);
+    }
+};
   //agreement date calculation
   var date1 = moment(tenantFolio?.agreement_end);
   var date2 = moment(new date());
   var diff = date2.diff(date1, "days");
-  console.log(diff);
   //end agreement date calculation
 
   //rent date calculation
   var date3 = moment(tenantFolio?.paid_to);
   var date4 = moment(new date());
   var diff2 = date4.diff(date3, "days");
-  console.log(diff2);
   //end rent date calculation
 
   //move in to agreement end//
@@ -139,7 +155,6 @@ const TenantDInfo = props => {
     }
     var now_date = moment(new date());
     var diff4 = moment(now_date).diff(to_date, "days");
-    console.log(diff4);
     rent = (
       <Card>
         <CardBody>
@@ -170,7 +185,7 @@ const TenantDInfo = props => {
                 <div>
                   <span>
 
-                    <b>৳{tenantFolio?.part_paid <= 0 ? tenantFolio?.rent : tenantFolio?.rent - tenantFolio?.part_paid}</b>
+                    <b>${tenantFolio?.part_paid <= 0 ? tenantFolio?.rent : tenantFolio?.rent - tenantFolio?.part_paid}</b>
                   </span>
                 </div>
               </div>
@@ -182,7 +197,7 @@ const TenantDInfo = props => {
                   <b>Amount</b>
                 </Col>
                 <Col md={6}>
-                ৳{tenantFolio?.rent}
+                  ${tenantFolio?.rent}
                 </Col>
               </Row>
               <Row>
@@ -190,7 +205,7 @@ const TenantDInfo = props => {
                   <b>Less paid</b>
                 </Col>
                 <Col md={6}>
-                  {"-"}৳{tenantFolio?.part_paid}
+                  {"-"}${tenantFolio?.part_paid}
                 </Col>
               </Row>
 
@@ -240,7 +255,7 @@ const TenantDInfo = props => {
               </div>
               <div>
                 <span>
-                  <b>৳{item?.rent_amount}</b>
+                  <b>${item?.rent_amount}</b>
                 </span>
               </div>
             </div>
@@ -262,6 +277,11 @@ const TenantDInfo = props => {
                 <b>Reference</b>
               </Col>
               <Col md={9}>{item?.ref}</Col>
+            </Row>
+            <Row>
+              <Col>
+                <a href={`${process.env.REACT_APP_IMAGE}${item?.doc_path}`} download="receipt.pdf">Download the pdf</a>
+              </Col>
             </Row>
           </Col>
         </Row>
@@ -410,6 +430,18 @@ const TenantDInfo = props => {
                     <div className="d-flex justify-content-center mt-2">
                       <span>Property Manager</span>
                     </div>
+                    {
+                      propertyData?.manager?.mobile_phone &&
+                      <div className="d-flex justify-content-center mt-2">
+                        <span>(m) { propertyData?.manager?.mobile_phone }</span>
+                      </div>
+                    }
+                    {
+                      propertyData?.manager?.work_phone &&
+                      <div className="d-flex justify-content-center mt-2">
+                        <span>(w) { propertyData?.manager?.work_phone }</span>
+                      </div>
+                    }
                   </div>
                   <hr />
 
@@ -434,7 +466,7 @@ const TenantDInfo = props => {
                     <TenantMessageModal
                       mail={tenantData?.tenant_contact?.email}
                     />
-                    <TenantMaintenanceModal data={tenantData} />
+                    <TenantMaintenanceModal data={tenantData} tid={id} />
                   </div>
 
                 </CardBody>
@@ -524,7 +556,7 @@ const TenantDInfo = props => {
                           <b>Part paid</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.part_paid ? "৳" + tenantFolio?.part_paid : ""}
+                          {tenantFolio?.part_paid ? "$" + tenantFolio?.part_paid : ""}
                         </Col>
                       </Row>
                       <Row className="py-1 mt-2">
@@ -532,7 +564,7 @@ const TenantDInfo = props => {
                           <b>Deposits</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.deposit ? "৳" + tenantFolio?.deposit : ""}
+                          {tenantFolio?.deposit ? "$" + tenantFolio?.deposit : ""}
                         </Col>
                       </Row>
                       <Row className="py-1 mt-2">
@@ -540,7 +572,7 @@ const TenantDInfo = props => {
                           <b>Rent</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.rent ? "৳" + tenantFolio?.rent : ""}
+                          {tenantFolio?.rent ? "$" + tenantFolio?.rent : ""}
                         </Col>
                       </Row>
                       <Row className="py-1 mt-2">
@@ -574,15 +606,24 @@ const TenantDInfo = props => {
                       </Row>
                       <Row className="py-1 mt-2 mb-4">
                         <Col md={4}>
-                          <b>Security Deposit held</b>
+                          <b>Bond held</b>
                         </Col>
                         <Col md={8}>
-                          {tenantFolio?.bond_held ? "৳" + tenantFolio?.bond_held : ""}
+                          {tenantFolio?.bond_held ? "$" + tenantFolio?.bond_held : ""}
                         </Col>
                       </Row>
+                      {
+                        tenantFolio?.bank_reterence &&
+                        <Row className="py-1 mt-2 mb-4">
+                          <Col md={4}>
+                            <b>Bank Reference</b>
+                          </Col>
+                          <Col md={8}>
+                            {tenantFolio?.bank_reterence}
+                          </Col>
+                        </Row>
+                      }
                     </Col>
-
-
                   </Row>
                 </CardBody>
               </Card>

@@ -41,9 +41,9 @@ import CancelRentModal from "./CancelRentModal";
 import GenerantRentModal from "./GenerateRentModal";
 import RemotePagination from "pages/Task/RemotePagination";
 
+document.title = "myday";
 
 function RentManagement(props) {
-  document.title = "CliqProperty";
   const { propertyId, contactId, folioId } = useParams();
 
   const [selected, setSelected] = useState([])
@@ -116,7 +116,7 @@ function RentManagement(props) {
   //   };
 
   const amountRef = (cell, row) => {
-    return <span>৳{cell}</span>;
+    return <span>${cell}</span>;
   };
   const auditRef = (cell, row) => {
     let $auditIds = row.rent_receipt?.map((item, key) => <span key={key}>{item.receipt_id}{`${(row.rent_receipt.length > 0 && row.rent_receipt.length != key + 1) ? ", " : ""}`}</span>)
@@ -124,13 +124,13 @@ function RentManagement(props) {
   };
   const adjustmentRef = (cell, row) => {
     if (row.rent_adjustment) {
-      return <span>৳{row.rent_adjustment?.rent_amount} ({row.rent_adjustment?.active_date})</span>
+      return <span>${row.rent_adjustment?.rent_amount} ({row.rent_adjustment?.active_date})</span>
     } else {
       return <span></span>;
     }
   };
   const deductionRef = (cell, row) => {
-    return <span>৳{row.rent_discount ? row.rent_discount?.discount_amount : 0.00}</span>
+    return <span>${row.rent_discount ? row.rent_discount?.discount_amount : 0.00}</span>
   };
 
   const docPathFormatter = (cell, row) => {

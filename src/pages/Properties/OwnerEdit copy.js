@@ -748,7 +748,7 @@ const OwnerEdit = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -2105,7 +2105,7 @@ const OwnerEdit = props => {
                                                               />
                                                               <label htmlFor="usr">
                                                                 {" "}
-                                                                BIN
+                                                                ABN
                                                               </label>
                                                             </div>
                                                             <ErrorMessage

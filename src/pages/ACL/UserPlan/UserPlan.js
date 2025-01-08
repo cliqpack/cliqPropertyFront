@@ -33,9 +33,9 @@ import {
   deleteUserPlan,
 } from "store/ACL/UserPlan/action";
 
+document.title = "myday";
 
 const UserPlan = props => {
-  document.title = "CliqProperty";
   const [state, setState] = useState();
   const [seen, setSeen] = useState(false);
   const [deleteState, setDeleteState] = useState(false);

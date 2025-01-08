@@ -261,7 +261,7 @@ const ListingInfo = props => {
         return
       }
       if (bond == null) {
-        toastr.warning('Please enter Security Deposit')
+        toastr.warning('Please enter Bond')
         return
 
       }

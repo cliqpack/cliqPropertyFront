@@ -279,7 +279,7 @@ const Plans = (props) => {
                                         </div>
                                         <div className="fw-bold">
                                             <span className="text-info" style={{ fontSize: "16px" }}>
-                                                ৳{item?.price}
+                                                ${item?.price}
                                             </span>{" "}
                                             <span className="text-info">
                                                 { item.frequency_type === 'Yearly' && 'py' }
@@ -322,7 +322,9 @@ const Plans = (props) => {
                                                                 <Row>
                                                                     <Col md={5}>
                                                                         <span style={{ fontSize: "10px", display: 'inline-block', marginTop: '6px' }}>
-                                                                            {addon?.price}{addon?.value}
+                                                                            {addon?.value === '$' && addon?.value}
+                                                                            {addon?.price}
+                                                                            {addon?.value === '%' && addon?.value}
                                                                         </span>
                                                                     </Col>
                                                                     <Col md={7} className="d-flex justify-content-between">
@@ -348,7 +350,9 @@ const Plans = (props) => {
                                                                 <Row>
                                                                     <Col md={5}>
                                                                         <span style={{ fontSize: "10px", display: 'inline-block', marginTop: '6px' }}>
-                                                                            {addon?.price}{addon?.value}
+                                                                            {addon?.value === '$' && addon?.value}
+                                                                            {addon?.price}
+                                                                            {addon?.value === '%' && addon?.value}
                                                                         </span>
                                                                     </Col>
                                                                     <Col md={7} className="d-flex justify-content-between">

@@ -625,7 +625,7 @@ const InspectionExitReport = props => {
                                     color: "#127afa !important",
                                   }}
                                 >
-                                  ৳
+                                  $
                                 </span>
                               </span>
                               <Input

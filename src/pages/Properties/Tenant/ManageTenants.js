@@ -104,7 +104,6 @@ const ManageTenant = props => {
   const tenantFolioHandler = (contactId, tId, fId) => {
     history.push(`/tenantFolio/${id}/${contactId}/${tId}/${fId}`);
   };
-  console.log(props.make_new_tenant);
 
   const handleTenant = () => {
     history.push(`/propertyTenantAdd/${id}`);
@@ -166,7 +165,15 @@ const ManageTenant = props => {
                   <Row>
                     <Col md={6}>
                       <h4 className="text-primary">
-                        {data?.tenant_contact?.reference} {data?.tenant_contact?.status === 'true' && <span>(current)</span>} {data?.tenant_contact?.status === 'false'&& data?.tenant_contact?.tenant_folio?.previous === 1 && <span>(previous)</span>} {data?.tenant_contact?.status === 'false'&& data?.tenant_contact?.tenant_folio?.previous === 0 && <span>(Upcomming)</span>}
+                        {data?.tenant_contact?.reference} {data?.tenant_contact?.status === 'true' && <span>(current)</span>} {data?.tenant_contact?.status === 'false' && data?.tenant_contact?.tenant_folio?.previous === 1 && <span>(previous)</span>}
+                        {/* {data?.tenant_contact?.status === 'false'&& data?.tenant_contact?.tenant_folio?.previous === 0 && <span>(Upcomming)</span>} */}
+                        {data?.tenant_contact?.tenant_folio?.archive === 1 && <span className="font-size-14">
+                          (<i className="fas fa-archive"></i> Archived on{" "}
+                          {moment(data?.tenant_contact?.tenant_folio?.updated_at).format(
+                            "DD MMM YYYY"
+                          )})
+                        </span>}
+
                       </h4>
                     </Col>
                     <Col md={6} className="d-flex justify-content-end">
@@ -239,7 +246,7 @@ const ManageTenant = props => {
                           {data?.tenant_contact?.home_phone &&
                             `(h) ${data?.tenant_contact?.home_phone}`}
                           {data?.tenant_contact?.work_phone &&
-                            `(h) ${data?.tenant_contact?.work_phone}`}
+                            `(w) ${data?.tenant_contact?.work_phone}`}
                         </Col>
                       </Row>
                       <div
@@ -287,7 +294,7 @@ const ManageTenant = props => {
                     <Col md={6}>
                       <Row className="py-1">
                         <Col md={5}>
-                          <span className="text-primary">Security Deposit amount</span>
+                          <span className="text-primary">Bond amount</span>
                         </Col>
                         <Col md={7}>
                           {data?.tenant_contact?.tenant_folio?.bond_amount}

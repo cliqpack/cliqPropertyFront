@@ -20,10 +20,10 @@ import moment from "moment";
 import toastr from "toastr";
 
 
+document.title = "Work order";
 
 
 const JobInfoWorkOrderActionInvoice = (props) => {
-    document.title = "Work order";
     const { id } = useParams();
     let history = useHistory();
 
@@ -87,7 +87,7 @@ const JobInfoWorkOrderActionInvoice = (props) => {
 
                                         </div>
                                         <div>
-                                            BIN:
+                                            ABN:
                                         </div>
                                         <div>
                                             Licence:
@@ -314,7 +314,7 @@ const JobInfoWorkOrderActionInvoice = (props) => {
 
                                                 </div>
                                                 <div>
-                                                    BIN:
+                                                    ABN:
                                                 </div>
                                                 <div>
                                                     Licence:

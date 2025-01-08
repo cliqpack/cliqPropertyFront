@@ -767,6 +767,17 @@ const OwnerFolioForm = props => {
                                                                                         md={3}
                                                                                         className="d-flex"
                                                                                     >
+                                                                                        <span className="input-group-append rounded-start">
+                                                                                            <span
+                                                                                                className="input-group-text"
+                                                                                                style={{
+                                                                                                    borderTopRightRadius: 0,
+                                                                                                    borderBottomRightRadius: 0,
+                                                                                                }}
+                                                                                            >
+                                                                                                $
+                                                                                            </span>
+                                                                                        </span>
                                                                                         <div className="d-flex flex-column">
                                                                                             <Field
                                                                                                 name="total_money"
@@ -783,8 +794,8 @@ const OwnerFolioForm = props => {
                                                                                                     state2.total_money
                                                                                                 }
                                                                                                 style={{
-                                                                                                    borderTopRightRadius: 0,
-                                                                                                    borderBottomRightRadius: 0,
+                                                                                                    borderTopLeftRadius: 0,
+                                                                                                    borderBottomLeftRadius: 0,
                                                                                                 }}
                                                                                                 // onChange={e => {
                                                                                                 //   handlePropertyFormValuesTotalMoney(
@@ -795,17 +806,6 @@ const OwnerFolioForm = props => {
                                                                                                     handlePropertyFormValues2
                                                                                                 }
                                                                                             />
-                                                                                            <span className="input-group-append rounded-start">
-                                                                                            <span
-                                                                                                className="input-group-text"
-                                                                                                style={{
-                                                                                                    borderTopLeftRadius: 0,
-                                                                                                    borderBottomLeftRadius: 0,
-                                                                                                }}
-                                                                                            >
-                                                                                                ৳
-                                                                                            </span>
-                                                                                        </span>
                                                                                             <ErrorMessage
                                                                                                 name="total_money"
                                                                                                 component="div"
@@ -828,6 +828,17 @@ const OwnerFolioForm = props => {
                                                                                         md={3}
                                                                                         className="d-flex"
                                                                                     >
+                                                                                        <span className="input-group-append rounded-start">
+                                                                                            <span
+                                                                                                className="input-group-text"
+                                                                                                style={{
+                                                                                                    borderTopRightRadius: 0,
+                                                                                                    borderBottomRightRadius: 0,
+                                                                                                }}
+                                                                                            >
+                                                                                                $
+                                                                                            </span>
+                                                                                        </span>
                                                                                         <div className="d-flex flex-column">
                                                                                             <Field
                                                                                                 name="balance"
@@ -844,8 +855,8 @@ const OwnerFolioForm = props => {
                                                                                                     state2.balance
                                                                                                 }
                                                                                                 style={{
-                                                                                                    borderTopRightRadius: 0,
-                                                                                                    borderBottomRightRadius: 0,
+                                                                                                    borderTopLeftRadius: 0,
+                                                                                                    borderBottomLeftRadius: 0,
                                                                                                 }}
                                                                                                 // onChange={
                                                                                                 //   handlePropertyFormValuesBalanace
@@ -854,17 +865,6 @@ const OwnerFolioForm = props => {
                                                                                                     handlePropertyFormValues2
                                                                                                 }
                                                                                             />
-                                                                                            <span className="input-group-append rounded-start">
-                                                                                            <span
-                                                                                                className="input-group-text"
-                                                                                                style={{
-                                                                                                    borderTopLeftRadius: 0,
-                                                                                                    borderBottomLeftRadius: 0,
-                                                                                                }}
-                                                                                            >
-                                                                                                ৳
-                                                                                            </span>
-                                                                                        </span>
                                                                                             <ErrorMessage
                                                                                                 name="balance"
                                                                                                 component="div"
@@ -980,6 +980,17 @@ const OwnerFolioForm = props => {
                                                                                 <Col md={7}>
                                                                                     <Row className="d-flex">
                                                                                         <Col className="d-flex">
+                                                                                            <span className="input-group-append rounded-start">
+                                                                                                <span
+                                                                                                    className="input-group-text"
+                                                                                                    style={{
+                                                                                                        borderTopRightRadius: 0,
+                                                                                                        borderBottomRightRadius: 0,
+                                                                                                    }}
+                                                                                                >
+                                                                                                    $
+                                                                                                </span>
+                                                                                            </span>
                                                                                             <div className="d-flex flex-column">
                                                                                                 <Field
                                                                                                     name="withhold_amount"
@@ -996,8 +1007,8 @@ const OwnerFolioForm = props => {
                                                                                                         state2.withhold_amount
                                                                                                     }
                                                                                                     style={{
-                                                                                                        borderTopRightRadius: 0,
-                                                                                                        borderBottomRightRadius: 0,
+                                                                                                        borderTopLeftRadius: 0,
+                                                                                                        borderBottomLeftRadius: 0,
                                                                                                     }}
                                                                                                     // onChange={
                                                                                                     //   handlePropertyFormValuesWithHoldAmount
@@ -1012,17 +1023,6 @@ const OwnerFolioForm = props => {
                                                                                                     className="invalid-feedback"
                                                                                                 />
                                                                                             </div>
-                                                                                            <span className="input-group-append rounded-start">
-                                                                                                <span
-                                                                                                    className="input-group-text"
-                                                                                                    style={{
-                                                                                                        borderTopLeftRadius: 0,
-                                                                                                        borderBottomLeftRadius: 0,
-                                                                                                    }}
-                                                                                                >
-                                                                                                    ৳
-                                                                                                </span>
-                                                                                            </span>
                                                                                         </Col>
                                                                                         <Col></Col>
 

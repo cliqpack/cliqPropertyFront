@@ -19,9 +19,9 @@ import { connect } from "react-redux";
 import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 
+document.title = "MyDay";
 
 const TransactionAuditReport = props => {
-  document.title = "CliqProperty";
   const { month, year } = useParams();
 
   const goBack = () => window.close();
@@ -122,7 +122,7 @@ const TransactionAuditReport = props => {
                                           {item.description}
                                         </td>
                                         <td>
-                                          ৳{item.amount}
+                                          ${item.amount}
                                         </td>
                                         <td></td>
                                       </>
@@ -134,7 +134,7 @@ const TransactionAuditReport = props => {
                                         </td>
                                         <td> </td>
                                         <td>
-                                          ৳{item.amount}
+                                          ${item.amount}
                                         </td>
                                       </>
                                     )}
@@ -157,7 +157,7 @@ const TransactionAuditReport = props => {
                                         {item.description}
                                       </td>
                                       <td>
-                                        ৳{item.amount}
+                                        ${item.amount}
                                       </td>
                                       <td> </td>
                                     </tr>
@@ -214,7 +214,7 @@ const TransactionAuditReport = props => {
                                       <td></td>
                                       <td>to: {item?.folioCode} - {item?.description}</td>
                                       <td></td>
-                                      <td>৳{item.amount}</td>
+                                      <td>${item.amount}</td>
                                     </tr>
                                   ))}
                                 </>
@@ -236,8 +236,8 @@ const TransactionAuditReport = props => {
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>৳{props.tard_data?.debit}</td>
-                            <td>৳{props.tard_data?.credit}</td>
+                            <td>${props.tard_data?.debit}</td>
+                            <td>${props.tard_data?.credit}</td>
                           </tr>
                         </tbody>
                       </Table>

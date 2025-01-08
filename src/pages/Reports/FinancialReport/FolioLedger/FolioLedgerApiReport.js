@@ -73,7 +73,7 @@ function FolioLedgerApiReport(props) {
                                                 </thead>
 
                                                 <tbody>
-                                                    {props?.folio_ledger_report_data?.data.map((item, index) => {
+                                                    {[].map((item, index) => {
                                                         return (
                                                             <>
                                                                 {
@@ -249,7 +249,7 @@ function FolioLedgerApiReport(props) {
                                                 </thead>
 
                                                 <tbody>
-                                                    {props?.folio_ledger_report_data?.tenant.map((item, index) => {
+                                                    {[].map((item, index) => {
                                                         return (
                                                             <>
                                                                 {
@@ -423,7 +423,7 @@ function FolioLedgerApiReport(props) {
                                                 </thead>
 
                                                 <tbody>
-                                                    {props?.folio_ledger_report_data?.supplier.map((item, index) => {
+                                                    {[].map((item, index) => {
                                                         return (
                                                             <>
                                                                 {

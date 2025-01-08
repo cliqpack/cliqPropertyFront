@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState,useEffect, useRef } from "react";
 import {
   useLocation,
   withRouter,
@@ -9,23 +9,48 @@ import {
 import { Card, CardBody, CardTitle, Col, Row, Button } from "reactstrap";
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
-
-import { storePropertyDocument } from "store/actions";
+// import { showContact, } from "../../../store/Contacts2/actions";
+import {showContact} from "../../../store/Contacts2/actions"
+import { storePropertyDocument,getMessageContacts,ContactsAllActivity } from "store/actions";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import moment from "moment";
 
-const ContactsInfoOfSeller = ({ item }) => {
+const ContactsInfoOfSeller = ({ item,ContactsAllActivity,getMessageContacts,showContact }) => {
+  console.log(item);
+  
+  const [init, setInit] = useState(true);
   const [showDropZone, setShowDropZone] = useState(false);
-
+  const history = useHistory();
+  const location = useLocation();
   const { id } = useParams();
   const inputFile = useRef(null);
   const dispatch = useDispatch();
-
+  console.log("Current ID:", id);
   const sellerEditHandler = (id, tab) => {
     // history.push("/owner/edit/" + id + "/" + tabId);
   };
-  console.log(item);
+
+  const sellerFolioHandler = (contactId, folioCode, fId) => {
+    history.push({
+      pathname: `/sellerFolio/${id}/${fId}`,
+      state: { contactId, folioCode, fId },
+    });
+  };
+    
+  const buyerContactHandler = (contactId) => {
+    // console.log();
+    
+    history.push({
+      pathname: `/contactsInfo/${contactId}`,
+      state: { contactId },
+    });
+  };
+//   const buyerHandler = () =>
+//  {
+//   window.location.reload();
+//  }
+
   const handlejobDoc = e => {
     e.preventDefault();
     // setShow(true)
@@ -57,6 +82,14 @@ const ContactsInfoOfSeller = ({ item }) => {
       item.property_id, item?.contact_id, null, null, null, item.id
     ));
   };
+ 
+  useEffect(() => {
+    showContact(id);
+    getMessageContacts(id);
+    ContactsAllActivity(id);
+    
+  }, [id]);
+  
 
   return (
     <Card data-aos="fade-right" data-aos-once={true}>
@@ -98,7 +131,24 @@ const ContactsInfoOfSeller = ({ item }) => {
                 >
                   <i className="fa fa-solid fa-pen" />
                 </button>
+
               </Link>
+              <Button
+                  type="button"
+                  className="ms-1 btn btn-info"
+                  onClick={() =>
+                    sellerFolioHandler(
+                      item?.seller_folio
+                        ?.seller_contact_id,
+                      item?.seller_folio
+                        ?.folio_code,
+                      item?.seller_folio
+                        ?.id
+                    )
+                  }
+                >
+                  <i className="fa fa-solid fa-dollar-sign" />
+                </Button>
 
             </Col>
           </Row>{" "}
@@ -175,9 +225,31 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           {" "}
-                          <p>
-
+                          <p style={{ cursor: "pointer" }}
+                              className="text-primary"
+                              onClick={() =>
+                                buyerContactHandler(
+                                  item?.property_sales_agreement?.buyer_contact?.contact_id,
+                                  
+                                )
+                              }
+                              >
+                          {item?.property_sales_agreement?.buyer_contact?.first_name } {item?.property_sales_agreement?.buyer_contact?.last_name }
                           </p>
+                          {/* <Link to={`/contactsInfo/${item?.property_sales_agreement?.buyer_contact?.contact_id}`}>
+                              {`${item?.property_sales_agreement?.buyer_contact?.first_name} ${item?.property_sales_agreement?.buyer_contact?.last_name}`}
+                            </Link> */}
+                          {/* <p>
+                            { <Link
+                            to={`/contactsInfo/${item?.property_sales_agreement?.buyer_contact?.contact_id}`} onClick={buyerHandler}
+                          > 
+                            {
+                              item?.property_sales_agreement?.buyer_contact?.first_name
+                            }
+                            {item?.property_sales_agreement?.buyer_contact?.last_name}
+                            </Link> }
+                          </p> */}
+
                         </Col>
                       </Row>
                       <div
@@ -195,7 +267,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                           <p className="text-primary">Asking price</p>
                         </Col>
                         <Col md={7}>
-                          ৳{item?.seller_folio.asking_price || "0.00"}
+                          ${item?.seller_folio.asking_price || "0.00"}
                         </Col>
                       </Row>
                       <div
@@ -232,7 +304,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           <span className="">
-                            ৳{item?.seller_folio?.commission || "0.00"}
+                            ${item?.seller_folio?.commission || "0.00"}
                           </span>
                         </Col>
                       </Row>
@@ -251,7 +323,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           <span className="">
-                            ৳{item?.seller_folio?.balance || "0.00"}
+                            ${item?.seller_folio?.balance || "0.00"}
                           </span>
                         </Col>
                       </Row>
@@ -270,7 +342,7 @@ const ContactsInfoOfSeller = ({ item }) => {
                         </Col>
                         <Col md={7}>
                           <span className="">
-                            ৳0.00
+                            $0.00
                           </span>
                         </Col>
                       </Row>
@@ -287,10 +359,25 @@ const ContactsInfoOfSeller = ({ item }) => {
                     <Col>
                       <Row className="d-flex">
                         <Col md={5}>
-                          <p className="text-primary">Folio code</p>
+                          <p 
+                            className="text-textTitleColor"
+                           >Folio code</p>
                         </Col>
                         <Col md={7}>
-                          <p>
+                          <p
+                          style={{cursor:"pointer"}}
+                          className="text-primary"
+                           
+                           onClick={() =>
+                            sellerFolioHandler(
+                              item?.seller_folio
+                                ?.seller_contact_id,
+                              item?.seller_folio
+                                ?.folio_code,
+                              item?.seller_folio
+                                ?.id
+                            )
+                          }>
                             {`${item?.first_name} ${item?.last_name}`} (
                             {`${item?.seller_folio?.folio_code}`})
                           </p>
@@ -342,7 +429,7 @@ const ContactsInfoOfSeller = ({ item }) => {
 
                                 {item.seller_payment.length === 0 ? 'None' : item.seller_payment.length === 1 ? item.seller_payment[0]?.method : `Split(
                                             ${item.seller_payment.map(item =>
-                                  item.split_type == '৳' ? `৳${item.split}.00` : ` ${item.split}%`
+                                  item.split_type == '$' ? `$${item.split}.00` : ` ${item.split}%`
                                 )}
                                           )`
                                 }
@@ -420,8 +507,30 @@ Aos.init({
   once: true,
 });
 
+
 const mapStateToProps = gstate => {
   const { } = gstate.Contacts2;
-  return {};
+  const {
+    contacts_all_activity_loading,
+    contacts_all_activity,
+    contacts_message_data_loading,
+    contacts_message_data,
+    
+  } = gstate.Activity;
+  const {
+    all_contact_document,
+    all_contact_document_error,
+    all_contact_document_loading,
+    
+  } = gstate.Document;
+  return {
+    contacts_message_data_loading,
+    contacts_message_data,
+    all_contact_document,
+    all_contact_document_error,
+    all_contact_document_loading,
+    contacts_all_activity_loading,
+    contacts_all_activity,
+  };
 };
-export default withRouter(connect(mapStateToProps, { storePropertyDocument })(ContactsInfoOfSeller));
+export default withRouter(connect(mapStateToProps, { storePropertyDocument,showContact,getMessageContacts,ContactsAllActivity })(ContactsInfoOfSeller));

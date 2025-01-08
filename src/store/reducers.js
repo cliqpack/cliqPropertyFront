@@ -101,11 +101,6 @@ import Withdrawal from "./Accounts/Withdrawal/reducer";
 //Supplier
 import supplier from "./supplier/reducer";
 
-// REPORT
-import BillReportReducer from "./Report/FinancialReport/reducer";
-import CashBookReducer from "./Report/FinancialReport/CashBook/reducer";
-import FolioLedgerReducer from "./Report/FinancialReport/FolioLedger/reducer";
-
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -146,10 +141,7 @@ const rootReducer = combineReducers({
   Addon,
   Withdrawal,
   FeeSettings,
-  supplier,
-  BillReportReducer,
-  CashBookReducer,
-  FolioLedgerReducer
+  supplier
 });
 
 export default rootReducer;

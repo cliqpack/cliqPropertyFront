@@ -422,8 +422,6 @@ export const storeInspectionInfo = (
 };
 
 export const addInspectionSchedule = (data, address) => {
-  console.log(address);
-  // return
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   const newUrl = process.env.REACT_APP_LOCALHOST;
   var url = newUrl + "/master/schedule";

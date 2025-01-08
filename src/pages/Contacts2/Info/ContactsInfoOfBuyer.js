@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useEffect, useRef }  from "react";
 import {
   useLocation,
   withRouter,
@@ -6,19 +6,53 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
-import { Card, CardBody, CardTitle, Col, Row } from "reactstrap";
+import { Card, CardBody, CardTitle, Col, Row ,Button} from "reactstrap";
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
-
+import { storePropertyDocument,getMessageContacts,ContactsAllActivity } from "store/actions";
 import { } from "store/actions";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import moment from "moment";
+import {showContact} from "../../../store/Contacts2/actions"
 
-const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
+const ContactsInfoOfBuyer = ({ item, showDropZone,ContactsAllActivity,getMessageContacts,showContact }) => {
+  console.log(item);
+  
+  const { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const inputFile = useRef(null);
+  const sellerFolioHandler = (contactId, folioCode, fId) => {
+    history.push({
+      pathname: `/sellerFolio/${id}/${fId}`,
+      state: { contactId, folioCode, fId },
+    });
+  };
+console.log(item);
+    
+      const handleUploadFiles = async e => {
+        dispatch(storePropertyDocument(
+          e.target.files,
+          item.property_id, item?.contact_id, null, null, null, item.id
+        ));
+      };
 
+      const sellerContactHandler = (contactId) =>{
+        console.log(contactId);
+        
+        history.push({
+          pathname: `/contactsInfo/${contactId}`,
+          state: { contactId },
+        });
+      }
+    
+      useEffect(() => {
+        showContact(id);
+        getMessageContacts(id);
+        ContactsAllActivity(id);
+        
+      }, [id]);
 
 
   return (
@@ -37,31 +71,49 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
               md={6}
               className="d-flex justify-content-end align-items-center"
             >
-              {/* <i
-                      className="fa fa-solid fa-cloud fa-2x text-info"
-                      style={{ color: "#1e7dc8" }}
-                    />
-                    <button type="button" className="ms-1 btn btn-info">
-                      <i className="fa fa-solid fa-paperclip" />
-                    </button>
-                    <button type="button" className="ms-1 btn btn-info">
-                      <i className="fa fa-regular fa-user" />
-
-                    </button> */}
-              <i className="fas fa-cloud-upload-alt fa-2x me-1" />
-              <button
-                type="button"
-                className="ms-1 btn btn-info"
-              // onClick={() => {
-              //   ownerEditHandler(item.id, 2);
-              // }}
+              <i className="fas fa-cloud-upload-alt fa-2x me-1 text-info" />
+              <input
+                type="file"
+                onChange={handleUploadFiles}
+                ref={inputFile}
+                style={{ display: "none" }}
+                multiple
+              />
+              <Button
+                className="btn"
+                color="info"
+                onClick={() => inputFile.current.click()}
               >
-                <i className="fa fa-solid fa-pen" />
-              </button>
-              {/* <button type="button" className="ms-1 btn btn-info">
-                      <i className="fa fa-solid fa-dollar-sign" />
-                    </button> */}
+                {" "}
+                <i className="bx bx-camera d-block font-size-20"></i>
+              </Button>
+              <Link to={`/editSaleAgreement/${item.property_id}/${item.id}/${item.property_sales_agreement?.has_buyer == 'true' ? '3' : '2'}`}>
+                <button
+                  type="button"
+                  className="ms-1 btn btn-info"
+
+                >
+                  <i className="fa fa-solid fa-pen" />
+                </button>
+
+              </Link>
+              <Button
+                  type="button"
+                  className="ms-1 btn btn-info"
+                  onClick={() =>
+                    sellerFolioHandler(
+                      item?.property?.sales_agreemet ?.sales_contact?.seller_folio
+                      ?.seller_contact_id,
+                      item?.property?.sales_agreemet ?.sales_contact?.seller_folio?.folio_code,
+                      item?.property?.sales_agreemet ?.sales_contact?.seller_folio?.id
+                    )
+                  }
+                >
+                  <i className="fa fa-solid fa-dollar-sign" />
+                </Button>
+
             </Col>
+         
           </Row>{" "}
           <div
             className="w-100 mt-2 "
@@ -155,7 +207,7 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                       </Col>
                       <Col md={7}>
                         <span className="">
-                          ৳{item?.buyer_folio?.purchase_price || "0.00"}
+                          ${item?.buyer_folio?.purchase_price || "0.00"}
                         </span>
                       </Col>
                     </Row>
@@ -174,7 +226,7 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                       </Col>
                       <Col md={7}>
                         <span className="">
-                          ৳{item?.buyer_folio?.commission || "0.00"}
+                          ${item?.buyer_folio?.commission || "0.00"}
                         </span>
                       </Col>
                     </Row>
@@ -193,7 +245,17 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                         <p className="text-primary">Folio code</p>
                       </Col>
                       <Col md={7}>
-                        <p>{`${item.first_name} ${item.last_name} `} </p>
+                        <p style={{ cursor: "pointer" }}
+                              className="text-primary" onClick={() =>
+                            sellerFolioHandler(
+                              item?.property?.sales_agreemet ?.sales_contact?.seller_folio
+                                ?.seller_contact_id,
+                              item?.property?.sales_agreemet ?.sales_contact?.seller_folio
+                                ?.folio_code,
+                              item?.property?.sales_agreemet ?.sales_contact?.seller_folio
+                                ?.id
+                            )
+                          }>{`${item.first_name} ${item.last_name} `} </p>
                       </Col>
                     </Row>
                     <div
@@ -234,16 +296,34 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                       <Col md={5}>
                         <p className="text-primary">Payment methods</p>
                       </Col>
-                      <Col md={7}>
+                      {/* <Col md={7}>
                         <p>
                           {item.buyer_payment?.length > 0
                             ? item.buyer_payment.map((i, ix) => (
                               <span key={ix}>{i.method} &nbsp;</span>
                             ))
                             : ""}
-                          <i className="me-2 mdi mdi-pencil d-block font-size-16 text-primary"></i>
+                          <i className=" mdi mdi-pencil d-block text-primary"></i>
                         </p>
-                      </Col>
+                      </Col> */}
+                      <Col md={7}>
+
+
+                          <Link to={`/editSaleAgreement/${item.property_id}/${item.id}/${item.property.sales_agreemet?.has_buyer == 'true' ? '4' : '3'}`}>
+                            <div className="d-flex">
+                              <p>
+
+                                {item.buyer_payment.length  === 0 ? 'None' :item.buyer_payment.length  === 1 ? item.buyer_payment[0]?.payment_method : `Split(
+                                            ${item.buyer_payment.map(item =>
+                                  item.split_type == '$' ? `$${item.split}.00` : ` ${item.split}%`
+                                )}
+                                          )`
+                                }
+                              </p>
+                              <i className="ms-1 mdi mdi-pencil d-block font-size-16 text-primary"></i>
+                            </div>
+                          </Link>
+                        </Col>
                     </Row>{" "}
                     <div
                       className="w-100 "
@@ -316,6 +396,34 @@ const ContactsInfoOfBuyer = ({ item, showDropZone }) => {
                     </div>}
 
                 </div>
+                <div className="py-1">
+                  <Col>
+                    <Row className="d-flex">
+                    <Col md={5}>
+                          <p className="text-primary">Seller</p>
+                        </Col>
+                        <Col md={7}>
+                          {" "} 
+                          <p   style={{ cursor: "pointer" }}
+                              className="text-primary" onClick={() =>
+                            sellerContactHandler(
+                              item?.property?.sales_agreemet ?.sales_contact?.contact_id,
+                              // item?.property?.sales_agreemet ?.sales_contact?.seller_folio
+                              //   ?.folio_code,
+                              // item?.property?.sales_agreemet ?.sales_contact?.seller_folio
+                              //   ?.id
+                            )
+                          }>
+                          {item?.property?.owner } 
+                          </p>
+                        </Col>
+                    </Row>{" "}
+                    <div
+                      className="w-100 "
+                      style={{ borderBottom: "1.2px dotted #c9c7c7" }}
+                    />
+                  </Col>
+                </div>
               </Col>
             </Row>
           </div>
@@ -333,6 +441,27 @@ Aos.init({
 
 const mapStateToProps = gstate => {
   const { } = gstate.Contacts2;
-  return {};
+  const {
+    contacts_all_activity_loading,
+    contacts_all_activity,
+    contacts_message_data_loading,
+    contacts_message_data,
+    
+  } = gstate.Activity;
+  const {
+    all_contact_document,
+    all_contact_document_error,
+    all_contact_document_loading,
+    
+  } = gstate.Document;
+  return {
+    contacts_message_data_loading,
+    contacts_message_data,
+    all_contact_document,
+    all_contact_document_error,
+    all_contact_document_loading,
+    contacts_all_activity_loading,
+    contacts_all_activity,
+  };
 };
-export default withRouter(connect(mapStateToProps, {})(ContactsInfoOfBuyer));
+export default withRouter(connect(mapStateToProps, {storePropertyDocument,showContact,getMessageContacts,ContactsAllActivity})(ContactsInfoOfBuyer));

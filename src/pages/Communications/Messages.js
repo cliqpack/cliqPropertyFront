@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { withRouter, useHistory } from "react-router-dom";
+import axios from "axios";
+import { withRouter, useHistory, useLocation } from "react-router-dom";
 import {
   Button,
   Card,
   CardBody,
-  CardText,
   Col,
   Container,
   Input,
@@ -29,7 +29,7 @@ import {
   Form,
   FormGroup,
   CardHeader,
-  CardTitle,
+  Collapse
 } from "reactstrap";
 import classnames from "classnames";
 import moment from "moment";
@@ -105,8 +105,6 @@ import Switch from "react-switch";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-
 import avatar2 from "../../assets/images/users/avatar-2.jpg";
 
 import MailLogo from "../../assets/images/image.png";
@@ -121,6 +119,8 @@ import DeleteModal from "pages/Calendar/DeleteModal";
 import ReplyCard from "./ReplyCard";
 import parse from "html-react-parser";
 import ShowSMSModal from "./Modal/ShowSMSModal";
+import ShowLetterModal from "./Modal/ShowLetterModal";
+import ShowLetterEditModal from "./Modal/ShowLetterEditModal";
 
 import Loder from "components/Loder/Loder";
 import { floor } from "lodash";
@@ -131,7 +131,8 @@ import { useTranslation } from "react-i18next";
 
 const Messages = props => {
   const history = useHistory();
-  console.log(history.location?.state?.from);
+  const location = useLocation();
+  const { uploaded } = location?.state || {};
   const { t } = useTranslation();
   let language = localStorage.getItem("i18nextLng");
 
@@ -169,20 +170,34 @@ const Messages = props => {
     reply: [],
     reply_from: null,
     reply_to: null,
+    bodyLetter: null,
   });
+  const [sentEmailBoolean, setSentEmailBoolean] = useState(true);
   const [init, setInit] = useState(true);
   const [loader, setLoader] = useState(false);
   const [smsButton, setSMSButton] = useState(false);
   const [smsTempButton, setSMSTempButton] = useState(false);
   const [modalSMS, setModalSMS] = useState(false);
-  const [data, setData] = useState({ smsData: {}, deleteData: {} });
+  const [modalLetter, setModalLetter] = useState(false);
+  const [modalMailTemplate, setModalMailTemplate] = useState(false);
+  const [modalSMSTemplate, setModalSMSTemplate] = useState(false);
+  const [data, setData] = useState({ smsData: {}, deleteData: {}, letterData: {} });
   const [showSMSModal, setShowSMSModal] = useState(false);
+  const [showLetterModal, setShowLetterModal] = useState(false);
+  const [showLetterEditModal, setShowLetterEditModal] = useState(false);
   const [search, setSearch] = useState("");
   const toggleShowSMSModal = () => setShowSMSModal(prev => !prev);
+  const toggleShowLetterModal = () => setShowLetterModal(prev => !prev);
+  const toggleEditLetterModal = () => setShowLetterEditModal(prev => !prev);
+
   var authUser = JSON.parse(localStorage.getItem("authUser"));
 
   const toggleSMSmodal = () => {
     setModalSMS(!modalSMS);
+  };
+
+  const toggleLettermodal = () => {
+    setModalLetter(!modalLetter);
   };
 
   const [mailTempEditData, setMailTempEditData] = useState({
@@ -230,6 +245,7 @@ const Messages = props => {
   // template Modal
   const [taskModal, setTaskModal] = useState(false);
   const [smsModal, setSMSModal] = useState(false);
+  const [letterModal, setLetterModal] = useState(false);
 
   if (init) {
     props.getUser();
@@ -237,12 +253,12 @@ const Messages = props => {
     props.inboxList(state.page, state.sizePerPage, null, "updated_at", "desc");
     setInit(false);
   }
-  const toggleTempModal = () => {
+  const toggleEmailTemplateModal = () => {
     setTaskModal(!taskModal);
   };
   //Delete Modal
 
-  const toggleTempModalSMS = () => {
+  const toggleSMSTemplateModal = () => {
     setSMSModal(!smsModal);
   };
   const [sendReply, setReply] = useState(false);
@@ -259,22 +275,32 @@ const Messages = props => {
   };
 
   const handleToggleTempModal = () => {
-    if (state.body && mailTempEditData.subject) {
-      toggleTempModal();
-    } else {
-      toastr.warning(" Subject & Body can not be empty");
-    }
+    toggleEmailTemplateTextModal();
   };
 
   // schedule modal for SMS start from here
   const handleToggleTempModalForSMS = () => {
     if (state2) {
-      toggleTempModalSMS();
+      toggleSMSTemplateModal();
     } else {
       toastr.warning("Please fill up all fields");
     }
   };
-  // schedule modal for SMS start from here
+  // schedule modal for SMS ends from here
+
+  const toggleTempModalLetter = () => {
+    setLetterModal(!letterModal);
+  };
+
+  // schedule modal for Letter start from here
+  const handleToggleTempModalForLetter = () => {
+    if (!state.bodyLetter) {
+      toastr.warning("Please fill up all fields");
+      return;
+    }
+    toggleTempModalLetter();
+  };
+  // schedule modal for Letter ends from here
 
   //Schedule state
   const [schedule, setSchedule] = useState({
@@ -334,8 +360,6 @@ const Messages = props => {
 
   const handleSMSTempEditForm = e => {
     e.preventDefault();
-    console.log(props.tmp_list_id_sms_data?.data?.id);
-    console.log(smsTempEditData);
     setSMSTempUpdate(!smsTempUpdate);
     setState({ ...state, loader: true });
     props.sendSMSTemplateEditByUserID(
@@ -350,11 +374,9 @@ const Messages = props => {
     let checkboxes = document.querySelectorAll(
       "input[type='checkbox']:checked"
     );
-    console.log(checkboxes.length);
     for (let i = 0; i < checkboxes.length; i++) {
       arr.push(checkboxes[i].id);
     }
-    console.log(arr);
     setMails(arr);
   };
 
@@ -407,7 +429,116 @@ const Messages = props => {
       props.spamList(1, 10, null, "updated_at", "desc");
       setActionArray([]);
     }
+    if (tab == 9) {
+      fetchLetterTemplate(null, "updated_at", "desc", 1, 10);
+      setActionArray([]);
+    }
+    if (tab == 10) {
+      fetchSentLetter(null, "message_with_mails.updated_at", "desc", 1, 10);
+      setActionArray([]);
+    }
+    if (tab == 11) {
+      fetchOutboxLetter(null, "message_with_mails.updated_at", "desc", 1, 10);
+      setActionArray([]);
+    }
   };
+
+  const fetchLetterTemplate = async (search, sortField, sortValue, page, perPage) => {
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const letterTemplateList = `${process.env.REACT_APP_LOCALHOST}/letter/templates?search=${search}&sortField=${sortField}&sortValue=${sortValue}&page=${page}&perPage=${perPage}`;
+
+    try {
+      setState(prev => ({ ...prev, loading: true }));
+      const response = await axios.get(letterTemplateList, { headers: headers });
+      setState((prevData) => ({
+        ...prevData,
+        data: response.data.data.data,
+        dataLength: response.data.data.total,
+        page: parseInt(response.data.data.currentPage),
+        sizePerPage: response.data.data.perPage,
+      }));
+    } catch (error) {
+      console.error('Error fetching letter template:', error);
+      setState(prev => ({ ...prev, loading: false }));
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }
+
+  const fetchSentLetter = async (search, sortField, sortValue, page, perPage) => {
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const sentLettterList = `${process.env.REACT_APP_LOCALHOST}/letters/sent?search=${search}&sortField=${sortField}&sortValue=${sortValue}&page=${page}&perPage=${perPage}`;
+
+    try {
+      setState(prev => ({ ...prev, loading: true }));
+      const response = await axios.get(sentLettterList, { headers: headers });
+      setState((prevData) => ({
+        ...prevData,
+        data: response.data.data.data,
+        dataLength: response.data.data.total,
+        page: parseInt(response.data.data.currentPage),
+        sizePerPage: response.data.data.perPage,
+      }));
+    } catch (error) {
+      console.error('Error fetching sent letters:', error);
+      setState(prev => ({ ...prev, loading: false }));
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }
+
+  const fetchOutboxLetter = async (search, sortField, sortValue, page, perPage) => {
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const outboxLetterList = `${process.env.REACT_APP_LOCALHOST}/letters/outbox?search=${search}&sortField=${sortField}&sortValue=${sortValue}&page=${page}&perPage=${perPage}`;
+
+    try {
+      setState(prev => ({ ...prev, loading: true }));
+      const response = await axios.get(outboxLetterList, { headers: headers });
+      setState((prevData) => ({
+        ...prevData,
+        data: response.data.data.data,
+        dataLength: response.data.data.total,
+        page: parseInt(response.data.data.currentPage),
+        sizePerPage: response.data.data.perPage,
+      }));
+    } catch (error) {
+      console.error('Error fetching outbox letters:', error);
+      setState(prev => ({ ...prev, loading: false }));
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }
+
+  if (uploaded && sentEmailBoolean) {
+    setSentEmailBoolean(false)
+    setState(prevState => ({
+      ...prevState,
+      modal: !prevState.modal,
+      activeTab: "0",
+      loader: false,
+      mailBodyModal2: false,
+      to: "",
+      subject: "",
+      body: "",
+    }));
+    setSelectedCC([]);
+    setSelectedBCC([]);
+  }
 
   const togglemodal = () => {
     setState(prevState => ({
@@ -424,6 +555,26 @@ const Messages = props => {
     setSelectedCC([]);
     setSelectedBCC([]);
   };
+
+  const toggleEmailTemplateTextModal = () => {
+    setState(prevState => ({
+      ...prevState,
+      loader: false,
+      mailBodyModal2: false,
+      to: "",
+      subject: "",
+      body: "",
+    }));
+    setModalMailTemplate(!modalMailTemplate)
+    setAttached([]);
+    setSelectedCC([]);
+    setSelectedBCC([]);
+  };
+
+  const toggleSMSTemplateTextModal = () => {
+    setModalSMSTemplate(!modalSMSTemplate)
+  };
+
   const togglemodal1 = () => {
     setState(prevState => ({
       modal1: !prevState.modal1,
@@ -433,7 +584,6 @@ const Messages = props => {
   };
 
   const toggleMailBodyModal = (tab, text, to, from, subject, id) => {
-    console.log(tab, text);
     setState(prevState => ({
       mailBodyModal: !prevState.mailBodyModal,
       activeTab: tab,
@@ -468,7 +618,6 @@ const Messages = props => {
       reply_from: reply_from,
       reply_to: reply_to,
     }));
-    // console.log(state);
   };
 
   const toggleMailBodyModalWithouttext = () => {
@@ -485,7 +634,7 @@ const Messages = props => {
     }));
   };
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
   const {
     inboxmails,
@@ -505,9 +654,15 @@ const Messages = props => {
 
   const handleSubmitMail = e => {
     e.preventDefault();
-    if (state.to == null) {
-      toastr.warning("Please fill up all fields");
-    } else if (state.id != null) {
+    if (state.to === "") {
+      toastr.warning("Please add recipient");
+      return;
+    }
+    if (mailTempEditData.subject === "") {
+      toastr.warning("Please add subject");
+      return;
+    }
+    if (state.id != null) {
       props.sendMail(
         state,
         mailTempEditData.subject,
@@ -531,19 +686,11 @@ const Messages = props => {
       );
       setOptionGroup([]);
       setState({ ...state, loader: true });
-
-      // setMailTempEditData(...mailTempEditData, {
-      //   body: "",
-      //   subject: "",
-      // });
     }
   };
 
   const handleReplyMail = e => {
     e.preventDefault();
-    console.log("========== I am in reply Mail system =============");
-    console.log(state);
-
     if (state.to == null) {
       toastr.warning("Please fill up all fields");
     } else if (state.id != null) {
@@ -556,10 +703,8 @@ const Messages = props => {
   };
 
   const handleMultipleMailSend = () => {
-    console.log(mails);
     if (mails.length < 1) {
       toastr.warning("Oppps, You didn't select any mail");
-
       setState({ ...state, loader: false });
     } else {
       props.sendMultipleMail(mails);
@@ -568,7 +713,6 @@ const Messages = props => {
     }
   };
   const handleMultipleMailDelete = () => {
-    console.log(mails);
     if (mails.length < 1) {
       toastr.warning("Oppps, You didn't select any mail");
 
@@ -583,8 +727,15 @@ const Messages = props => {
 
   const handleSubmitSMS = e => {
     e.preventDefault();
+    if (!state2) {
+      toastr.warning("Please add recepient");
+      return;
+    }
+    if (!smsTempEditData.message) {
+      toastr.warning("Please add sms body");
+      return;
+    }
     props.sendSMS(state2, smsTempEditData.message);
-
     setState(prevState => ({
       ...prevState,
       loader: true,
@@ -604,7 +755,6 @@ const Messages = props => {
 
   const saveSMStemplate = e => {
     e.preventDefault();
-    console.log(state2);
     props.sendSMSTemplate(state2, smsTempEditData.message);
     setModal(false);
 
@@ -623,11 +773,10 @@ const Messages = props => {
   const dropDownHandler = e => {
     if (e.target.value == "1") togglemodal();
     if (e.target.value == "2") toggleSMSmodal();
+    if (e.target.value == "3") toggleLettermodal();
   };
 
   const selectDropDownHandler = e => {
-    console.log(e.target.value);
-
     if (e.target.value) {
       props.templateListById(e.target.value);
       setShowTemplate(true);
@@ -635,7 +784,6 @@ const Messages = props => {
   };
 
   const handleSelectGroupForMail = e => {
-    console.log(e.value);
     // setSelectedGroup(e);
     if (e.value != undefined) {
       props.templateListById(e.value);
@@ -644,7 +792,6 @@ const Messages = props => {
   };
   //============= template list for SMS ===============
   const handleSelectGroupForSMS = e => {
-    console.log(e.value);
     setSelectedGroupSMS(e);
     if (e.value != undefined) {
       props.templateListBySMSId(e.value);
@@ -653,7 +800,6 @@ const Messages = props => {
   };
 
   const selectDropDownHandlerForSMS = e => {
-    console.log(e.target.value);
     if (e.target.value) {
       setShowSMSTemp(true);
     }
@@ -665,7 +811,6 @@ const Messages = props => {
 
   //mail temp delete
   const mailTempDelete = id => {
-    console.log(id);
     setDeleteState(id);
     setDeleteModal(!deleteModal);
   };
@@ -676,8 +821,17 @@ const Messages = props => {
     setDeleteModal2(!deleteModal2);
   };
 
+  const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif'];
+
   const handleAttachment = e => {
     e.preventDefault();
+
+    const file = e.target.files[0]
+    if (!allowedTypes.includes(file.type)) {
+      toastr.error("File must be of type pdf, xls, xlsx, doc, docx, jpg, jpeg, png, gif")
+      return;
+    }
+
     props.storeAttachment(e.target.files);
     setLoader(true);
   };
@@ -716,7 +870,6 @@ const Messages = props => {
     : null;
   // Change page
   const paginate = pageNumber => {
-    console.log(pageNumber);
     setCurrentPage(pageNumber);
   };
   const handleForward = () => {
@@ -755,7 +908,6 @@ const Messages = props => {
     : null;
   // Change page
   const paginateFotSent = pageNumber => {
-    console.log(pageNumber);
     setCurrentPageForSentMail(pageNumber);
   };
   const handleForwardForSent = () => {
@@ -834,7 +986,6 @@ const Messages = props => {
     : null;
   // Change page
   const paginateForSMS = pageNumber => {
-    console.log(pageNumber);
     setCurrentPageForSMS(pageNumber);
   };
   const handleForwardForSMS = () => {
@@ -879,7 +1030,6 @@ const Messages = props => {
     : null;
   // Change page
   const paginateForMailTemp = pageNumber => {
-    console.log(pageNumber);
     setCurrentPageForMailTemp(pageNumber);
   };
   const handleForwardForMailTemp = () => {
@@ -922,7 +1072,6 @@ const Messages = props => {
     : null;
   // Change page
   const paginateForSMSTemp = pageNumber => {
-    console.log(pageNumber);
     setCurrentPageForSMSTemp(pageNumber);
   };
   const handleForwardForSMSTemp = () => {
@@ -965,7 +1114,6 @@ const Messages = props => {
     : null;
   // Change page
   const paginateForUndelivered = pageNumber => {
-    console.log(pageNumber);
     setCurrentPageForUndelivered(pageNumber);
   };
   const handleForwardForUndelivered = () => {
@@ -1060,39 +1208,228 @@ const Messages = props => {
     setSchedule({ ...schedule, selectFrom: e });
   };
 
-  const handleSaveSchedule = e => {
+  const handleSaveScheduleforEmail = async (e) => {
     e.preventDefault();
-    if (schedule.name) {
-      props.addSchedule(
-        schedule,
-        form1state,
-        state.body,
-        mailTempEditData.subject
-      );
-      setState({ ...state, loader: true });
-    } else {
-      toastr.warning(" Name can not be empty");
+
+    if (!schedule.name) {
+      toastr.warning("Please enter a template name.");
+      return;
+    }
+    if (!schedule.selectRegarding || !schedule.selectRegarding.value) {
+      toastr.warning("Please select 'This message is regarding'.");
+      return;
+    }
+    if (!schedule.selectTo || !schedule.selectTo.value) {
+      toastr.warning("Please select 'This message will be sent to'.");
+      return;
+    }
+    if (!schedule.selectFrom || !schedule.selectFrom.value) {
+      toastr.warning("Please select 'This message will be sent when'.");
+      return;
+    }
+    if (!state.body) {
+      toastr.warning("Please enter the body");
+      return;
+    }
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const URL = `${process.env.REACT_APP_LOCALHOST}/mail/template`;
+    const data = {
+      name: schedule.name,
+      message_action_name_id: schedule.selectRegarding.value,
+      message_trigger_to_id: schedule.selectTo.value,
+      messsage_trigger_point_id: schedule.selectFrom.value,
+      body: state.body,
+      status: form1state.switch1,
+      email_sends_automatically: form1state.email_sends_automatically,
+      subject: schedule.name,
+      type: "mail",
+    };
+
+    setState(prev => ({ ...prev, loader: true }));
+
+    try {
+      const response = await axios.post(URL, data, { headers });
+      toggleEmailTemplateModal();
+      toggleEmailTemplateTextModal();
+      setState(prev => ({ ...prev, loader: false }));
+
+      setSchedule({
+        name: '',
+        selectRegarding: null,
+        selectTo: null,
+        selectFrom: null,
+      });
+      setState(prev => ({
+        ...prev,
+        body: '',
+      }));
+
+      toastr.success(response.data.message);
+      props.templateList(1, 10, null, "updated_at", "desc");
+    } catch (error) {
+      setState(prev => ({ ...prev, loader: false }));
+      if (error.response) {
+        toastr.warning(error.response.data.message || 'Something went wrong');
+      } else if (error.request) {
+        toastr.warning('No response from the server');
+      } else {
+        toastr.warning(error.message);
+      }
     }
   };
 
-  const handleSaveScheduleforSMS = e => {
+  const handleSaveScheduleforSMS = async (e) => {
     e.preventDefault();
-    console.log(form1state, state2, smsTempEditData.message);
-    if (schedule.name) {
-      props.sendSMSTemplate(
-        schedule.name,
-        form1state.switch1,
-        schedule.selectRegarding.value,
-        schedule.selectTo.value,
-        schedule.selectFrom.value,
-        state2.to,
-        smsTempEditData.message
-      );
-      setState({ ...state, loader: true });
-    } else {
-      toastr.warning(" Name can not be empty");
+
+    if (!schedule.name) {
+      toastr.warning("Name cannot be empty");
+      return;
+    }
+    if (!schedule.selectRegarding) {
+      toastr.warning("Please select 'This message is regarding'.");
+      return;
+    }
+    if (!schedule.selectTo) {
+      toastr.warning("Please select 'This message will be sent to'.");
+      return;
+    }
+    if (!schedule.selectFrom) {
+      toastr.warning("Please select 'This message will be sent when'.");
+      return;
+    }
+    if (!smsTempEditData.message) {
+      toastr.warning("Please enter the body");
+      return;
+    }
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const Url = `${process.env.REACT_APP_LOCALHOST}/sms/template`;
+    const data = {
+      name: schedule.name,
+      status: form1state.switch1,
+      message: smsTempEditData.message,
+      message_action_name_id: schedule.selectRegarding.value,
+      message_trigger_to_id: schedule.selectTo.value,
+      messsage_trigger_point_id: schedule.selectFrom.value,
+      type: "sms",
+    };
+
+    setState(prev => ({ ...prev, loader: true }));
+
+    try {
+      const response = await axios.post(Url, data, { headers: headers });
+
+      setSchedule({
+        name: '',
+        selectRegarding: null,
+        selectTo: null,
+        selectFrom: null,
+      });
+      setSMSTempEditData({
+        ...smsTempEditData,
+        message: '',
+      });
+
+      toggleSMSTemplateModal();
+      toggleSMSTemplateTextModal();
+      setState(prev => ({ ...prev, loader: false }));
+      toastr.success(response.data.message);
+      props.templateListSMS(1, 10, null, "updated_at", "desc");
+    } catch (error) {
+      toastr.warning(error.message);
+      setState(prev => ({ ...prev, loader: false }));
     }
   };
+
+
+
+  const handleSaveScheduleforLetter = async (e) => {
+    e.preventDefault();
+
+    let hasError = false;
+    const validationErrors = {};
+
+    if (!schedule.name) {
+      hasError = true;
+      validationErrors.name = "Name cannot be empty";
+    }
+    if (!state.bodyLetter) {
+      hasError = true;
+      validationErrors.bodyLetter = "Please enter the body";
+    }
+    if (!schedule.selectRegarding?.value) {
+      hasError = true;
+      validationErrors.selectRegarding = "Please select 'This message is regarding'.";
+    }
+    if (!schedule.selectTo?.value) {
+      hasError = true;
+      validationErrors.selectTo = "Please select 'This message will be sent to'.";
+    }
+    if (!schedule.selectFrom?.value) {
+      hasError = true;
+      validationErrors.selectFrom = "Please select 'This message will be sent when'.";
+    }
+
+    if (hasError) {
+      Object.values(validationErrors).forEach(error => {
+        toastr.warning(error);
+      });
+      return;
+    }
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const Url = `${process.env.REACT_APP_LOCALHOST}/letter/templates`;
+    const data = {
+      name: schedule?.name,
+      message: state.bodyLetter,
+      message_action_name_id: schedule?.selectRegarding?.value,
+      message_trigger_to_id: schedule?.selectTo?.value,
+      messsage_trigger_point_id: schedule?.selectFrom?.value,
+      status: form1state.switch1,
+      email_sends_automatically: form1state.email_sends_automatically
+    };
+
+    setState(prev => ({ ...prev, loader: true }));
+
+    try {
+      const response = await axios.post(Url, data, { headers: headers });
+
+      setSchedule({
+        name: '',
+        selectRegarding: null,
+        selectTo: null,
+        selectFrom: null
+      });
+      setState({
+        ...state,
+        bodyLetter: '',
+      });
+
+      toggleLettermodal();
+      toggleTempModalLetter();
+      setState(prev => ({ ...prev, loader: false }));
+      toastr.success(response.data.message);
+      fetchLetterTemplate(null, "updated_at", "desc", 1, 10);
+    } catch (error) {
+      toastr.warning(error.message);
+      setState(prev => ({ ...prev, loader: false }));
+    }
+  };
+
+
 
   //Datatable
   const { SearchBar } = Search;
@@ -1123,12 +1460,10 @@ const Messages = props => {
   ];
 
   const mailTemplateDetails = (e, column, columnIndex, row, rowIndex) => {
-    console.log(row);
     setSchedule({ ...schedule, templateData: row });
     toggleEditScheduleModal();
   };
   const handleClick = (row, tab) => {
-    console.log(row, tab);
     props.sendMailSeenUnseen(row.id);
   };
 
@@ -1153,7 +1488,6 @@ const Messages = props => {
   );
 
   const delSMSTemplate = data => {
-    console.log(data);
     setModalDelete(true);
     setActionArray(data);
     setState({ ...state, activeTab: "7", sms: "single" });
@@ -1163,6 +1497,21 @@ const Messages = props => {
     <span
       className="badge rounded-pill badge-soft-danger font-size-12"
       onClick={() => delSMSTemplate(row)}
+    >
+      Delete
+    </span>
+  );
+
+
+  const delLetterTemplate = data => {
+    setModalDelete(true);
+    setActionArray(prevArray => [...prevArray, data]);
+  };
+
+  const delRefLetter = (cell, row) => (
+    <span
+      className="badge rounded-pill badge-soft-danger font-size-12"
+      onClick={() => delLetterTemplate(row)}
     >
       Delete
     </span>
@@ -1228,7 +1577,6 @@ const Messages = props => {
     },
   ];
   const handleMailSend = data => {
-    console.log(data);
     props.sendMultipleMail(data);
     setState({ ...state, loader: true });
   };
@@ -1597,72 +1945,6 @@ const Messages = props => {
     },
   ];
 
-  // const smsTemplateData = [
-  //   {
-  //     dataField: "name",
-  //     text: "Name",
-  //     sort: true,
-  //     // events: {
-  //     //   onClick: (e, column, columnIndex, row, rowIndex) => {
-  //     //     mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-  //     //   },
-  //     // },
-  //   },
-
-  //   {
-  //     dataField: "message_action_name",
-  //     text: "Regarding",
-  //     sort: true,
-  //     // events: {
-  //     //   onClick: (e, column, columnIndex, row, rowIndex) => {
-  //     //     mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-  //     //   },
-  //     // },
-  //   },
-  //   {
-  //     dataField: "message_trigger_to",
-  //     text: "Send to",
-  //     sort: true,
-  //     // events: {
-  //     //   onClick: (e, column, columnIndex, row, rowIndex) => {
-  //     //     mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-  //     //   },
-  //     // },
-  //   },
-  //   {
-  //     dataField: "messsage_trigger_point",
-  //     text: "Trigger",
-  //     sort: true,
-  //     // events: {
-  //     //   onClick: (e, column, columnIndex, row, rowIndex) => {
-  //     //     mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-  //     //   },
-  //     // },
-  //   },
-  //   {
-  //     dataField: "",
-  //     text: "Edit",
-  //     sort: true,
-  //     formatter: editRef,
-  //     events: {
-  //       onClick: (e, column, columnIndex, row, rowIndex) => {
-  //         mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-  //       },
-  //     },
-  //   },
-  //   {
-  //     dataField: "Action",
-  //     text: "Action",
-  //     sort: true,
-  //     formatter: delRefSMS,
-  //     // events: {
-  //     //   onClick: (e, column, columnIndex, row, rowIndex) => {
-  //     //     mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-  //     //   },
-  //     // },
-  //   }
-  // ]
-
   const smsTemplateData = [
     {
       dataField: "name",
@@ -1722,29 +2004,190 @@ const Messages = props => {
       dataField: "Action",
       text: `${t("Action")}`,
       sort: true,
-      formatter: delRefSMS,
-      // events: {
-      //   onClick: (e, column, columnIndex, row, rowIndex) => {
-      //     mailTemplateDetails(e, column, columnIndex, row, rowIndex);
-      //   },
-      // },
+      formatter: delRefSMS
     },
   ];
 
+  const letterTemplateData = [
+    {
+      dataField: "name",
+      text: `${t("Name")}`,
+      sort: true,
+    },
+
+    {
+      dataField: "message_action_name",
+      text: `${t("Regarding")}`,
+      sort: true,
+    },
+    {
+      dataField: "message_trigger_to",
+      text: `${t("Send")} ${t("to")}`,
+      sort: true,
+    },
+    {
+      dataField: "messsage_trigger_point",
+      text: "Trigger",
+      text: `${t("Trigger")}`,
+      sort: true,
+    },
+    {
+      dataField: "",
+      text: "Edit",
+      text: `${t("Edit")}`,
+      sort: true,
+      formatter: editRef,
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          mailTemplateDetails(e, column, columnIndex, row, rowIndex);
+        },
+      },
+    },
+    {
+      dataField: "Action",
+      text: `${t("Action")}`,
+      sort: true,
+      formatter: delRefLetter,
+    },
+  ];
+
+  const sentLetterData = [
+    {
+      dataField: "recipient_full_name",
+      text: `${t("Recipient")}`,
+      sort: true,
+    },
+
+    {
+      dataField: "body",
+      text: `${t("Letter")}`,
+      sort: true,
+      formatter: (cell) => {
+        if (!cell) {
+          return "";
+        }
+        return cell.length > 30 ? `${cell.substring(0, 30)}...` : cell;
+      },
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          letterDetails(e, column, columnIndex, row, rowIndex);
+        },
+      },
+    },
+
+    {
+      dataField: "status",
+      text: `${t("Status")}`,
+      sort: true,
+    },
+    {
+      dataField: "created_at",
+      text: `${t("Created at")}`,
+      sort: true,
+      formatter: (cell) => {
+        return moment(cell).format("DD/MM/YYYY");
+      },
+    },
+    {
+      dataField: "",
+      text: `${t("Edit")}`,
+      sort: true,
+      formatter: (cell, row) => {
+        if (state.toggleTab === "11") {
+          return editRef(cell, row);
+        }
+        return null;
+      },
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          if (state.toggleTab === "11") {
+            letterEdit(e, column, columnIndex, row, rowIndex);
+          }
+        },
+      },
+    },
+    {
+      dataField: "Action",
+      text: `${t("Action")}`,
+      sort: true,
+      formatter: delRefLetter,
+    },
+  ];
+
+  const outboxLetterData = [
+    {
+      dataField: "recipient_full_name",
+      text: `${t("Recipient")}`,
+      sort: true,
+    },
+
+    {
+      dataField: "body",
+      text: `${t("Letter")}`,
+      sort: true,
+      formatter: (cell) => {
+        return cell.length > 30 ? `${cell.substring(0, 30)}...` : cell;
+      },
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          letterDetails(e, column, columnIndex, row, rowIndex);
+        },
+      },
+    },
+    {
+      dataField: "status",
+      text: `${t("Status")}`,
+      sort: true,
+    },
+    {
+      dataField: "created_at",
+      text: `${t("Created at")}`,
+      sort: true,
+      formatter: (cell) => {
+        return moment(cell).format("DD/MM/YYYY");
+      },
+    },
+    {
+      dataField: "",
+      text: "Edit",
+      text: `${t("Edit")}`,
+      sort: true,
+      formatter: editRef,
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          letterEdit(e, column, columnIndex, row, rowIndex);
+        },
+      },
+    },
+    {
+      dataField: "Action",
+      text: `${t("Action")}`,
+      sort: true,
+      formatter: delRefLetter,
+    },
+  ];
+
+  const letterDetails = (e, column, columnIndex, row, rowIndex) => {
+    setData({ ...data, letterData: row });
+    toggleShowLetterModal();
+  }
+
+  const letterEdit = (e, column, columnIndex, row, rowIndex) => {
+    setData({ ...data, letterData: row });
+    toggleEditLetterModal();
+  };
+
   const handleSelect = (isSelect, rows, e) => {
-    console.log(isSelect, rows, e);
     if (rows) {
       setActionArray(prevArray => [...prevArray, isSelect]);
       setTable([...table, isSelect.id]);
     } else {
-      console.log("unselect");
       setActionArray(cur => cur.filter(data => data.id !== isSelect.id));
       setTable(cur => cur.filter(data => data !== isSelect.id));
     }
   };
 
   const handleSelectAll = (isSelect, rows, e) => {
-    console.log(isSelect, rows, e);
     if (isSelect) {
       setActionArray(rows);
       const data = rows.map(item => item.id);
@@ -1833,7 +2276,6 @@ const Messages = props => {
       setState(prev => ({ ...prev, loader: false }));
     }
     if (props.outbox_mail_list_loading === "Success") {
-      console.log(props.outbox_mail_list_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.outbox_mail_list_data?.page),
@@ -1847,7 +2289,6 @@ const Messages = props => {
     }
 
     if (props.mail_list_undelivered_loading === "Success") {
-      console.log(props.mail_list_undelivered_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.mail_list_undelivered_data?.page),
@@ -1869,7 +2310,7 @@ const Messages = props => {
         selectTo: {},
         selectFrom: {},
       }));
-      toggleTempModal();
+      toggleEmailTemplateModal();
       togglemodal();
     }
 
@@ -1948,7 +2389,6 @@ const Messages = props => {
     }
 
     if (props.inbox_list_loading === "Success") {
-      console.log(props.inbox_list_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.inbox_list_data?.page),
@@ -1962,7 +2402,6 @@ const Messages = props => {
     }
 
     if (props.sms_outbox_loading === "Success") {
-      console.log(props.sms_outbox_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.sms_outbox_data?.page),
@@ -1976,7 +2415,6 @@ const Messages = props => {
     }
 
     if (props.mail_list_sent_loading === "Success") {
-      console.log(props.mail_list_sent_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.mail_list_sent_data?.page),
@@ -2028,7 +2466,6 @@ const Messages = props => {
     // for multiple mail send
 
     if (props.multiple_mail_add_loading === "Success") {
-      console.log("in----");
       toastr.success("Success");
       props.multipleMailSendFresh();
 
@@ -2052,7 +2489,6 @@ const Messages = props => {
     //for multiple mail delete
     if (props.multiple_mail_delete_loading === "Success") {
       toastr.success("Deleted");
-      console.log("delete modal");
       props.multipleMailDeleteFresh();
       props.outboxMailData();
       setModalDelete(false);
@@ -2100,23 +2536,18 @@ const Messages = props => {
 
     // for sms template
     if (props.send_sms_loading === "Success") {
-      console.log("===================yo==================");
-      console.log(state);
       props.sendSMSTemplateFresh();
       props.templateListSMSFresh();
       props.templateListSMS();
       toastr.success("Saved");
-      toggleTempModalSMS();
+      toggleSMSTemplateModal();
       toggleSMSmodal();
-      console.log(state);
       setState({ ...state, loader: false });
     }
     // mail template edit
     if (props.edit_mail_template_loading === "Success") {
-      console.log("===================mail template edit==================");
       props.mailTemplateEditFresh();
       toastr.success("Updated");
-
       setState({ ...state, loader: false });
     }
 
@@ -2125,7 +2556,7 @@ const Messages = props => {
       toastr.success("Deleted");
       props.deleteMailTemplateFresh();
       setActionArray([]);
-      setDeleteTempStatus(false);
+      // setDeleteTempStatus(false);
       setState({ ...state, loader: false, mail: "" });
       //props.templateListFresh();
       props.templateList();
@@ -2139,7 +2570,6 @@ const Messages = props => {
 
     // delete sms template
     if (props.delete_sms_template_loading === "Success") {
-      console.log("===================delete sms template==================");
       props.deleteSmsTemplateFresh();
       props.templateListSMSFresh();
       toastr.success("Deleted");
@@ -2155,7 +2585,6 @@ const Messages = props => {
     }
     // sms template edit
     if (props.edit_sms_template_loading === "Success") {
-      console.log("===================sms template edit==================");
       props.smsTemplateEditFresh();
       props.templateListSMS();
       toastr.success("Updated");
@@ -2180,7 +2609,6 @@ const Messages = props => {
     }
 
     if (props.sms_list_loading === "Success") {
-      console.log(props.sms_list_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.sms_list_data?.page),
@@ -2200,7 +2628,6 @@ const Messages = props => {
       setState({ ...state, loader: false });
     }
     if (props.tmp_list_loading === "Success") {
-      console.log(props.tmp_list_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.tmp_list_data?.page),
@@ -2214,7 +2641,6 @@ const Messages = props => {
     }
 
     if (props.tmp_list_sms_loading === "Success") {
-      console.log(props.tmp_list_sms_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.tmp_list_sms_data?.page),
@@ -2228,7 +2654,6 @@ const Messages = props => {
     }
 
     if (props.mail_spam_loading === "Success") {
-      console.log(props.mail_spam_data?.data);
       setState(prev => ({
         ...prev,
         page: Number(props.mail_spam_data?.page),
@@ -2370,10 +2795,7 @@ const Messages = props => {
     setDeleteModal(true);
   };
 
-  const deleteHandler = () => {
-    console.log(state.activeTab);
-    // return;
-
+  const deleteHandler = async () => {
     if (state.activeTab == "0") {
       props.deleteMultipleMail(actionArray);
       props.inboxList("1", "10", null, "updated_at", "desc");
@@ -2414,8 +2836,73 @@ const Messages = props => {
       }
       props.templateListSMS("1", "10", null, "updated_at", "desc");
     }
-    setModalDelete(false);
-    setState(prev => ({ ...prev, loader: true }));
+    if (state.activeTab == "9") {
+      const authUser = JSON.parse(localStorage.getItem("authUser"));
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authUser.token}`
+      };
+      const Url = `${process.env.REACT_APP_LOCALHOST}/letter/templates/destroy-multiple`;
+      const ids = actionArray.map(object => object.id);
+      const data = {
+        id: ids
+      }
+      setModalDelete(false);
+      setState(prev => ({ ...prev, loader: true }));
+      try {
+        const response = await axios.post(Url, data, { headers: headers });
+        setState(prev => ({
+          ...prev,
+          loader: false,
+          activeTab: "9"
+        }));
+        toastr.success(response.data.message)
+        fetchLetterTemplate(null, "updated_at", "desc", "1", "10");
+        setActionArray([]);
+      } catch (error) {
+        setState(prev => ({ ...prev, loader: false }));
+        toastr.error(error.message);
+      }
+    }
+    if (state.activeTab === "10" || state.activeTab === "11") {
+      const authUser = JSON.parse(localStorage.getItem("authUser"));
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authUser.token}`
+      };
+      const Url = `${process.env.REACT_APP_LOCALHOST}/letters/delete-multiple`;
+      const ids = actionArray.map(object => object.id);
+      const data = {
+        id: ids
+      }
+      setModalDelete(false);
+      setState(prev => ({ ...prev, loader: true }));
+      try {
+        const response = await axios.post(Url, data, { headers: headers });
+        setState(prev => ({
+          ...prev,
+          loader: false,
+          activeTab: state.activeTab
+        }));
+        toastr.success(response.data.message)
+        if (state.activeTab === "10") {
+          fetchSentLetter(null, "message_with_mails.updated_at", "desc", "1", "10");
+        }
+        if (state.activeTab === "11") {
+          fetchOutboxLetter(null, "message_with_mails.updated_at", "desc", "1", "10");
+        }
+        setActionArray([]);
+      } catch (error) {
+        setState(prev => ({ ...prev, loader: false }));
+        toastr.error(error.message);
+      }
+    }
+
+    if (state.activeTab !== "9" && state.activeTab !== "10" && state.activeTab !== "11") {
+      setModalDelete(false);
+      setState(prev => ({ ...prev, loader: true }));
+    }
+
   };
 
   const handleMailDelete = data => {
@@ -2426,8 +2913,11 @@ const Messages = props => {
   let x = JSON.parse(window.localStorage.getItem("authUser"));
 
   const msgRef = (cell, row) => (
-    <span className="text-primary">{cell.slice(0, 30) + "......"}</span>
-  );
+    <span className="text-primary">
+      {cell ? cell.slice(0, 30) + "......" : ""}
+    </span>
+  )
+
   const smsDetail = (e, column, columnIndex, row, rowIndex) => {
     setData({ ...data, smsData: row });
     toggleShowSMSModal();
@@ -2575,6 +3065,15 @@ const Messages = props => {
         } else if (state.activeTab == 8) {
           props.spamList(page, sizePerPage, null, sortField, sortOrder);
           setActionArray([]);
+        } else if (state.activeTab == 9) {
+          fetchLetterTemplate(null, sortField, sortOrder, page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 10) {
+          fetchSentLetter(null, sortField, sortOrder, page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 11) {
+          fetchOutboxLetter(null, sortField, sortOrder, page, sizePerPage);
+          setActionArray([]);
         }
       } else {
         if (state.activeTab == 0) {
@@ -2609,6 +3108,15 @@ const Messages = props => {
           setActionArray([]);
         } else if (state.activeTab == 8) {
           props.spamList(page, sizePerPage, null, "updated_at", "desc");
+          setActionArray([]);
+        } else if (state.activeTab == 9) {
+          fetchLetterTemplate(null, "updated_at", "desc", page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 10) {
+          fetchSentLetter(null, "message_with_mails.updated_at", "desc", page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 11) {
+          fetchOutboxLetter(null, "message_with_mails.updated_at", "desc", page, sizePerPage);
           setActionArray([]);
         }
       }
@@ -2653,6 +3161,15 @@ const Messages = props => {
         } else if (state.activeTab == 8) {
           props.spamList(page, sizePerPage, search, sortField, sortOrder);
           setActionArray([]);
+        } else if (state.activeTab == 9) {
+          fetchLetterTemplate(search, sortField, sortOrder, page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 10) {
+          fetchSentLetter(search, sortField, sortOrder, page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 11) {
+          fetchOutboxLetter(search, sortField, sortOrder, page, sizePerPage);
+          setActionArray([]);
         }
       } else {
         if (state.activeTab == 0) {
@@ -2693,6 +3210,15 @@ const Messages = props => {
           setActionArray([]);
         } else if (state.activeTab == 8) {
           props.spamList(page, sizePerPage, search, "updated_at", "desc");
+          setActionArray([]);
+        } else if (state.activeTab == 9) {
+          fetchLetterTemplate(search, "updated_at", "desc", page, sizePerPage)
+          setActionArray([]);
+        } else if (state.activeTab == 10) {
+          fetchSentLetter(search, "message_with_mails.updated_at", "desc", page, sizePerPage);
+          setActionArray([]);
+        } else if (state.activeTab == 11) {
+          fetchOutboxLetter(search, "message_with_mails.updated_at", "desc", page, sizePerPage);
           setActionArray([]);
         }
       }
@@ -2766,6 +3292,173 @@ const Messages = props => {
     breadcrumbItem: `${t("Inbox")}`,
   };
 
+
+  // Get all contact list
+
+  const [contacts, setContacts] = useState([]);
+  const [isContactLoading, setIsContactLoading] = useState(false);
+  const [text, setText] = useState('');
+  const [typingTimeout, setTypingTimeout] = useState(null);
+
+  const handleInputChange = (newValue) => {
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+
+    const timeoutId = setTimeout(() => {
+      setText(newValue);
+    }, 500);
+
+    setTypingTimeout(timeoutId);
+  };
+
+  useEffect(() => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const contactListUrl = `${process.env.REACT_APP_LOCALHOST}/message/recipients`;
+
+    const fetchOptionContacts = async () => {
+      try {
+        setIsContactLoading(true);
+        const response = await axios.post(contactListUrl, { text: text }, { headers: headers });
+        const formattedContacts = response.data.data.map(contact => ({
+          label: `${contact.display} ( ${contact.email} )`,
+          value: contact.email
+        }));
+        setContacts(formattedContacts);
+      } catch (error) {
+        console.error('Error fetching contacts:', error);
+      } finally {
+        setIsContactLoading(false);
+      }
+    };
+
+    fetchOptionContacts();
+  }, [text])
+
+  const handleMultipleUndeliveredDismiss = async () => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+
+    const Url = `${process.env.REACT_APP_LOCALHOST}/message/email/dismiss`;
+    const ids = actionArray.map(object => object.id);
+    const data = {
+      ids: ids
+    };
+
+    setState(prev => ({ ...prev, loader: true }));
+
+    try {
+      const response = await axios.post(Url, data, { headers: headers });
+      toastr.success(response.data.message);
+      props.mailListUndelivered(1, 10, null, "updated_at", "desc");
+      setActionArray([]);
+    } catch (error) {
+      console.error('Error:', error);
+
+      if (error.response) {
+        const errorMessage = error.response.data.message || 'An error occurred while dismissing the emails.';
+        toastr.warning(errorMessage);
+      } else if (error.request) {
+        toastr.warning('No response received from the server.');
+      } else {
+        toastr.warning('An unexpected error occurred.');
+      }
+    } finally {
+      setState(prev => ({ ...prev, loader: false }));
+    }
+  };
+
+  const [mergeData, setMergeData] = useState([]); // Holds merge fields and subfields
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [openAccordion, setOpenAccordion] = useState(null); // State to manage open accordion item
+  const editorRef = useRef(null);
+
+
+  // Fetch merge fields and subfields based on action name
+  const fetchMergeFields = async (actionName) => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const Url = `${process.env.REACT_APP_LOCALHOST}/message-actions/${actionName}`;
+    setLoading(true);
+    try {
+      const response = await axios.get(Url, { headers: headers });
+      setMergeData(response.data.data.merge_fields);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch data");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (schedule?.selectRegarding) {
+      fetchMergeFields(schedule?.selectRegarding?.label)
+    } else {
+      fetchMergeFields("Contact")
+    }
+  }, [schedule?.selectRegarding?.label])
+
+
+  // Toggle Accordion
+  const toggleAccordion = (itemId) => {
+    setOpenAccordion(openAccordion === itemId ? null : itemId);
+  };
+
+  const handleSubFieldClick = (subField) => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      const insertContent = `{{${subField}}}`;
+
+      editor.model.change(writer => {
+        // Get the current selection position
+        const selection = editor.model.document.selection;
+
+        // Insert the text at the current cursor position
+        editor.model.insertContent(writer.createText(insertContent), selection);
+      });
+    }
+  };
+
+  const handleSubFieldClickSMS = (subField) => {
+    const messageData = smsTempEditData.message || "";
+    const insertContent = `{{${subField}}}`;
+
+    // Insert the subfield at the end of the current message
+    const updatedMessage = messageData + insertContent;
+
+    // Update the state with the new message
+    setSMSTempEditData({
+      ...smsTempEditData,
+      message: updatedMessage,
+    });
+  };
+
+  const handleSubFieldClickLetter = (subField) => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      const insertContent = `{{${subField}}}`;
+
+      editor.model.change(writer => {
+        // Get the current selection position
+        const selection = editor.model.document.selection;
+
+        // Insert the text at the current cursor position
+        editor.model.insertContent(writer.createText(insertContent), selection);
+      });
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -2786,10 +3479,9 @@ const Messages = props => {
                     className="w-100"
                   >
                     <DropdownToggle
-                      className="btn btn-buttonColor d-flex justify-content-between align-items-center w-100"
+                      className="btn btn-cyan d-flex justify-content-between align-items-center w-100"
                       caret
                     >
-                      {/* <i className="fas fa-edit me-1 font-size-14" /> */}
                       {t("New")}
                       {dOpen == false ? (
                         <i className="mdi mdi-chevron-down font-size-16 ms-1"></i>
@@ -2798,10 +3490,7 @@ const Messages = props => {
                       )}
                     </DropdownToggle>
                     <DropdownMenu>
-                      {/* <DropdownItem value="1">{t('Compose')}</DropdownItem> */}
-                      <DropdownItem value="1">
-                        {localizeItem("Compose")}
-                      </DropdownItem>
+                      <DropdownItem value="1">{localizeItem("Compose")}</DropdownItem>
                       <DropdownItem value="2">{t("SMS")}</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -2924,6 +3613,34 @@ const Messages = props => {
                         </NavLink>
                       </NavItem>
                     )}
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: state.activeTab === "10",
+                        })}
+                        onClick={() => {
+                          toggleTab("10");
+                        }}
+                      >
+                        <i className="mdi mdi-printer me-1"></i>
+                        Sent Letter
+                      </NavLink>
+                    </NavItem>
+                    {authUser.user.user_type == "Property Manager" && (
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: state.activeTab === "11",
+                          })}
+                          onClick={() => {
+                            toggleTab("11");
+                          }}
+                        >
+                          <i className="mdi mdi-printer-alert me-1"></i>
+                          Outox Letter
+                        </NavLink>
+                      </NavItem>
+                    )}
 
                     {authUser.user.user_type == "Property Manager" && (
                       <NavItem>
@@ -2954,6 +3671,22 @@ const Messages = props => {
                         >
                           <i className="mdi mdi-cellphone-text me-1"></i>
                           {t("SMS")} {t("Template")}
+                        </NavLink>
+                      </NavItem>
+                    )}
+
+                    {authUser.user.user_type == "Property Manager" && (
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: state.activeTab === "9",
+                          })}
+                          onClick={() => {
+                            toggleTab("9");
+                          }}
+                        >
+                          <i className="fas fa-print me-1"></i>
+                          {t("Letter")} {t("Template")}
                         </NavLink>
                       </NavItem>
                     )}
@@ -3124,6 +3857,19 @@ const Messages = props => {
                                       {t("Delete")}
                                     </Button>
                                   </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleUndeliveredDismiss}
+                                      color="warning"
+                                      className="rounded"
+                                      disabled={
+                                        actionArray?.length == 0 ? true : false
+                                      }
+                                    >
+                                      <i className="fas fa-archive me-1" />
+                                      {t("Dismiss")}
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
                             </CardHeader>
@@ -3156,10 +3902,6 @@ const Messages = props => {
                           <Card>
                             <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
                               <div className="d-flex justify-content-between align-items-center search-box px-1">
-                                {/* <CardTitle>
-                                  <i className="mdi mdi-email me-1" /> {t('Send')}
-                                  {t('Email')}
-                                </CardTitle> */}
                                 <div className="btn-group btn-group-justified ms-1 gap-3">
                                   <div className="btn-group">
                                     <Button
@@ -3218,10 +3960,6 @@ const Messages = props => {
                           <Card>
                             <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
                               <div className="d-flex justify-content-between align-items-center search-box px-1">
-                                {/* <CardTitle>
-                                  <i className="mdi mdi-cellphone-arrow-down me-1"></i>{" "}
-                                  {t('Send')} {t('SMS')}
-                                </CardTitle> */}
                                 <div className="btn-group btn-group-justified ms-1 gap-3">
                                   <div className="btn-group">
                                     <Button
@@ -3280,10 +4018,6 @@ const Messages = props => {
                           <Card>
                             <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
                               <div className="d-flex justify-content-between align-items-center search-box px-1">
-                                {/* <CardTitle>
-                                  <i className="mdi mdi-cellphone-android me-1"></i>{" "}
-                                  {t('SMS')} {t('Outbox')}
-                                </CardTitle> */}
                                 <div className="btn-group btn-group-justified ms-1 gap-3">
                                   <div className="btn-group">
                                     <Button
@@ -3342,10 +4076,6 @@ const Messages = props => {
                           <Card>
                             <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
                               <div className="d-flex justify-content-between align-items-center search-box px-1">
-                                {/* <CardTitle>
-                                  <i className="mdi mdi-email-open-multiple-outline me-1"></i>{" "}
-                                  {t('Email')} {t('Template')}
-                                </CardTitle> */}
                                 <div className="btn-group btn-group-justified ms-1 gap-3">
                                   <div className="btn-group">
                                     <Button
@@ -3370,6 +4100,16 @@ const Messages = props => {
                                     >
                                       <i className="fas fa-trash me-1" />
                                       {t("Delete")}
+                                    </Button>
+                                  </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleToggleTempModal}
+                                      color="primary"
+                                      className="rounded"
+                                    >
+                                      <i className="fas fa-plus me-1" />
+                                      Add Template
                                     </Button>
                                   </div>
                                 </div>
@@ -3404,10 +4144,6 @@ const Messages = props => {
                           <Card>
                             <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
                               <div className="d-flex justify-content-between align-items-center search-box px-1">
-                                {/* <CardTitle>
-                                  <i className="mdi mdi-cellphone-text me-1"></i>{" "}
-                                  {t('SMS')} {t('Template')}
-                                </CardTitle> */}
                                 <div className="btn-group btn-group-justified ms-1 gap-3">
                                   <div className="btn-group">
                                     <Button
@@ -3432,6 +4168,16 @@ const Messages = props => {
                                     >
                                       <i className="fas fa-trash me-1" />
                                       {t("Delete")}
+                                    </Button>
+                                  </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={toggleSMSTemplateTextModal}
+                                      color="primary"
+                                      className="rounded"
+                                    >
+                                      <i className="fas fa-plus me-1" />
+                                      Add Template
                                     </Button>
                                   </div>
                                 </div>
@@ -3466,10 +4212,6 @@ const Messages = props => {
                           <Card>
                             <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
                               <div className="d-flex justify-content-between align-items-center search-box px-1">
-                                {/* <CardTitle>
-                                  <i className="mdi mdi-email me-1"></i>{" "}
-                                  {t('Spam')}
-                                </CardTitle> */}
                                 <div className="btn-group btn-group-justified ms-1 gap-3">
                                   <div className="btn-group">
                                     <Button
@@ -3522,22 +4264,206 @@ const Messages = props => {
                         </Col>
                       </Row>
                     </TabPane>
+                    <TabPane tabId="9">
+                      <Row>
+                        <Col sm="12">
+                          <Card>
+                            <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
+                              <div className="d-flex justify-content-between align-items-center search-box px-1">
+                                <div className="btn-group btn-group-justified ms-1 gap-3">
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleMailInbox}
+                                      color="info"
+                                      className="rounded"
+                                      style={{ cursor: "notAllowed" }}
+                                      disabled={true}
+                                    >
+                                      <i className="mdi mdi-email me-1" />
+                                      {t("Send")}
+                                    </Button>
+                                  </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleSMSTemplateDelete}
+                                      color="danger"
+                                      className="rounded"
+                                      disabled={
+                                        actionArray?.length == 0 ? true : false
+                                      }
+                                    >
+                                      <i className="fas fa-trash me-1" />
+                                      {t("Delete")}
+                                    </Button>
+                                  </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={toggleLettermodal}
+                                      color="primary"
+                                      className="rounded"
+                                    >
+                                      <i className="fas fa-plus me-1" />
+                                      Add Template
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardBody className="p-4 mb-0">
+                              {state.activeTab == 9 && (
+                                <RemotePagination
+                                  data={
+                                    state.data?.length > 0 ? state.data : []
+                                  }
+                                  page={state.page}
+                                  sizePerPage={state.sizePerPage}
+                                  totalSize={state.dataLength}
+                                  onTableChange={handleTableChange}
+                                  columns={letterTemplateData}
+                                  search={search}
+                                  onSearchState={handleSearchState}
+                                  loading={state.loading}
+                                  selectRow={selectRowMessage}
+                                  defaultSorted={messageDefaultSorted}
+                                />
+                              )}
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tabId="10">
+                      <Row>
+                        <Col sm="12">
+                          <Card>
+                            <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
+                              <div className="d-flex justify-content-between align-items-center search-box px-1">
+                                <div className="btn-group btn-group-justified ms-1 gap-3">
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleMailInbox}
+                                      color="info"
+                                      className="rounded"
+                                      style={{ cursor: "notAllowed" }}
+                                      disabled={true}
+                                    >
+                                      <i className="mdi mdi-email me-1" />
+                                      {t("Send")}
+                                    </Button>
+                                  </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleSMSTemplateDelete}
+                                      color="danger"
+                                      className="rounded"
+                                      disabled={
+                                        actionArray?.length == 0 ? true : false
+                                      }
+                                    >
+                                      <i className="fas fa-trash me-1" />
+                                      {t("Delete")}
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardBody className="p-4 mb-0">
+                              {state.activeTab == 10 && (
+                                <RemotePagination
+                                  data={
+                                    state.data?.length > 0 ? state.data : []
+                                  }
+                                  page={state.page}
+                                  sizePerPage={state.sizePerPage}
+                                  totalSize={state.dataLength}
+                                  onTableChange={handleTableChange}
+                                  columns={sentLetterData}
+                                  search={search}
+                                  onSearchState={handleSearchState}
+                                  loading={state.loading}
+                                  selectRow={selectRowMessage}
+                                  defaultSorted={messageDefaultSorted}
+                                />
+                              )}
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </TabPane>
+                    <TabPane tabId="11">
+                      <Row>
+                        <Col sm="12">
+                          <Card>
+                            <CardHeader className="bg-transparent border-bottom communication-module-sidebar-item-design">
+                              <div className="d-flex justify-content-between align-items-center search-box px-1">
+                                <div className="btn-group btn-group-justified ms-1 gap-3">
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleMailInbox}
+                                      color="info"
+                                      className="rounded"
+                                      style={{ cursor: "notAllowed" }}
+                                      disabled={true}
+                                    >
+                                      <i className="mdi mdi-email me-1" />
+                                      {t("Send")}
+                                    </Button>
+                                  </div>
+                                  <div className="btn-group">
+                                    <Button
+                                      onClick={handleMultipleSMSTemplateDelete}
+                                      color="danger"
+                                      className="rounded"
+                                      disabled={
+                                        actionArray?.length == 0 ? true : false
+                                      }
+                                    >
+                                      <i className="fas fa-trash me-1" />
+                                      {t("Delete")}
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardBody className="p-4 mb-0">
+                              {state.activeTab == 11 && (
+                                <RemotePagination
+                                  data={
+                                    state.data?.length > 0 ? state.data : []
+                                  }
+                                  page={state.page}
+                                  sizePerPage={state.sizePerPage}
+                                  totalSize={state.dataLength}
+                                  onTableChange={handleTableChange}
+                                  columns={outboxLetterData}
+                                  search={search}
+                                  onSearchState={handleSearchState}
+                                  loading={state.loading}
+                                  selectRow={selectRowMessage}
+                                  defaultSorted={messageDefaultSorted}
+                                />
+                              )}
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </TabPane>
                   </TabContent>
                 </Card>
               </div>
             </Col>
           </Row>
         </Container>
-
-        {/* ============== template modal FOR SMS ends here ===================*/}
       </div>
-      {/* -----Modal for Mail------ */}
+
+      {/* Email modals */}
+      {/* ============== Modal for Mail ============== */}
       <Modal
         isOpen={state.modal}
         role="dialog"
         autoFocus={true}
         centered={true}
-        className="exampleModal"
+        className="exampleModal modal-lg"
         tabIndex="-1"
         toggle={togglemodal}
       >
@@ -3550,7 +4476,6 @@ const Messages = props => {
               </div>
             </div>
           </ModalHeader>
-
           <ModalBody>
             <form>
               <div className="mb-3">
@@ -3560,47 +4485,21 @@ const Messages = props => {
                     className="d-flex justify-content-between"
                     style={{ position: "relative", zIndex: "12" }}
                   >
-                    {authUser.user.user_type == "Property Manager" && (
-                      <Select
-                        value={state.selectedContacts}
-                        options={state.optionContacts}
-                        onChange={selectHandlerForMessage}
-                        placeholder="Select a Contacts..."
-                        className="form-control-new w-100"
-                        style={{ position: "absolute" }}
-                      />
-
-                    )}
-                    {/* <input
-                        type="to"
-                        name="to"
-                        placeholder="To"
-                        onChange={selectHandlerForMessage}
-                        required={true}
-                        style={{
-                          border: "none",
-                          backgroundColor: "#FFF !important",
-                          width: "100%",
-                        }}
-                      /> */}
-                    {authUser.user.user_type != "Property Manager" && (
-                      <Select
-                        value={state.selectedManager}
-                        onChange={e => {
-                          handleSelectGroupManager(e);
-                        }}
-                        options={state.optionManager}
-                        className="form-control-new w-100"
-                        style={{ position: "absolute" }}
-                      />
-                    )}
+                    <Select
+                      value={state.selectedContacts}
+                      options={contacts}
+                      onChange={selectHandlerForMessage}
+                      onInputChange={handleInputChange}
+                      placeholder="Select a Contacts..."
+                      className="form-control-new w-100"
+                      style={{ position: "absolute" }}
+                      isLoading={isContactLoading}
+                      noOptionsMessage={() => (isContactLoading ? "Loading..." : "No options available")}
+                    />
                   </Col>
-
                   <Col md={3} style={{ cursor: "pointer", textAlign: "end" }}>
                     <p
-                      onClick={() => {
-                        setOpencc(prev => !prev);
-                      }}
+                      onClick={() => setOpencc(prev => !prev)}
                     >
                       cc/bcc
                       {opencc ? (
@@ -3616,28 +4515,6 @@ const Messages = props => {
                       )}
                     </p>
                   </Col>
-                  {/* <Col sm="2">
-                    <Button
-                      type="button"
-                      color="secondary"
-                      className="me-1"
-                      onClick={() => {
-                        setOpencc(prev => !prev);
-                      }}
-                    >
-                      {opencc ? (
-                        <i
-                          className="fas fa-angle-up me-1"
-                          style={{ padding: "2px" }}
-                        ></i>
-                      ) : (
-                        <i
-                          className="fas fa-angle-down me-1"
-                          style={{ padding: "2px" }}
-                        ></i>
-                      )}
-                    </Button>
-                  </Col> */}
                   <div
                     className="w-90 my-1 mx-3"
                     style={{
@@ -3647,14 +4524,12 @@ const Messages = props => {
                   ></div>
                 </Row>
               </div>
-              {opencc ? (
+              {opencc && (
                 <>
                   <div className="mb-3">
                     <TagsInput
                       value={selectedCC}
-                      onChange={e => {
-                        handleMulti3(e);
-                      }}
+                      onChange={handleMulti3}
                       name="cc"
                       placeHolder="Add CC and press Enter"
                       style={{
@@ -3664,27 +4539,22 @@ const Messages = props => {
                       }}
                     />
                   </div>
-
                   <div className="mb-3">
                     <TagsInput
                       value={selectedBCC}
-                      onChange={e => {
-                        handleMulti4(e);
-                      }}
+                      onChange={handleMulti4}
                       name="bcc"
                       placeHolder="Add BCC and press enter"
                     />
                   </div>
                 </>
-              ) : null}
-
+              )}
               <div className="mb-3">
                 <Row>
                   <Col md="9">
                     <input
-                      type="subject"
+                      type="text"
                       name="subject"
-                      //className="form-control"
                       placeholder="Subject"
                       value={mailTempEditData.subject}
                       onChange={e =>
@@ -3729,58 +4599,40 @@ const Messages = props => {
               <CKEditor
                 editor={DecoupledEditor}
                 config={editorConfiguration}
-                data={
-                  showTemplate === true
-                    ? props.tmp_list_id_data
-                      ? props.tmp_list_id_data?.template?.body
-                      : ""
-                    : ""
-                }
-                style={{ zindex: "1" }}
+                data={showTemplate ? (props.tmp_list_id_data ? props.tmp_list_id_data?.template?.body : "") : ""}
+                style={{ zIndex: "1" }}
                 onReady={editor => {
-                  console.log("Editor is ready to use!", editor);
-
+                  editorRef.current = editor;
                   if (editor) {
-                    editor.ui
-                      .getEditableElement()
-                      .parentElement.insertBefore(
-                        editor.ui.view.toolbar.element,
-                        editor.ui.getEditableElement()
-                      );
-
-                    // textEditor = editor;
+                    editor.ui.getEditableElement().parentElement.insertBefore(
+                      editor.ui.view.toolbar.element,
+                      editor.ui.getEditableElement()
+                    );
                   }
                 }}
                 onChange={(event, editor) => {
                   const data = editor.getData();
-
-                  console.log(data);
                   setState({ ...state, body: data });
                 }}
               />
             </form>
-            {mess ? (
-              <Alert color="danger">Please fill up all the fields</Alert>
-            ) : (
-              ""
-            )}
             <div className="mt-3">
-              {attached.length > 0
-                ? attached.map((item, key) => (
+              {attached?.length > 0 &&
+                attached?.map((item, key) => (
                   <div key={key} className="bg-info mb-2 p-1">
                     <a
                       className="text-light"
                       href={`${process.env.REACT_APP_DOCUMENT}` + item.path}
                       target="blank"
+                      rel="noopener noreferrer"
                     >
                       {key + 1}
                       {`.`} {item.name} {` (`}
-                      {floor(Number(item?.file_size) / 1024)}
+                      {Math.floor(Number(item.file_size) / 1024)}
                       {` kb)`}
                     </a>
                   </div>
-                ))
-                : null}
+                ))}
             </div>
           </ModalBody>
           <ModalFooter>
@@ -3788,10 +4640,7 @@ const Messages = props => {
               <Button
                 type="button"
                 color="danger"
-                onClick={() => {
-                  togglemodal();
-                }}
-                //onClick={handleMailTempFieldNull}
+                onClick={togglemodal}
                 className="me-1"
               >
                 <i className="fas fa-times me-1"></i> {localizeItem("Close")}
@@ -3799,36 +4648,264 @@ const Messages = props => {
               <Button
                 type="button"
                 color="buttonColor"
-                //onClick={saveMailTemplate}
-                onClick={handleToggleTempModal}
-              >
-                {localizeItem("Save")} <i className="fas fa-file ms-1"></i>
-              </Button>
-
-              <Button
-                type="button"
-                color="buttonColor"
                 onClick={handleSubmitMail}
                 className="ms-1"
               >
-                {localizeItem("Send")}{" "}
-                <i className="fab fa-telegram-plane ms-1"></i>
+                {localizeItem("Send")} <i className="fab fa-telegram-plane ms-1"></i>
               </Button>
             </div>
           </ModalFooter>
         </div>
       </Modal>
+      {/* ============== Modal for Mail end here ============== */}
 
+      {/* ==============Modal for Mail Template============== */}
+      <Modal
+        isOpen={modalMailTemplate}
+        role="dialog"
+        autoFocus={true}
+        centered={true}
+        className="exampleModal modal-xl"
+        tabIndex="-1"
+        toggle={toggleEmailTemplateTextModal}
+      >
+        <div className="modal-content">
+          <ModalHeader style={{ backgroundColor: "#153D58" }}>
+            <div className="d-flex justify-content-between">
+              <div>
+                <span className="text-white">New</span>{" "}
+                <span className="text-white">Template</span>
+              </div>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <Row>
+              {/* Form on the Left */}
+              <Col md="5">
+                <Form className="form p-3">
+                  <div className="row mb-4">
+                    <Label
+                      htmlFor="horizontal-firstname-Input"
+                      className="col-sm-4 col-form-label"
+                    >
+                      {localizeItem("Active")}
+                    </Label>
+                    <Col sm={8}>
+                      <Switch
+                        uncheckedIcon={<Offsymbol />}
+                        checkedIcon={<OnSymbol />}
+                        className="me-1 mb-sm-8 mb-2"
+                        onColor="#153D58"
+                        onChange={() => {
+                          setForm1State({
+                            ...form1state,
+                            switch1: !form1state.switch1,
+                          });
+                        }}
+                        checked={form1state.switch1}
+                      />
+                    </Col>
+                  </div>
+                  <FormGroup row>
+                    <Label for="property" sm={4}>
+                      {localizeItem("Name")}
+                    </Label>
+                    <Col sm={8}>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="name"
+                        onChange={scheduleHandler}
+                        placeholder="What will this be called?"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="contact" sm={4}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("is")} {localizeItem("regarding")}
+                    </Label>
+                    <Col sm={8}>
+                      <Select
+                        value={schedule.selectRegarding}
+                        onChange={handleSelectRegion}
+                        options={schedule.optionRegarding}
+                        classNamePrefix="select2-selection"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="manager" sm={4}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("will")} {localizeItem("be")}{" "}
+                      {localizeItem("sent")} {localizeItem("to")}
+                    </Label>
+                    <Col sm={8}>
+                      <Select
+                        value={schedule.selectTo}
+                        onChange={handleSelectTo}
+                        options={schedule.optionTo}
+                        classNamePrefix="select2-selection"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="manager" sm={4}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("will")} {localizeItem("be")}{" "}
+                      {localizeItem("sent")} {localizeItem("when")}
+                    </Label>
+                    <Col sm={8}>
+                      <Select
+                        value={schedule.selectFrom}
+                        onChange={handleSelectFrom}
+                        options={schedule.optionFrom}
+                        classNamePrefix="select2-selection"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <div className="row mb-4">
+                    <Label
+                      htmlFor="horizontal-firstname-Input"
+                      className="col-sm-4 col-form-label"
+                    >
+                      Automatically Email send
+                    </Label>
+                    <Col sm={8}>
+                      <Switch
+                        uncheckedIcon={<Offsymbol />}
+                        checkedIcon={<OnSymbol />}
+                        className="me-1 mb-sm-8 mb-2"
+                        onColor="#153D58"
+                        onChange={() => {
+                          setForm1State({
+                            ...form1state,
+                            email_sends_automatically:
+                              !form1state.email_sends_automatically,
+                          });
+                        }}
+                        checked={form1state.email_sends_automatically}
+                      />
+                    </Col>
+                  </div>
+                </Form>
+              </Col>
+
+              {/* CKEditor and Merge Fields on the Right */}
+              <Col md="7">
+                <Row>
+                  {/* CKEditor */}
+                  <Col md="8">
+                    <form>
+                      <CKEditor
+                        editor={DecoupledEditor}
+                        config={editorConfiguration}
+                        data={
+                          showTemplate
+                            ? props.tmp_list_id_data
+                              ? props.tmp_list_id_data?.template?.body
+                              : ""
+                            : ""
+                        }
+                        style={{ zIndex: "1" }}
+                        onReady={editor => {
+                          editorRef.current = editor;
+                          if (editor) {
+                            editor.ui
+                              .getEditableElement()
+                              .parentElement.insertBefore(
+                                editor.ui.view.toolbar.element,
+                                editor.ui.getEditableElement()
+                              );
+                          }
+                        }}
+                        onChange={(event, editor) => {
+                          const data = editor.getData();
+                          setState({ ...state, body: data });
+                        }}
+                      />
+                    </form>
+                  </Col>
+
+                  {/* Merge Fields */}
+                  <Col md="4">
+                    <div className="mt-3">
+                      {loading ? (
+                        <p>Loading...</p>
+                      ) : error ? (
+                        <p className="text-red-500">{error}</p>
+                      ) : (
+                        mergeData.map((mergeField, idx) => (
+                          <Card key={idx} className="mb-2">
+                            <CardHeader
+                              onClick={() => toggleAccordion(idx.toString())}
+                              style={{ cursor: "pointer" }}
+                              className="bg-gray-200 p-2"
+                            >
+                              {mergeField.merge_field}
+                            </CardHeader>
+                            <Collapse isOpen={openAccordion === idx.toString()}>
+                              <CardBody className="p-2">
+                                <div className="space-y-1">
+                                  {mergeField.merge_subfields.map(
+                                    (subField, index) => (
+                                      <div
+                                        key={index}
+                                        onClick={() =>
+                                          handleSubFieldClick(subField)
+                                        }
+                                        className="block text-blue-500"
+                                        style={{ cursor: "pointer" }}
+                                      >
+                                        {subField}
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              </CardBody>
+                            </Collapse>
+                          </Card>
+                        ))
+                      )}
+                    </div>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              type="button"
+              color="danger"
+              onClick={toggleEmailTemplateTextModal}
+              className="me-1"
+            >
+              <i className="fas fa-times me-1"></i> {localizeItem("Close")}
+            </Button>
+            <Button
+              type="button"
+              color="buttonColor"
+              onClick={handleSaveScheduleforEmail}
+              className="ms-1"
+            >
+              <i className="far fa-save"></i> &nbsp; {localizeItem("Save")}
+            </Button>
+          </ModalFooter>
+        </div>
+      </Modal>
+      {/* ============== Modal for Mail Template ends here ============== */}
+      {/* Email modals end here*/}
+
+
+      {/* SMS modals */}
       {/* -----Modal for SMS------ */}
       <Modal
-        //isOpen={state.modal1}
         isOpen={modalSMS}
         role="dialog"
         autoFocus={true}
         centered={true}
-        className="exampleModal"
+        className="exampleModal modal-lg"
         tabIndex="-1"
-      // toggle={this.togglemodal}
       >
         <div className="modal-content">
           <ModalHeader>
@@ -3839,87 +4916,54 @@ const Messages = props => {
             </div>
           </ModalHeader>
           <ModalBody>
-            {/* <div className="mb-3 select2-container">
-                      <Label>Select Template</Label>
-                      <Select
-                        value={selectedGroupSMS}
-                        onChange={handleSelectGroupForSMS}
-                        options={smsTempList}
-                        placeholder="SMS Template"
-                        classNamePrefix="select2-selection"
-                      />
-                    </div> */}
             <form>
-              <div className="row mb-3">
-                <Label
-                  htmlFor="horizontal-firstname-Input"
-                  className="col-sm-2 col-form-label"
-                >
+              {/* Row for "To" and "Message" fields */}
+              <div className="mb-3">
+                <Label htmlFor="to-input" className="col-form-label">
                   {localizeItem("To")}
                 </Label>
-                <Col sm={10}>
-                  <Input
-                    type="to"
-                    name="to"
-                    className="form-control"
-                    placeholder="To"
-                    required
-                    onChange={selectHandlerForSMS}
-                  />
-                </Col>
+                <Input
+                  id="to-input"
+                  type="text"
+                  name="to"
+                  className="form-control"
+                  placeholder="To"
+                  required
+                  onChange={selectHandlerForSMS}
+                />
               </div>
-
-              <div className="row">
-                <Label
-                  htmlFor="horizontal-firstname-Input"
-                  className="col-sm-2 col-form-label"
-                >
+              <div>
+                <Label htmlFor="message-textarea" className="col-form-label">
                   {localizeItem("Messages")}
                 </Label>
-                <Col sm={10}>
-                  <Input
-                    type="textarea"
-                    name="textarea"
-                    className="form-control"
-                    //placeholder={showTemplateSMS === true ? props.tmp_list_id_sms_data ? props.tmp_list_id_sms_data?.data?.message : "" : "Message"}
-                    //value={showTemplateSMS === true ? props.tmp_list_id_sms_data ? props.tmp_list_id_sms_data?.data?.message : "" : "Message"}
-                    value={smsTempEditData.message}
-                    onChange={e =>
-                      setSMSTempEditData({
-                        ...smsTempEditData,
-                        message: e.target.value,
-                      })
-                    }
-                  //onChange={selectHandlerForSMS}
-                  />
-                </Col>
+                <Input
+                  id="message-textarea"
+                  type="textarea"
+                  name="textarea"
+                  className="form-control"
+                  value={smsTempEditData.message}
+                  onChange={e =>
+                    setSMSTempEditData({
+                      ...smsTempEditData,
+                      message: e.target.value,
+                    })
+                  }
+                />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "right",
-                  gap: 3,
-                  marginTop: "15px",
-                }}
-              >
+              {/* Buttons */}
+              <div className="d-flex justify-content-end gap-3 mt-3">
                 <Button
                   type="button"
                   color="danger"
-                  //onClick={togglemodal1}
                   onClick={toggleSMSmodal}
                 >
                   <i className="fas fa-times"></i> {localizeItem("Cancel")}
                 </Button>
                 <Button
                   type="button"
-                  color="info"
-                  //onClick={saveSMStemplate}
-                  onClick={handleToggleTempModalForSMS}
+                  color="primary"
+                  onClick={handleSubmitSMS}
                 >
-                  {localizeItem("Save")} <i className="fas fa-file ms-1"></i>
-                </Button>
-
-                <Button type="button" color="primary" onClick={handleSubmitSMS}>
                   {localizeItem("Send")}{" "}
                   <i className="fab fa-telegram-plane ms-1"></i>
                 </Button>
@@ -3929,17 +4973,437 @@ const Messages = props => {
           <ModalFooter></ModalFooter>
         </div>
       </Modal>
+      {/* -----Modal for SMS end here------ */}
+
+      {/* -----Modal for SMS template------ */}
+      <Modal
+        isOpen={modalSMSTemplate}
+        role="dialog"
+        autoFocus={true}
+        centered={true}
+        className="exampleModal modal-xl"
+        tabIndex="-1"
+      >
+        <div className="modal-content">
+          <ModalHeader>
+            <div className="d-flex justify-content-between">
+              <div>
+                {localizeItem("New")} {localizeItem("Template")}
+              </div>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <Row>
+              {/* Left Column for Regarding field */}
+              <Col md={5}>
+                <Form className="form p-3">
+                  <div className="row mb-4">
+                    <Label
+                      htmlFor="horizontal-firstname-Input"
+                      className="col-sm-3 col-form-label"
+                    >
+                      {localizeItem("Active")}
+                    </Label>
+                    <Col sm={9}>
+                      <Switch
+                        uncheckedIcon={<Offsymbol />}
+                        checkedIcon={<OnSymbol />}
+                        className="me-1 mb-sm-8 mb-2"
+                        onColor="#153D58"
+                        onChange={() => {
+                          setForm1State({
+                            ...form1state,
+                            switch1: !form1state.switch1,
+                          });
+                        }}
+                        checked={form1state.switch1}
+                      />
+                    </Col>
+                  </div>
+                  <FormGroup row>
+                    <Label for="property" sm={3}>
+                      {localizeItem("Name")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <input
+                          className="form-control"
+                          type="text"
+                          name="name"
+                          onChange={scheduleHandler}
+                          placeholder="What will this be called?"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="contact" sm={3}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("is")} {localizeItem("regarding")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <Select
+                          value={schedule.selectRegarding}
+                          onChange={handleSelectRegion}
+                          options={schedule.optionRegarding}
+                          classNamePrefix="select2-selection"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="manager" sm={3}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("will")} {localizeItem("be")}{" "}
+                      {localizeItem("sent")} {localizeItem("to")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <Select
+                          value={schedule.selectTo}
+                          onChange={handleSelectTo}
+                          options={schedule.optionTo}
+                          classNamePrefix="select2-selection"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+
+                  <FormGroup row>
+                    <Label for="manager" sm={3}>
+                      {t("This")} {t("message")} {t("will")} {t("be")} {t("sent")}{" "}
+                      {t("when")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <Select
+                          value={schedule.selectFrom}
+                          onChange={handleSelectFrom}
+                          options={schedule.optionFrom}
+                          classNamePrefix="select2-selection"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                </Form>
+              </Col>
+              {/* Right Column for Text field and Merge Fields */}
+              <Col md={7}>
+                <Row>
+                  {/* Text Field for Messages */}
+                  <Col sm={8}>
+                    <FormGroup>
+                      <Label htmlFor="message-textarea" className="col-form-label">
+                        {localizeItem("Messages")}
+                      </Label>
+                      <Input
+                        id="message-textarea"
+                        type="textarea"
+                        name="textarea"
+                        className="form-control"
+                        value={smsTempEditData.message}
+                        onChange={(e) =>
+                          setSMSTempEditData({
+                            ...smsTempEditData,
+                            message: e.target.value,
+                          })
+                        }
+                      />
+                    </FormGroup>
+                  </Col>
+                  {/* Merge Fields */}
+                  <Col sm={4}>
+                    <div className="w-full">
+                      {loading ? (
+                        <p>Loading...</p>
+                      ) : error ? (
+                        <p className="text-danger">{error}</p>
+                      ) : (
+                        mergeData.map((mergeField, idx) => (
+                          <Card key={idx} className="mb-2">
+                            <CardHeader
+                              onClick={() => toggleAccordion(idx.toString())}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              {mergeField.merge_field}
+                            </CardHeader>
+                            <Collapse isOpen={openAccordion === idx.toString()}>
+                              <CardBody className="p-2">
+                                <div className="space-y-1">
+                                  {mergeField.merge_subfields.map((subField, index) => (
+                                    <div
+                                      key={index}
+                                      onClick={() => handleSubFieldClickSMS(subField)}
+                                      className="block text-blue-500"
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      {subField}
+                                    </div>
+                                  ))}
+                                </div>
+                              </CardBody>
+                            </Collapse>
+                          </Card>
+                        ))
+                      )}
+                    </div>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            {/* Buttons */}
+            <div className="d-flex justify-content-end gap-3 mt-3">
+              <Button
+                type="button"
+                color="danger"
+                onClick={toggleSMSTemplateTextModal}
+              >
+                <i className="fas fa-times"></i> {localizeItem("Cancel")}
+              </Button>
+              <Button
+                type="button"
+                color="primary"
+                onClick={handleSaveScheduleforSMS}
+              >
+                <i className="far fa-save"></i> &nbsp; {localizeItem("Save")}
+              </Button>
+            </div>
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </div>
+      </Modal>
+      {/* -----Modal for SMS template end here------ */}
+      {/* SMS modals end here  */}
+
+
+      {/* letter modals  */}
+      {/* -----Modal for letter starts here------ */}
+      <Modal
+        isOpen={modalLetter}
+        role="dialog"
+        autoFocus={true}
+        centered={true}
+        className="exampleModal modal-xl"
+        tabIndex="-1"
+      >
+        <div className="modal-content">
+          <ModalHeader>
+            <div className="d-flex justify-content-between">
+              <div>
+                {localizeItem("New")} {localizeItem("Letter Template")}
+              </div>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <Row>
+              <Col sm={5}>
+                <Form className="form p-3">
+                  <div className="row mb-4">
+                    <Label
+                      htmlFor="horizontal-firstname-Input"
+                      className="col-sm-3 col-form-label"
+                    >
+                      {localizeItem("Active")}
+                    </Label>
+                    <Col sm={9}>
+                      <Switch
+                        uncheckedIcon={<Offsymbol />}
+                        checkedIcon={<OnSymbol />}
+                        className="me-1 mb-sm-8 mb-2"
+                        onColor="#153D58"
+                        onChange={() => {
+                          setForm1State({
+                            ...form1state,
+                            switch1: !form1state.switch1,
+                          });
+                        }}
+                        checked={form1state.switch1}
+                      />
+                    </Col>
+                  </div>
+                  <FormGroup row>
+                    <Label for="property" sm={3}>
+                      {localizeItem("Name")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <input
+                          className="form-control"
+                          type="text"
+                          name="name"
+                          onChange={scheduleHandler}
+                          placeholder="What will this be called?"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="contact" sm={3}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("is")} {localizeItem("regarding")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <Select
+                          value={schedule.selectRegarding}
+                          onChange={handleSelectRegion}
+                          options={schedule.optionRegarding}
+                          classNamePrefix="select2-selection"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="manager" sm={3}>
+                      {localizeItem("This")} {localizeItem("message")}{" "}
+                      {localizeItem("will")} {localizeItem("be")}{" "}
+                      {localizeItem("sent")} {localizeItem("to")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <Select
+                          value={schedule.selectTo}
+                          onChange={handleSelectTo}
+                          options={schedule.optionTo}
+                          classNamePrefix="select2-selection"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="manager" sm={3}>
+                      {t("This")} {t("message")} {t("will")} {t("be")} {t("sent")}{" "}
+                      {t("when")}
+                    </Label>
+                    <Col sm={9}>
+                      <div className="p-2">
+                        <Select
+                          value={schedule.selectFrom}
+                          onChange={handleSelectFrom}
+                          options={schedule.optionFrom}
+                          classNamePrefix="select2-selection"
+                        />
+                      </div>
+                    </Col>
+                  </FormGroup>
+                  <div className="row mb-4">
+                    <Label
+                      htmlFor="horizontal-firstname-Input"
+                      className="col-sm-3 col-form-label"
+                    >
+                      Automatically Letter send
+                    </Label>
+                    <Col sm={9}>
+                      <Switch
+                        uncheckedIcon={<Offsymbol />}
+                        checkedIcon={<OnSymbol />}
+                        className="me-1 mb-sm-8 mb-2"
+                        onColor="#153D58"
+                        onChange={() => {
+                          setForm1State({
+                            ...form1state,
+                            email_sends_automatically:
+                              !form1state.email_sends_automatically,
+                          });
+                        }}
+                        checked={form1state.email_sends_automatically}
+                      />
+                    </Col>
+                  </div>
+                </Form>
+              </Col>
+              <Col sm={4}>
+                <form>
+                  <CKEditor
+                    editor={DecoupledEditor}
+                    config={editorConfiguration}
+                    style={{ zIndex: "1" }}
+                    onReady={editor => {
+                      editorRef.current = editor;
+                      if (editor) {
+                        editor.ui.getEditableElement().parentElement.insertBefore(
+                          editor.ui.view.toolbar.element,
+                          editor.ui.getEditableElement()
+                        );
+                      }
+                    }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setState({ ...state, bodyLetter: data });
+                    }}
+                  />
+                  <div className="d-flex justify-content-end mt-3">
+                    <Button
+                      type="button"
+                      color="danger"
+                      onClick={toggleLettermodal}
+                    >
+                      <i className="fas fa-times"></i> {localizeItem("Cancel")}
+                    </Button>
+                    <Button
+                      type="button"
+                      color="info"
+                      onClick={handleSaveScheduleforLetter}
+                      className="ms-2"
+                    >
+                      <i className="far fa-save"></i> &nbsp; {t("Save")}
+                    </Button>
+                  </div>
+                </form>
+              </Col>
+              <Col sm={3}>
+                <div className="w-full">
+                  {loading ? (
+                    <p>Loading...</p>
+                  ) : error ? (
+                    <p className="text-danger">{error}</p>
+                  ) : (
+                    mergeData.map((mergeField, idx) => (
+                      <Card key={idx} className="mb-2">
+                        <CardHeader
+                          onClick={() => toggleAccordion(idx.toString())}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {mergeField.merge_field}
+                        </CardHeader>
+                        <Collapse isOpen={openAccordion === idx.toString()}>
+                          <CardBody className="p-2">
+                            <div className="space-y-1">
+                              {mergeField.merge_subfields.map((subField, index) => (
+                                <div
+                                  key={index}
+                                  onClick={() => handleSubFieldClickLetter(subField)}
+                                  className="block text-blue-500"
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  {subField}
+                                </div>
+                              ))}
+                            </div>
+                          </CardBody>
+                        </Collapse>
+                      </Card>
+                    ))
+                  )}
+                </div>
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </div>
+      </Modal>
+      {/* -----Modal for letter ends here------ */}
+      {/* letter modals end here  */}
+
 
       {/* Modal for SMS template name start from here*/}
-
       <Modal
         isOpen={modal}
         role="dialog"
         autoFocus={true}
         centered={true}
         className="exampleModal"
-        //tabIndex="-1"
-        //toggle={toggle}
         backdrop={true}
       >
         <div className="modal-content">
@@ -3973,7 +5437,6 @@ const Messages = props => {
             <Button
               type="button"
               color="secondary"
-              //onClick={() => setSelectTemplateSMSDropdown(prev => !prev)}
               onClick={toggle}
             >
               <i className="fas fa-times"></i> {localizeItem("Cancel")}
@@ -3985,8 +5448,8 @@ const Messages = props => {
           </ModalFooter>
         </div>
       </Modal>
+      {/* Modal for SMS template name ends from here*/}
 
-      {/* Modal for SMS template name ends here*/}
 
       {/* ============= update sms template modal start from here ================ */}
       <Modal
@@ -4186,7 +5649,6 @@ const Messages = props => {
           </ModalBody>
         </div>
       </Modal>
-
       {/* =================modal 2 starts from here ============*/}
       <Modal
         isOpen={state.mailBodyModal2}
@@ -4364,17 +5826,7 @@ const Messages = props => {
                         <CKEditor
                           editor={DecoupledEditor}
                           config={editorConfiguration}
-                          // data={
-                          //   showTemplate === true
-                          //     ? props.tmp_list_id_data
-                          //       ? props.tmp_list_id_data?.template?.body
-                          //       : ""
-                          //     : ""
-                          // }
-
                           onReady={editor => {
-                            console.log("Editor is ready to use!", editor);
-
                             if (editor) {
                               editor.ui
                                 .getEditableElement()
@@ -4388,8 +5840,6 @@ const Messages = props => {
                           }}
                           onChange={(event, editor) => {
                             const data = editor.getData();
-
-                            console.log(data);
                             setState({ ...state, body: data });
                           }}
                         />
@@ -4513,9 +5963,6 @@ const Messages = props => {
                   : ""
               }
               onReady={editor => {
-                console.log("Editor is ready to use!", editor);
-
-                // Insert the toolbar before the editable area.
                 if (editor) {
                   editor.ui
                     .getEditableElement()
@@ -4523,22 +5970,15 @@ const Messages = props => {
                       editor.ui.view.toolbar.element,
                       editor.ui.getEditableElement()
                     );
-
-                  // textEditor = editor;
                 }
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                // console.log({ event, editor, data });
-                console.log(data);
-
                 setMailTempEditData({
                   ...mailTempEditData,
                   body: data,
                 });
               }}
-
-            // onChange={selectHandlerForProperty}
             />
             <div
               style={{
@@ -4557,8 +5997,10 @@ const Messages = props => {
           </form>
         </ModalBody>
       </Modal>
+
       {/* Modal for edit EMAIL TEMPLATE ends here */}
       {/* -----Modal for Loader------ */}
+
       <Modal
         isOpen={state.loader}
         // role="dialog"
@@ -4604,297 +6046,34 @@ const Messages = props => {
       </Modal>
       {/* ==================== delete SMS modal ends here ============== */}
 
-      {/* ============== template modal starts from here ===================*/}
-      <Modal isOpen={taskModal} toggle={toggleTempModal}>
-        <ModalHeader toggle={toggleTempModal}>
-          <i className="bx bx-task text-primary"></i>&nbsp;
-          <span className="text-primary">{localizeItem("Template")}</span>
-        </ModalHeader>
-
-        <ModalBody>
-          <Form className="form p-3">
-            <div className="row mb-4">
-              <Label
-                htmlFor="horizontal-firstname-Input"
-                className="col-sm-3 col-form-label"
-              >
-                {localizeItem("Active")}
-              </Label>
-              <Col sm={9}>
-                <Switch
-                  uncheckedIcon={<Offsymbol />}
-                  checkedIcon={<OnSymbol />}
-                  className="me-1 mb-sm-8 mb-2"
-                  onColor="#153D58"
-                  onChange={() => {
-                    setForm1State({
-                      ...form1state,
-                      switch1: !form1state.switch1,
-                    });
-                  }}
-                  checked={form1state.switch1}
-                />
-              </Col>
-            </div>
-            <FormGroup row>
-              <Label for="property" sm={3}>
-                {localizeItem("Name")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="name"
-                    onChange={scheduleHandler}
-                    placeholder="What will this be called?"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="contact" sm={3}>
-                {localizeItem("This")} {localizeItem("message")}{" "}
-                {localizeItem("is")} {localizeItem("regarding")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <Select
-                    value={schedule.selectRegarding}
-                    onChange={handleSelectRegion}
-                    options={schedule.optionRegarding}
-                    // placeholder="Contact"
-                    classNamePrefix="select2-selection"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="manager" sm={3}>
-                {localizeItem("This")} {localizeItem("message")}{" "}
-                {localizeItem("will")} {localizeItem("be")}{" "}
-                {localizeItem("sent")} {localizeItem("to")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <Select
-                    value={schedule.selectTo}
-                    onChange={handleSelectTo}
-                    options={schedule.optionTo}
-                    classNamePrefix="select2-selection"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Label for="manager" sm={3}>
-                {localizeItem("This")} {localizeItem("message")}{" "}
-                {localizeItem("will")} {localizeItem("be")}{" "}
-                {localizeItem("sent")} {localizeItem("when")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <Select
-                    value={schedule.selectFrom}
-                    onChange={handleSelectFrom}
-                    options={schedule.optionFrom}
-                    classNamePrefix="select2-selection"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-
-            <div className="row mb-4">
-              <Label
-                htmlFor="horizontal-firstname-Input"
-                className="col-sm-3 col-form-label"
-              >
-                Automatically Email send
-              </Label>
-              <Col sm={9}>
-                <Switch
-                  uncheckedIcon={<Offsymbol />}
-                  checkedIcon={<OnSymbol />}
-                  className="me-1 mb-sm-8 mb-2"
-                  onColor="#153D58"
-                  onChange={() => {
-                    setForm1State({
-                      ...form1state,
-                      email_sends_automatically:
-                        !form1state.email_sends_automatically,
-                    });
-                  }}
-                  checked={form1state.email_sends_automatically}
-                />
-              </Col>
-            </div>
-
-            <FormGroup row>
-              <Label for="button" sm={3}></Label>
-              <Col sm={9} className="gap-3">
-                <Button color="info" onClick={toggleTempModal}>
-                  <i className="fa-solid fa-xmark"></i>
-                  {localizeItem("Cancel")}
-                </Button>{" "}
-                <Button
-                  color="info"
-                  disabled={
-                    schedule.name &&
-                      schedule.selectTo &&
-                      schedule.selectRegarding &&
-                      schedule.selectFrom
-                      ? false
-                      : true
-                  }
-                  onClick={handleSaveSchedule}
-                >
-                  <i className="far fa-save"></i> &nbsp; {localizeItem("Save")}
-                </Button>{" "}
-              </Col>
-            </FormGroup>
-          </Form>
-        </ModalBody>
-      </Modal>
-      {/* ============== template modal ends here ===================*/}
-
-      {/* ============== template modal FOR SMS starts from here ===================*/}
-      <Modal isOpen={smsModal} toggle={toggleTempModalSMS}>
-        <ModalHeader toggle={toggleTempModalSMS}>
-          <i className="bx bx-task text-primary"></i>&nbsp;
-          <span className="text-primary">
-            {localizeItem("SMS")} {localizeItem("Schedule")}
-          </span>
-        </ModalHeader>
-
-        <ModalBody>
-          <Form className="form p-3">
-            <div className="row mb-4">
-              <Label
-                htmlFor="horizontal-firstname-Input"
-                className="col-sm-3 col-form-label"
-              >
-                {localizeItem("Active")}
-              </Label>
-              <Col sm={9}>
-                <Switch
-                  uncheckedIcon={<Offsymbol />}
-                  checkedIcon={<OnSymbol />}
-                  className="me-1 mb-sm-8 mb-2"
-                  onColor="#153D58"
-                  onChange={() => {
-                    setForm1State({
-                      ...form1state,
-                      switch1: !form1state.switch1,
-                    });
-                  }}
-                  checked={form1state.switch1}
-                />
-              </Col>
-            </div>
-            <FormGroup row>
-              <Label for="property" sm={3}>
-                {localizeItem("Name")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="name"
-                    onChange={scheduleHandler}
-                    placeholder="What will this be called?"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="contact" sm={3}>
-                {localizeItem("This")} {localizeItem("message")}{" "}
-                {localizeItem("is")} {localizeItem("regarding")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <Select
-                    value={schedule.selectRegarding}
-                    onChange={handleSelectRegion}
-                    options={schedule.optionRegarding}
-                    // placeholder="Contact"
-                    classNamePrefix="select2-selection"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="manager" sm={3}>
-                {localizeItem("This")} {localizeItem("message")}{" "}
-                {localizeItem("will")} {localizeItem("be")}{" "}
-                {localizeItem("sent")} {localizeItem("to")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <Select
-                    value={schedule.selectTo}
-                    onChange={handleSelectTo}
-                    options={schedule.optionTo}
-                    classNamePrefix="select2-selection"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Label for="manager" sm={3}>
-                {t("This")} {t("message")} {t("will")} {t("be")} {t("sent")}{" "}
-                {t("when")}
-              </Label>
-              <Col sm={9}>
-                <div className="p-2">
-                  <Select
-                    value={schedule.selectFrom}
-                    onChange={handleSelectFrom}
-                    options={schedule.optionFrom}
-                    classNamePrefix="select2-selection"
-                  />
-                </div>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Label for="button" sm={3}></Label>
-              <Col sm={9} className="gap-3">
-                <Button color="info" onClick={toggleTempModalSMS}>
-                  <i className="fa-solid fa-xmark"></i>
-                  {t("Cancel")}
-                </Button>{" "}
-                <Button
-                  color="info"
-                  // disabled={
-                  //   (state.property || props.property_id) && state.summary
-                  //     ? false
-                  //     : true
-                  // }
-                  onClick={handleSaveScheduleforSMS}
-                >
-                  <i className="far fa-save"></i> &nbsp; {t("Save")}
-                </Button>{" "}
-              </Col>
-            </FormGroup>
-          </Form>
-        </ModalBody>
-      </Modal>
       <EditScheduleModal
         editScheduleModal={schedule.editScheduleModal}
         toggle={toggleEditScheduleModal}
         form1state={form1state}
         setForm1State={setForm1State}
         schedule={schedule}
+        fetchLetterTemplate={fetchLetterTemplate}
       />
       {showSMSModal && (
         <ShowSMSModal
           show={showSMSModal}
           toggle={toggleShowSMSModal}
           data={data.smsData}
+        />
+      )}
+      {showLetterModal && (
+        <ShowLetterModal
+          show={showLetterModal}
+          toggle={toggleShowLetterModal}
+          data={data.letterData}
+        />
+      )}
+      {showLetterEditModal && (
+        <ShowLetterEditModal
+          show={showLetterEditModal}
+          toggle={toggleEditLetterModal}
+          data={data.letterData}
+          fetchOutboxLetter={fetchOutboxLetter}
         />
       )}
       <DeleteModal

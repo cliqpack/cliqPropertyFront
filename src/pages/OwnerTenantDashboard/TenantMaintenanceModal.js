@@ -29,20 +29,38 @@ import {
   FormGroup,
 } from "reactstrap";
 import classnames from "classnames";
-import { addMaintenanceTenant, addJobModal, addJobModalFresh, JobsListFresh, addMaintenanceTenantFresh } from "store/actions";
+import { addMaintenanceTenant, addJobModal, addJobModalFresh, JobsListFresh, addMaintenanceTenantFresh, propertyListForTenantById } from "store/actions";
 import toastr from "toastr";
 
 
 const TenantMaintenanceModal = props => {
   const imageMimeType = /image\/(png|jpg|jpeg|mp3)/i;
+  const fileInputRef = useRef(null);
   const data = props.data;
-  console.log(data);
 
   const [state, setState] = useState({
     modal: false,
   });
+  const [files, setFiles] = useState([]); // Store the selected files
+  const [previews, setPreviews] = useState([]); // Store preview URLs
+
   const [featureImage, setFeatureImage] = useState();
-  // console.log(featureImage);
+  const handleChange = (event) => {
+    const newFiles = Array.from(event.target.files);
+    setFiles((prev) => [...prev, ...newFiles]);
+    setPreviews((prev) => [
+      ...prev,
+      ...newFiles.map((file) => URL.createObjectURL(file)),
+    ]);
+  };
+
+  const handleRemove = (event, index) => {
+    event.preventDefault();
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
+    // Reset the input file
+    fileInputRef.current.value = null; // Clears the file input element
+  };
 
   const togglemodal = () => {
     setState(prevState => ({
@@ -51,7 +69,7 @@ const TenantMaintenanceModal = props => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.addMaintenanceTenant(state, data);
+    props.addMaintenanceTenant(state, data, files);
     togglemodal();
   };
   const selectHandlerForMessage = (e) => {
@@ -65,12 +83,12 @@ const TenantMaintenanceModal = props => {
       return;
     }
     setFeatureImage(file);
-    console.log("Image link: " + file);
   };
   useEffect(() => {
     if (props.add_maintenance_tenant_loading === 'Success') {
       toastr.success("Success");
       props.addMaintenanceTenantFresh();
+      props.propertyListForTenantById(props.tid)
     }
     if (props.job_modal_add_loading === "Success") {
       toastr.success("Success");
@@ -79,7 +97,10 @@ const TenantMaintenanceModal = props => {
       props.JobsListFresh();
     }
   }, [props.job_modal_add_loading, props.add_maintenance_tenant_loading]);
-  // console.log(props.add_maintenance_tenant_loading);
+
+  console.log(files, previews);
+
+
   return (
     <React.Fragment>
       <Button className="btn w-md m-1 w-100" color="info" onClick={togglemodal}>
@@ -121,21 +142,6 @@ const TenantMaintenanceModal = props => {
                 />
                 <label htmlFor="usr">Summary</label>
               </div>
-              {/* <div className="form-group-new">
-                <Input
-                  type="textarea"
-                  name="description"
-                  className="form-control"
-                  placeholder="Description"
-                  rows="4"
-                  onChange={selectHandlerForMessage}
-                />
-                <label htmlFor="usr">Description</label>
-              </div> */}
-
-
-
-
               <FormGroup row>
                 <Label for="exampleSelect " className="form-group-new-desc-label" style={{ marginBottom: "-10px", zIndex: "1", width: "90px", padding: "0px 3px 0px 3px" }}>
                   Description
@@ -154,6 +160,55 @@ const TenantMaintenanceModal = props => {
                   </div>
                 </Col>
               </FormGroup>
+              <div className="form-group-new d-flex justify-content-start align-items-center">
+                <Button
+                  className="btn"
+                  color="info"
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  {" "}
+                  <i className="bx bx-camera"></i> Upload
+                </Button>
+                <div className="ps-2">{ files.length > 0 && `${files.length} attachments` }</div>
+
+                <input
+                  type="file"
+                  onChange={handleChange}
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  multiple
+                />
+              </div>
+              <div className="form-group-new">
+                {previews.length > 0 && (
+                  <div style={{ marginTop: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    {previews.map((preview, index) => (
+                      <div key={index} style={{ textAlign: "center" }}>
+                        <img
+                          src={preview}
+                          alt={`Preview ${index}`}
+                          style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                        />
+                        <button
+                          onClick={(e) => handleRemove(e, index)}
+                          style={{
+                            display: "block",
+                            marginTop: "5px",
+                            background: "red",
+                            color: "white",
+                            border: "none",
+                            cursor: "pointer",
+                            padding: "5px",
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </form>
           </ModalBody>
           <ModalFooter style={{ backgroundColor: "#F2F6FA" }}>
@@ -192,6 +247,6 @@ const mapStateToProps = gstate => {
 
 export default withRouter(
   connect(mapStateToProps, {
-    addMaintenanceTenant, addJobModal, addJobModalFresh, JobsListFresh, addMaintenanceTenantFresh
+    addMaintenanceTenant, addJobModal, addJobModalFresh, JobsListFresh, addMaintenanceTenantFresh, propertyListForTenantById
   })(TenantMaintenanceModal)
 );

@@ -275,6 +275,17 @@ export default function RecurringInvoiceModal({ status, toggle, setData, data, e
                                 <Col md={8}>
                                     <Row className="d-flex align-items-center">
                                         <Col md={6} className="d-flex">
+                                            <span className="input-group-append">
+                                                <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                        borderTopRightRadius: 0,
+                                                        borderBottomRightRadius: 0,
+                                                    }}
+                                                >
+                                                    $
+                                                </span>
+                                            </span>
                                             <div className="d-flex flex-column">
                                                 <input
                                                     className="form-control"
@@ -283,8 +294,8 @@ export default function RecurringInvoiceModal({ status, toggle, setData, data, e
                                                     type="text"
                                                     placeholder="0.00"
                                                     style={{
-                                                        borderTopRightRadius: 0,
-                                                        borderBottomRightRadius: 0,
+                                                        borderTopLeftRadius: 0,
+                                                        borderBottomLeftRadius: 0,
                                                     }}
                                                     value={
                                                         state.totalInvoiceAmount
@@ -294,17 +305,6 @@ export default function RecurringInvoiceModal({ status, toggle, setData, data, e
                                                     }
                                                 />
                                             </div>
-                                            <span className="input-group-append">
-                                                <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                        borderTopLeftRadius: 0,
-                                                        borderBottomLeftRadius: 0,
-                                                    }}
-                                                >
-                                                    ৳
-                                                </span>
-                                            </span>
                                         </Col>
                                         <Col md={6} >
                                             <div className="form-check mb-3">

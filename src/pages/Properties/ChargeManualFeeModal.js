@@ -151,7 +151,7 @@ const ChargeManualFeeModal = (props) => {
                                                     borderBottomRightRadius: 0,
                                                 }}
                                             >
-                                                ৳
+                                                $
                                             </span>
                                         </span>
                                         <div className="d-flex flex-column">

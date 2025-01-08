@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { Link, withRouter, useHistory, useParams } from "react-router-dom";
-
+import toastr from "toastr";
 import classnames from "classnames";
 
 import {
@@ -32,10 +32,13 @@ import {
 } from "reactstrap";
 import DatatableTables2 from "pages/Tables/DatatableTables2";
 import Parser from "html-react-parser";
-import { ContactAllActivity, AllContactDocument, contactDocumentUpdateById, contactDocumentUpdateByIdFresh } from "store/actions";
+import { documentDeleteById,documentDeleteByIdFresh,ContactAllActivity, AllContactDocument, contactDocumentUpdateById, contactDocumentUpdateByIdFresh ,documentUpdateByIdFresh,contactDocumentDeleteById,} from "store/actions";
 import moment from "moment";
+import { success } from "toastr";
 
 function AllDocument(props) {
+    console.log(props);
+    console.log(props.contact_document_name_update_loading);
     const { id } = useParams();
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -109,6 +112,7 @@ function AllDocument(props) {
 
     }
 
+
     const handleSubmit1 = (e) => {
         e.preventDefault();
         //console.log(rowData);
@@ -116,6 +120,8 @@ function AllDocument(props) {
         setModal1(false)
 
     }
+    console.log(props.contact_document_name_update_loading);
+    
 
     const pushProperty = (id) => {
         history.push("/propertyInfo/" + id);
@@ -183,6 +189,22 @@ function AllDocument(props) {
             props.AllContactDocument(id);
         }
     }, [props.all_contact_document_loading]);
+    useEffect(() => {
+        if (props.user_document_delete_loading === 'Success') {
+            
+            toastr.success('Success');
+            props.AllContactDocument(id);
+            props.documentDeleteByIdFresh();
+        }
+    }, [props.user_document_delete_loading]);
+    useEffect(() => {
+        if (props.contact_document_name_update_loading === 'Success') {
+          
+            toastr.success('Success');
+            props.AllContactDocument(id);
+            
+        }
+    }, [props.contact_document_name_update_loading]);
 
     const toggle = (tab, type) => {
         if (state.activeTab !== tab) {
@@ -373,7 +395,7 @@ const mapStateToProps = gstate => {
         all_contact_document,
         all_contact_document_error,
         all_contact_document_loading,
-
+        user_document_delete_loading,
         contact_document_name_update_error,
         contact_document_name_update_loading,
     } = gstate.Document;
@@ -381,9 +403,10 @@ const mapStateToProps = gstate => {
         all_contact_document,
         all_contact_document_error,
         all_contact_document_loading,
-
+        user_document_delete_loading,
         contact_document_name_update_error,
-        contact_document_name_update_loading
+        contact_document_name_update_loading,
+       
     };
 };
 
@@ -391,6 +414,12 @@ export default withRouter(
     connect(mapStateToProps, {
         AllContactDocument,
         contactDocumentUpdateById,
-        contactDocumentUpdateByIdFresh
+        contactDocumentUpdateByIdFresh,
+        documentDeleteById,
+        ContactAllActivity,
+        documentDeleteByIdFresh,
+        documentUpdateByIdFresh,
+        contactDocumentDeleteById,
+        
     })(AllDocument)
 );

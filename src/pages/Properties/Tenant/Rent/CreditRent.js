@@ -94,34 +94,34 @@ const CreditRent = (props) => {
                             <div
                                 className="d-flex"
                             >
+                                <span className="input-group-append rounded-start">
+                                    <span
+                                        className="input-group-text"
+                                        style={{
+                                            borderTopRightRadius: 0,
+                                            borderBottomRightRadius: 0,
+                                        }}
+                                    >
+                                        $
+                                    </span>
+                                </span>
                                 <div className="d-flex flex-column">
                                     <Input
                                         disabled={props.data ? true : false}
-                                        placeholder="৳0.00"
+                                        placeholder="$0.00"
                                         className="form-control "
                                         type="text"
                                         name="amount"
                                         onChange={handleFormState}
                                         style={{
-                                            borderTopRightRadius: 0,
-                                            borderBottomRightRadius: 0,
+                                            borderTopLeftRadius: 0,
+                                            borderBottomLeftRadius: 0,
                                         }}
                                         value={
                                             state.amount
                                         }
                                     />
                                 </div>
-                                <span className="input-group-append rounded-start">
-                                    <span
-                                        className="input-group-text"
-                                        style={{
-                                            borderTopLeftRadius: 0,
-                                            borderBottomLeftRadius: 0,
-                                        }}
-                                    >
-                                        ৳
-                                    </span>
-                                </span>
                             </div>
                         </Col>
                     </Row>

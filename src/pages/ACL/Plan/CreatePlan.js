@@ -55,7 +55,7 @@ const CreatePlan = props => {
   const [selectedName, setSelectedName] = useState();
   const [deleteState, setDeleteState] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  document.title = "CliqProperty";
+  document.title = "myday";
   useEffect(() => {
     props.prmList();
     props.planList();
@@ -134,7 +134,7 @@ const CreatePlan = props => {
             </tr>
           ))}
         </td>
-        <td>৳{item?.price}</td>
+        <td>${item?.price}</td>
         <td>
           <button
             type="submit"
@@ -377,7 +377,7 @@ const CreatePlan = props => {
                                     <div className="flex-grow-1" style={{ width: '80%' }}>
                                       <p className="text-muted fw-medium" title={item?.addon?.display_name}>
                                         {/* {item?.addon?.display_name?.length > 10 ? item?.addon?.display_name?.slice(0, 10) + '...' : item?.addon?.display_name} */}
-                                        {`${item?.addon?.display_name} (${item?.addon?.price}${item?.addon?.value === '%' ? '%' : '৳'})`}
+                                        {`${item?.addon?.display_name} (${item?.addon?.value === '$' ? '$' : ''}${item?.addon?.price}${item?.addon?.value === '%' ? '%' : ''})`}
                                       </p>
                                       <p className="text-muted fw-medium">{item?.addon?.fee_type}</p>
                                       <div style={{ textAlign: "center" }}>

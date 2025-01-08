@@ -17,6 +17,7 @@ const SellerArchiveModal = props => {
 
   const handleSave = e => {
     e.preventDefault();
+    props.setState(prev => ({ ...prev, loader: true }))
     props.sellerArchive(props.id, props.propertyId, "0");
   };
 
@@ -32,6 +33,7 @@ const SellerArchiveModal = props => {
       } else {
         toastr.success("Success");
       }
+      props.setState(prev => ({ ...prev, loader: false }))
       props.sellerArchiveFresh();
       props.toggle();
     }

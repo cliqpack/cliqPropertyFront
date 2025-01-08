@@ -44,6 +44,38 @@ export const supplierFolioInfo = (id) => {
     };
 };
 
+export const supplierFolioInfoWithArchive = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplier-folio-info-with-archive/${id}`;
+    const formData = {};
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUPPLIER_FOLIO_INFO",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUPPLIER_FOLIO_INFO",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
 
 export const transactionsListByIdForSupplierFolio = (time, folio_id) => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));
@@ -235,4 +267,80 @@ export const supplierDisbursementFresh = () => {
             status: false,
         });
     };
+};
+
+export const supplierArchive = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplier-due-check-and-archive/${id}`;
+
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "ARCHIVE_SUPPLIER",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "ARCHIVE_SUPPLIER",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const supplierArchiveFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "ARCHIVE_SUPPLIER",
+            status: false,
+        });
+};
+
+export const restoreSupplier = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/restore/supplier/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "RESTORE_SUPPLIER",
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "RESTORE_SUPPLIER",
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const restoreSupplierFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "RESTORE_SUPPLIER",
+            status: false,
+        });
 };

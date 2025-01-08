@@ -245,7 +245,7 @@ const SaleAgreement = props => {
   const [selectedGroup6, setSelectedGroup6] = useState(null);
   const [optionGroup6, setOptionGroup6] = useState([
     {
-      options: [{ label: "Admin Fee (৳)", value: "Admin Fee (৳)" }],
+      options: [{ label: "Admin Fee ($)", value: "Admin Fee ($)" }],
     },
   ]);
 
@@ -257,7 +257,7 @@ const SaleAgreement = props => {
     {
       options: [
         { label: "Commercial Management Fee (%)", value: "1" },
-        { label: "Letting fee (৳)", value: "2" },
+        { label: "Letting fee ($)", value: "2" },
         { label: "Management fee (%)", value: "3" },
       ],
     },
@@ -801,7 +801,7 @@ const SaleAgreement = props => {
     const values = [...state3];
 
     await state3.forEach(async (el, idx) => {
-      if (el.fee_template_1 === "Admin Fee (৳)") {
+      if (el.fee_template_1 === "Admin Fee ($)") {
         if (el.amount_1.length === 0) {
           values[idx]["errorState"] = true;
           values[idx]["error"] = " Invalid amount.";
@@ -844,7 +844,7 @@ const SaleAgreement = props => {
           values1[idx]["error"] = "";
           await setState7(values1);
         }
-      } else if (el.fee_template_2 === "Letting fee (৳)") {
+      } else if (el.fee_template_2 === "Letting fee ($)") {
         if (el.amount_2.length === 0) {
           values1[idx]["errorState"] = true;
           values1[idx]["error"] = " Invalid amount.";
@@ -918,7 +918,7 @@ const SaleAgreement = props => {
       values[idx]["fee_trigger_2"] = "Rental receipt";
       values[idx]["notes_2"] = "";
     } else if (e.value === "2") {
-      values[idx]["income_account_2"] = "Letting fee (inc. tax) (৳)";
+      values[idx]["income_account_2"] = "Letting fee (inc. tax) ($)";
       values[idx]["fee_trigger_2"] = "First rent receipt";
       values[idx]["notes_2"] = "";
     } else if (e.value === "3") {
@@ -1113,7 +1113,7 @@ const SaleAgreement = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -2406,7 +2406,7 @@ const SaleAgreement = props => {
                                                   for="abn"
                                                   className="form-label"
                                                 >
-                                                  BIN
+                                                  ABN
                                                 </Label>
                                               </Col>
 
@@ -2666,6 +2666,17 @@ const SaleAgreement = props => {
                                                 />
                                               </Col> */}
                                               <Col md={5} className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                  <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                      borderTopRightRadius: 0,
+                                                      borderBottomRightRadius: 0,
+                                                    }}
+                                                  >
+                                                    $
+                                                  </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                   <Field
                                                     id="asking_price"
@@ -2680,8 +2691,8 @@ const SaleAgreement = props => {
                                                         : "")
                                                     }
                                                     style={{
-                                                      borderTopRightRadius: 0,
-                                                      borderBottomRightRadius: 0,
+                                                      borderTopLeftRadius: 0,
+                                                      borderBottomLeftRadius: 0,
                                                     }}
                                                     value={state2.asking_price}
                                                     onChange={
@@ -2694,17 +2705,6 @@ const SaleAgreement = props => {
                                                     className="invalid-feedback"
                                                   />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                  <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                      borderTopLeftRadius: 0,
-                                                      borderBottomLeftRadius: 0,
-                                                    }}
-                                                  >
-                                                    ৳
-                                                  </span>
-                                                </span>
                                               </Col>
                                               <Col md={4}></Col>
                                             </Row>
@@ -2742,6 +2742,17 @@ const SaleAgreement = props => {
                                                 />
                                               </Col> */}
                                               <Col md={5} className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                  <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                      borderTopRightRadius: 0,
+                                                      borderBottomRightRadius: 0,
+                                                    }}
+                                                  >
+                                                    $
+                                                  </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                   <Field
                                                     id="purchase_price"
@@ -2756,8 +2767,8 @@ const SaleAgreement = props => {
                                                         : "")
                                                     }
                                                     style={{
-                                                      borderTopRightRadius: 0,
-                                                      borderBottomRightRadius: 0,
+                                                      borderTopLeftRadius: 0,
+                                                      borderBottomLeftRadius: 0,
                                                     }}
                                                     value={
                                                       state2.purchase_price
@@ -2772,17 +2783,6 @@ const SaleAgreement = props => {
                                                     className="invalid-feedback"
                                                   />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                  <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                      borderTopLeftRadius: 0,
-                                                      borderBottomLeftRadius: 0,
-                                                    }}
-                                                  >
-                                                    ৳
-                                                  </span>
-                                                </span>
                                               </Col>
                                               <Col md={4}></Col>
                                             </Row>
@@ -2920,6 +2920,17 @@ const SaleAgreement = props => {
                                                 />
                                               </Col> */}
                                               <Col md={5} className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                  <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                      borderTopRightRadius: 0,
+                                                      borderBottomRightRadius: 0,
+                                                    }}
+                                                  >
+                                                    $
+                                                  </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                   <Field
                                                     id="commission"
@@ -2934,8 +2945,8 @@ const SaleAgreement = props => {
                                                         : "")
                                                     }
                                                     style={{
-                                                      borderTopRightRadius: 0,
-                                                      borderBottomRightRadius: 0,
+                                                      borderTopLeftRadius: 0,
+                                                      borderBottomLeftRadius: 0,
                                                     }}
                                                     value={state2.commission}
                                                     onChange={
@@ -2948,17 +2959,6 @@ const SaleAgreement = props => {
                                                     className="invalid-feedback"
                                                   />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                  <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                      borderTopLeftRadius: 0,
-                                                      borderBottomLeftRadius: 0,
-                                                    }}
-                                                  >
-                                                    ৳
-                                                  </span>
-                                                </span>
                                               </Col>
                                               <Col md={4}>
                                                 <i
@@ -3093,7 +3093,7 @@ const SaleAgreement = props => {
                                                 className="d-flex align-items-center"
                                                 color={
                                                   state8[idx]["split_type"] ===
-                                                  "৳"
+                                                  "$"
                                                     ? "secondary"
                                                     : "light"
                                                 }
@@ -3101,7 +3101,7 @@ const SaleAgreement = props => {
                                                   toggleDollorBtn(idx)
                                                 }
                                               >
-                                                <span> ৳</span>
+                                                <span> $</span>
                                               </Button>
                                               <Button
                                                 className="d-flex align-items-center"

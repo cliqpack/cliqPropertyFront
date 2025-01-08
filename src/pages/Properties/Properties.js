@@ -155,7 +155,7 @@ const Properties = props => {
     inspectionFirstRoutineMonthlyBtn,
     setInspectionFirstRoutineMonthlyBtn,
   ] = useState(false);
-  document.title = "CliqProperty";
+  document.title = "myday";
   const [state2, setState2] = useState({
     location: undefined,
   });
@@ -641,7 +641,6 @@ const Properties = props => {
       <div className="page-content">
         <Container fluid={true}>
           <h4 className="ms-2 text-primary">Add property</h4>
-
           <Row>
             <Col>
               <div className="mb-3">

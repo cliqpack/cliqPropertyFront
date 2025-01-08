@@ -350,6 +350,17 @@ const RentCalculation = props => {
                     <Col md={8}>
                       <Row className="mb-3">
                         <Col md={4} className="d-flex">
+                          <span className="input-group-append rounded-start">
+                            <span
+                              className="input-group-text"
+                              style={{
+                                borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0,
+                              }}
+                            >
+                              $
+                            </span>
+                          </span>
                           <div className="d-flex flex-column">
                             <input
                               name="rent"
@@ -357,8 +368,8 @@ const RentCalculation = props => {
                               placeholder="0.00"
                               className={"rounded-end form-control"}
                               style={{
-                                borderTopRightRadius: 0,
-                                borderBottomRightRadius: 0,
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0,
                               }}
                               id="rent"
                               value={state.rent}
@@ -366,17 +377,6 @@ const RentCalculation = props => {
                               disabled={state.linked}
                             />
                           </div>
-                          <span className="input-group-append rounded-start">
-                            <span
-                              className="input-group-text"
-                              style={{
-                                borderTopLeftRadius: 0,
-                                borderBottomLeftRadius: 0,
-                              }}
-                            >
-                              ৳
-                            </span>
-                          </span>
                         </Col>
                         <Col md={8}>
                           <div className="btn-group btn-group-justified">
@@ -467,6 +467,17 @@ const RentCalculation = props => {
                     <Col md={8}>
                       <Row className="mb-3">
                         <Col md={4} className="d-flex">
+                          <span className="input-group-append">
+                            <span
+                              className="input-group-text"
+                              style={{
+                                borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0,
+                              }}
+                            >
+                              $
+                            </span>
+                          </span>
                           <div className="d-flex flex-column">
                             <input
                               name="part_paid"
@@ -475,25 +486,14 @@ const RentCalculation = props => {
                               placeholder="0.00"
                               className={"form-control"}
                               style={{
-                                borderTopRightRadius: 0,
-                                borderBottomRightRadius: 0,
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0,
                               }}
                               value={state.part_paid}
                               onChange={handlePropertyFormTwoValues}
                               disabled={state.linked}
                             />
                           </div>
-                          <span className="input-group-append">
-                            <span
-                              className="input-group-text"
-                              style={{
-                                borderTopLeftRadius: 0,
-                                borderBottomLeftRadius: 0,
-                              }}
-                            >
-                              ৳
-                            </span>
-                          </span>
                         </Col>
                       </Row>
                     </Col>
@@ -589,6 +589,17 @@ const RentCalculation = props => {
                       <Col md={8}>
                         <Row className="mb-3">
                           <Col md={4} className="d-flex">
+                            <span className="input-group-append rounded-start">
+                              <span
+                                className="input-group-text"
+                                style={{
+                                  borderTopRightRadius: 0,
+                                  borderBottomRightRadius: 0,
+                                }}
+                              >
+                                $
+                              </span>
+                            </span>
                             <div className="d-flex flex-column">
                               <input
                                 name="pay"
@@ -596,25 +607,14 @@ const RentCalculation = props => {
                                 placeholder="0.00"
                                 className={"rounded-end form-control"}
                                 style={{
-                                  borderTopRightRadius: 0,
-                                  borderBottomRightRadius: 0,
+                                  borderTopLeftRadius: 0,
+                                  borderBottomLeftRadius: 0,
                                 }}
                                 id="pay"
                                 value={state.pay}
                                 onChange={handleForm}
                               />
                             </div>
-                            <span className="input-group-append rounded-start">
-                              <span
-                                className="input-group-text"
-                                style={{
-                                  borderTopLeftRadius: 0,
-                                  borderBottomLeftRadius: 0,
-                                }}
-                              >
-                                ৳
-                              </span>
-                            </span>
                           </Col>
                           <Col md={8}></Col>
                         </Row>
@@ -679,7 +679,7 @@ const RentCalculation = props => {
                                   Part Paid
                                 </span>
                                 <span className="text-muted">
-                                  {state.calculate_part_paid}৳
+                                  ${state.calculate_part_paid}
                                 </span>
                               </Col>
                             </>

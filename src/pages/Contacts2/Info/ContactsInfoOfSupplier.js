@@ -30,6 +30,7 @@ import { SupplierInfoFresh, storePropertyDocument } from 'store/actions';
 import { useDispatch } from "react-redux";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import moment from "moment";
 
 const ContactsInfoOfSupplier = ({ item }) => {
     const history = useHistory();
@@ -126,13 +127,20 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                     {" "}
                                     <Col md={6} className="d-flex align-items-center">
                                         <h4 className="d-flex align-items-center text-primary fw-bold">
-
                                             Supplier
+                                            {
+                                                item.supplier_details.archive == 1 && <span className="font-size-14">
+                                                    (<i className="fas fa-archive"></i> Archived on{" "}
+                                                    {moment(item.supplier_details.updated_at).format(
+                                                        "DD MMM YYYY"
+                                                    )})
+                                                </span>
+                                            }
                                         </h4>
 
                                     </Col>
                                     <Col md={6} className="d-flex justify-content-end align-items-center">
-                                        <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "labelColor", borderRadius: "5px" }} />
+                                        <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "#0F2E5A", borderRadius: "5px" }} />
                                         <input
                                             type="file"
                                             onChange={handleUploadFiles}
@@ -232,7 +240,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                                 <p className="text-textTitleColor">Balances</p>
                                             </Col>
                                             <Col md={7}>
-                                                <p>৳{item.supplier_details?.balance ? item.supplier_details?.balance : 0.00}</p>
+                                                <p>${item.supplier_details?.balance ? item.supplier_details?.balance : 0.00}</p>
                                             </Col>
                                         </Row>{" "}
                                         <div
@@ -262,7 +270,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                                 <p className="text-textTitleColor">Bills pending</p>
                                             </Col>
                                             <Col md={7}>
-                                                <p>{item?.total_bills_amount_sum_amount ? `৳${item?.total_bills_amount_sum_amount}` : '৳0.00'}</p>
+                                                <p>{item?.total_bills_amount_sum_amount ? '$' + item?.total_bills_amount_sum_amount : '$0.00'}</p>
                                             </Col>
                                         </Row>{" "}
                                         <div
@@ -275,7 +283,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                     <Col md={6}>
                                         <Row className="d-flex">
                                             <Col md={5}>
-                                                <p className="text-textTitleColor">BIN</p>
+                                                <p className="text-textTitleColor">ABN</p>
                                             </Col>
                                             <Col md={7}>
                                                 <p>{item.supplier_details?.abn ? item.supplier_details?.abn : ''}</p>
@@ -293,7 +301,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                             </Col>
                                             <Col md={7}>
                                                 {" "}
-                                                <p>{item.total_due_invoice_sum_amount ? `৳${(item.total_due_invoice_sum_amount - item.total_part_paid_invoice_sum_paid)}` : '৳0.00'}</p>
+                                                <p>{item.total_due_invoice_sum_amount ? '$' + (item.total_due_invoice_sum_amount - item.total_part_paid_invoice_sum_paid) : '$0.00'}</p>
                                             </Col>
                                         </Row>{" "}
                                         <div
@@ -350,7 +358,7 @@ const ContactsInfoOfSupplier = ({ item }) => {
                                                     <div className='d-flex'>
                                                         <p>
                                                             {item.supplier_payments.length === 0 ? 'None' : item.supplier_payments.length === 1 ? item.supplier_payments[0]?.payment_method : `Split(${item.supplier_payments.map(item =>
-                                                                item.split_type == '৳' ? `৳${item.split ? item.split : '0'}.00` : ` ${item.split}%`
+                                                                item.split_type == '$' ? `$${item.split ? item.split : '0'}.00` : ` ${item.split}%`
                                                             )}
                                           )`
                                                             }

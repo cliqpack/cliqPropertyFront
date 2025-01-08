@@ -9,6 +9,12 @@ const TenantMoveOutDetails = (props) => {
     const toggle = () => {
         setState((prev) => !prev);
     }
+    const handleSave = () => {
+        console.log("call api bond");
+        
+        props.handleBondDetails(); 
+        props.toggleBondDetails();
+      };
 
     return (
         <Fragment>
@@ -53,7 +59,7 @@ const TenantMoveOutDetails = (props) => {
                                 </Col>
                                 <Col md={5}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="move_out"
                                         id="move_out"
                                         type="date"
@@ -90,7 +96,7 @@ const TenantMoveOutDetails = (props) => {
                                 </Col>
                                 <Col md={5}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="break_lease"
                                         id="break_lease"
                                         type="date"
@@ -128,7 +134,7 @@ const TenantMoveOutDetails = (props) => {
                                 </Col>
                                 <Col md={5}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="termination"
                                         id="termination"
                                         type="date"
@@ -170,7 +176,7 @@ const TenantMoveOutDetails = (props) => {
                                 <Col md={7}>
                                     <textarea className="form-control" name="bond_held"></textarea>
                                     {/* <input
-                                        placeholder='0.00৳'
+                                        placeholder='$0.00'
                                         name="bond_held"
                                         id="bond_held"
                                         type="number"
@@ -200,6 +206,7 @@ const TenantMoveOutDetails = (props) => {
                         </Col>
                     </Row>
                 </div>
+                
             </Modal>
         </Fragment>
     )

@@ -579,6 +579,17 @@ const AddBillsModal = props => {
                         </div>
                       </Col> */}
                       <Col md={6} className="d-flex mb-3">
+                        <span className="input-group-append">
+                          <span
+                            className="input-group-text"
+                            style={{
+                              borderTopRightRadius: 0,
+                              borderBottomRightRadius: 0,
+                            }}
+                          >
+                            $
+                          </span>
+                        </span>
                         <div className="d-flex flex-column">
                           <input
                             className="form-control"
@@ -587,24 +598,13 @@ const AddBillsModal = props => {
                             type="text"
                             placeholder="0.00"
                             style={{
-                              borderTopRightRadius: 0,
-                              borderBottomRightRadius: 0,
+                              borderTopLeftRadius: 0,
+                              borderBottomLeftRadius: 0,
                             }}
                             value={state.amount}
                             onChange={handleState}
                           />
                         </div>
-                        <span className="input-group-append">
-                          <span
-                            className="input-group-text"
-                            style={{
-                              borderTopLeftRadius: 0,
-                              borderBottomLeftRadius: 0,
-                            }}
-                          >
-                            ৳
-                          </span>
-                        </span>
                       </Col>
                       <Col md={6}>
                         <div className="form-check mb-3">
@@ -705,6 +705,17 @@ const AddBillsModal = props => {
                         <h4 className="card-title">Total invoice amount</h4>
                         <Row className="d-flex align-items-center">
                           <Col md={6} className="d-flex">
+                            <span className="input-group-append">
+                              <span
+                                className="input-group-text"
+                                style={{
+                                  borderTopRightRadius: 0,
+                                  borderBottomRightRadius: 0,
+                                }}
+                              >
+                                $
+                              </span>
+                            </span>
                             <div className="d-flex flex-column">
                               <input
                                 className="form-control"
@@ -713,24 +724,13 @@ const AddBillsModal = props => {
                                 type="text"
                                 placeholder="0.00"
                                 style={{
-                                  borderTopRightRadius: 0,
-                                  borderBottomRightRadius: 0,
+                                  borderTopLeftRadius: 0,
+                                  borderBottomLeftRadius: 0,
                                 }}
                                 value={state.totalInvoiceAmount}
                                 onChange={handleState}
                               />
                             </div>
-                            <span className="input-group-append">
-                              <span
-                                className="input-group-text"
-                                style={{
-                                  borderTopLeftRadius: 0,
-                                  borderBottomLeftRadius: 0,
-                                }}
-                              >
-                                ৳
-                              </span>
-                            </span>
                           </Col>
                           <Col md={6}>
                             <div className="form-check mb-3">
@@ -756,7 +756,8 @@ const AddBillsModal = props => {
                             <Card>
                               <CardBody className="border-3 border-start border-danger">
                                 <p className="fw-bold">
-                                  Available tenant funds ৳{state.tenantDepositAmount}.
+                                  Available tenant funds $
+                                  {state.tenantDepositAmount}.
                                 </p>
                                 <p>
                                   Would you like to allocate an amount towards
@@ -769,6 +770,17 @@ const AddBillsModal = props => {
                                     <label>Allocated amount</label>
                                     <Row>
                                       <Col md={4} className="d-flex">
+                                        <span className="input-group-append">
+                                          <span
+                                            className="input-group-text"
+                                            style={{
+                                              borderTopRightRadius: 0,
+                                              borderBottomRightRadius: 0,
+                                            }}
+                                          >
+                                            $
+                                          </span>
+                                        </span>
                                         <div className="d-flex flex-column">
                                           <input
                                             className="form-control"
@@ -777,24 +789,13 @@ const AddBillsModal = props => {
                                             type="text"
                                             placeholder="0.00"
                                             style={{
-                                              borderTopRightRadius: 0,
-                                              borderBottomRightRadius: 0,
+                                              borderTopLeftRadius: 0,
+                                              borderBottomLeftRadius: 0,
                                             }}
                                             value={state.allocatedAmount}
                                             onChange={handleState}
                                           />
                                         </div>
-                                        <span className="input-group-append">
-                                          <span
-                                            className="input-group-text"
-                                            style={{
-                                              borderTopLeftRadius: 0,
-                                              borderBottomLeftRadius: 0,
-                                            }}
-                                          >
-                                            ৳
-                                          </span>
-                                        </span>
                                       </Col>
                                     </Row>
                                   </div>
@@ -811,7 +812,7 @@ const AddBillsModal = props => {
                                 <p>
                                   Remaining amount payable will be{" "}
                                   <span className="fw-bold">
-                                    {state.remainingAllocatedAmount}৳
+                                    ${state.remainingAllocatedAmount}
                                   </span>
                                 </p>
                               </CardBody>

@@ -64,7 +64,7 @@ const Apexchart = (props) => {
             },
             yaxis: {
                 title: {
-                    text: "৳ (thousands)",
+                    text: "$ (thousands)",
                 },
             },
             grid: {
@@ -77,7 +77,7 @@ const Apexchart = (props) => {
                 y: {
                     formatter: function (val) {
 
-                        return "৳ " + val + " thousands"
+                        return "$ " + val + " thousands"
                     },
                 },
             },

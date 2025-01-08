@@ -174,6 +174,8 @@ const AddSupplier2 = props => {
     },
   ]);
 
+  // const [state, setState] = useState({});
+  console.log(state);
   const [state2, setState2] = useState({
     bill_priority: "Normal",
     abn: "",
@@ -181,6 +183,7 @@ const AddSupplier2 = props => {
     auto_approve_bill: 0,
     account: "",
   });
+  console.log(state2);
   const [show, setShow] = useState(false);
   const [postalAddForm, setPostalAddForm] = useState(false);
   const [physicalAddForm, setPhysicalAddForm] = useState(false);
@@ -232,6 +235,7 @@ const AddSupplier2 = props => {
       error: "none",
     },
   ]);
+  console.log(state8);
 
   const [optionGroup8, setOptionGroup8] = useState([
     {
@@ -239,7 +243,7 @@ const AddSupplier2 = props => {
         { label: "None", value: "None" },
         { label: "Cheque", value: "Cheque" },
         { label: "EFT", value: "EFT" },
-        // { label: "BPay", value: "BPay" },
+        { label: "BPay", value: "BPay" },
       ],
     },
   ]);
@@ -265,6 +269,7 @@ const AddSupplier2 = props => {
     setState2({ ...state2, auto_approve_bill: 0 });
   };
 
+  // console.log(selectedId);
   const handlePushData = () => {
     props.showContactFresh();
     if (selectedId) {
@@ -278,6 +283,14 @@ const AddSupplier2 = props => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handlePostalAddForm = () => {
+    setPostalAddForm(prev => !prev);
+  };
+
+  const handlePhysicalAddForm = () => {
+    setPhysicalAddForm(prev => !prev);
+  };
 
   const handleSelectGroup = e => {
     setSelectedGroup(e);
@@ -442,6 +455,7 @@ const AddSupplier2 = props => {
 
       props.contacts_show_data?.data?.contact_physical_address?.map(
         (item, key) => {
+          console.log(item);
           let physical = {
             physical_building_name: item.building_name,
             physical_unit: item.unit,
@@ -541,6 +555,123 @@ const AddSupplier2 = props => {
     props.chartAccount_list_data?.account,
   ]);
 
+  // const addresshandler = (e, statename) => {
+  //   let b = postalAddress.postal_building_name
+  //     ? postalAddress.postal_building_name + " "
+  //     : "";
+  //   let u = postalAddress.postal_unit ? postalAddress.postal_unit + "/" : "";
+  //   let n = postalAddress.postal_number
+  //     ? postalAddress.postal_number + " "
+  //     : "";
+  //   let st = postalAddress.postal_street
+  //     ? postalAddress.postal_street + ", "
+  //     : "";
+  //   let sb = postalAddress.postal_suburb
+  //     ? postalAddress.postal_suburb + ", "
+  //     : "";
+  //   let pc = postalAddress.postal_postcode
+  //     ? postalAddress.postal_postcode + " "
+  //     : "";
+  //   let s = postalAddress.postal_state ? postalAddress.postal_state + " " : "";
+  //   let c = postalAddress.postal_country
+  //     ? postalAddress.postal_country + " "
+  //     : "";
+  //   if (statename === "postal_building_name") {
+  //     b = e.target.value + " ";
+  //   } else if (statename === "postal_unit") {
+  //     u = e.target.value + "/";
+  //   } else if (statename === "postal_number") {
+  //     n = e.target.value + " ";
+  //   } else if (statename === "postal_street") {
+  //     st = e.target.value + ", ";
+  //   } else if (statename === "postal_suburb") {
+  //     sb = e.target.value + ", ";
+  //   } else if (statename === "postal_postcode") {
+  //     pc = e.target.value + " ";
+  //   } else if (statename === "postal_state") {
+  //     s = e.target.value + " ";
+  //   } else if (statename === "postal_country") {
+  //     c = e.target.value;
+  //   }
+  //   let address = b + u + n + st + sb + s + pc + c;
+  //   // let reference = st + u + n;
+  //   setFullPostalAddress(address);
+  //   // setState({ ...state, reference });
+  //   setPostalAddress({
+  //     ...postalAddress,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  // const addresshandlerPhysical = (e, statename) => {
+  //   let b = physicalAddress.physical_building_name
+  //     ? physicalAddress.physical_building_name + " "
+  //     : "";
+  //   let u = physicalAddress.physical_unit
+  //     ? physicalAddress.physical_unit + "/"
+  //     : "";
+  //   let n = physicalAddress.physical_number
+  //     ? physicalAddress.physical_number + " "
+  //     : "";
+  //   let st = physicalAddress.physical_street
+  //     ? physicalAddress.physical_street + ", "
+  //     : "";
+  //   let sb = physicalAddress.physical_suburb
+  //     ? physicalAddress.physical_suburb + ", "
+  //     : "";
+  //   let pc = physicalAddress.physical_postcode
+  //     ? physicalAddress.physical_postcode + " "
+  //     : "";
+  //   let s = physicalAddress.physical_state
+  //     ? physicalAddress.physical_state + " "
+  //     : "";
+  //   let c = physicalAddress.physical_country
+  //     ? physicalAddress.physical_country + " "
+  //     : "";
+  //   if (statename === "physical_building_name") {
+  //     b = e.target.value + " ";
+  //   } else if (statename === "physical_unit") {
+  //     u = e.target.value + "/";
+  //   } else if (statename === "physical_number") {
+  //     n = e.target.value + " ";
+  //   } else if (statename === "physical_street") {
+  //     st = e.target.value + ", ";
+  //   } else if (statename === "physical_suburb") {
+  //     sb = e.target.value + " ";
+  //   } else if (statename === "physical_postcode") {
+  //     pc = e.target.value + " ";
+  //   } else if (statename === "physical_state") {
+  //     s = e.target.value + " ";
+  //   } else if (statename === "physical_country") {
+  //     c = e.target.value;
+  //   }
+  //   let address = b + u + n + st + sb + s + pc + c;
+  //   // let reference = st + u + n;
+  //   setFullPhysicalAddress(address);
+  //   // setState({ ...state, reference });
+  //   setPhysicalAddress({
+  //     ...physicalAddress,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+  // Autocomplete address
+  function inArray(needle, haystack) {
+    var length = haystack.length;
+    for (var i = 0; i < length; i++) {
+      if (haystack[i] == needle) return true;
+    }
+    return false;
+  }
+  // -----------------
+
+  // const handlePostalFormValues = e => {
+  //   setPostalAddress({ ...postalAddress, [e.target.name]: e.target.value });
+  // };
+  // const handlePhysicalFormValues = e => {
+  //   setPhysicalAddress({ ...physicalAddress, [e.target.name]: e.target.value });
+  // };
+
   let option;
   if (props.contacts_list_data && optionGroupState) {
     option = props.contacts_list_data.data?.map(item => ({
@@ -555,6 +686,160 @@ const AddSupplier2 = props => {
     ]);
     setOptionGroupState(false);
   }
+
+  // const checkAddressHandler = () => {
+  //   if (addressState) {
+  //     let building = postalAddress.postal_building_name
+  //       ? postalAddress.postal_building_name + " "
+  //       : "";
+  //     let unit = postalAddress.postal_unit
+  //       ? postalAddress.postal_unit + "/ "
+  //       : "";
+  //     let number = postalAddress.postal_number
+  //       ? postalAddress.postal_number + " "
+  //       : "";
+  //     let street = postalAddress.postal_street
+  //       ? postalAddress.postal_street + ", "
+  //       : "";
+  //     let suburb = postalAddress.postal_suburb
+  //       ? postalAddress.postal_suburb + ", "
+  //       : "";
+  //     let pstate = postalAddress.postal_state
+  //       ? postalAddress.postal_state + " "
+  //       : "";
+  //     let postcode = postalAddress.postal_postcode
+  //       ? postalAddress.postal_postcode + " "
+  //       : "";
+  //     let country = postalAddress.postal_country
+  //       ? postalAddress.postal_country
+  //       : "";
+  //     setFullPhysicalAddress(
+  //       building + unit + number + street + suburb + pstate + postcode + country
+  //     );
+  //     setPhysicalAddress({
+  //       ...physicalAddress,
+  //       physical_building_name: postalAddress.postal_building_name,
+  //       physical_country: postalAddress.postal_country,
+  //       physical_number: postalAddress.postal_number,
+  //       physical_postcode: postalAddress.postal_postcode,
+  //       physical_state: postalAddress.postal_state,
+  //       physical_street: postalAddress.postal_street,
+  //       physical_suburb: postalAddress.postal_suburb,
+  //       physical_unit: postalAddress.postal_unit,
+  //     });
+  //     setPhysicalAddForm(true);
+  //   } else {
+  //     setFullPhysicalAddress("");
+  //     setPhysicalAddress({
+  //       ...physicalAddress,
+  //       physical_building_name: "",
+  //       physical_country: "",
+  //       physical_number: "",
+  //       physical_postcode: "",
+  //       physical_state: "",
+  //       physical_street: "",
+  //       physical_suburb: "",
+  //       physical_unit: "",
+  //     });
+  //   }
+  //   setAddressState(prev => !prev);
+  // };
+
+  // const checkTrueHandler = (boolean, value) => {
+  //   setForCheck({
+  //     ...forCheck,
+  //     [boolean]: true,
+  //   })
+  //   let val = [...checkState];
+  //   val.push(value);
+  //   setCheckState(val);
+  // }
+
+  // const checkFalseHandler = (boolean, value) => {
+  //   setForCheck({
+  //     ...forCheck,
+  //     [boolean]: false,
+  //   })
+  //   let val = [...checkState];
+  //   val = val.filter(item => item !== value);
+  //   setCheckState(val);
+  // }
+
+  // const mobilePhoneHandler = e => {
+  //   setPhone({
+  //     ...phone,
+  //     mobile_phone: e.target.value,
+  //   });
+  //   if (e.target.value === "") {
+  //     if (forCheck.smsCheck === false) {
+  //       return;
+  //     } else {
+  //       checkFalseHandler("smsCheck", "SMS");
+  //     }
+  //   } else {
+  //     if (forCheck.smsCheck === true) {
+  //       return;
+  //     } else {
+  //       checkTrueHandler("smsCheck", "SMS");
+  //     }
+  //   }
+  // };
+
+  // const emailHandler = e => {
+  //   setState({
+  //     ...state,
+  //     email: e.target.value,
+  //   });
+  //   if (e.target.value === "") {
+  //     if (forCheck.emailCheck === false) {
+  //       return;
+  //     } else {
+  //       checkFalseHandler("emailCheck", "Email");
+  //     }
+  //   } else {
+  //     if (forCheck.emailCheck === true) {
+  //       return;
+  //     } else {
+  //       checkTrueHandler("emailCheck", "Email");
+  //     }
+  //   }
+  // };
+
+  // const communicationHandler = (e) => {
+  //   let val = e.target.value, checked = e.target.checked;
+  //   if (val === 'Print' && checked === true) {
+  //     checkTrueHandler('printCheck', 'Print');
+  //   } else if (val === 'Print' && checked === false) {
+  //     checkFalseHandler('printCheck', 'Print');
+  //   } else if (val === 'Email' && checked === true) {
+  //     checkTrueHandler('emailCheck', 'Email');
+  //   } else if (val === 'Email' && checked === false) {
+  //     checkFalseHandler('emailCheck', 'Email');
+  //   } else if (val === 'SMS' && checked === true) {
+  //     checkTrueHandler('smsCheck', 'SMS');
+  //   } else if (val === 'SMS' && checked === false) {
+  //     checkFalseHandler('smsCheck', 'SMS');
+  //   }
+  // };
+
+  const referenceHandlerState = (e, stateName) => {
+    let fName = state.first_name ? state.first_name + " " : "";
+    let lName = state.last_name ? state.last_name + " " : "";
+    let cName = state.company_name ? "- " + state.company_name : "";
+
+    if (stateName === "first_name") {
+      fName = e.target.value + " ";
+    }
+    if (stateName === "last_name") {
+      lName = e.target.value + " ";
+    }
+    if (stateName === "company_name") {
+      cName = "- " + e.target.value;
+    }
+
+    let reference = fName + lName + cName;
+    setState({ ...state, [stateName]: e.target.value, reference });
+  };
 
   const referenceHandler = (e, stateName) => {
     let unit = postalAddress.postal_unit ? postalAddress.postal_unit + " " : "";
@@ -719,7 +1004,7 @@ const AddSupplier2 = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -740,7 +1025,7 @@ const AddSupplier2 = props => {
     setState8(data);
   };
 
-  const handleRowResult2 = e => {
+  const handleRowResult2 = async e => {
     e.preventDefault();
     let forBPay = false;
     if (state8.length === 0) {
@@ -749,32 +1034,37 @@ const AddSupplier2 = props => {
       const values = [...state8];
       var split = 0;
       var lengthSp = state8.length;
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
+        if (lengthSp > 1) {
+          if (values[idx]["split_type"] == "%") {
+            split += Number(element.split);
+          }
+        }
         if (element.method == "EFT") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a Payee for EFT payment";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (element.bsb.length < 6 || isNaN(element.bsb)) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a 6-digit BSB";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (element.account == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = " Enter an Account number";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (isNaN(element.account)) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Account number must be numeric";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
         if (element.method == "BPay") {
@@ -782,49 +1072,40 @@ const AddSupplier2 = props => {
           if (element.biller_code == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "The Biller Code should be at least 1 digit";
-            setState8(values);
-            return;
-          } else if (isNaN(element.biller_code)) {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "The Biller Code must be numeric";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
         if (element.method == "Cheque") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a Payee for Cheque payment";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
-        if (lengthSp > 1) {
-          if (values[idx]["split_type"] == "%") {
-            split += Number(element.split);
-          }
-          if (split > 100 || Number(element.split) === 0) {
-            values[lengthSp - 1]["errorState"] = true;
-            values[lengthSp - 1]["error"] = "Invalid Percentage";
-            setState8(values);
-            return
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            setState8(values);
-          }
+
+        if (split > 100) {
+          values[lengthSp - 1]["errorState"] = true;
+          values[lengthSp - 1]["error"] = "Invalid Percentage";
+          await setState8(values);
+        }
+        if (element.split === 0) {
+          values[idx]["errorState"] = true;
+          values[idx]["error"] = "Invalid Percentage";
+          await setState8(values);
         }
       });
 
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
         if (forBPay && state8.length > 1) {
           setBpayErrorState(true);
           setTimeout(() => {
@@ -843,9 +1124,11 @@ const AddSupplier2 = props => {
     setEnteredState(false);
     props.addSupplier(
       state,
+      phone,
       state2,
       physicalAddress,
       postalAddress,
+      formTwoButtonValue,
       state8,
       contactId
     );
@@ -858,7 +1141,7 @@ const AddSupplier2 = props => {
     }, 5000);
   }
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
   //----------Multi-reference form hendler------------//
   const handleBtnRows = () => {
@@ -1052,6 +1335,7 @@ const AddSupplier2 = props => {
     postal[e.target.name] = e.target.value;
     postals[idx] = postal;
     setPostalAddress(postals);
+    console.log(e.target.name);
     let fullpostals = [...fullPostalAddress];
     let fullpostal = fullpostals[idx];
     let bld = "",
@@ -1622,13 +1906,22 @@ const AddSupplier2 = props => {
                                       //
                                     })}
                                     onSubmit={(values, onSubmitProps) => {
+                                      // setState(values);
+
                                       const emptyNames = state.contacts.filter(item => !item.first_name.trim() || !item.last_name.trim() || !item.email.trim());
 
+
+
                                       if (emptyNames.length > 0) {
+                                        console.log("Objects with empty first_name or last_name found:");
+                                        console.log(emptyNames);
                                         const fName = state.contacts.filter(item => !item.first_name.trim())
                                         const lName = state.contacts.filter(item => !item.last_name.trim())
                                         const email = state.contacts.filter(item => !item.email.trim())
+                                        console.log(fName, lName, email);
+                                        // toastr.warning('Please enter First & Last Name')
                                         toastr.warning(`Please enter ${fName.length > 0 ? 'First Name' : ''} ${lName.length > 0 ? 'Last Name' : ''} ${email.length > 0 ? 'Email' : ''}`)
+
                                       } else {
                                         toggleTab(tabState.activeTab + 1);
                                         setFormSubmitBtnState(
@@ -2276,6 +2569,9 @@ const AddSupplier2 = props => {
                                                       </Row>
                                                       {state.contacts.map(
                                                         (item, idx) => {
+                                                          console.log(
+                                                            "checking"
+                                                          );
                                                           return (
                                                             <div
                                                               key={idx}
@@ -2691,7 +2987,7 @@ const AddSupplier2 = props => {
                                                                     }
                                                                   />
                                                                   <label htmlFor="usr">
-                                                                    BIN
+                                                                    ABN
                                                                   </label>
                                                                 </div>
                                                                 <ErrorMessage
@@ -3023,7 +3319,7 @@ const AddSupplier2 = props => {
                                                         color={
                                                           state8[idx]?.[
                                                             "split_type"
-                                                          ] === "৳"
+                                                          ] === "$"
                                                             ? "secondary"
                                                             : "light"
                                                         }
@@ -3031,7 +3327,7 @@ const AddSupplier2 = props => {
                                                           toggleDollorBtn(idx)
                                                         }
                                                       >
-                                                        <span> ৳</span>
+                                                        <span> $</span>
                                                       </Button>
                                                       <Button
                                                         className="d-flex align-items-center"

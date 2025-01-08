@@ -205,6 +205,14 @@ const ManageOwner = props => {
                                 {item?.status == '1' && <span className="badge badge-soft-primary">
                                   current
                                 </span>}
+                                {
+                                  item?.owner_folios?.archive == 1 && <span className="font-size-14">
+                                    (<i className="fas fa-archive"></i> Archived on{" "}
+                                    {moment(item?.owner_folios?.updated_at).format(
+                                      "DD MMM YYYY"
+                                    )})
+                                  </span>
+                                }
                               </h4>
                             </div>
                           </Col>
@@ -223,7 +231,7 @@ const ManageOwner = props => {
                               <i className="fa fa-solid fa-pen" />
                             </Button>
                             {
-                              item?.status === 0 &&
+                              (item?.status === 0 && item?.owner_folios?.archive === 0) &&
                               (<Button
                                 type="button"
                                 className="ms-1 btn btn-secondary"
@@ -293,37 +301,6 @@ const ManageOwner = props => {
                                 ""
                               )}
                             </Row>
-                            {/* <Row>
-                              <Col className="py-1">
-                                <Row>
-                                  <Col md={5}>
-                                    <span className="text-primary">
-                                      Fee schedule{" "}
-                                    </span>
-                                  </Col>
-                                  <Col md={7}>
-                                    <Link
-                                      to={`/owner/edit/${ownerInfoData?.data?.id}/3`}
-                                    >
-                                      <span>
-                                        {
-                                          ownerInfoData?.data?.owner_property_fees
-                                            ?.length
-                                        }{" "}
-                                        fees{" "}
-                                        <i className="fas fa-pen font-size-14 text-primary ms-1"></i>
-                                      </span>
-                                    </Link>
-                                  </Col>
-                                </Row>
-                                <div
-                                  className="w-100"
-                                  style={{
-                                    borderBottom: "1.2px dotted #c9c7c7",
-                                  }}
-                                />
-                              </Col>
-                            </Row> */}
 
                             {item?.owner_folios?.balance ||
                               item?.owner_folios?.total_money ||
@@ -338,11 +315,11 @@ const ManageOwner = props => {
                                     </Col>
                                     <Col md={7}>
                                       {item?.owner_folios?.balance
-                                        ? `on balance of ৳${item?.owner_folios?.balance || "0.00"
+                                        ? `on balance of $${item?.owner_folios?.balance || "0.00"
                                         }/`
                                         : ""}{" "}
                                       {item?.owner_folios?.total_money
-                                        ? ` on total money in of ৳${item?.owner_folios?.total_money ||
+                                        ? ` on total money in of $${item?.owner_folios?.total_money ||
                                         "0.00"
                                         }`
                                         : ""}{" "}

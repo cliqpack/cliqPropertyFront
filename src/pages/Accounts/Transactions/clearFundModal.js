@@ -60,7 +60,7 @@ const ClearFundModal = props => {
                 <ModalHeader toggle={props.toggle}>
                     <i className="fas fa-dollar-sign font-size-16 me-1 text-primary"></i>
                     <span className="text-primary">
-                        This will set clear date to today for ৳300.00 deposit
+                        This will set clear date to today for $300.00 deposit
                     </span>
                 </ModalHeader>
 

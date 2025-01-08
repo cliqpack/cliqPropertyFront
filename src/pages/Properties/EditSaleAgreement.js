@@ -4,20 +4,31 @@ import Select from "react-select";
 import moment from "moment";
 
 import {
+  Table,
   Row,
   Col,
   Card,
   CardBody,
   CardTitle,
+  Alert,
+  Container,
+  CardText,
+  Nav,
   NavItem,
   NavLink,
   TabContent,
   TabPane,
   Label,
+  Modal,
+  Input,
   Button,
+  CardHeader,
+  //   Form,
+  FormGroup,
 } from "reactstrap";
 import classnames from "classnames";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useFormik, date } from "formik";
+import * as Yup from "yup";
 import toastr from "toastr";
 
 import {
@@ -39,13 +50,19 @@ import {
   showContact,
 } from "../../store/Contacts2/actions";
 
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 import { Link, useHistory, withRouter, useParams } from "react-router-dom";
+import { element } from "prop-types";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 import ContactForm from "pages/Contacts2/MultipleReference/ContactForm";
 
 const EditSaleAgreement = props => {
+  console.log(props);
+  
   const { id, saleId, tabId } = useParams(); // Property ID
 
   const [state, setState] = useState({});
@@ -172,6 +189,11 @@ const EditSaleAgreement = props => {
   const autoCompletePostalRefBuyer = useRef();
   // ------------------------
 
+  // const [fullPostalAddress, setFullPostalAddress] = useState("");
+  // const [fullPhysicalAddress, setFullPhysicalAddress] = useState("");
+  // const [fullPostalAddressBuyer, setFullPostalAddressBuyer] = useState("");
+  // const [fullPhysicalAddressBuyer, setFullPhysicalAddressBuyer] = useState("");
+
   const history = useHistory();
 
   const [formSubmitBtnState, setFormSubmitBtnState] = useState(
@@ -179,6 +201,7 @@ const EditSaleAgreement = props => {
   ); // Form Submit Button State
 
   const [selectedId, setSelectedId] = useState();
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [optionGroup, setOptionGroup] = useState();
   const [optionGroupState, setOptionGroupState] = useState(true);
 
@@ -191,10 +214,50 @@ const EditSaleAgreement = props => {
     home_phone: null,
   });
 
+  const [selectedId2, setSelectedId2] = useState();
+  const [selectedGroup2, setSelectedGroup2] = useState(null);
+  const [optionGroup2, setOptionGroup2] = useState([
+    {
+      options: [
+        { label: "Off", value: "Off" },
+        { label: "Weekly", value: "Weekly" },
+        { label: "Fortnightly", value: "Fortnightly" },
+        { label: "Twice Monthly", value: "Twice Monthly" },
+        { label: "Monthly", value: "Monthly" },
+      ],
+    },
+  ]);
+  const [optionGroupState2, setOptionGroupState2] = useState(true);
+
+  const [selectedId3, setSelectedId3] = useState();
+  const [selectedGroup3, setSelectedGroup3] = useState(null);
+  const [optionGroup3, setOptionGroup3] = useState([
+    {
+      options: [
+        { label: "Management purchased", value: "Management purchased" },
+        { label: "Advertising", value: "Advertising" },
+        { label: "Multiple landlord", value: "Multiple landlord" },
+        { label: "Not gained", value: "Not gained" },
+        { label: "Price", value: "Price" },
+        { label: "Referral", value: "Referral" },
+        { label: "Sales team referral", value: "Sales team referral" },
+      ],
+    },
+  ]);
+  const [optionGroupState3, setOptionGroupState3] = useState(true);
+  // const [state, setState] = useState({}); // Form 1 State
+  // console.log(state, phone);
+
   const date = moment().format("yyyy-MM-DD");
 
   const [state2, setState2] = useState({}); // Form 2 State
 
+  const [ownerAccess, setOwnerAccess] = useState(1); // Form 2 State
+
+  const [addressState, setAddressState] = useState(true);
+  const [addressStateBuyer, setAddressStateBuyer] = useState(true);
+
+  const [show, setShow] = useState(false);
   const [postalAddForm, setPostalAddForm] = useState(false);
   const [physicalAddForm, setPhysicalAddForm] = useState(false);
   // const [postalAddress, setPostalAddress] = useState({});
@@ -202,6 +265,48 @@ const EditSaleAgreement = props => {
   //Buyer
   const [postalAddFormBuyer, setPostalAddFormBuyer] = useState(false);
   const [physicalAddFormBuyer, setPhysicalAddFormBuyer] = useState(false);
+  // const [postalAddressBuyer, setPostalAddressBuyer] = useState({});
+  // const [physicalAddressBuyer, setPhysicalAddressBuyer] = useState({});
+
+  const [inspectionEnableBtn, setInspectionEnableBtn] = useState(true);
+  const [inspectionDisableBtn, setInspectionDisableBtn] = useState(false);
+
+  // Fees Form State
+  const [rows3, setRows3] = useState([]);
+  const [state3, setState3] = useState([]);
+
+  const [selectedGroup6, setSelectedGroup6] = useState(null);
+  const [optionGroup6, setOptionGroup6] = useState([
+    {
+      options: [{ label: "Admin Fee ($)", value: "Admin Fee ($)" }],
+    },
+  ]);
+
+  const [rows4, setRows4] = useState([]);
+  const [state7, setState7] = useState([]);
+
+  const [selectedGroup7, setSelectedGroup7] = useState(null);
+  const [optionGroup7, setOptionGroup7] = useState([
+    {
+      options: [
+        { label: "Commercial Management Fee (%)", value: "1" },
+        { label: "Letting fee ($)", value: "2" },
+        { label: "Management fee (%)", value: "3" },
+      ],
+    },
+  ]);
+
+  const [selectedId6, setSelectedId6] = useState();
+  const [selectedId7, setSelectedId7] = useState();
+
+  const [tableInfoShow3, setTableInfoShow3] = useState(false);
+  const [tableInfoShow7, setTableInfoShow7] = useState(false);
+  // ----------------------
+  const [feesModal, setfeesModal] = useState(false);
+
+  const toggleFeesModal = () => {
+    setfeesModal(prev => !prev);
+  };
 
   // Payment method state
   const [accErr, setAccErr] = useState(false);
@@ -250,6 +355,7 @@ const EditSaleAgreement = props => {
   // });
 
   // const [checkStateBuyer, setCheckStateBuyer] = useState([]);
+  // console.log(checkStateBuyer);
 
   const checkFalseHandlerForBuyer = (boolean, value) => {
     setForCheckBuyer({
@@ -261,8 +367,128 @@ const EditSaleAgreement = props => {
     setCheckStateBuyer(val);
   };
 
-  // ----------------------------
+  // const checkTrueHandlerBuyer = (boolean, value) => {
+  //   setForCheckBuyer({
+  //     ...forCheckBuyer,
+  //     [boolean]: true,
+  //   });
+  //   let val = [...checkStateBuyer];
+  //   val.push(value);
+  //   setCheckStateBuyer(val);
+  // };
 
+  const mobilePhoneHandlerForBuyer = e => {
+    setBuyerPhone({
+      ...phone,
+      mobile_phone: e.target.value,
+    });
+    if (e.target.value === "") {
+      if (forCheckBuyer.smsCheck === false) {
+        return;
+      } else {
+        checkFalseHandlerForBuyer("smsCheck", "SMS");
+      }
+    } else {
+      if (forCheckBuyer.smsCheck === true) {
+        return;
+      } else {
+        checkTrueHandlerBuyer("smsCheck", "SMS");
+      }
+    }
+  };
+
+  let contactEditCommunication = {
+    printCheck: false,
+    emailCheck: false,
+    smsCheck: false,
+  };
+
+  // const [buyerState, setBuyerState] = useState({});
+
+  // const mobilePhoneHandler = e => {
+  //   setPhone({
+  //     ...phone,
+  //     mobile_phone: e.target.value,
+  //   });
+  //   if (e.target.value === "") {
+  //     if (forCheck.smsCheck === false) {
+  //       return;
+  //     } else {
+  //       checkFalseHandler("smsCheck", "SMS");
+  //     }
+  //   } else {
+  //     if (forCheck.smsCheck === true) {
+  //       return;
+  //     } else {
+  //       checkTrueHandler("smsCheck", "SMS");
+  //     }
+  //   }
+  // };
+
+  // const emailHandler = e => {
+  //   setState({
+  //     ...state,
+  //     email: e.target.value,
+  //   });
+  //   if (e.target.value === "") {
+  //     if (forCheck.emailCheck === false) {
+  //       return;
+  //     } else {
+  //       checkFalseHandler("emailCheck", "Email");
+  //     }
+  //   } else {
+  //     if (forCheck.emailCheck === true) {
+  //       return;
+  //     } else {
+  //       checkTrueHandler("emailCheck", "Email");
+  //     }
+  //   }
+  // };
+
+  // const emailHandlerForBuyer = e => {
+  //   setBuyerState({
+  //     ...buyerState,
+  //     email: e.target.value,
+  //   });
+  //   if (e.target.value === "") {
+  //     if (forCheckBuyer.emailCheck === false) {
+  //       return;
+  //     } else {
+  //       checkFalseHandlerForBuyer("emailCheck", "Email");
+  //     }
+  //   } else {
+  //     if (forCheckBuyer.emailCheck === true) {
+  //       return;
+  //     } else {
+  //       checkTrueHandlerBuyer("emailCheck", "Email");
+  //     }
+  //   }
+  // };
+
+  // const communicationHandlerForBuyer = e => {
+  //   let val = e.target.value,
+  //     checked = e.target.checked;
+  //   if (val === "Print" && checked === true) {
+  //     checkTrueHandlerBuyer("printCheck", "Print");
+  //   } else if (val === "Print" && checked === false) {
+  //     checkFalseHandlerForBuyer("printCheck", "Print");
+  //   } else if (val === "Email" && checked === true) {
+  //     checkTrueHandlerBuyer("emailCheck", "Email");
+  //   } else if (val === "Email" && checked === false) {
+  //     checkFalseHandlerForBuyer("emailCheck", "Email");
+  //   } else if (val === "SMS" && checked === true) {
+  //     checkTrueHandlerBuyer("smsCheck", "SMS");
+  //   } else if (val === "SMS" && checked === false) {
+  //     checkFalseHandlerForBuyer("smsCheck", "SMS");
+  //   }
+  // };
+
+  // ----------------------------
+  const propertyRef = props.property_info_data?.data?.data?.reference
+    ? props.property_info_data?.data?.data?.reference
+    : "";
+
+  console.log(props.edit_seller_info_property_data?.data?.data);
   const buyerInfo = props.edit_seller_info_property_data?.data?.data?.has_buyer;
 
   const buyerId = props.edit_seller_info_property_data?.data?.data?.buyer_id;
@@ -274,9 +500,11 @@ const EditSaleAgreement = props => {
     props.edit_seller_info_property_data?.data?.data?.buyer_contact;
 
   const dateMoveInHandler = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState2({ ...state2, ["agreement_start"]: dateStr });
   };
   const dateMoveInHandler2 = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState2({ ...state2, ["agreement_end"]: dateStr });
   };
 
@@ -1022,6 +1250,224 @@ const EditSaleAgreement = props => {
     props.edit_sale_agreement_loading,
   ]);
 
+  console.log(props.edit_seller_info_property_data);
+
+  const addresshandler = (e, statename) => {
+    let b = postalAddress.postal_building_name
+      ? postalAddress.postal_building_name + " "
+      : "";
+    let u = postalAddress.postal_unit ? postalAddress.postal_unit + "/" : "";
+    let n = postalAddress.postal_number
+      ? postalAddress.postal_number + " "
+      : "";
+    let st = postalAddress.postal_street
+      ? postalAddress.postal_street + ", "
+      : "";
+    let sb = postalAddress.postal_suburb
+      ? postalAddress.postal_suburb + ", "
+      : "";
+    let pc = postalAddress.postal_postcode
+      ? postalAddress.postal_postcode + " "
+      : "";
+    let s = postalAddress.postal_state ? postalAddress.postal_state + " " : "";
+    let c = postalAddress.postal_country
+      ? postalAddress.postal_country + " "
+      : "";
+    if (statename === "postal_building_name") {
+      b = e.target.value + " ";
+    } else if (statename === "postal_unit") {
+      u =
+        e.target.value && postalAddress.postal_number
+          ? `${e.target.value}/`
+          : e.target.value;
+    } else if (statename === "postal_number") {
+      n = e.target.value + " ";
+    } else if (statename === "postal_street") {
+      st = e.target.value + ", ";
+    } else if (statename === "postal_suburb") {
+      sb = e.target.value + ", ";
+    } else if (statename === "postal_postcode") {
+      pc = e.target.value + " ";
+    } else if (statename === "postal_state") {
+      s = e.target.value + " ";
+    } else if (statename === "postal_country") {
+      c = e.target.value;
+    }
+    let address = b + u + n + st + sb + s + pc + c;
+    // let reference = st + u + n;
+    setFullPostalAddress(address);
+    // setState({ ...state, reference });
+    setPostalAddress({
+      ...postalAddress,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addresshandlerPhysical = (e, statename) => {
+    let b = physicalAddress.physical_building_name
+      ? physicalAddress.physical_building_name + " "
+      : "";
+    let u = physicalAddress.physical_unit
+      ? physicalAddress.physical_unit + "/"
+      : "";
+    let n = physicalAddress.physical_number
+      ? physicalAddress.physical_number + " "
+      : "";
+    let st = physicalAddress.physical_street
+      ? physicalAddress.physical_street + ", "
+      : "";
+    let sb = physicalAddress.physical_suburb
+      ? physicalAddress.physical_suburb + ", "
+      : "";
+    let pc = physicalAddress.physical_postcode
+      ? physicalAddress.physical_postcode + " "
+      : "";
+    let s = physicalAddress.physical_state
+      ? physicalAddress.physical_state + " "
+      : "";
+    let c = physicalAddress.physical_country
+      ? physicalAddress.physical_country + " "
+      : "";
+    if (statename === "physical_building_name") {
+      b = e.target.value + " ";
+    } else if (statename === "physical_unit") {
+      u =
+        e.target.value && physicalAddress.physical_number
+          ? `${e.target.value}/`
+          : e.target.value;
+    } else if (statename === "physical_number") {
+      n = e.target.value + " ";
+    } else if (statename === "physical_street") {
+      st = e.target.value + ", ";
+    } else if (statename === "physical_suburb") {
+      sb = e.target.value + " ";
+    } else if (statename === "physical_postcode") {
+      pc = e.target.value + " ";
+    } else if (statename === "physical_state") {
+      s = e.target.value + " ";
+    } else if (statename === "physical_country") {
+      c = e.target.value;
+    }
+    let address = b + u + n + st + sb + s + pc + c;
+    // let reference = st + u + n;
+    setFullPhysicalAddress(address);
+    // setState({ ...state, reference });
+    setPhysicalAddress({
+      ...physicalAddress,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addresshandlerPostalBuyer = (e, statename) => {
+    let b = postalAddressBuyer.postal_building_name
+      ? postalAddressBuyer.postal_building_name + " "
+      : "";
+    let u = postalAddressBuyer.postal_unit
+      ? postalAddressBuyer.postal_unit + "/"
+      : "";
+    let n = postalAddressBuyer.postal_number
+      ? postalAddressBuyer.postal_number + " "
+      : "";
+    let st = postalAddressBuyer.postal_street
+      ? postalAddressBuyer.postal_street + ", "
+      : "";
+    let sb = postalAddressBuyer.postal_suburb
+      ? postalAddressBuyer.postal_suburb + ", "
+      : "";
+    let pc = postalAddressBuyer.postal_postcode
+      ? postalAddressBuyer.postal_postcode + " "
+      : "";
+    let s = postalAddressBuyer.postal_state
+      ? postalAddressBuyer.postal_state + " "
+      : "";
+    let c = postalAddressBuyer.postal_country
+      ? postalAddressBuyer.postal_country + " "
+      : "";
+    if (statename === "postal_building_name") {
+      b = e.target.value + " ";
+    } else if (statename === "postal_unit") {
+      u =
+        e.target.value && postalAddressBuyer.postal_number
+          ? `${e.target.value}/`
+          : e.target.value;
+    } else if (statename === "postal_number") {
+      n = e.target.value + " ";
+    } else if (statename === "postal_street") {
+      st = e.target.value + ", ";
+    } else if (statename === "postal_suburb") {
+      sb = e.target.value + ", ";
+    } else if (statename === "postal_postcode") {
+      pc = e.target.value + " ";
+    } else if (statename === "postal_state") {
+      s = e.target.value + " ";
+    } else if (statename === "postal_country") {
+      c = e.target.value;
+    }
+    let address = b + u + n + st + sb + s + pc + c;
+    // let reference = st + u + n;
+    setFullPostalAddressBuyer(address);
+    // setState({ ...state, reference });
+    setPostalAddressBuyer({
+      ...postalAddressBuyer,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addresshandlerPhysicalBuyer = (e, statename) => {
+    let b = physicalAddressBuyer.physical_building_name
+      ? physicalAddressBuyer.physical_building_name + " "
+      : "";
+    let u = physicalAddressBuyer.physical_unit
+      ? physicalAddressBuyer.physical_unit + "/"
+      : "";
+    let n = physicalAddressBuyer.physical_number
+      ? physicalAddressBuyer.physical_number + " "
+      : "";
+    let st = physicalAddressBuyer.physical_street
+      ? physicalAddressBuyer.physical_street + ", "
+      : "";
+    let sb = physicalAddressBuyer.physical_suburb
+      ? physicalAddressBuyer.physical_suburb + ", "
+      : "";
+    let pc = physicalAddressBuyer.physical_postcode
+      ? physicalAddressBuyer.physical_postcode + " "
+      : "";
+    let s = physicalAddressBuyer.physical_state
+      ? physicalAddressBuyer.physical_state + " "
+      : "";
+    let c = physicalAddressBuyer.physical_country
+      ? physicalAddressBuyer.physical_country + " "
+      : "";
+    if (statename === "physical_building_name") {
+      b = e.target.value + " ";
+    } else if (statename === "physical_unit") {
+      u =
+        e.target.value && physicalAddressBuyer.physical_number
+          ? `${e.target.value}/`
+          : e.target.value;
+    } else if (statename === "physical_number") {
+      n = e.target.value + " ";
+    } else if (statename === "physical_street") {
+      st = e.target.value + ", ";
+    } else if (statename === "physical_suburb") {
+      sb = e.target.value + " ";
+    } else if (statename === "physical_postcode") {
+      pc = e.target.value + " ";
+    } else if (statename === "physical_state") {
+      s = e.target.value + " ";
+    } else if (statename === "physical_country") {
+      c = e.target.value;
+    }
+    let address = b + u + n + st + sb + s + pc + c;
+    // let reference = st + u + n;
+    setFullPhysicalAddressBuyer(address);
+    // setState({ ...state, reference });
+    setPhysicalAddressBuyer({
+      ...physicalAddressBuyer,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   // Autocomplete address
   function inArray(needle, haystack) {
     var length = haystack.length;
@@ -1032,8 +1478,14 @@ const EditSaleAgreement = props => {
   }
   // -----------------
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const handlePropertyFormValues = e => {
     setState({ ...state, [e.target.name]: e.target.value });
+  };
+  const handlePhysicalFormValues = e => {
+    setPhysicalAddress({ ...physicalAddress, [e.target.name]: e.target.value });
   };
   const handlePropertyFormValuesBuyer = e => {
     setBuyerState({ ...buyerState, [e.target.name]: e.target.value });
@@ -1041,6 +1493,61 @@ const EditSaleAgreement = props => {
 
   const handlePropertyFormTwoValues = e => {
     setState2({ ...state2, [e.target.name]: e.target.value });
+  };
+
+  const referenceHandler = (e, stateName) => {
+    let fName = state.first_name ? state.first_name + " " : "";
+    let lName = state.last_name ? state.last_name + " " : "";
+    let cName = state.company_name ? "- " + state.company_name : "";
+
+    if (stateName === "first_name") {
+      fName = e.target.value + " ";
+    }
+    if (stateName === "last_name") {
+      lName = e.target.value + " ";
+    }
+    if (stateName === "company_name") {
+      cName = "- " + e.target.value;
+    }
+
+    let reference = fName + lName + cName;
+    setState({ ...state, [stateName]: e.target.value, reference });
+    setState8([
+      {
+        selectedValues: { label: "EFT", value: "EFT" },
+        method: "EFT",
+        payee: reference,
+        payeeType: true,
+        bsb: "",
+        bsbType: true,
+        account: "",
+        accountType: true,
+        split: 100,
+        split_type_boolean: false,
+        split_type: "%",
+        errorState: false,
+        error: "none",
+      },
+    ]);
+  };
+
+  const referenceHandlerForBuyer = (e, stateName) => {
+    let fName = buyerState.first_name ? buyerState.first_name + " " : "";
+    let lName = buyerState.last_name ? buyerState.last_name + " " : "";
+    let cName = buyerState.company_name ? "- " + buyerState.company_name : "";
+
+    if (stateName === "first_name") {
+      fName = e.target.value + " ";
+    }
+    if (stateName === "last_name") {
+      lName = e.target.value + " ";
+    }
+    if (stateName === "company_name") {
+      cName = "- " + e.target.value;
+    }
+
+    let reference = fName + lName + cName;
+    setBuyerState({ ...buyerState, [stateName]: e.target.value, reference });
   };
 
   const handleReferenceValues = e => {
@@ -1068,12 +1575,278 @@ const EditSaleAgreement = props => {
     setBuyerState({ ...buyerState, reference: e.target.value });
   };
 
+  const handlePropertyFormValues2 = e => {
+    setState2({ ...state2, [e.target.name]: e.target.value });
+  };
+
+  const handlePostalFormValues = e => {
+    setPostalAddress({ ...postalAddress, [e.target.name]: e.target.value });
+  };
+  const handlePostalFormValuesBuyer = e => {
+    setPostalAddressBuyer({
+      ...postalAddressBuyer,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handlePhysicalFormValuesBuyer = e => {
+    setPhysicalAddressBuyer({
+      ...physicalAddressBuyer,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlePostalAddForm = () => {
+    setPostalAddForm(prev => !prev);
+  };
+  const handlePostalAddFormBuyer = () => {
+    setPostalAddFormBuyer(prev => !prev);
+  };
+
+  const handlePhysicalAddForm = () => {
+    setPhysicalAddForm(prev => !prev);
+  };
+  const handlePhysicalAddFormBuyer = () => {
+    setPhysicalAddFormBuyer(prev => !prev);
+  };
+
+  const toggleInspectionDisableBtn = () => {
+    setOwnerAccess(0);
+    setInspectionDisableBtn(true);
+    setInspectionEnableBtn(false);
+  };
+  const toggleInspectionEnableBtn = () => {
+    setOwnerAccess(1);
+    setInspectionEnableBtn(true);
+    setInspectionDisableBtn(false);
+  };
+
+  const handleSelectGroup = e => {
+    setSelectedGroup(e);
+    setSelectedId(e.value);
+  };
+  const handleSelectGroup2 = e => {
+    setState2({ ...state2, regular_intervals: e.value });
+    setSelectedGroup2(e);
+    setSelectedId2(e.value);
+  };
+  const handleSelectGroup3 = e => {
+    setState2({ ...state2, gained_reason: e.value });
+    setSelectedGroup3(e);
+    setSelectedId3(e.value);
+  };
+
+  // Fees Form Handler functions
+  const handleRowResult = async e => {
+    e.preventDefault();
+    if (state3.length === 0 && state7.length === 0) setfeesModal(true);
+
+    const values = [...state3];
+
+    await state3.forEach(async (el, idx) => {
+      if (el.fee_template_1 === "Admin Fee ($)") {
+        if (el.amount_1.length === 0) {
+          values[idx]["errorState"] = true;
+          values[idx]["error"] = " Invalid amount.";
+          await setState3(values);
+          return;
+        } else {
+          values[idx]["errorState"] = false;
+          values[idx]["error"] = "";
+          await setState3(values);
+        }
+      } else {
+        values[idx]["errorState"] = false;
+        values[idx]["error"] = "";
+        await setState3(values);
+      }
+      // else {
+      //   setEnteredState(true)
+      // }
+    });
+    // false true
+    await state3.forEach(async (element, idx) => {
+      if (element.errorState == true) {
+        setEnteredState(false);
+      } else {
+        setEnteredState(true);
+      }
+    });
+
+    const values1 = [...state7];
+
+    await state7.forEach(async (el, idx) => {
+      if (el.fee_template_2 === "Commercial Management Fee (%)") {
+        if (el.amount_2.length === 0) {
+          values1[idx]["errorState"] = true;
+          values1[idx]["error"] = " Invalid amount.";
+          await setState7(values1);
+          return;
+        } else {
+          values1[idx]["errorState"] = false;
+          values1[idx]["error"] = "";
+          await setState7(values1);
+        }
+      } else if (el.fee_template_2 === "Letting fee ($)") {
+        if (el.amount_2.length === 0) {
+          values1[idx]["errorState"] = true;
+          values1[idx]["error"] = " Invalid amount.";
+          await setState7(values1);
+          return;
+        } else {
+          values1[idx]["errorState"] = false;
+          values1[idx]["error"] = "";
+          await setState7(values1);
+        }
+      } else if (el.fee_template_2 === "Management fee (%)") {
+        if (el.amount_2.length === 0) {
+          values1[idx]["errorState"] = true;
+          values1[idx]["error"] = " Invalid amount.";
+          await setState7(values1);
+          return;
+        } else {
+          values1[idx]["errorState"] = false;
+          values1[idx]["error"] = "";
+          await setState7(values1);
+        }
+      } else {
+        values1[idx]["errorState"] = false;
+        values1[idx]["error"] = "";
+        await setState7(values1);
+      }
+    });
+
+    await state7.forEach(async (element, idx) => {
+      if (element.errorState == true) {
+        setEnteredState(false);
+      } else {
+        setEnteredState(true);
+      }
+    });
+  };
+
   if (enteredState) {
     setEnteredState(false);
 
     // toggleTab(tabState.activeTab + 1);
     // setFormSubmitBtnState(formSubmitBtnState + 1);
   }
+
+  const toggleFeesModalHandler = () => {
+    toggleFeesModal();
+    setEnteredState(true);
+  };
+
+  const handleChangeInput = async (idx, e, type) => {
+    const values = [...state3];
+
+    values[idx][type] = e.value;
+    values[idx]["selectedValues"] = e;
+    values[idx]["income_account_1"] = "Administration fee (inc. tax)";
+    values[idx]["fee_trigger_1"] = "Each statement period";
+    values[idx]["notes_1"] = "";
+    await setState3(values);
+
+    setSelectedGroup6(e);
+    setSelectedId6(e.value);
+    setTableInfoShow3(true);
+  };
+
+  const handleChangeInput2 = async (idx, e, type) => {
+    const values = [...state7];
+    values[idx][type] = e.label;
+    values[idx]["selectedValues"] = e;
+    if (e.value === "1") {
+      values[idx]["income_account_2"] = "Commercial Management fee (%)";
+      values[idx]["fee_trigger_2"] = "Rental receipt";
+      values[idx]["notes_2"] = "";
+    } else if (e.value === "2") {
+      values[idx]["income_account_2"] = "Letting fee (inc. tax) ($)";
+      values[idx]["fee_trigger_2"] = "First rent receipt";
+      values[idx]["notes_2"] = "";
+    } else if (e.value === "3") {
+      values[idx]["income_account_2"] = "Management fee (inc. tax) (%)";
+      values[idx]["fee_trigger_2"] = "Rental receipt";
+      values[idx]["notes_2"] = "";
+    }
+    await setState7(values);
+
+    setSelectedGroup7(e);
+    setSelectedId7(e.value);
+    setTableInfoShow7(true);
+  };
+  const handlePropertyFormValues4 = (idx, e) => {
+    let data = [...state3];
+    data[idx][e.target.name] = e.target.value;
+    setState3(data);
+  };
+  const handlePropertyFormValues7 = (idx, e) => {
+    let data = [...state7];
+    data[idx][e.target.name] = e.target.value;
+    setState7(data);
+  };
+  const handleRemoveRow = (e, idx) => {
+    if (rows3.length > 0) {
+      var rowIndex = [...rows3];
+      rowIndex.splice(idx, 1);
+      setRows3(rowIndex);
+
+      var rowStateValue = [...state3];
+      rowStateValue.splice(idx, 1);
+      setState3(rowStateValue);
+    }
+  };
+  const handleRemoveRow7 = (e, idx) => {
+    if (rows4.length > 0) {
+      var rowIndex = [...rows4];
+      rowIndex.splice(idx, 1);
+      setRows4(rowIndex);
+
+      var rowStateValue = [...state7];
+      rowStateValue.splice(idx, 1);
+      setState7(rowStateValue);
+    }
+  };
+  const handleAddRow = () => {
+    const item = {
+      name: "",
+    };
+    setRows3([...rows3, item]);
+
+    setState3([
+      ...state3,
+      {
+        selectedValues: {},
+        fee_template_1: "",
+        income_account_1: "",
+        fee_trigger_1: "",
+        notes_1: "",
+        amount_1: "",
+        errorState: false,
+        error: "none",
+      },
+    ]);
+  };
+  const handleAddRow7 = () => {
+    const item = {
+      name: "",
+    };
+    setRows4([...rows4, item]);
+
+    setState7([
+      ...state7,
+      {
+        selectedValues: {},
+        fee_template_2: "",
+        income_account_2: "",
+        fee_trigger_2: "",
+        notes_2: "",
+        amount_2: "",
+        amountPlaceholder: "",
+        errorState: false,
+        error: "none",
+      },
+    ]);
+  };
   // ---------------------
 
   // Payment method functions
@@ -1182,7 +1955,7 @@ const EditSaleAgreement = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -1203,7 +1976,7 @@ const EditSaleAgreement = props => {
     setState8(data);
   };
 
-  const handleRowResult2 = e => {
+  const handleRowResult2 = async e => {
     e.preventDefault();
     if (state8.length === 0) {
       setEnteredState(true);
@@ -1211,64 +1984,54 @@ const EditSaleAgreement = props => {
       const values = [...state8];
       var split = 0;
       var lengthSp = state8.length;
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
         if (lengthSp > 1) {
           if (values[idx]["split_type"] == "%") {
             split += Number(element.split);
-          }
-          if (split > 100 || Number(element.split) === 0) {
-            values[lengthSp - 1]["errorState"] = true;
-            values[lengthSp - 1]["error"] = "Invalid Percentage";
-            setState8(values);
-            return;
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            setState8(values);
           }
         }
         if (element.method == "EFT") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a Payee for EFT payment";
-            setState8(values);
+            await setState8(values);
             return;
-          } else if (element.bsb.length < 6 || isNaN(element.bsb)) {
+          } else if (element.bsb.length < 6) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a 6-digit BSB";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (element.account == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = " Enter an Account number";
-            setState8(values);
-            return;
-          } else if (isNaN(element.account)) {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "Account number must be numeric";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
         if (element.method == "Cheque") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a Payee for Cheque payment";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
+        }
+        if (split > 100 || element.split === 0) {
+          values[lengthSp - 1]["errorState"] = true;
+          values[lengthSp - 1]["error"] = "Invalid Percentage";
+          await setState8(values);
         }
       });
 
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
         if (element.errorState == false) {
           setEnteredState(true);
         } else {
@@ -1277,6 +2040,7 @@ const EditSaleAgreement = props => {
       });
     }
   };
+
   if (enteredState) {
     setEnteredState(false);
     props.editSaleAgreement(
@@ -1316,15 +2080,113 @@ const EditSaleAgreement = props => {
     setOptionGroupState(false);
   }
 
+  const checkAddressHandler = () => {
+    if (addressState) {
+      setPhysicalAddress({
+        ...physicalAddress,
+        physical_building_name: postalAddress.postal_building_name,
+        physical_country: postalAddress.postal_country,
+        physical_number: postalAddress.postal_number,
+        physical_postcode: postalAddress.postal_postcode,
+        physical_state: postalAddress.postal_state,
+        physical_street: postalAddress.postal_street,
+        physical_suburb: postalAddress.postal_suburb,
+        physical_unit: postalAddress.postal_unit,
+      });
+      setPhysicalAddForm(true);
+    } else {
+      setPhysicalAddress({
+        ...physicalAddress,
+        physical_building_name: "",
+        physical_country: "",
+        physical_number: "",
+        physical_postcode: "",
+        physical_state: "",
+        physical_street: "",
+        physical_suburb: "",
+        physical_unit: "",
+      });
+    }
+    setAddressState(prev => !prev);
+  };
+
+  const checkAddressHandlerBuyer = () => {
+    if (addressStateBuyer) {
+      let building = postalAddressBuyer.postal_building_name
+        ? postalAddressBuyer.postal_building_name + " "
+        : "";
+      let unit = postalAddressBuyer.postal_unit
+        ? postalAddressBuyer.postal_unit + "/ "
+        : "";
+      let number = postalAddressBuyer.postal_number
+        ? postalAddressBuyer.postal_number + " "
+        : "";
+      let street = postalAddressBuyer.postal_street
+        ? postalAddressBuyer.postal_street + ", "
+        : "";
+      let suburb = postalAddressBuyer.postal_suburb
+        ? postalAddressBuyer.postal_suburb + ", "
+        : "";
+      let pstate = postalAddressBuyer.postal_state
+        ? postalAddressBuyer.postal_state + " "
+        : "";
+      let postcode = postalAddressBuyer.postal_postcode
+        ? postalAddressBuyer.postal_postcode + " "
+        : "";
+      let country = postalAddressBuyer.postal_country
+        ? postalAddressBuyer.postal_country
+        : "";
+      setFullPhysicalAddressBuyer(
+        building + unit + number + street + suburb + pstate + postcode + country
+      );
+      setPhysicalAddressBuyer({
+        ...physicalAddressBuyer,
+        physical_building_name: postalAddressBuyer.postal_building_name,
+        physical_country: postalAddressBuyer.postal_country,
+        physical_number: postalAddressBuyer.postal_number,
+        physical_postcode: postalAddressBuyer.postal_postcode,
+        physical_state: postalAddressBuyer.postal_state,
+        physical_street: postalAddressBuyer.postal_street,
+        physical_suburb: postalAddressBuyer.postal_suburb,
+        physical_unit: postalAddressBuyer.postal_unit,
+      });
+      setPhysicalAddFormBuyer(true);
+    } else {
+      setPhysicalAddressBuyer({
+        ...physicalAddressBuyer,
+        physical_building_name: "",
+        physical_country: "",
+        physical_number: "",
+        physical_postcode: "",
+        physical_state: "",
+        physical_street: "",
+        physical_suburb: "",
+        physical_unit: "",
+      });
+    }
+    setAddressStateBuyer(prev => !prev);
+  };
   const dateContractHandler = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState2({ ...state2, ["contract_exchange"]: dateStr });
   };
   const dateDepositHandler = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState2({ ...state2, ["deposit_due"]: dateStr });
   };
 
   const dateSettleMentDueHandler = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState2({ ...state2, ["settlement_due"]: dateStr });
+  };
+
+  const handlePushData = () => {
+    props.showContactFresh();
+    if (selectedId) {
+      setContactState(true);
+    }
+    handleClose();
+    // history.push("/set/setPropertyOwnerAdd/" + selectedId + "/" + id);
   };
 
   //----------Multi-reference form hendler------------//
@@ -1520,6 +2382,7 @@ const EditSaleAgreement = props => {
     postal[e.target.name] = e.target.value;
     postals[idx] = postal;
     setPostalAddress(postals);
+    console.log(e.target.name);
     let fullpostals = [...fullPostalAddress];
     let fullpostal = fullpostals[idx];
     let bld = "",
@@ -2074,6 +2937,7 @@ const EditSaleAgreement = props => {
     postal[e.target.name] = e.target.value;
     postals[idx] = postal;
     setPostalAddressBuyer(postals);
+    console.log(e.target.name);
     let fullpostals = [...fullPostalAddressBuyer];
     let fullpostal = fullpostals[idx];
     let bld = "",
@@ -2754,9 +3618,12 @@ const EditSaleAgreement = props => {
 
 
                               if (emptyNames.length > 0) {
+                                console.log("Objects with empty first_name or last_name found:");
+                                console.log(emptyNames);
                                 const fName = state.contacts.filter(item => !item.first_name.trim())
                                 const lName = state.contacts.filter(item => !item.last_name.trim())
                                 const email = state.contacts.filter(item => !item.email.trim())
+                                console.log(fName, lName, email);
                                 // toastr.warning('Please enter First & Last Name')
                                 toastr.warning(`Please enter ${fName.length > 0 ? 'First Name' : ''} ${lName.length > 0 ? 'Last Name' : ''} ${email.length > 0 ? 'Email' : ''}`)
 
@@ -2942,6 +3809,9 @@ const EditSaleAgreement = props => {
                                           ></div>
 
                                           {state.contacts?.map((item, idx) => {
+                                            {
+                                              /* console.log("checking"); */
+                                            }
                                             return (
                                               <div
                                                 key={idx}
@@ -3055,7 +3925,7 @@ const EditSaleAgreement = props => {
                                                   for="abn"
                                                   className="form-label"
                                                 >
-                                                  BIN
+                                                  ABN
                                                 </Label>
                                               </Col>
 
@@ -3599,7 +4469,7 @@ const EditSaleAgreement = props => {
                                                     for="abn"
                                                     className="form-label"
                                                   >
-                                                    BIN
+                                                    ABN
                                                   </Label>
                                                 </Col>
 
@@ -3920,6 +4790,17 @@ const EditSaleAgreement = props => {
                                                 />
                                               </Col> */}
                                               <Col md={5} className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                  <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                      borderTopRightRadius: 0,
+                                                      borderBottomRightRadius: 0,
+                                                    }}
+                                                  >
+                                                    $
+                                                  </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                   <Field
                                                     id="asking_price"
@@ -3934,8 +4815,8 @@ const EditSaleAgreement = props => {
                                                         : "")
                                                     }
                                                     style={{
-                                                      borderTopRightRadius: 0,
-                                                      borderBottomRightRadius: 0,
+                                                      borderTopLeftRadius: 0,
+                                                      borderBottomLeftRadius: 0,
                                                     }}
                                                     value={state2.asking_price}
                                                     onChange={
@@ -3948,17 +4829,6 @@ const EditSaleAgreement = props => {
                                                     className="invalid-feedback"
                                                   />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                  <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                      borderTopLeftRadius: 0,
-                                                      borderBottomLeftRadius: 0,
-                                                    }}
-                                                  >
-                                                    ৳
-                                                  </span>
-                                                </span>
                                               </Col>
                                               <Col md={4}></Col>
                                             </Row>
@@ -3996,6 +4866,17 @@ const EditSaleAgreement = props => {
                                                 />
                                               </Col> */}
                                               <Col md={5} className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                  <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                      borderTopRightRadius: 0,
+                                                      borderBottomRightRadius: 0,
+                                                    }}
+                                                  >
+                                                    $
+                                                  </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                   <Field
                                                     id="commission"
@@ -4010,8 +4891,8 @@ const EditSaleAgreement = props => {
                                                         : "")
                                                     }
                                                     style={{
-                                                      borderTopRightRadius: 0,
-                                                      borderBottomRightRadius: 0,
+                                                      borderTopLeftRadius: 0,
+                                                      borderBottomLeftRadius: 0,
                                                     }}
                                                     value={state2.commission}
                                                     onChange={
@@ -4024,17 +4905,6 @@ const EditSaleAgreement = props => {
                                                     className="invalid-feedback"
                                                   />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                  <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                      borderTopLeftRadius: 0,
-                                                      borderBottomLeftRadius: 0,
-                                                    }}
-                                                  >
-                                                    ৳
-                                                  </span>
-                                                </span>
                                               </Col>
                                               <Col md={4}>
                                                 <i className="fas fa-info-circle"></i>
@@ -4062,7 +4932,7 @@ const EditSaleAgreement = props => {
                                                       id="purchase_price"
                                                       name="purchase_price"
                                                       type="number"
-                                                      placeholder="৳0.00"
+                                                      placeholder="$0.00"
                                                       className={
                                                         "form-control" +
                                                         (errors.purchase_price &&
@@ -4361,7 +5231,7 @@ const EditSaleAgreement = props => {
                                                 className="d-flex align-items-center"
                                                 color={
                                                   state8[idx]["split_type"] ===
-                                                    "৳"
+                                                    "$"
                                                     ? "secondary"
                                                     : "light"
                                                 }
@@ -4369,7 +5239,7 @@ const EditSaleAgreement = props => {
                                                   toggleDollorBtn(idx)
                                                 }
                                               >
-                                                <span> ৳</span>
+                                                <span> $</span>
                                               </Button>
                                               <Button
                                                 className="d-flex align-items-center"

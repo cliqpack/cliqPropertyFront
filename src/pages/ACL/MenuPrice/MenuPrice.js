@@ -37,7 +37,7 @@ const MenuPrice = props => {
   const [deleteState, setDeleteState] = useState(false);
   const [deleteId, setDeleteId] = useState('');
 
-  document.title = "CliqProperty";
+  document.title = "myday";
   useEffect(() => {
     if (props.menu_price_loading === false) {
       props.menuPriceList();
@@ -63,7 +63,7 @@ const MenuPrice = props => {
       <tr key={key}>
         <th scope="row">{key + 1}</th>
         <td>{item.menu.menu_title}</td>
-        <td>৳{item.price}</td>
+        <td>${item.price}</td>
         <td>
           <button
             type="submit"

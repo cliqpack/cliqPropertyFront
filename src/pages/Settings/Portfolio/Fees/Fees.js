@@ -12,8 +12,8 @@ import DatatableTables2 from "pages/Tables/DatatableTables2";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import NewFeesModal from "./NewFeesModal";
 import { getFees } from "store/actions";
+document.title = "Settings | My Day";
 const Fees = props => {
-	document.title = "Settings | My Day";
 	const [state, setState] = useState({ newFeesModal: false });
 	const [data, setData] = useState('');
 	const [seen, setSeen] = useState(false);

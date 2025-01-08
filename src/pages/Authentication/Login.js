@@ -109,8 +109,8 @@ const Login = props => {
     <Container style={{ backgroundColor: "#F2F6FA", overflowX: 'hidden' }} fluid>
       <Row className="justify-content-center gap-0" >
         <Col md={6} className="backgroundImageLogin p-0 m-0">
-          <img src={circle} className="cliqCircle" />
-          <div style={{ padding: "50px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100vh" }}>
+          {/* <img src={circle} className="cliqCircle" /> */}
+          <div style={{ padding: "50px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100vh",backgroundColor:"#5c51c8" }}>
             <div>
               <div style={{ width: '80px' }}>
                 <img src={logoCliqProperty} style={{ width: '100%' }} />

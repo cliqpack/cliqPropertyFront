@@ -1,4 +1,5 @@
 import axios from "axios";
+import toastr from "toastr";
 
 export const addProperty = (
   property,
@@ -751,23 +752,32 @@ export const propertyList = (
   search = null,
   sortField = null,
   sortValue = null,
-  ssr = null
+  ssr = null,
+  manager = null,
+  labels = []
 ) => {
-  var authUser = JSON.parse(localStorage.getItem("authUser"));
-  let property_id = localStorage.getItem("owner_property_id");
-  var url;
+  const authUser = JSON.parse(localStorage.getItem("authUser"));
+  const property_id = localStorage.getItem("owner_property_id");
+  const labelsQuery = labels.join(",");
+
+  let url;
   if (ssr === "ssr") {
     url = `${process.env.REACT_APP_LOCALHOST}/properties-ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
   } else {
     url = `${process.env.REACT_APP_LOCALHOST}/properties?property_id=${property_id}`;
   }
 
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
+
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
     axios
@@ -1371,6 +1381,35 @@ export const getPropertyOwnerInfo = propertyId => {
       });
   };
 };
+export const getPropertyOwnerInfoWithArchive = folioId => {
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+  let url = `${process.env.REACT_APP_LOCALHOST}/property/owner/info/witharchive/${folioId}`;
+  return dispatch => {
+    const headers = {
+      "Content-Type": "application/json",
+
+      "Access-Control-Allow-Origin": "*",
+
+      Authorization: "Bearer " + authUser.token,
+    };
+    axios
+      .get(url, { headers: headers })
+      .then(response => {
+        dispatch({
+          type: "PROPERTY_OWNER_INFO",
+          payload: response,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: "PROPERTY_OWNER_INFO",
+          payload: error,
+          status: "Failed",
+        });
+      });
+  };
+};
 export const getPropertyAllOwnerInfo = propertyId => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   let url = `${process.env.REACT_APP_LOCALHOST}/property/all/owner/info/${propertyId}`;
@@ -1597,24 +1636,28 @@ export const lebelInsert2 = (insId, lebels) => {
   };
 };
 
-export const archieveProperty = id => {
-  var authUser = JSON.parse(localStorage.getItem("authUser"));
-  let url = `${process.env.REACT_APP_LOCALHOST}/propertiesArchivedStatus/${id}`;
-  return dispatch => {
+export const archieveProperty = (id, agreementEndDate, lostReason, comment) => {
+  const authUser = JSON.parse(localStorage.getItem("authUser"));
+  const url = `${process.env.REACT_APP_LOCALHOST}/propertiesArchivedStatus/${id}`;
+
+  return (dispatch) => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
-    const formData = {};
+    const formData = {
+      agreement_end: agreementEndDate,
+      lost_reason: lostReason,
+      comment: comment,
+    };
+
     axios
       .put(url, formData, { headers: headers })
-      .then(response => {
+      .then((response) => {
         dispatch(propertyList());
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({
           type: "PROPERTY_ARCHIVED",
           payload: error,
@@ -1624,15 +1667,14 @@ export const archieveProperty = id => {
   };
 };
 
+
 export const undoArchieveProperty = id => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   let url = `${process.env.REACT_APP_LOCALHOST}/propertiesActiveStatus/${id}`;
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
     const formData = {};
@@ -1640,6 +1682,7 @@ export const undoArchieveProperty = id => {
       .put(url, formData, { headers: headers })
       .then(response => {
         dispatch(propertyList());
+        toastr.success("Property restored successfully!");
       })
       .catch(error => {
         dispatch({
@@ -1657,11 +1700,20 @@ export const getArchieveProperty = (
   search = null,
   sortField = null,
   sortValue = null,
-  ssr = null
+  manager = null,
+  labels = []
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  // let url = `${process.env.REACT_APP_LOCALHOST}/getArchivedProperty`;
   let url = `${process.env.REACT_APP_LOCALHOST}/getArchivedProperty_ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+
+  // Append the manager and labels to the URL if provided
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    const labelsQuery = labels.join(",");
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
 
   return dispatch => {
     const headers = {
@@ -1706,18 +1758,25 @@ export const getRentalProperty = (
   search = null,
   sortField = null,
   sortValue = null,
-  ssr = null
+  manager = null,
+  labels = []
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  // let url = `${process.env.REACT_APP_LOCALHOST}/property-rental`;
   let url = `${process.env.REACT_APP_LOCALHOST}/property-rental_ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+
+  // Append the manager and labels to the URL if provided
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    const labelsQuery = labels.join(",");
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
 
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
 
@@ -1984,6 +2043,45 @@ export const SaleAgreementInfoForPropertyFresh = () => {
       status: false,
     });
 };
+export const SaleAgreementInfoForPropertyWithArchive = id => {
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+  let url = `${process.env.REACT_APP_LOCALHOST}/salesInfoWithArchive/${id}`;
+  return dispatch => {
+    const headers = {
+      "Content-Type": "application/json",
+
+      "Access-Control-Allow-Origin": "*",
+
+      Authorization: "Bearer " + authUser.token,
+    };
+    axios
+      .get(url, { headers: headers })
+      .then(response => {
+        dispatch({
+          type: "SELLER_INFO_PROPERTY",
+          payload: response,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: "SELLER_INFO_PROPERTY",
+          payload: error,
+          status: "Failed",
+        });
+      });
+  };
+};
+
+export const SaleAgreementInfoForPropertyWithArchiveFresh = () => {
+  return dispatch =>
+    dispatch({
+      type: "SELLER_INFO_PROPERTY_FRESH",
+      payload: null,
+      error: null,
+      status: false,
+    });
+};
 
 export const editSaleAgreementInfo = (id, saleId) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
@@ -2043,6 +2141,9 @@ export const editSaleAgreement = (
   folio,
   payment_method
 ) => {
+  console.log(saleId);
+  
+  
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   var url = `${process.env.REACT_APP_LOCALHOST}/sellers/${saleId}`;
 
@@ -2128,18 +2229,26 @@ export const getSalesProperty = (
   sizePerPage,
   search = null,
   sortField = null,
-  sortValue = null
+  sortValue = null,
+  manager = null,
+  labels = []
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  // let url = `${process.env.REACT_APP_LOCALHOST}/sales`;
   let url = `${process.env.REACT_APP_LOCALHOST}/sales_ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+
+  // Append the manager and labels to the URL if provided
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    const labelsQuery = labels.join(",");
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
 
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
 
@@ -2178,18 +2287,25 @@ export const getArrearsProperty = (
   search = null,
   sortField = null,
   sortValue = null,
-  ssr = null
+  manager = null,
+  labels = []
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  // let url = `${process.env.REACT_APP_LOCALHOST}/arreas`;
   let url = `${process.env.REACT_APP_LOCALHOST}/arreas_ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+
+  // Append the manager and labels to the URL if provided
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    const labelsQuery = labels.join(",");
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
 
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
 
@@ -2227,11 +2343,21 @@ export const getVacanciesProperty = (
   sizePerPage,
   search = null,
   sortField = null,
-  sortValue = null
+  sortValue = null,
+  manager = null,
+  labels = []
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  // let url = `${process.env.REACT_APP_LOCALHOST}/vacancies`;
   let url = `${process.env.REACT_APP_LOCALHOST}/vacancies_ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+
+  // Append the manager and labels to the URL if provided
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    const labelsQuery = labels.join(",");
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
 
   return dispatch => {
     const headers = {
@@ -2277,18 +2403,25 @@ export const getRenewalsProperty = (
   search = null,
   sortField = null,
   sortValue = null,
-  ssr = null
+  manager = null,
+  labels = []
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  // let url = `${process.env.REACT_APP_LOCALHOST}/renewals`;
   let url = `${process.env.REACT_APP_LOCALHOST}/renewals_ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+
+  // Append the manager and labels to the URL if provided
+  if (manager) {
+    url += `&manager=${manager}`;
+  }
+  if (labels.length > 0) {
+    const labelsQuery = labels.join(",");
+    url += `&labels=${encodeURIComponent(labelsQuery)}`;
+  }
 
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
 
@@ -2624,9 +2757,7 @@ export const sendMailFromTemplatesInMail = (id, sub, propId) => {
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
 
@@ -2808,6 +2939,7 @@ export const editRentDetails = (property, cid) => {
     notice_period: property.notice_period,
     new_rent_from: property.new_rent_from,
     new_rent_value: property.new_rent_value,
+    property_id: property.property_id,
     tc_id: cid,
   };
   return dispatch => {
@@ -2927,6 +3059,110 @@ export const getRentDetailsFresh = () => {
       status: false,
     });
 };
+
+
+//Bond details for contact
+export const editPropertyTanentBondDetails = (
+  
+  
+  tenantcontact,
+  tenantfolio,
+  tenantfoliobtnvalue,
+  id,
+  checkState,
+  postalAddress,
+  physicalAddress,
+  paymentStatus,
+  payment_method,
+  invoice
+) => {
+  console.log("karim");
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+  var url = `${process.env.REACT_APP_LOCALHOST}/property/tenant/contact/${id}`;
+  const formData = {
+    // Tenant contact values
+    tenant_id: id,
+
+    reference: tenantcontact.reference,
+    contacts: tenantcontact.contacts,
+
+    physical: physicalAddress,
+    postal: postalAddress,
+    notes: tenantcontact.notes,
+    abn: tenantcontact.abn,
+    communication: [...new Set(checkState)],
+
+    // Tenant folio values
+    rent: tenantfolio.rent,
+    rent_type: tenantfoliobtnvalue.wfmBtn,
+    rent_includes_tax: tenantfoliobtnvalue.rentTax,
+    bond_required: tenantfolio.bond_required,
+    bond_held: tenantfolio.bond_held,
+    move_in: tenantfolio.move_in,
+    move_out: tenantfolio.move_out,
+    agreement_start: tenantfolio.agreement_start,
+    agreement_end: tenantfolio.agreement_end,
+    periodic_tenancy: tenantfoliobtnvalue.periodic_tenancy,
+    paid_to: tenantfolio.paid_to,
+    part_paid: tenantfolio.part_paid,
+    invoice_days_in_advance: tenantfolio.invoice_days_in_advance,
+    rent_review_frequency: tenantfolio.rent_review_frequency,
+    next_rent_review: tenantfolio.next_rent_review,
+    exclude_form_arrears: tenantfoliobtnvalue.exclude_form_arrears,
+    bank_reterence: tenantfolio.bank_reterence,
+    receipt_warning: tenantfolio.receipt_warning,
+    tenant_access: tenantfoliobtnvalue.tenant_access,
+    bond_arreas: tenantfolio.bond_arrears,
+    bond_notes: tenantfolio.bond_notes,
+    bond_already_paid: tenantfolio.bond_paid,
+    bond_receipted: tenantfolio.bond_receipted,
+    bond_reference: tenantfolio.bond_reference,
+    break_lease: tenantfolio.break_lease,
+    termination: tenantfolio.termination,
+    rent_invoice: tenantfoliobtnvalue.rentInvoiceBtn,
+
+    payment_status: paymentStatus,
+    payment_method: payment_method,
+    invoice: invoice
+  };
+
+  return dispatch => {
+    const headers = {
+      "Content-Type": "application/json",
+
+      "Access-Control-Allow-Origin": "*",
+
+      Authorization: "Bearer " + authUser.token,
+    };
+
+    axios
+      .put(url, formData, { headers: headers })
+      .then(response => {
+        dispatch({
+          type: "TENANT_UPDATE_FOR_BOND_DETAILS",
+          payload: response.data,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: "TENANT_UPDATE_FOR_BOND_DETAILS",
+          payload: error,
+          status: "Failed",
+        });
+      });
+  };
+};
+
+// export const tenantUpdateFresh = () => {
+//   return dispatch =>
+//     dispatch({
+//       type: "TENANT_UPDATE_FRESH",
+//       status: false,
+//     });
+// };
+
+
 
 export const checkUniqueKeyNumber = key => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));

@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
+import axios from 'axios';
 import {
   Card,
   CardBody,
   CardTitle,
+  CardHeader,
   Col,
   Row,
   Nav,
@@ -22,6 +24,8 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  ListGroup,
+  ListGroupItem
 } from "reactstrap";
 import classnames from "classnames";
 import { withRouter, useParams, useHistory } from "react-router-dom";
@@ -63,6 +67,7 @@ import Select from "react-select";
 import CommentData from "pages/Activity/CommentData";
 import Loder from "components/Loder/Loder";
 import { floor } from "lodash";
+import ForwardMailModal from "./Modal/ForwardMailModal"
 
 const MessagesInfo = props => {
   const history = useHistory();
@@ -97,7 +102,7 @@ const MessagesInfo = props => {
   const [actionState, setActionState] = useState({ btnsecondary1: false });
   const inputFileProp = useRef(null);
   const [attached, setAttached] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const authUser = JSON.parse(localStorage.getItem("authUser"));
 
   const toggleMsgModal = () => {
@@ -156,7 +161,7 @@ const MessagesInfo = props => {
       setState2(prev => ({ ...prev, optionTasks: optionTasks }));
     }
     if (props.mail_details_loading == "Success") {
-      console.log(props.mail_details_data.data?.task_id);
+      setLoader(false);
       let status = {
         label: props.mail_details_data?.data?.details_status,
         value: props.mail_details_data?.data?.details_status,
@@ -366,8 +371,17 @@ const MessagesInfo = props => {
     }
   };
 
+  const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif'];
+
   const handleAttachment = e => {
     e.preventDefault();
+
+    const file = e.target.files[0]
+    if (!allowedTypes.includes(file.type)) {
+      toastr.error("File must be of type pdf, xls, xlsx, doc, docx, jpg, jpeg, png, gif")
+      return;
+    }
+
     props.storeAttachment(e.target.files);
     setLoader(true);
   };
@@ -409,10 +423,109 @@ const MessagesInfo = props => {
     },
   };
 
+
+
+  const [selectedAttachments, setSelectedAttachments] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleCheckboxChange = (docPath) => {
+    setSelectedAttachments(prevState =>
+      prevState.includes(docPath)
+        ? prevState.filter(path => path !== docPath)
+        : [...prevState, docPath]
+    );
+  };
+
+  const handleSubmit = async () => {
+
+    if (selectedAttachments.length === 0) {
+      toastr.warning("Please select an attachment");
+      return;
+    }
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+
+    const todayDate = new Date().toISOString().split('T')[0];
+    const Url = `${process.env.REACT_APP_LOCALHOST}/convert-attachment-to-bill`;
+
+    const data = {
+      file: selectedAttachments,
+      billing_date: todayDate,
+      uploaded: "Uploaded"
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await axios.post(Url, data, { headers: headers });
+      toastr.success(response.data.message)
+      setSelectedAttachments([])
+      setIsSubmitting(false);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message
+      toastr.warning(errorMessage);
+      setIsSubmitting(false);
+    }
+  };
+
+  const [openForwardModal, setOpenForwardModal] = useState(false)
+
+  const toggleForwardModal = () => {
+    setOpenForwardModal(true)
+  }
+
+  const updateLoader = (state) => {
+    setLoader(state)
+  }
+
+  const handleMultipleUndeliveredDismiss = async () => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+
+    const Url = `${process.env.REACT_APP_LOCALHOST}/message/email/dismiss`;
+
+    const ids = [];
+    ids.push(id);
+    const data = {
+      ids: ids
+    };
+
+    setLoader(prev => !prev);
+
+    try {
+      const response = await axios.post(Url, data, { headers: headers });
+      toastr.success(response.data.message);
+      props.mailDetails(id);
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle the case where the error contains a response from the server
+      if (error.response) {
+        const errorMessage = error.response.data.message || 'An error occurred while dismissing the emails.';
+        toastr.warning(errorMessage);
+      } else if (error.request) {
+        toastr.warning('No response received from the server.');
+      } else {
+        toastr.warning('An unexpected error occurred.');
+      }
+    } finally {
+      setLoader(prev => !prev);
+    }
+  };
+
+
+  const getMailDetails = () => {
+    props.mailDetails(id);
+  }
+
   return (
     <div className="page-content">
       {loader && <Loder status={loader} />}
-      {/* <Breadcrumbs title="Message Details" breadcrumbItem="Inbox" /> */}
       <h4 className="ms-2 text-primary">Message Details</h4>
       <Row>
         <Col lg={2} style={{ display: "flex", flexDirection: "column" }}>
@@ -479,20 +592,35 @@ const MessagesInfo = props => {
                           Action <i className="mdi mdi-chevron-down"></i>
                         </DropdownToggle>
                         <DropdownMenu>
+                          <DropdownItem onClick={toggleForwardModal}>
+                            Forward
+                          </DropdownItem>
+                          {props.mail_details_data?.data?.status === "undelivered" && <DropdownItem onClick={handleMultipleUndeliveredDismiss}>
+                            Dismiss
+                          </DropdownItem>}
                           <DropdownItem onClick={msgToggle}>
                             {" "}
                             Add Comment{" "}
                           </DropdownItem>
-                          <DropdownItem
-                            onClick={() => {
-                              props.spamMove(id);
-                              setLoader(true);
-                            }}
-                          >
-                            {" "}
-                            Move to Spam{" "}
-                          </DropdownItem>
-                          <DropdownItem disabled={true}> report </DropdownItem>
+                          {props.mail_details_data?.data?.status?.toLowerCase() === "sent" ? (
+                            <DropdownItem
+                              onClick={() => {
+                                props.spamMove(id);
+                                setLoader(true);
+                              }}
+                            >
+                              Move to Spam
+                            </DropdownItem>
+                          ) : props.mail_details_data?.data?.status?.toLowerCase() === "spam" ? (
+                            <DropdownItem
+                              onClick={() => {
+                                props.spamMove(id);
+                                setLoader(true);
+                              }}
+                            >
+                              Move to Sent
+                            </DropdownItem>
+                          ) : null}
                         </DropdownMenu>
                       </Dropdown>
                     </div>
@@ -890,7 +1018,6 @@ const MessagesInfo = props => {
                     </div>
                   </>
                 )}
-
                 <div className="mb-3 w-75 mt-3">
                   <Row>
                     <Col md={12}>
@@ -898,12 +1025,38 @@ const MessagesInfo = props => {
                         Received Attachments
                       </Label>
                     </Col>
-
-                    <Col md={12}>
-                      <Button className="btn w-md m-1" color="buttonColor" disabled={true}>
-                        Convert to Bill
-                      </Button>
-                    </Col>
+                    {props.mail_details_data?.data?.mail_attachment?.length > 0 ?
+                      (<Col md={12}>
+                        <Button className="btn w-md m-1" color="buttonColor" onClick={handleSubmit} disabled={isSubmitting}>
+                          Convert to Bill
+                        </Button>
+                        <Row>
+                          {props.mail_details_data?.data?.mail_attachment?.map((item, key) => (
+                            <Col sm={12} key={key}>
+                              <div className="border-top mb-2 p-1">
+                                <Row>
+                                  <Col xs="auto">
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedAttachments.includes(item.attachemnt?.doc_path)}
+                                      onChange={() => handleCheckboxChange(item.attachemnt?.doc_path)}
+                                    />
+                                  </Col>
+                                  <Col>
+                                    <a
+                                      href={`${process.env.REACT_APP_DOCUMENT}${item.attachemnt?.doc_path}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {item.attachemnt?.name} ({Math.floor(Number(item.attachemnt?.file_size) / 1024)} kb)
+                                    </a>
+                                  </Col>
+                                </Row>
+                              </div>
+                            </Col>
+                          ))}
+                        </Row>
+                      </Col>) : <p className="text-primary">No Attachment Found</p>}
                   </Row>
                 </div>
               </Col>
@@ -911,6 +1064,23 @@ const MessagesInfo = props => {
           </Card>
         </Col>
       </Row>
+
+      <ForwardMailModal
+        openForwardModal={openForwardModal}
+        setOpenForwardModal={setOpenForwardModal}
+        subject={props.mail_details_data?.data?.subject}
+        body={props.mail_details_data?.data?.body}
+        from={props.mail_details_data?.data?.from}
+        to={props.mail_details_data?.data?.to}
+        date={props.mail_details_data?.data?.created_at}
+        attached={props.mail_details_data?.data?.mail_attachment}
+        state={state}
+        setState={setState}
+        updateLoader={updateLoader}
+        getMailDetails={getMailDetails}
+        reply={props.mail_details_data?.data?.reply}
+      />
+
       <Modal
         isOpen={state.mailReplyModal}
         role="dialog"

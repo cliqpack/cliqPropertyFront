@@ -539,15 +539,15 @@ export const tenantArchive = (id, status) => {
             .then(response => {
                 dispatch({
                     type: "ARCHIVE_TENANT",
-                    payload: response.data,
-                    status: "Success",
+                    payload: response.data.message,
+                    status: response.data.status,
                 });
             })
             .catch(error => {
                 dispatch({
                     type: "ARCHIVE_TENANT",
                     payload: error,
-                    status: "Failed",
+                    status: "SQL ERROR",
                 });
             });
     };
@@ -557,6 +557,42 @@ export const tenantArchiveFresh = () => {
     return dispatch =>
         dispatch({
             type: "ARCHIVE_TENANT_FRESH",
+            status: false,
+        });
+};
+
+export const tenantRestore = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/restore-tenant/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "RESTORE_TENANT",
+                    payload: response,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "RESTORE_TENANT",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const tenantRestoreFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "RESTORE_TENANT_FRESH",
             status: false,
         });
 };
@@ -601,6 +637,41 @@ export const ownerArchiveFresh = () => {
     return dispatch =>
         dispatch({
             type: "ARCHIVE_OWNER",
+            status: false,
+        });
+};
+export const restoreOwner = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/restore/owner/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "RESTORE_OWNER",
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "RESTORE_OWNER",
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const restoreOwnerFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "RESTORE_OWNER",
             status: false,
         });
 };
@@ -1454,26 +1525,8 @@ export const sellerFolioListById = (id) => {
 
 
 export const addSaleReceiptAction = (state, select) => {
-    console.log(state, select);
-    // return
     var authUser = JSON.parse(localStorage.getItem("authUser"));
-
     var url = `${process.env.REACT_APP_LOCALHOST}/seller-folio-receipt`;
-    // const formData = {
-    //     type: state.type,
-    //     invoiceDate: state.invoiceDate,
-    //     pay_type: state.pay_type,
-    //     chequeDetails: state.chequeDetails,
-    //     note: state.note,
-    //     folio_id: state.folio_id,
-    //     folio_type: state.folio_type,
-    //     amount: state.amount,
-    //     invoiceChart: state.invoiceChart,
-    //     money_from: state.money_from,
-    //     description: state.description,
-    //     contact_id: state.contact_id,
-    //     property_id: state.property_id,
-    // };
     const formData = {
         folio_id: select.selectedFolio.value,
         folio_type: 'Seller',
@@ -1488,12 +1541,7 @@ export const addSaleReceiptAction = (state, select) => {
         ,
         account: select.selectedAccount.value,
         chequeDetails: state.chequeDetails,
-
-
     }
-
-    console.log(formData);
-    // return
     return dispatch => {
         const headers = {
             "Content-Type": "application/json",
@@ -1684,6 +1732,84 @@ export const supplierFolioForTransaction = () => {
     };
 };
 
+export const sellerFolioLedgerReport = (id, year, month) => {
+    console.log("suppler");
+    
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/sellerfolioledger/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SELLER_FL_DATA",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SELLER_FL_DATA",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const FilterSellerFolioLedgerReportApi = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/seller/filter/folioledger/${id}`;
+    
+    let formData = {
+        filterBy: state.filterBy.value,
+        transactionOn: state.transactionOn.value,
+        from_date: state.from_date,
+        to_date: state.to_date,
+    }
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .post(url, formData, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SELLER_FILTER_FOLIO_LEDGER_REPORT_API",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SELLER_FILTER_FOLIO_LEDGER_REPORT_API",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const FilterSellerFolioLedgerReportApiFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SELLER_FILTER_FOLIO_LEDGER_REPORT_API_FRESH",
+            status: false,
+        });
+};
+
+
 export const supplierFolioForBill = () => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));
 
@@ -1830,4 +1956,619 @@ export const generateRentInvoiceFresh = () => {
             type: "GENERATE_RENT_INVOICE_FRESH",
             status: false,
         });
+};
+
+export const restoreSeller = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/restore/seller/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "RESTORE_SELLER",
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "RESTORE_SELLER",
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const restoreSellerFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "RESTORE_SELLER",
+            status: false,
+        });
+};
+
+export const ownerFolioLedgerReport = (id, year, month) => {
+    console.log("suppler");
+    
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/ownerfolioledger/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_FL_DATA",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_FL_DATA",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const FilterOwnerFolioLedgerReportApi = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/owner/filter/folioledger/${id}`;
+    
+    let formData = {
+        filterBy: state.filterBy.value,
+        transactionOn: state.transactionOn.value,
+        from_date: state.from_date,
+        to_date: state.to_date,
+    }
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .post(url, formData, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_FILTER_FOLIO_LEDGER_REPORT_API",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_FILTER_FOLIO_LEDGER_REPORT_API",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const FilterOwnerFolioLedgerReportApiFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "OWNER_FILTER_FOLIO_LEDGER_REPORT_API_FRESH",
+            status: false,
+        });
+};
+
+export const ownerFolioSummaryTransaction = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/owner/summary/transaction/${id}?from_date=${state.from_date}&to_date=${state.to_date}&property_id=${state.property_id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_FS_TRANSACTIONS",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_FS_TRANSACTIONS",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const ownerFolioSummaryTransactionFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "OWNER_FS_TRANSACTIONS_FRESH",
+            status: false,
+        });
+};
+export const ODFolioSummaryTransaction = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/od/summary/transaction/${id}?from_date=${state.from_date}&to_date=${state.to_date}&property_id=${state.property_id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OD_FS_TRANSACTIONS",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OD_FS_TRANSACTIONS",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const ODFolioSummaryTransactionFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "OD_FS_TRANSACTIONS_FRESH",
+            status: false,
+        });
+};
+
+export const ownerFolioSummaryProperties = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/owner/folio/properties/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_FS_PROPERTIES",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_FS_PROPERTIES",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+export const supplierFolioLedgerReport = (id, year, month) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplierfolioledger/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUPPLIER_FL_DATA",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUPPLIER_FL_DATA",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+export const FilterSupplierFolioLedgerReportApi = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplier/filter/folioledger/${id}`;
+    
+    let formData = {
+        filterBy: state.filterBy.value,
+        transactionOn: state.transactionOn.value,
+        from_date: state.from_date,
+        to_date: state.to_date,
+    }
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .post(url, formData, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUPPLIER_FILTER_FOLIO_LEDGER_REPORT_API",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUPPLIER_FILTER_FOLIO_LEDGER_REPORT_API",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const FilterSupplierFolioLedgerReportApiFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SUPPLIER_FILTER_FOLIO_LEDGER_REPORT_API_FRESH",
+            status: false,
+        });
+};
+export const ownerStatementReport = (id, property_id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/owner/statements/${id}/${property_id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_STATEMENTS",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_STATEMENTS",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const ownerStatementReportFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "OWNER_STATEMENTS_FRESH",
+            status: false,
+        });
+};
+
+export const SummaryTransactionByDate = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/summary/transaction/byreport/${id}?from_date=${state.fromdate}&to_date=${state.todate}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUMMARY_TRANSACTION_BY_DATE",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUMMARY_TRANSACTION_BY_DATE",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const SummaryTransactionByDateFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SUMMARY_TRANSACTION_BY_DATE_FRESH",
+            status: false,
+        });
+};
+
+export const SummaryByMonthlyInfo = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/summary/transaction/bymonthinfo/${id}?from_date=${state.fromdate}&to_date=${state.todate}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUMMARY_BY_MONTHLY_INFO",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUMMARY_BY_MONTHLY_INFO",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const SummaryByMonthlyInfoFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SUMMARY_BY_MONTHLY_INFO_FRESH",
+            status: false,
+        });
+};
+
+export const supplierFolioSummaryTransaction = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplier/summary/transaction/${id}?from_date=${state.from_date}&to_date=${state.to_date}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUPPLIER_FS_TRANSACTIONS",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUPPLIER_FS_TRANSACTIONS",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const supplierFolioSummaryTransactionFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SUPPLIER_FS_TRANSACTIONS_FRESH",
+            status: false,
+        });
+};
+
+export const SupplierSummaryTransactionByDate = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplier/summary/transaction/byreport/${id}?from_date=${state.fromdate}&to_date=${state.todate}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUPPLIER_SUMMARY_TRANSACTION_BY_DATE",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUPPLIER_SUMMARY_TRANSACTION_BY_DATE",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const SupplierSummaryTransactionByDateFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SUPPLIER_SUMMARY_TRANSACTION_BY_DATE_FRESH",
+            status: false,
+        });
+};
+
+export const SupplierSummaryByMonthlyInfo = (id, state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/supplier/summary/transaction/bymonthinfo/${id}?from_date=${state.fromdate}&to_date=${state.todate}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "SUPPLIER_SUMMARY_BY_MONTHLY_INFO",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "SUPPLIER_SUMMARY_BY_MONTHLY_INFO",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const SupplierSummaryByMonthlyInfoFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "SUPPLIER_SUMMARY_BY_MONTHLY_INFO_FRESH",
+            status: false,
+        });
+};
+
+export const OwnerFinancialAcitvityStore = (state) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/ownerfinancialactivity`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .post(url, state, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_FINANCIAL_ACTIVITY_STORE",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_FINANCIAL_ACTIVITY_STORE",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+
+export const OwnerFinancialAcitvityStoreFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "OWNER_FINANCIAL_ACTIVITY_STORE_FRESH",
+            status: false,
+        });
+};
+
+export const OwnerFinancialAcitvityData = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/ownerfinancialactivity/${id}`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .get(url, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "OWNER_FINANCIAL_ACTIVITY_DATA",
+                    payload: response.data,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "OWNER_FINANCIAL_ACTIVITY_DATA",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
+};
+export const DeleteOwnerFinancialAcitvityData = (id) => {
+    var authUser = JSON.parse(localStorage.getItem("authUser"));
+    var url = `${process.env.REACT_APP_LOCALHOST}/ownerfinancialactivity/delete`;
+    return dispatch => {
+        const headers = {
+            "Content-Type": "application/json",
+
+            "Access-Control-Allow-Origin": "*",
+
+            Authorization: "Bearer " + authUser.token,
+        };
+        axios
+            .post(url, id, { headers: headers })
+            .then(response => {
+                dispatch({
+                    type: "DELETE_OWNER_FINANCIAL_ACTIVITY_DATA",
+                    payload: response,
+                    status: "Success",
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: "DELETE_OWNER_FINANCIAL_ACTIVITY_DATA",
+                    payload: error,
+                    status: "Failed",
+                });
+            });
+    };
 };

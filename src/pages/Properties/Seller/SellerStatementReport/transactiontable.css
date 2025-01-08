@@ -1,0 +1,16 @@
+.transactable td,
+.transactable th {
+    border: 1px solid;
+}
+
+.transactable tr {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.transactable {
+    width: 70%;
+    border-collapse: collapse;
+    margin: auto;
+}

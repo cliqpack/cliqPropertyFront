@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-import DatatableTables from "../Tables/DatatableTables";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 import { Link, withRouter, useHistory, useLocation } from "react-router-dom";
-
 import classnames from "classnames";
 import {
   propertyList,
@@ -34,7 +29,6 @@ import {
 } from "store/actions";
 import {
   Card,
-  Alert,
   CardBody,
   CardTitle,
   Col,
@@ -46,19 +40,21 @@ import {
   NavLink,
   TabContent,
   TabPane,
-  Label,
-  Input,
   Button,
-  CardHeader,
-  Badge,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
-import DatatableTables2 from "../Tables/DatatableTables2";
-import ImageModal from "pages/Image/ImageModal";
 import moment from "moment";
 import RemotePagination from "pages/Task/RemotePagination";
+import MessagesModal from "./MessagesModal";
+import LabelModal from "./LabelModal";
+import AddReminder from "../Dashboard/Reminder/AddReminder";
+
+document.title = "myday";
 
 function PropertyList(props) {
-  document.title = "CliqProperty";
   const location = useLocation();
   const history = useHistory();
   console.log(location);
@@ -81,22 +77,34 @@ function PropertyList(props) {
   const handleSearchState = e => {
     setSearch(e.target.value);
   };
+
   const dueTaskDefaultSorted = [
     {
       dataField: "summary",
       order: "desc",
     },
   ];
-  const dueTaskSelectRow = {
-    mode: "checkbox",
-    hideSelectColumn: true,
-  };
+
+
+  const [managerAll, setManagerAll] = useState("")
+  const [labelsAll, setLabelsAll] = useState([])
+  const [managerRental, setManagerRental] = useState("")
+  const [labelsRental, setLabelsRental] = useState([])
+  const [managerSales, setManagerSales] = useState("")
+  const [labelsSales, setLabelsSales] = useState([])
+  const [managerArrears, setManagerArrears] = useState("")
+  const [labelsArrears, setLabelsArrears] = useState([])
+  const [managerVacancy, setManagerVacancy] = useState("")
+  const [labelsVacancy, setLabelsVacancy] = useState([])
+  const [managerRenewals, setManagerRenewals] = useState("")
+  const [labelsRenewals, setLabelsRenewals] = useState([])
+  const [managerArchived, setManagerArchived] = useState("")
+  const [labelsArchived, setLabelsArchived] = useState([])
 
   const handleTableChange = (
     type,
     { page, sizePerPage, sortField, sortOrder }
   ) => {
-    // return;
     setState(prev => ({ ...prev, loading: true }));
 
     if (!search) {
@@ -108,7 +116,9 @@ function PropertyList(props) {
             null,
             sortField,
             sortOrder,
-            "ssr"
+            "ssr",
+            managerAll,
+            labelsAll
           );
         } else if (state.activeTab == 3) {
           props.getRentalProperty(
@@ -116,17 +126,21 @@ function PropertyList(props) {
             sizePerPage,
             null,
             sortField,
-            sortOrder
+            sortOrder,
+            managerRental,
+            labelsRental
           );
         } else if (state.activeTab == 4) {
-          props.getSalesProperty(page, sizePerPage, null, sortField, sortOrder);
+          props.getSalesProperty(page, sizePerPage, null, sortField, sortOrder, managerSales, labelsSales);
         } else if (state.activeTab == 5) {
           props.getArrearsProperty(
             page,
             sizePerPage,
             null,
             sortField,
-            sortOrder
+            sortOrder,
+            managerArrears,
+            labelsArrears
           );
         } else if (state.activeTab == 6) {
           props.getVacanciesProperty(
@@ -134,7 +148,9 @@ function PropertyList(props) {
             sizePerPage,
             null,
             sortField,
-            sortOrder
+            sortOrder,
+            managerVacancy,
+            labelsVacancy
           );
         } else if (state.activeTab == 7) {
           props.getRenewalsProperty(
@@ -142,7 +158,9 @@ function PropertyList(props) {
             sizePerPage,
             null,
             sortField,
-            sortOrder
+            sortOrder,
+            managerRenewals,
+            labelsRenewals
           );
         } else if (state.activeTab == 8) {
           props.getArchieveProperty(
@@ -150,24 +168,26 @@ function PropertyList(props) {
             sizePerPage,
             null,
             sortField,
-            sortOrder
+            sortOrder,
+            managerArchived,
+            labelsArchived
           );
         }
       } else {
         if (state.activeTab == 2) {
-          props.propertyList(page, sizePerPage, null, "id", "desc", "ssr");
+          props.propertyList(page, sizePerPage, null, "id", "desc", "ssr", managerAll, labelsAll);
         } else if (state.activeTab == 3) {
-          props.getRentalProperty(page, sizePerPage, null, "id", "desc");
+          props.getRentalProperty(page, sizePerPage, null, "id", "desc", managerRental, labelsRental);
         } else if (state.activeTab == 4) {
-          props.getSalesProperty(page, sizePerPage, null, "id", "desc");
+          props.getSalesProperty(page, sizePerPage, null, "id", "desc", managerSales, labelsSales);
         } else if (state.activeTab == 5) {
-          props.getArrearsProperty(page, sizePerPage, null, "id", "desc");
+          props.getArrearsProperty(page, sizePerPage, null, "id", "desc", managerArrears, labelsArrears);
         } else if (state.activeTab == 6) {
-          props.getVacanciesProperty(page, sizePerPage, null, "id", "desc");
+          props.getVacanciesProperty(page, sizePerPage, null, "id", "desc", managerVacancy, labelsVacancy);
         } else if (state.activeTab == 7) {
-          props.getRenewalsProperty(page, sizePerPage, null, "id", "desc");
+          props.getRenewalsProperty(page, sizePerPage, null, "id", "desc", managerRenewals, labelsRenewals);
         } else if (state.activeTab == 8) {
-          props.getArchieveProperty(page, sizePerPage, null, "id", "desc");
+          props.getArchieveProperty(page, sizePerPage, null, "id", "desc", managerArchived, labelsArchived);
         }
       }
     } else {
@@ -179,7 +199,9 @@ function PropertyList(props) {
             search,
             sortField,
             sortOrder,
-            "ssr"
+            "ssr",
+            managerAll,
+            labelsAll
           );
         } else if (state.activeTab == 3) {
           props.getRentalProperty(
@@ -187,7 +209,9 @@ function PropertyList(props) {
             sizePerPage,
             search,
             sortField,
-            sortOrder
+            sortOrder,
+            managerRental,
+            labelsRental
           );
         } else if (state.activeTab == 4) {
           props.getSalesProperty(
@@ -195,7 +219,9 @@ function PropertyList(props) {
             sizePerPage,
             search,
             sortField,
-            sortOrder
+            sortOrder,
+            managerSales,
+            labelsSales
           );
         } else if (state.activeTab == 5) {
           props.getArrearsProperty(
@@ -203,7 +229,9 @@ function PropertyList(props) {
             sizePerPage,
             search,
             sortField,
-            sortOrder
+            sortOrder,
+            managerArrears,
+            labelsArrears
           );
         } else if (state.activeTab == 6) {
           props.getVacanciesProperty(
@@ -211,7 +239,9 @@ function PropertyList(props) {
             sizePerPage,
             search,
             sortField,
-            sortOrder
+            sortOrder,
+            managerVacancy,
+            labelsVacancy
           );
         } else if (state.activeTab == 7) {
           props.getRenewalsProperty(
@@ -219,7 +249,9 @@ function PropertyList(props) {
             sizePerPage,
             search,
             sortField,
-            sortOrder
+            sortOrder,
+            managerRenewals,
+            labelsRenewals
           );
         } else if (state.activeTab == 8) {
           props.getArchieveProperty(
@@ -227,27 +259,34 @@ function PropertyList(props) {
             sizePerPage,
             search,
             sortField,
-            sortOrder
+            sortOrder,
+            managerArchived,
+            labelsArchived
           );
         }
       } else {
         if (state.activeTab == 2) {
-          props.propertyList(page, sizePerPage, search, "id", "desc", "ssr");
+          props.propertyList(page, sizePerPage, search, "id", "desc", "ssr", managerAll,
+            labelsAll);
         } else if (state.activeTab == 3) {
-          props.getRentalProperty(page, sizePerPage, search, "id", "desc");
+          props.getRentalProperty(page, sizePerPage, search, "id", "desc", managerRental, labelsRental);
         } else if (state.activeTab == 4) {
-          props.getSalesProperty(page, sizePerPage, search, "id", "desc");
+          props.getSalesProperty(page, sizePerPage, search, "id", "desc", managerSales, labelsSales);
         } else if (state.activeTab == 5) {
-          props.getArrearsProperty(page, sizePerPage, search, "id", "desc");
+          props.getArrearsProperty(page, sizePerPage, search, "id", "desc", managerArrears, labelsArrears);
         } else if (state.activeTab == 6) {
-          props.getVacanciesProperty(page, sizePerPage, search, "id", "desc");
+          props.getVacanciesProperty(page, sizePerPage, search, "id", "desc", managerVacancy, labelsVacancy);
         } else if (state.activeTab == 7) {
-          props.getRenewalsProperty(page, sizePerPage, search, "id", "desc");
+          props.getRenewalsProperty(page, sizePerPage, search, "id", "desc", managerRenewals, labelsRenewals);
         } else if (state.activeTab == 8) {
-          props.getArchieveProperty(page, sizePerPage, search, "id", "desc");
+          props.getArchieveProperty(page, sizePerPage, search, "id", "desc", managerArchived, labelsArchived);
         }
       }
     }
+  };
+
+  const handleLabelsUpdated = () => {
+    handleTableChange("pagination", { page: state.page, sizePerPage: state.sizePerPage });
   };
 
   const toggle = (tab, type = null) => {
@@ -271,7 +310,9 @@ function PropertyList(props) {
         null,
         "id",
         "desc",
-        "ssr"
+        "ssr",
+        managerAll,
+        labelsAll
       );
     }
     if (tab === "3") {
@@ -281,11 +322,12 @@ function PropertyList(props) {
         null,
         "id",
         "desc",
-        "ssr"
+        managerRental,
+        labelsRental
       );
     }
     if (tab === "4") {
-      props.getSalesProperty(state.page, state.sizePerPage, null, "id", "desc");
+      props.getSalesProperty(state.page, state.sizePerPage, null, "id", "desc", managerSales, labelsSales)
     }
     if (tab === "5") {
       props.getArrearsProperty(
@@ -293,7 +335,9 @@ function PropertyList(props) {
         state.sizePerPage,
         null,
         "id",
-        "desc"
+        "desc",
+        managerArrears,
+        labelsArrears
       );
     }
     if (tab === "6") {
@@ -302,7 +346,9 @@ function PropertyList(props) {
         state.sizePerPage,
         null,
         "id",
-        "desc"
+        "desc",
+        managerVacancy,
+        labelsVacancy
       );
     }
     if (tab === "7") {
@@ -311,7 +357,9 @@ function PropertyList(props) {
         state.sizePerPage,
         null,
         "id",
-        "desc"
+        "desc",
+        managerRenewals,
+        labelsRenewals
       );
     }
     if (tab === "8") {
@@ -320,7 +368,9 @@ function PropertyList(props) {
         state.sizePerPage,
         null,
         "id",
-        "desc"
+        "desc",
+        managerArchived,
+        labelsArchived
       );
     }
   };
@@ -352,7 +402,6 @@ function PropertyList(props) {
           </span>
         );
       }
-      // return <Badge className="p-1 me-1 rounded" key={i}>{data.labels}</Badge>
     });
     return data;
   };
@@ -395,7 +444,7 @@ function PropertyList(props) {
     }
   };
   const arrRent = cell => {
-    return <span className="text-secondery">৳{cell}</span>;
+    return <span className="text-secondery">${cell}</span>;
   };
   const invArrs = (cell, row) => {
     let due_amount = Number(cell ? cell : 0);
@@ -403,7 +452,7 @@ function PropertyList(props) {
       row.due_invoice_sum_paid ? row.due_invoice_sum_paid : 0
     );
     let total = due_amount - paid_amount;
-    return <span className="text-secondery">৳{total ? total : 0}</span>;
+    return <span className="text-secondery">${total ? total : 0}</span>;
   };
   const rentArrs = (cell, row) => {
     let end = moment(row?.tenant?.[0]?.tenant_folio?.paid_to);
@@ -418,7 +467,7 @@ function PropertyList(props) {
       perDayRent = row?.tenant?.[0]?.tenant_folio?.rent / 30;
     }
     let arrears = Math.abs(Math.round(perDayRent * dif));
-    return <span className="text-secondery">৳{arrears}</span>;
+    return <span className="text-secondery">${arrears}</span>;
   };
   const totalArrs = (cell, row) => {
     let end = moment(row?.tenant?.[0].tenant_folio?.paid_to);
@@ -450,8 +499,8 @@ function PropertyList(props) {
     let total = Number(total_invoice_due) + Number(arrears) + Number(bond);
     return (
       <span className="text-secondery">
-        {/* ${Number(inv) + Number(cell.tenant_folio?.due)} */}
-        ৳{total ? total : 0}
+        {/* ${Number(inv) + Number(cell.tenant_folio?.due)} */}$
+        {total ? total : 0}
       </span>
     );
   };
@@ -555,11 +604,6 @@ function PropertyList(props) {
       text: "Manager",
       sort: true,
     },
-    // {
-    //   dataField: "teams",
-    //   text: "Teams",
-    //   sort: true,
-    // },
     {
       dataField: "",
       text: "Labels",
@@ -621,7 +665,6 @@ function PropertyList(props) {
     );
   };
   const archivedSeller = (cell, row) => {
-
     return (
       <span className="text-primary">
         <Link
@@ -686,7 +729,7 @@ function PropertyList(props) {
     );
   };
   const salePrice = cell => {
-    return <span className="text-secondery">৳{cell}</span>;
+    return <span className="text-secondery">${cell}</span>;
   };
   const vacanciesOwner = (cell, row) => {
     return (
@@ -728,11 +771,10 @@ function PropertyList(props) {
     const bond_arreas = row.tenant?.[0]?.tenant_folio?.bond_arreas
       ? Math.abs(row.tenant?.[0]?.tenant_folio?.bond_arreas)
       : 0;
-    // setTotalArrears(prev => prev + bond_arreas);
-    return <span>৳{bond_arreas}</span>;
+    return <span>${bond_arreas}</span>;
   };
   const rent = (cell, row) => {
-    return <span>৳{row.tenant?.[0]?.tenant_folio?.rent}</span>;
+    return <span>${row.tenant?.[0]?.tenant_folio?.rent}</span>;
   };
   const rentType = (cell, row) => {
     return <span>{row.tenant?.[0]?.tenant_folio?.rent_type}</span>;
@@ -747,7 +789,8 @@ function PropertyList(props) {
   const partPaid = (cell, row) => {
     return (
       <span>
-        ৳{row.tenant?.[0]?.tenant_folio?.part_paid
+        $
+        {row.tenant?.[0]?.tenant_folio?.part_paid
           ? row.tenant?.[0]?.tenant_folio?.part_paid
           : 0}
       </span>
@@ -866,12 +909,6 @@ function PropertyList(props) {
   ];
 
   const saleColumnData = [
-    // {
-    //   dataField: "id",
-    //   text: "Id",
-    //   sort: true,
-    // },
-
     {
       dataField: "reference",
       text: "Reference",
@@ -992,7 +1029,7 @@ function PropertyList(props) {
     },
     {
       dataField: "tenant",
-      text: "Security Deposit Arrears",
+      text: "Bond Arrears",
       formatter: bondFormatter,
       sort: true,
     },
@@ -1103,11 +1140,6 @@ function PropertyList(props) {
     },
   ];
   const renewalsColumnData = [
-    // {
-    //   dataField: "id",
-    //   text: "Id",
-    //   sort: true,
-    // },
     {
       dataField: "reference",
       text: "Reference",
@@ -1216,7 +1248,6 @@ function PropertyList(props) {
       props.getRentalPropertyFresh();
     }
 
-    //
     if (props.property_list_loading == "Success") {
       console.log("innnn");
       setState(prev => ({
@@ -1297,18 +1328,212 @@ function PropertyList(props) {
     location?.state?.tab,
   ]);
 
-  let url = "/propertyInfo/";
+  const [selectedContacts, setSelectedContacts] = useState([]);
+  const [msgModal, setMsgModal] = useState(false);
 
-  // console.log(props.get_arrears_property_loading);
-  // console.log(props.get_arrears_property_data);
-  // console.log(state);
+  const toggleMsgModal = () => {
+    setMsgModal(prev => !prev);
+  };
+
+  const dueTaskSelectRow = {
+    mode: "checkbox",
+    onSelect: (row, isSelect) => handleSelectContact(row.id, isSelect),
+    onSelectAll: handleSelectAllContacts,
+    clickToSelect: true,
+  };
+
+  const handleSelectContact = (contactId, isSelected) => {
+    if (isSelected) {
+      setSelectedContacts([...selectedContacts, contactId]);
+
+    } else {
+      setSelectedContacts(
+        selectedContacts.filter((id) => id !== contactId)
+      );
+    }
+  };
+
+  function handleSelectAllContacts(isSelect, contacts) {
+    if (isSelect) {
+      setSelectedContacts(contacts.map((contact) => contact.id));
+    } else {
+      setSelectedContacts([]);
+    }
+  };
+
+  const [labelModal, setLabelModal] = useState(false);
+  const [labelName, setLabelName] = useState('');
+  const [reminderModal, setReminderModal] = useState(false);
+
+
+  const labelModalToggle = () => {
+    setLabelModal(!labelModal);
+  };
+
+  const handleLabelNameChange = (e) => {
+    setLabelName(e.target.value);
+  };
+
+  const toggleModalRemiinder = () => {
+    setReminderModal(!reminderModal)
+  };
+
+  const filterActionProperty = () => {
+    if (state.activeTab === "2") {
+      props.propertyList(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        "ssr",
+        managerAll,
+        labelsAll
+      );
+    }
+    if (state.activeTab === "3") {
+      props.getRentalProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        managerRental,
+        labelsRental
+      );
+    }
+    if (state.activeTab === "4") {
+      props.getSalesProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        managerSales,
+        labelsSales
+      );
+    }
+    if (state.activeTab === "5") {
+      props.getArrearsProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        "ssr",
+        managerArrears,
+        labelsArrears
+      );
+    }
+    if (state.activeTab === "6") {
+      props.getVacanciesProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        managerVacancy,
+        labelsVacancy
+      );
+    }
+    if (state.activeTab === "7") {
+      props.getRenewalsProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        managerRenewals,
+        labelsRenewals
+      );
+    }
+    if (state.activeTab === "8") {
+      props.getArchieveProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        managerArchived,
+        labelsArchived
+      );
+    }
+    setState(prev => ({ ...prev, loading: true }));
+  }
+
+
+  const filterResetProperty = () => {
+    if (state.activeTab === "2") {
+      props.propertyList(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+        "ssr"
+      );
+    }
+    if (state.activeTab === "3") {
+      props.getRentalProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+      );
+    }
+    if (state.activeTab === "4") {
+      props.getSalesProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+      );
+    }
+    if (state.activeTab === "5") {
+      props.getArrearsProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+      );
+    }
+    if (state.activeTab === "6") {
+      props.getVacanciesProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+      );
+    }
+    if (state.activeTab === "7") {
+      props.getRenewalsProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+      );
+    }
+    if (state.activeTab === "8") {
+      props.getArchieveProperty(
+        state.page,
+        state.sizePerPage,
+        null,
+        "id",
+        "desc",
+      );
+    }
+    setState(prev => ({ ...prev, loading: true }));
+  }
 
   return (
     <div className="page-content">
       <Container fluid={true}>
-        {/* <Breadcrumbs title="Property List" breadcrumbItem="Property" /> */}
         <h4 className="ms-2 text-primary">Property List</h4>
-
         <Row>
           <Col md={2} >
             <div>
@@ -1316,41 +1541,76 @@ function PropertyList(props) {
                 <CardBody>
                   <Row>
                     <div className="button-items mt-0 p-0" >
-
                       {authUser?.user?.user_type == "Property Manager" && (
                         <Link to="properties">
                           <button
                             type="button"
-                            className="btn btn-info custom-button-side-row-font-size"
-                          >
+                            className="btn btn-info custom-button-side-row-font-size">
                             Add property
                             <i className="bx bx-plus-circle font-size-18 align-middle ms-2" />
                           </button>
-
                         </Link>
                       )}
-
-                      {/* <ImageModal /> */}
-
-                      {/* <button
-                        type="button"
-                        className="btn btn-info custom-button-side-row-font-size"
-                      >
-                       
+                      <Button
+                        disabled={selectedContacts.length === 0}
+                        className="btn w-100"
+                        color={
+                          msgModal ? "modalButtonColor" : "labelColor"
+                        }
+                        onClick={toggleMsgModal}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          borderRadius: "5px",
+                        }}>
                         Message
-                        <i className="fas fas fa-chevron-down font-size-12 align-middle ms-2"></i>
-                      </button>
+                        <i className="fas fa-angle-right ms-1" />
+                      </Button>
+                      {msgModal && (
+                        <MessagesModal
+                          toggle={toggleMsgModal}
+                          msgModal={msgModal}
+                          propId={selectedContacts}
+                        />
+                      )}
+                      <ButtonDropdown
+                        isOpen={state.drp_link}
+                        toggle={() => setState(prev => ({ ...prev, drp_link: !prev.drp_link }))}>
+                        <DropdownToggle
+                          caret
+                          color="secondary"
+                          disabled={selectedContacts.length === 0}>
+                          Actions <i className="mdi mdi-chevron-down"></i>
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem onClick={labelModalToggle}>
+                            Modify Labels
+                          </DropdownItem>
+                          <DropdownItem onClick={toggleModalRemiinder}>
+                            Add Reminder
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </ButtonDropdown>
 
-                      <button
-                        type="button"
-                        disabled={true}
-                        className="btn btn-info custom-button-side-row-font-size"
-                      >
-                        Action
-                        <i className="fas fas fa-chevron-down font-size-12 align-middle ms-2"></i>
-                      </button> */}
-
-
+                      {labelModal && (
+                        <LabelModal
+                          labelModal={labelModal}
+                          toggle={labelModalToggle}
+                          labelName={labelName}
+                          setLabelName={handleLabelNameChange}
+                          selectedContacts={selectedContacts}
+                          handleTableChange={handleTableChange}
+                          onLabelsUpdated={handleLabelsUpdated}
+                        />
+                      )}
+                      {reminderModal &&
+                        <AddReminder
+                          reminderModal={reminderModal}
+                          toggle={toggleModalRemiinder}
+                          list={true}
+                          selectedContacts={selectedContacts}
+                          toggleTab={() => toggleModalRemiinder}
+                        />}
                     </div>
                   </Row>
                 </CardBody>
@@ -1363,7 +1623,6 @@ function PropertyList(props) {
                 <CardBody>
                   <Row>
                     <Col sm={12} md={12} lg={9}>
-
                       <Nav
                         className="icon-tab nav-justified"
                       >
@@ -1459,7 +1718,6 @@ function PropertyList(props) {
                           </NavLink>
                         </NavItem>
                       </Nav>
-                      {/* </div> */}
                     </Col>
                   </Row>
                   <TabContent
@@ -1505,7 +1763,6 @@ function PropertyList(props) {
                                 can associate members (tenant, rental owner,
                                 etc) to those properties.
                               </p>
-
                               <div className="ratio ratio-16x9">
                                 <iframe
                                   title="test"
@@ -1535,6 +1792,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerAll}
+                                setManager={setManagerAll}
+                                labels={labelsAll}
+                                setLabels={setLabelsAll}
                               />
                             )}
                           </CardText>
@@ -1558,6 +1822,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerRental}
+                                setManager={setManagerRental}
+                                labels={labelsRental}
+                                setLabels={setLabelsRental}
                               />
                             )}
                           </CardText>
@@ -1581,6 +1852,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerSales}
+                                setManager={setManagerSales}
+                                labels={labelsSales}
+                                setLabels={setLabelsSales}
                               />
                             )}
                           </CardText>
@@ -1604,6 +1882,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerArrears}
+                                setManager={setManagerArrears}
+                                labels={labelsArrears}
+                                setLabels={setLabelsArrears}
                               />
                             )}
                           </CardText>
@@ -1627,6 +1912,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerVacancy}
+                                setManager={setManagerVacancy}
+                                labels={labelsVacancy}
+                                setLabels={setLabelsVacancy}
                               />
                             )}
                           </CardText>
@@ -1650,6 +1942,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerRenewals}
+                                setManager={setManagerRenewals}
+                                labels={labelsRenewals}
+                                setLabels={setLabelsRenewals}
                               />
                             )}
                           </CardText>
@@ -1673,6 +1972,13 @@ function PropertyList(props) {
                                 loading={state.loading}
                                 selectRow={dueTaskSelectRow}
                                 defaultSorted={dueTaskDefaultSorted}
+                                filterStatusProperty={true}
+                                filterActionProperty={filterActionProperty}
+                                filterResetProperty={filterResetProperty}
+                                manager={managerArchived}
+                                setManager={setManagerArchived}
+                                labels={labelsArchived}
+                                setLabels={setLabelsArchived}
                               />
                             )}
                           </CardText>
@@ -1695,29 +2001,21 @@ const mapStateToProps = gstate => {
     property_list_data,
     property_list_loading,
     property_add_loading,
-
     property_tenant_info_loading,
     property_owner_info_loading,
-
     property_key_value_loading,
-
     get_archived_property,
     get_archived_property_error,
     get_archived_property_loading,
-
     get_rental_property,
     get_rental_property_error,
     get_rental_property_loading,
-
     get_sales_property_loading,
     get_sales_property_data,
-
     get_arrears_property_data,
     get_arrears_property_loading,
-
     get_vacancies_property_data,
     get_vacancies_property_loading,
-
     get_renewals_property_data,
     get_renewals_property_loading,
   } = gstate.property;
@@ -1734,31 +2032,22 @@ const mapStateToProps = gstate => {
     property_list_data,
     property_list_loading,
     property_add_loading,
-
     property_tenant_info_loading,
     property_owner_info_loading,
-
     property_key_value_loading,
-
     all_property_document_loading,
-
     get_archived_property,
     get_archived_property_error,
     get_archived_property_loading,
-
     get_rental_property,
     get_rental_property_error,
     get_rental_property_loading,
-
     get_sales_property_loading,
     get_sales_property_data,
-
     get_arrears_property_data,
     get_arrears_property_loading,
-
     get_vacancies_property_data,
     get_vacancies_property_loading,
-
     get_renewals_property_data,
     get_renewals_property_loading,
   };

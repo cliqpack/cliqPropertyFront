@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
   Row,
@@ -35,6 +35,7 @@ import {
   propertyTenantInfoFresh,
   tenantMoveOutFresh,
   tenantMoveOut,
+  editPropertyTanentBondDetails
 } from "../../store/actions";
 import moment from "moment";
 
@@ -43,12 +44,15 @@ import Flatpickr from "react-flatpickr";
 
 //Import Breadcrumb
 import TenantMoveOutDetails from "./TenantMoveOutDetails";
+import AgreementDatesEdit from "./AgreementDatesEdit";
 import TenantAdjustrent from "./TenantAdjustRent";
+import TenantBondDetails from "./TenantBondDetails";
 import "./property.css";
 import ContactForm from "pages/Contacts2/MultipleReference/ContactForm";
 import RecurringInvoice from "./Tenant/RecurringInvoice";
+// import TenantBondDetails from "./TenantBondDetails";
 
-const TenantEdit = props => {
+const TenantEdit = (props) => {
   const { id, tabId } = useParams(); // Tenant id
   const history = useHistory();
 
@@ -74,7 +78,7 @@ const TenantEdit = props => {
   console.log(tabState);
 
   // Toggle Tab function
-  const toggleTab = tab => {
+  const toggleTab = (tab) => {
     // return
     if (tabState.activeTab !== tab) {
       if (tab >= 1 && tab <= 4) {
@@ -87,12 +91,16 @@ const TenantEdit = props => {
     }
   };
 
-  const [invoice, setInvoice] = useState([])
+  const [invoice, setInvoice] = useState([]);
 
   const [propertyId, setPropertyId] = useState();
   const [moveOutShow, setMoveOutShow] = useState(false);
+  const [agreementDatesState, setAgreementDatesState] = useState(false);
   const toggleMoveOutShow = () => {
-    setMoveOutShow(prev => !prev);
+    setMoveOutShow((prev) => !prev);
+  };
+  const toggleAgreementDates = () => {
+    setAgreementDatesState((prev) => !prev);
   };
   const [state2, setState2] = useState({}); // Form 2 State
 
@@ -190,30 +198,30 @@ const TenantEdit = props => {
     }
 
     if (props.tenant_info_loading == "Success") {
-
       //invoice
-      if (props.tenant_info_data?.data?.folio?.rent_invoice == 1 && props.tenant_info_data?.data?.data?.recurring_invoices.length > 0) {
-
-        let data = []
-        props.tenant_info_data?.data?.data?.recurring_invoices?.forEach(element => {
-          let el = {
-            ...element,
-            invoiceChart: element.account.id,
-            account_name: `${element.account?.account_number} - ${element.account?.account_name}`,
-            taxCheckInvoice: element.include_tax,
-            totalInvoiceAmount: element.amount,
-            invoiceDetails: element.details,
-            supplier: element.supplier_contact_id,
-            type: element.supplier_folio_id ? 'Supplier' : 'Owner',
-            supplier_name: element.supplier_contact?.reference
-
-
+      if (
+        props.tenant_info_data?.data?.folio?.rent_invoice == 1 &&
+        props.tenant_info_data?.data?.data?.recurring_invoices.length > 0
+      ) {
+        let data = [];
+        props.tenant_info_data?.data?.data?.recurring_invoices?.forEach(
+          (element) => {
+            let el = {
+              ...element,
+              invoiceChart: element.account.id,
+              account_name: `${element.account?.account_number} - ${element.account?.account_name}`,
+              taxCheckInvoice: element.include_tax,
+              totalInvoiceAmount: element.amount,
+              invoiceDetails: element.details,
+              supplier: element.supplier_contact_id,
+              type: element.supplier_folio_id ? "Supplier" : "Owner",
+              supplier_name: element.supplier_contact?.reference,
+            };
+            data.push(el);
           }
-          data.push(el)
-        });
-        setInvoice(data)
+        );
+        setInvoice(data);
       }
-
 
       if (props.tenant_info_data?.data?.tenantPayment.length > 0) {
         setPaymentStatus("edit");
@@ -223,7 +231,7 @@ const TenantEdit = props => {
         props.tenant_info_data?.data?.tenantPayment.map((item, idx) => {
           item["selectedValues"] = { label: item.method, value: item.method };
           item["payeeType"] =
-            (item.method === "EFT" || item.method === "" || item.method === "Cheque") ? true : false;
+            item.method === "EFT" || item.method === "" ? true : false;
           item["bsbType"] = item.method === "EFT" ? true : false;
           item["accountType"] = item.method === "EFT" ? true : false;
           item["split_type_boolean"] =
@@ -247,20 +255,20 @@ const TenantEdit = props => {
         let check = [];
         let smsCheck =
           item.contact_details_communications[0]?.communication == "SMS" ||
-            item.contact_details_communications[1]?.communication == "SMS" ||
-            item.contact_details_communications[2]?.communication == "SMS"
+          item.contact_details_communications[1]?.communication == "SMS" ||
+          item.contact_details_communications[2]?.communication == "SMS"
             ? true
             : false;
         let emailCheck =
           item.contact_details_communications[0]?.communication == "Email" ||
-            item.contact_details_communications[1]?.communication == "Email" ||
-            item.contact_details_communications[2]?.communication == "Email"
+          item.contact_details_communications[1]?.communication == "Email" ||
+          item.contact_details_communications[2]?.communication == "Email"
             ? true
             : false;
         let printCheck =
           item.contact_details_communications[0]?.communication == "Print" ||
-            item.contact_details_communications[1]?.communication == "Print" ||
-            item.contact_details_communications[2]?.communication == "Print"
+          item.contact_details_communications[1]?.communication == "Print" ||
+          item.contact_details_communications[2]?.communication == "Print"
             ? true
             : false;
         let forCheck = {
@@ -268,7 +276,7 @@ const TenantEdit = props => {
           emailCheck: emailCheck,
           printCheck: printCheck,
         };
-        item.contact_details_communications.map(item_c => {
+        item.contact_details_communications.map((item_c) => {
           check.push(item_c.communication);
         });
         let contact = {
@@ -308,7 +316,7 @@ const TenantEdit = props => {
         forChecks.push(forCheck);
         let btn_s = { btn: "" };
         btn.push(btn_s);
-        setCountDelete(prev => prev + 1);
+        setCountDelete((prev) => prev + 1);
       });
 
       let data = {
@@ -506,27 +514,27 @@ const TenantEdit = props => {
         setInspectionRentEnableBtn(false);
         setInspectionRentDisableBtn(true);
       }
-
-
     }
   }, [props.tenant_info_loading, props.tenant_update_loading]);
 
-  const [rows5, setRows5] = useState([1]);
-  const [state8, setState8] = useState([{
-    selectedValues: { label: "EFT", value: "EFT" },
-    method: "EFT",
-    payee: state.reference,
-    payeeType: true,
-    bsb: "",
-    bsbType: true,
-    account: "",
-    accountType: true,
-    split: 100,
-    split_type_boolean: false,
-    split_type: "%",
-    errorState: false,
-    error: "none",
-  },]);
+  const [rows5, setRows5] = useState([]);
+  const [state8, setState8] = useState([
+    // {
+    //   selectedValues: { label: "EFT", value: "EFT" },
+    //   method: "EFT",
+    //   payee: state.reference,
+    //   payeeType: true,
+    //   bsb: "",
+    //   bsbType: true,
+    //   account: "",
+    //   accountType: true,
+    //   split: 100,
+    //   split_type_boolean: false,
+    //   split_type: "%",
+    //   errorState: false,
+    //   error: "none",
+    // },
+  ]);
 
   const [optionGroup8, setOptionGroup8] = useState([
     {
@@ -594,13 +602,13 @@ const TenantEdit = props => {
     setState8(data);
   };
 
-  const toggleDollorBtn = idx => {
+  const toggleDollorBtn = (idx) => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
-      data.forEach(element => {
+      data.forEach((element) => {
         totalVal += +element.split;
       });
       if (totalVal === 100) {
@@ -612,15 +620,15 @@ const TenantEdit = props => {
     setState8(data);
   };
 
-  const togglePercentBtn = idx => {
+  const togglePercentBtn = (idx) => {
     let data = [...state8];
     data[idx]["split_type"] = "%";
     data[idx]["split"] = "";
     setState8(data);
   };
 
-  const handleFocus = event => event.target.select();
-  const handleFocusOut = () => { };
+  const handleFocus = (event) => event.target.select();
+  const handleFocusOut = () => {};
 
   const handleRemoveRow8 = (e, idx) => {
     var rowIndex = [...rows5];
@@ -671,16 +679,27 @@ const TenantEdit = props => {
     ]);
   };
 
-  console.log(state8);
-  const handleRowResult2 = e => {
-    e.preventDefault();
+  const handleRowResult2 = async (e) => {
+    if (e) e.preventDefault();
+
     if (state8.length === 0) {
       setEnteredState(true);
     } else {
       const values = [...state8];
       var split = 0;
       var lengthSp = state8.length;
-      state8.forEach((element, idx) => {
+      state8.forEach(async (element, idx) => {
+        if (lengthSp > 1) {
+          if (values[idx]["split_type"] == "%") {
+            split += Number(element.split);
+          }
+
+          if (split > 100 || Number(element.split) === 0) {
+            values[lengthSp - 1]["errorState"] = true;
+            values[lengthSp - 1]["error"] = "Invalid Percentage";
+            setState8(values);
+          }
+        }
         if (element.method == "EFT") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
@@ -700,7 +719,7 @@ const TenantEdit = props => {
           } else if (isNaN(element.account)) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Account number must be numeric";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
@@ -720,24 +739,9 @@ const TenantEdit = props => {
             setState8(values);
           }
         }
-        if (lengthSp > 1) {
-          if (values[idx]["split_type"] == "%") {
-            split += Number(element.split);
-          }
-          if (split > 100 || Number(element.split) === 0) {
-            values[lengthSp - 1]["errorState"] = true;
-            values[lengthSp - 1]["error"] = "Invalid Percentage";
-            setState8(values);
-            return
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            setState8(values);
-          }
-        }
       });
 
-      state8.forEach((element, idx) => {
+      state8.forEach(async (element, idx) => {
         console.log(element.errorState);
         if (element.errorState == false) {
           setEnteredState(true);
@@ -747,7 +751,7 @@ const TenantEdit = props => {
       });
     }
   };
-
+ 
   if (enteredState && tabState.activeTab == 4) {
     setEnteredState(false);
     props.editPropertyTanent(
@@ -764,6 +768,21 @@ const TenantEdit = props => {
     );
   }
 
+
+  const handleBondDetails =  () => {
+    props.editPropertyTanentBondDetails(
+      state,
+      state2,
+      formTwoButtonValue,
+      id,
+      checkState,
+      postalAddress,
+      physicalAddress,
+      paymentStatus,
+      state8,
+      invoice
+    );
+  }
   // Form 2 buttons
   const [inspectionWeeklylyBtn, setInspectionWeeklyBtn] = useState(true);
   const [inspectionMonthlyBtn, setInspectionMonthlyBtn] = useState(false);
@@ -797,17 +816,23 @@ const TenantEdit = props => {
   const [fortNightlyRent, setFortNightlyRent] = useState();
   const [monthlyRent, setMonthlyRent] = useState();
   const [toggleState, setToggleState] = useState(false);
+  const [toggleBondState, setToggleBondState] = useState(false);
 
   //adjust rent toggle
   const toggleAdjustRent = () => {
-    setToggleState(prev => !prev);
+    setToggleState((prev) => !prev);
   };
 
   // -----------------
 
+  //adjust bond toggle
+  const toggleBondDetails = () => {
+    setToggleBondState((prev) => !prev);
+  };
+
   // Form 2 button handler function
   const toggleInspectionMonthlyBtn = () => {
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, wfmBtn: "Monthly" };
     });
     setInspectionMonthlyBtn(true);
@@ -815,7 +840,7 @@ const TenantEdit = props => {
     setInspectionfortnightlyBtn(false);
   };
   const toggleInspectionWeeklyBtn = () => {
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, wfmBtn: "Weekly" };
     });
     setInspectionWeeklyBtn(true);
@@ -823,7 +848,7 @@ const TenantEdit = props => {
     setInspectionfortnightlyBtn(false);
   };
   const toggleInspectionfortnightlyBtn = () => {
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, wfmBtn: "FortNightly" };
     });
     setInspectionfortnightlyBtn(true);
@@ -832,14 +857,14 @@ const TenantEdit = props => {
   };
 
   const toggleInspectionIncludeTaxBtn = () => {
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, rentTax: 1 };
     });
     setInspectionIncludeTaxBtn(true);
     setInspectionExcludeTaxBtn(false);
   };
   const toggleInspectionExcludeTaxBtn = () => {
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, rentTax: 0 };
     });
     setInspectionExcludeTaxBtn(true);
@@ -859,7 +884,7 @@ const TenantEdit = props => {
 
   const toggleInspectionRentEnableBtn = () => {
     setFormTwoButtonValue({ ...formTwoButtonValue, rentInvoiceBtn: 1 });
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, rentInvoiceBtn: 1 };
     });
     setInspectionRentEnableBtn(true);
@@ -867,7 +892,7 @@ const TenantEdit = props => {
   };
   const toggleInspectionRentDisableBtn = () => {
     setFormTwoButtonValue({ ...formTwoButtonValue, rentInvoiceBtn: 0 });
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, rentInvoiceBtn: 0 };
     });
     setInspectionRentDisableBtn(true);
@@ -877,7 +902,7 @@ const TenantEdit = props => {
 
   const toggleInspectionAreaAutomationYesBtn = () => {
     setFormTwoButtonValue({ ...formTwoButtonValue, exclude_form_arrears: 1 });
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, exclude_form_arrears: 1 };
     });
     setInspectionAreaAutomationYesBtn(true);
@@ -886,7 +911,7 @@ const TenantEdit = props => {
 
   const toggleInspectionAreaAutomationNoBtn = () => {
     setFormTwoButtonValue({ ...formTwoButtonValue, exclude_form_arrears: 0 });
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, exclude_form_arrears: 0 };
     });
     setInspectionAreaAutomationNoBtn(true);
@@ -895,7 +920,7 @@ const TenantEdit = props => {
 
   const toggleInspectionDisableBtn = () => {
     setFormTwoButtonValue({ ...formTwoButtonValue, tenant_access: 0 });
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, tenant_access: 0 };
     });
     setInspectionDisableBtn(true);
@@ -903,7 +928,7 @@ const TenantEdit = props => {
   };
   const toggleInspectionEnableBtn = () => {
     setFormTwoButtonValue({ ...formTwoButtonValue, tenant_access: 1 });
-    setFormTwoButtonValue(prev => {
+    setFormTwoButtonValue((prev) => {
       return { ...prev, tenant_access: 1 };
     });
     setInspectionEnableBtn(true);
@@ -911,13 +936,13 @@ const TenantEdit = props => {
   };
 
   // Handle Inner form values and set form value state
-  const handlePropertyFormOneValues = e => {
+  const handlePropertyFormOneValues = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
   // Handle Bond
   let rentByBtn;
-  const handleWeeklyBondValue = e => {
+  const handleWeeklyBondValue = (e) => {
     if (weeklyRent) {
       setState2({ ...state2, rent: weeklyRent });
     } else if (fortNightlyRent) {
@@ -931,7 +956,7 @@ const TenantEdit = props => {
     }
   };
 
-  const handleFortNightlylyBondValue = e => {
+  const handleFortNightlylyBondValue = (e) => {
     if (fortNightlyRent) {
       setState2({ ...state2, rent: fortNightlyRent });
     } else if (weeklyRent) {
@@ -945,7 +970,7 @@ const TenantEdit = props => {
     }
   };
 
-  const handleMonthlyBondValue = e => {
+  const handleMonthlyBondValue = (e) => {
     if (monthlyRent) {
       setState2({ ...state2, rent: monthlyRent });
     } else if (weeklyRent) {
@@ -959,13 +984,13 @@ const TenantEdit = props => {
     }
   };
 
-  const handleBondValues = e => {
+  const handleBondValues = (e) => {
     let value = e.target.value;
     value = +value;
     if (typeof value === "number") {
       if (formTwoButtonValue.wfmBtn === "Weekly") {
         setWeeklyRent(value);
-        value *= 4;
+        value *= 4.33;
         value = value.toFixed(2);
         setState2({ ...state2, rent: e.target.value, bond_required: value });
         setFortNightlyRent();
@@ -990,7 +1015,7 @@ const TenantEdit = props => {
     }
   };
 
-  const handlePropertyFormTwoValues = e => {
+  const handlePropertyFormTwoValues = (e) => {
     if (e.target.name == "agreement_start") {
       const date_end1 = moment(e.target.value)
         .add(364, "days")
@@ -1027,22 +1052,62 @@ const TenantEdit = props => {
       setDateCheck({ ...dateCheck, moveOut: true });
       setState2({ ...state2, [e.target.name]: e.target.value });
     } else {
-      setState2({ ...state2, [e.target.name]: e.target.value });
+      const { name, value } = e.target;
+      const newState = { ...state2, [name]: value };
+      if (name === "bond_required") {
+        const bondRequired = parseFloat(newState.bond_required) || 0;
+        const bondHeld = parseFloat(newState.bond_held) || 0;
+        newState.bond_arrears = bondRequired - bondHeld;
+      }
+      setState2(newState);
     }
   };
 
-  const handlePropertyFormBond = e => {
+  console.log(state2)
+
+  const handlePropertyFormTwoValuesForMovingTenant = (e) => {
+    console.log(e.target.value);
+    setState2({
+      ...state2,
+      [e.target.name]: e.target.value,
+    });
+    props.tenantMoveOut(props.tenant_info_data?.data?.data?.id);
+    setShowTransactionsAlert(true);
+  };
+
+  const handlePropertyFormBond = (e) => {
     const bond__paid = e.target.value;
     const bond__arrears =
       +state2.bond_required - (+state2.bond_receipted + +bond__paid);
     const bond__held = +state2.bond_receipted + +bond__paid;
 
-    setState2(prev => ({
+    setState2((prev) => ({
       ...prev,
       [e.target.name]: bond__paid,
       bond_arrears: bond__arrears,
       bond_held: bond__held,
     }));
+  };
+
+  const tenantComHandler = (e) => {
+    if (e.target.value === "SMS") {
+      setTenantEditCom({
+        ...tenantEditCom,
+        sms: !tenantEditCom.sms,
+      });
+    }
+    if (e.target.value === "Email") {
+      setTenantEditCom({
+        ...tenantEditCom,
+        email: !tenantEditCom.email,
+      });
+    }
+    if (e.target.value === "Print") {
+      setTenantEditCom({
+        ...tenantEditCom,
+        print: !tenantEditCom.print,
+      });
+    }
   };
   // ----------------
 
@@ -1119,7 +1184,7 @@ const TenantEdit = props => {
     ]);
     setFullPhysicalAddress([...fullPhysicalAddress, { full: "" }]);
     setFullPostalAddress([...fullPostalAddress, { full: "" }]);
-    setCountDelete(prev => prev + 1);
+    setCountDelete((prev) => prev + 1);
 
     setActiveState(length);
     setStep(length);
@@ -1408,7 +1473,7 @@ const TenantEdit = props => {
     setFullPhysicalAddress(fullphysicals);
   };
 
-  const handleDeletedContact = idx => {
+  const handleDeletedContact = (idx) => {
     let value = [...state["contacts"]];
     let newVal = value[idx];
     newVal["deleted"] = true;
@@ -1417,10 +1482,10 @@ const TenantEdit = props => {
       ...state,
       contacts: value,
     });
-    setCountDelete(prev => prev - 1);
+    setCountDelete((prev) => prev - 1);
   };
 
-  const handleUndoContact = idx => {
+  const handleUndoContact = (idx) => {
     let value = [...state["contacts"]];
     let newVal = value[idx];
     newVal["deleted"] = false;
@@ -1429,7 +1494,7 @@ const TenantEdit = props => {
       ...state,
       contacts: value,
     });
-    setCountDelete(prev => prev + 1);
+    setCountDelete((prev) => prev + 1);
   };
 
   const handleContactReference = (e, statename, idx) => {
@@ -1478,7 +1543,7 @@ const TenantEdit = props => {
     ]);
   };
 
-  const setPrimaryHandler = idx => {
+  const setPrimaryHandler = (idx) => {
     // Contact
     let contacts = [...state.contacts];
     let contact = contacts[0];
@@ -1529,7 +1594,7 @@ const TenantEdit = props => {
     setForCheck(check);
     let val = [...state["contacts"]];
     let checkValue = val[idx]["check"];
-    let newcheckValue = checkValue.filter(item => item !== value);
+    let newcheckValue = checkValue.filter((item) => item !== value);
     val[idx]["check"] = newcheckValue;
     setState({ ...state, contacts: val });
   };
@@ -1602,15 +1667,13 @@ const TenantEdit = props => {
   };
 
   const saveTenantHandler = (e) => {
-    e.preventDefault()
-    console.log('hellllllloooo');
+    e.preventDefault();
+    console.log("hellllllloooo");
     toggleTab(tabState.activeTab + 1);
-    setFormSubmitBtnState(
-      formSubmitBtnState + 1
-    );
-  }
+    setFormSubmitBtnState(formSubmitBtnState + 1);
+  };
 
-  document.title = "CliqProperty";
+  document.title = "myday";
   return (
     <React.Fragment>
       <div className="page-content">
@@ -1649,7 +1712,7 @@ const TenantEdit = props => {
                       className={classnames({
                         current: tabState.activeTab === 1,
                       })}
-                    //style={{ width: "33%" }}
+                      //style={{ width: "33%" }}
                     >
                       <NavLink
                         className={classnames({
@@ -1669,7 +1732,7 @@ const TenantEdit = props => {
                       className={classnames({
                         current: tabState.activeTab === 2,
                       })}
-                    //style={{ width: "33%" }}
+                      //style={{ width: "33%" }}
                     >
                       <NavLink
                         disabled={!(tabState.passedSteps || []).includes(2)}
@@ -1691,7 +1754,7 @@ const TenantEdit = props => {
                       className={classnames({
                         current: tabState.activeTab === 3,
                       })}
-                    //style={{ width: "33%" }}
+                      //style={{ width: "33%" }}
                     >
                       <NavLink
                         disabled={!(tabState.passedSteps || []).includes(3)}
@@ -1719,12 +1782,12 @@ const TenantEdit = props => {
                       className={classnames({
                         current: tabState.activeTab === 4,
                       })}
-                    //style={{ width: "33%" }}
+                      //style={{ width: "33%" }}
                     >
                       <NavLink
                         disabled={!(tabState.passedSteps || []).includes(4)}
                         className={classnames({
-                          active: tabState.activeTab === 4
+                          active: tabState.activeTab === 4,
                         })}
                         onClick={() => {
                           toggleTab(4);
@@ -1778,30 +1841,42 @@ const TenantEdit = props => {
                                     }}
                                     validationSchema={Yup.object().shape({})}
                                     onSubmit={(values, onSubmitProps) => {
-
-
-                                      const emptyNames = state.contacts.filter(item => !item.first_name.trim() || !item.last_name.trim() || !item.email.trim());
-
-
+                                      const emptyNames = state.contacts.filter(
+                                        (item) =>
+                                          !item.first_name.trim() ||
+                                          !item.last_name.trim() ||
+                                          !item.email.trim()
+                                      );
 
                                       if (emptyNames.length > 0) {
-                                        console.log("Objects with empty first_name or last_name found:");
+                                        console.log(
+                                          "Objects with empty first_name or last_name found:"
+                                        );
                                         console.log(emptyNames);
-                                        const fName = state.contacts.filter(item => !item.first_name.trim())
-                                        const lName = state.contacts.filter(item => !item.last_name.trim())
-                                        const email = state.contacts.filter(item => !item.email.trim())
+                                        const fName = state.contacts.filter(
+                                          (item) => !item.first_name.trim()
+                                        );
+                                        const lName = state.contacts.filter(
+                                          (item) => !item.last_name.trim()
+                                        );
+                                        const email = state.contacts.filter(
+                                          (item) => !item.email.trim()
+                                        );
                                         console.log(fName, lName, email);
                                         // toastr.warning('Please enter First & Last Name')
-                                        toastr.warning(`Please enter ${fName.length > 0 ? 'First Name' : ''} ${lName.length > 0 ? 'Last Name' : ''} ${email.length > 0 ? 'Email' : ''}`)
-
+                                        toastr.warning(
+                                          `Please enter ${
+                                            fName.length > 0 ? "First Name" : ""
+                                          } ${
+                                            lName.length > 0 ? "Last Name" : ""
+                                          } ${email.length > 0 ? "Email" : ""}`
+                                        );
                                       } else {
                                         toggleTab(tabState.activeTab + 1);
                                         setFormSubmitBtnState(
                                           formSubmitBtnState + 1
                                         );
                                       }
-
-
                                     }}
                                   >
                                     {({ errors, status, touched }) => (
@@ -1894,7 +1969,7 @@ const TenantEdit = props => {
                                                                 className={
                                                                   "form-control" +
                                                                   (errors.reference &&
-                                                                    touched.reference
+                                                                  touched.reference
                                                                     ? " is-invalid"
                                                                     : "")
                                                                 }
@@ -2233,7 +2308,9 @@ const TenantEdit = props => {
                                                                   }
                                                                   key={idx}
                                                                   className="m-1 btn-sm p-2"
-                                                                  onClick={e =>
+                                                                  onClick={(
+                                                                    e
+                                                                  ) =>
                                                                     handleSubmit(
                                                                       e,
                                                                       idx
@@ -2257,33 +2334,6 @@ const TenantEdit = props => {
                                                                         idx
                                                                       ]
                                                                         .first_name ||
-                                                                        state
-                                                                          .contacts[
-                                                                          idx
-                                                                        ]
-                                                                          .last_name ||
-                                                                        state
-                                                                          .contacts[
-                                                                          idx
-                                                                        ]
-                                                                          .company_name
-                                                                        ? state
-                                                                          .contacts[
-                                                                          idx
-                                                                        ]
-                                                                          .reference
-                                                                        : "New Person"
-                                                                    }
-                                                                  >
-                                                                    {idx ===
-                                                                      0 && (
-                                                                        <i className="fas fa-star"></i>
-                                                                      )}{" "}
-                                                                    {state
-                                                                      .contacts[
-                                                                      idx
-                                                                    ]
-                                                                      .first_name ||
                                                                       state
                                                                         .contacts[
                                                                         idx
@@ -2294,25 +2344,52 @@ const TenantEdit = props => {
                                                                         idx
                                                                       ]
                                                                         .company_name
-                                                                      ? state
-                                                                        .contacts[
-                                                                        idx
-                                                                      ]
-                                                                        .reference
-                                                                        .length <=
-                                                                        12
                                                                         ? state
+                                                                            .contacts[
+                                                                            idx
+                                                                          ]
+                                                                            .reference
+                                                                        : "New Person"
+                                                                    }
+                                                                  >
+                                                                    {idx ===
+                                                                      0 && (
+                                                                      <i className="fas fa-star"></i>
+                                                                    )}{" "}
+                                                                    {state
+                                                                      .contacts[
+                                                                      idx
+                                                                    ]
+                                                                      .first_name ||
+                                                                    state
+                                                                      .contacts[
+                                                                      idx
+                                                                    ]
+                                                                      .last_name ||
+                                                                    state
+                                                                      .contacts[
+                                                                      idx
+                                                                    ]
+                                                                      .company_name
+                                                                      ? state
                                                                           .contacts[
                                                                           idx
                                                                         ]
                                                                           .reference
+                                                                          .length <=
+                                                                        12
+                                                                        ? state
+                                                                            .contacts[
+                                                                            idx
+                                                                          ]
+                                                                            .reference
                                                                         : state.contacts[
-                                                                          idx
-                                                                        ].reference.slice(
-                                                                          0,
-                                                                          12
-                                                                        ) +
-                                                                        "...."
+                                                                            idx
+                                                                          ].reference.slice(
+                                                                            0,
+                                                                            12
+                                                                          ) +
+                                                                          "...."
                                                                       : "New Person"}
                                                                   </span>
                                                                 </Button>
@@ -2326,7 +2403,7 @@ const TenantEdit = props => {
                                                               }
                                                               disabled={
                                                                 btnRows.length >
-                                                                  9
+                                                                9
                                                                   ? true
                                                                   : false
                                                               }
@@ -2338,21 +2415,20 @@ const TenantEdit = props => {
                                                       </Row>
                                                       {state?.contacts?.map(
                                                         (item, idx) => {
-
                                                           return (
                                                             <div
                                                               key={idx}
                                                               style={
                                                                 activeState ===
-                                                                  idx
+                                                                idx
                                                                   ? {
-                                                                    display:
-                                                                      "block",
-                                                                  }
+                                                                      display:
+                                                                        "block",
+                                                                    }
                                                                   : {
-                                                                    display:
-                                                                      "none",
-                                                                  }
+                                                                      display:
+                                                                        "none",
+                                                                    }
                                                               }
                                                             >
                                                               <ContactForm
@@ -2393,7 +2469,7 @@ const TenantEdit = props => {
                                                                 state={
                                                                   state
                                                                     .contacts[
-                                                                  idx
+                                                                    idx
                                                                   ]
                                                                 }
                                                                 countDelete={
@@ -2404,12 +2480,12 @@ const TenantEdit = props => {
                                                                 }
                                                                 physicalAddress={
                                                                   physicalAddress[
-                                                                  idx
+                                                                    idx
                                                                   ]
                                                                 }
                                                                 postalAddress={
                                                                   postalAddress[
-                                                                  idx
+                                                                    idx
                                                                   ]
                                                                 }
                                                                 handleSameAddress={
@@ -2417,7 +2493,7 @@ const TenantEdit = props => {
                                                                 }
                                                                 fullPhysicalAddress={
                                                                   fullPhysicalAddress[
-                                                                  idx
+                                                                    idx
                                                                   ]
                                                                 }
                                                                 setFullPhysicalAddress={
@@ -2425,7 +2501,7 @@ const TenantEdit = props => {
                                                                 }
                                                                 fullPostalAddress={
                                                                   fullPostalAddress[
-                                                                  idx
+                                                                    idx
                                                                   ]
                                                                 }
                                                                 setFullPostalAddress={
@@ -2530,7 +2606,7 @@ const TenantEdit = props => {
                                                                 className={
                                                                   "form-control" +
                                                                   (errors.abn &&
-                                                                    touched.abn
+                                                                  touched.abn
                                                                     ? " is-invalid"
                                                                     : "")
                                                                 }
@@ -2540,7 +2616,7 @@ const TenantEdit = props => {
                                                                 }}
                                                               />
                                                               <label htmlFor="usr">
-                                                                BIN
+                                                                ABN
                                                               </label>
                                                             </div>
                                                             <ErrorMessage
@@ -2630,7 +2706,7 @@ const TenantEdit = props => {
                                                                 className={
                                                                   "form-control" +
                                                                   (errors.notes &&
-                                                                    touched.notes
+                                                                  touched.notes
                                                                     ? " is-invalid"
                                                                     : "")
                                                                 }
@@ -2758,8 +2834,9 @@ const TenantEdit = props => {
                                             ),
                                           })}
                                           onSubmit={(values, onSubmitProps) => {
-
-                                            console.log('---------hello-----------------')
+                                            console.log(
+                                              "---------hello-----------------"
+                                            );
                                             toggleTab(tabState.activeTab + 1);
                                             setFormSubmitBtnState(
                                               formSubmitBtnState + 1
@@ -2774,9 +2851,7 @@ const TenantEdit = props => {
                                               >
                                                 <div>
                                                   <div className="mb-3">
-                                                    <Card
-                                                      className="custom_card_border_design me-2"
-                                                    >
+                                                    <Card className="custom_card_border_design me-2">
                                                       <Col md={12}>
                                                         <Row className="d-flex justify-content-start px-3">
                                                           <Col
@@ -2828,7 +2903,12 @@ const TenantEdit = props => {
                                                               ></div>
                                                             </div>
                                                           </Col>
-                                                          <Col xs={10} sm={9} md={11} lg={11}>
+                                                          <Col
+                                                            xs={10}
+                                                            sm={9}
+                                                            md={11}
+                                                            lg={11}
+                                                          >
                                                             <CardBody
                                                               style={{
                                                                 paddingLeft:
@@ -2857,6 +2937,18 @@ const TenantEdit = props => {
                                                                         md={4}
                                                                         className="d-flex gap-2"
                                                                       >
+                                                                        <span className="input-group-append rounded-start">
+                                                                          <span
+                                                                            className="input-group-text"
+                                                                            style={{
+                                                                              // borderTopRightRadius: 0,
+                                                                              borderRadius:
+                                                                                "4px",
+                                                                            }}
+                                                                          >
+                                                                            $
+                                                                          </span>
+                                                                        </span>
                                                                         <div className="d-flex flex-column">
                                                                           <div className="form-group-new">
                                                                             <Field
@@ -2866,7 +2958,7 @@ const TenantEdit = props => {
                                                                               className={
                                                                                 "rounded-end form-control" +
                                                                                 (errors.rent &&
-                                                                                  touched.rent
+                                                                                touched.rent
                                                                                   ? " is-invalid"
                                                                                   : "")
                                                                               }
@@ -2895,18 +2987,6 @@ const TenantEdit = props => {
                                                                               Rent
                                                                             </label>
                                                                           </div>
-                                                                          <span className="input-group-append rounded-start">
-                                                                            <span
-                                                                              className="input-group-text"
-                                                                              style={{
-                                                                                // borderTopRightRadius: 0,
-                                                                                borderRadius:
-                                                                                  "4px",
-                                                                              }}
-                                                                            >
-                                                                              ৳
-                                                                            </span>
-                                                                          </span>
                                                                           <ErrorMessage
                                                                             name="rent"
                                                                             component="div"
@@ -2930,7 +3010,9 @@ const TenantEdit = props => {
                                                                                     ? "switchButtonColor"
                                                                                     : "switchButtonOppsiteColor"
                                                                                 }
-                                                                                onClick={e => {
+                                                                                onClick={(
+                                                                                  e
+                                                                                ) => {
                                                                                   toggleInspectionWeeklyBtn(
                                                                                     e
                                                                                   );
@@ -2958,7 +3040,9 @@ const TenantEdit = props => {
                                                                                     ? "switchButtonColor"
                                                                                     : "switchButtonOppsiteColor"
                                                                                 }
-                                                                                onClick={e => {
+                                                                                onClick={(
+                                                                                  e
+                                                                                ) => {
                                                                                   toggleInspectionfortnightlyBtn(
                                                                                     e
                                                                                   );
@@ -2986,7 +3070,9 @@ const TenantEdit = props => {
                                                                                     ? "switchButtonColor"
                                                                                     : "switchButtonOppsiteColor"
                                                                                 }
-                                                                                onClick={e => {
+                                                                                onClick={(
+                                                                                  e
+                                                                                ) => {
                                                                                   toggleInspectionMonthlyBtn(
                                                                                     e
                                                                                   );
@@ -3139,7 +3225,103 @@ const TenantEdit = props => {
                                                                   </div>
                                                                 </Col>
                                                               </Row>
+                                                              {/* Bond required start  */}
+                                                              <div
+                                                                className="mt-3"
+                                                                style={{
+                                                                  marginTop:
+                                                                    "20px",
+                                                                }}
+                                                              >
+                                                                <Row className="d-flex justify-content-evenly align-items-center mt-3">
+                                                                  <Col
+                                                                    md={6}
+                                                                    className="d-flex gap-2"
+                                                                  >
+                                                                    <span className="input-group-append">
+                                                                      <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                          borderTopRightRadius: 0,
+                                                                          borderBottomRightRadius: 0,
+                                                                        }}
+                                                                      >
+                                                                        $
+                                                                      </span>
+                                                                    </span>
+                                                                    <div className="form-group-new">
+                                                                      <Field
+                                                                        name="bond_required"
+                                                                        id="bond_required"
+                                                                        type="text"
+                                                                        placeholder="0.00"
+                                                                        className={
+                                                                          "form-control" +
+                                                                          (errors.bond_required &&
+                                                                          touched.bond_required
+                                                                            ? " is-invalid"
+                                                                            : "")
+                                                                        }
+                                                                        style={{
+                                                                          borderTopLeftRadius: 0,
+                                                                          borderBottomLeftRadius: 0,
+                                                                          backgroundColor:
+                                                                            "#F2F6FA",
+                                                                        }}
+                                                                        value={
+                                                                          state2.bond_required
+                                                                        }
+                                                                        onChange={
+                                                                          handlePropertyFormBond
+                                                                        }
+                                                                      />
+                                                                      <label htmlFor="usr">
+                                                                        Bond
+                                                                        required
+                                                                      </label>
+                                                                    </div>
+                                                                    <ErrorMessage
+                                                                      name="bond_required"
+                                                                      component="div"
+                                                                      className="invalid-feedback"
+                                                                    />
+                                                                  </Col>
+                                                                  {/* <Col
+                                                                    md={3}
+                                                                    className="d-flex align-items-center"
+                                                                  >
+                                                                    
+                                                                  </Col> */}
 
+                                                                 
+                                                                      <Col
+                                                                        md={6}
+                                                                        className=""
+                                                                      >
+                                                                        <div
+                                                                          onClick={toggleBondDetails}
+                                                                          className="text-primary hoverBondDetails mb-4"
+                                                                        >
+                                                                          Edit Bond Details
+                                                                          <i className="fas fa-pen"></i>
+                                                                        </div>
+                                                                        {toggleBondState && (
+                                                                          <TenantBondDetails
+                                                                          cid={props.tenant_info_data?.data?.data?.id}
+                                                                          conid={props.tenant_info_data?.data?.data?.contact_id}
+                                                                          propID={props.tenant_info_data?.data?.data?.property_id}
+                                                                          toggleBondDetails={toggleBondDetails}
+                                                                          state={state}
+                                                                          state2={state2}
+                                                                          handlePropertyFormTwoValues={handlePropertyFormTwoValues}
+                                                                          handlePropertyFormBond={handlePropertyFormBond}
+                                                                          handleBondDetails={handleBondDetails} 
+                                                                          />
+                                                                        )}
+                                                                      </Col>
+                                                                </Row>
+                                                              </div>
+                                                              {/* Bond required end  */}
                                                               <div
                                                                 className="mt-3"
                                                                 style={{
@@ -3157,59 +3339,7 @@ const TenantEdit = props => {
                                                                     </Label>
                                                                   </Col> */}
 
-                                                                  <Col
-                                                                    md={4}
-                                                                    className="d-flex gap-2"
-                                                                  >
-                                                                    {/* <div className="d-flex flex-column"> */}
-                                                                    <div className="form-group-new">
-                                                                      <Field
-                                                                        name="bond_required"
-                                                                        id="bond_required"
-                                                                        type="text"
-                                                                        placeholder="0.00"
-                                                                        className={
-                                                                          "form-control" +
-                                                                          (errors.bond_required &&
-                                                                            touched.bond_required
-                                                                            ? " is-invalid"
-                                                                            : "")
-                                                                        }
-                                                                        style={{
-                                                                          borderTopRightRadius: 0,
-                                                                          borderBottomRightRadius: 0,
-                                                                          backgroundColor:
-                                                                            "#F2F6FA",
-                                                                        }}
-                                                                        value={
-                                                                          state2.bond_required
-                                                                        }
-                                                                        onChange={
-                                                                          handlePropertyFormBond
-                                                                        }
-                                                                      />
-                                                                      <label htmlFor="usr">
-                                                                        Security Deposit
-                                                                        required
-                                                                      </label>
-                                                                    </div>
-                                                                    <span className="input-group-append">
-                                                                      <span
-                                                                        className="input-group-text"
-                                                                        style={{
-                                                                          borderTopLeftRadius: 0,
-                                                                          borderBottomLeftRadius: 0,
-                                                                        }}
-                                                                      >
-                                                                        ৳
-                                                                      </span>
-                                                                    </span>
-                                                                    <ErrorMessage
-                                                                      name="bond_required"
-                                                                      component="div"
-                                                                      className="invalid-feedback"
-                                                                    />
-                                                                  </Col>
+                                                                 
                                                                   {/* <Col
                                                                     md={3}
                                                                     className="d-flex align-items-center"
@@ -3218,9 +3348,20 @@ const TenantEdit = props => {
                                                                   </Col> */}
 
                                                                   <Col
-                                                                    md={4}
+                                                                    md={6}
                                                                     className="d-flex gap-2"
                                                                   >
+                                                                    <span className="input-group-append">
+                                                                      <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                          borderTopRightRadius: 0,
+                                                                          borderBottomRightRadius: 0,
+                                                                        }}
+                                                                      >
+                                                                        $
+                                                                      </span>
+                                                                    </span>
                                                                     {/* <div className="d-flex flex-column"> */}
                                                                     <div className="form-group-new">
                                                                       <Field
@@ -3234,13 +3375,13 @@ const TenantEdit = props => {
                                                                         className={
                                                                           "form-control" +
                                                                           (errors.bond_receipted &&
-                                                                            touched.bond_receipted
+                                                                          touched.bond_receipted
                                                                             ? " is-invalid"
                                                                             : "")
                                                                         }
                                                                         style={{
-                                                                          borderTopRightRadius: 0,
-                                                                          borderBottomRightRadius: 0,
+                                                                          borderTopLeftRadius: 0,
+                                                                          borderBottomLeftRadius: 0,
                                                                         }}
                                                                         value={
                                                                           state2.bond_receipted
@@ -3251,87 +3392,74 @@ const TenantEdit = props => {
                                                                       />
                                                                       <label htmlFor="usr">
                                                                         {" "}
-                                                                        Security Deposit
+                                                                        Bond
                                                                         receipted
                                                                       </label>
                                                                     </div>
-                                                                    <span className="input-group-append">
-                                                                      <span
-                                                                        className="input-group-text"
-                                                                        style={{
-                                                                          borderTopLeftRadius: 0,
-                                                                          borderBottomLeftRadius: 0,
-                                                                        }}
-                                                                      >
-                                                                        ৳
-                                                                      </span>
-                                                                    </span>
                                                                     <ErrorMessage
                                                                       name="bond_receipted"
                                                                       component="div"
                                                                       className="invalid-feedback"
                                                                     />
                                                                   </Col>
-
                                                                   <Col
-                                                                    md={4}
+                                                                    md={6}
                                                                     className="d-flex gap-2"
                                                                   >
-
-                                                                    <div className="form-group-new">
-                                                                      <Field
-                                                                        name="bond_held"
-                                                                        type="text"
-                                                                        id="bond_held"
-                                                                        disabled={
-                                                                          true
-                                                                        }
-                                                                        placeholder="0.00"
-                                                                        className={
-                                                                          "form-control" +
-                                                                          (errors.bond_held &&
-                                                                            touched.bond_held
-                                                                            ? " is-invalid"
-                                                                            : "")
-                                                                        }
-                                                                        style={{
-                                                                          borderTopRightRadius: 0,
-                                                                          borderBottomRightRadius: 0,
-                                                                        }}
-                                                                        value={
-                                                                          state2.bond_held
-                                                                        }
-                                                                        onChange={
-                                                                          handlePropertyFormTwoValues
-                                                                        }
-                                                                      />
-                                                                      <label htmlFor="usr">
-                                                                        {" "}
-                                                                        Security Deposit
-                                                                        held
-                                                                      </label>
-                                                                    </div>
                                                                     <span className="input-group-append rounded-start">
                                                                       <span
                                                                         className="input-group-text"
                                                                         style={{
-                                                                          borderTopLeftRadius: 0,
-                                                                          borderBottomLeftRadius: 0,
+                                                                          borderTopRightRadius: 0,
+                                                                          borderBottomRightRadius: 0,
                                                                         }}
                                                                       >
-                                                                        ৳
+                                                                        $
                                                                       </span>
                                                                     </span>
-                                                                    <ErrorMessage
-                                                                      name="bond_held"
-                                                                      component="div"
-                                                                      className="invalid-feedback"
-                                                                    />
-
+                                                                    <div className="d-flex flex-column">
+                                                                      <div className="form-group-new">
+                                                                        <Field
+                                                                          name="bond_held"
+                                                                          type="text"
+                                                                          id="bond_held"
+                                                                          disabled={
+                                                                            true
+                                                                          }
+                                                                          placeholder="0.00"
+                                                                          className={
+                                                                            "form-control" +
+                                                                            (errors.bond_held &&
+                                                                            touched.bond_held
+                                                                              ? " is-invalid"
+                                                                              : "")
+                                                                          }
+                                                                          style={{
+                                                                            borderTopLeftRadius: 0,
+                                                                            borderBottomLeftRadius: 0,
+                                                                          }}
+                                                                          value={
+                                                                            state2.bond_held
+                                                                          }
+                                                                          onChange={
+                                                                            handlePropertyFormTwoValues
+                                                                          }
+                                                                        />
+                                                                        <label htmlFor="usr">
+                                                                          {" "}
+                                                                          Bond
+                                                                          held
+                                                                        </label>
+                                                                      </div>
+                                                                      <ErrorMessage
+                                                                        name="bond_held"
+                                                                        component="div"
+                                                                        className="invalid-feedback"
+                                                                      />
+                                                                    </div>
                                                                   </Col>
                                                                 </Row>
                                                               </div>
-
                                                               <div className="my-3">
                                                                 <Row className="mb-3">
                                                                   <Col md={4}>
@@ -3342,10 +3470,9 @@ const TenantEdit = props => {
                                                                         value={
                                                                           state2.move_in
                                                                         }
-                                                                        // disabled={disabledState}
-                                                                        // onChange={() => dateHandler()}
                                                                         options={{
-                                                                          altInput: true,
+                                                                          altInput:
+                                                                            true,
                                                                           format:
                                                                             "d/m/Y",
                                                                           altFormat:
@@ -3373,7 +3500,8 @@ const TenantEdit = props => {
                                                                         // disabled={disabledState}
                                                                         // onChange={() => dateHandler()}
                                                                         options={{
-                                                                          altInput: true,
+                                                                          altInput:
+                                                                            true,
                                                                           format:
                                                                             "d/m/Y",
                                                                           altFormat:
@@ -3419,6 +3547,7 @@ const TenantEdit = props => {
                                                                       handlePropertyFormTwoValues={
                                                                         handlePropertyFormTwoValues
                                                                       }
+                                                                      handleBondDetails={handleBondDetails} 
                                                                     />
                                                                   </Col>
                                                                 </Row>
@@ -3429,38 +3558,38 @@ const TenantEdit = props => {
                                                                       .tenant_move_out_data
                                                                       ?.due ==
                                                                       null && (
-                                                                        <UncontrolledAlert
-                                                                          color="danger"
-                                                                          role="alert"
-                                                                        >
-                                                                          No
-                                                                          Transaction
-                                                                          Made
-                                                                        </UncontrolledAlert>
-                                                                      )}
+                                                                      <UncontrolledAlert
+                                                                        color="danger"
+                                                                        role="alert"
+                                                                      >
+                                                                        No
+                                                                        Transaction
+                                                                        Made
+                                                                      </UncontrolledAlert>
+                                                                    )}
                                                                     {props
                                                                       .tenant_move_out_data
                                                                       ?.due >
                                                                       0 && (
-                                                                        <UncontrolledAlert
-                                                                          color="danger"
-                                                                          role="alert"
-                                                                        >
-                                                                          Tenant
-                                                                          has due
-                                                                          of
-                                                                          ৳{
-                                                                            props
-                                                                              .tenant_move_out_data
-                                                                              ?.due
-                                                                          }
-                                                                        </UncontrolledAlert>
-                                                                      )}
+                                                                      <UncontrolledAlert
+                                                                        color="danger"
+                                                                        role="alert"
+                                                                      >
+                                                                        Tenant
+                                                                        has due
+                                                                        of $
+                                                                        {
+                                                                          props
+                                                                            .tenant_move_out_data
+                                                                            ?.due
+                                                                        }
+                                                                      </UncontrolledAlert>
+                                                                    )}
                                                                   </div>
                                                                 )}
 
                                                                 <Row className="mb-3">
-                                                                  <Col md={3}>
+                                                                  <Col md={4}>
                                                                     <div className="form-group-new">
                                                                       <Flatpickr
                                                                         className="form-control d-block"
@@ -3469,7 +3598,8 @@ const TenantEdit = props => {
                                                                           state2.agreement_start
                                                                         }
                                                                         options={{
-                                                                          altInput: true,
+                                                                          altInput:
+                                                                            true,
                                                                           format:
                                                                             "d/m/Y",
                                                                           altFormat:
@@ -3490,8 +3620,36 @@ const TenantEdit = props => {
                                                                       className="invalid-feedback"
                                                                     />
                                                                   </Col>
+                                                                  <Col
+                                                                        md={4}
+                                                                        className=""
+                                                                      >
+                                                                        <div
+                                                                          onClick={
+                                                                            toggleAgreementDates
+                                                                          }
+                                                                          className="text-primary hoverBondDetails"
+                                                                        >
+                                                                          Edit Agreement Dates
+                                                                          <i className="fas fa-pen"></i>
+                                                                        </div>
+                                                                        {agreementDatesState && (
+                                                                          <AgreementDatesEdit
+                                                                            cid={props.tenant_info_data?.data?.data?.id}
+                                                                            conid={props.tenant_info_data?.data?.data?.contact_id}
+                                                                            propID={props.tenant_info_data?.data?.data?.property_id}
+                                                                            toggleAgreementDates={toggleAgreementDates}
+                                                                            state={state}
+                                                                            state2={state2}
+                                                                            setState2={setState2} 
+                                                                            handlePropertyFormTwoValues={handlePropertyFormTwoValues}
+                                                                            
+                                                                            handleBondDetails={handleBondDetails}
+                                                                          />
+                                                                        )}
+                                                                      </Col>
 
-                                                                  <Col md={3}>
+                                                                  <Col md={4}>
                                                                     <div className="form-group-new">
                                                                       <Flatpickr
                                                                         className="form-control d-block"
@@ -3502,7 +3660,8 @@ const TenantEdit = props => {
                                                                         // disabled={disabledState}
                                                                         // onChange={() => dateHandler()}
                                                                         options={{
-                                                                          altInput: true,
+                                                                          altInput:
+                                                                            true,
                                                                           format:
                                                                             "d/m/Y",
                                                                           altFormat:
@@ -3525,6 +3684,15 @@ const TenantEdit = props => {
                                                                     />
                                                                   </Col>
 
+                                                                 
+
+                                                                 
+                                                                </Row>
+                                                                <Row className="mb-3">
+                                                                
+
+                                                                 
+
                                                                   <Col md={3}>
                                                                     <div className="form-group-new">
                                                                       <Flatpickr
@@ -3536,7 +3704,8 @@ const TenantEdit = props => {
                                                                         // disabled={disabledState}
                                                                         // onChange={() => dateHandler()}
                                                                         options={{
-                                                                          altInput: true,
+                                                                          altInput:
+                                                                            true,
                                                                           format:
                                                                             "d/m/Y",
                                                                           altFormat:
@@ -3561,6 +3730,17 @@ const TenantEdit = props => {
                                                                     md={3}
                                                                     className="d-flex gap-2"
                                                                   >
+                                                                    <span className="input-group-append">
+                                                                      <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                          borderTopRightRadius: 0,
+                                                                          borderBottomRightRadius: 0,
+                                                                        }}
+                                                                      >
+                                                                        $
+                                                                      </span>
+                                                                    </span>
                                                                     <div className="form-group-new">
                                                                       <Field
                                                                         name="part_paid"
@@ -3570,13 +3750,13 @@ const TenantEdit = props => {
                                                                         className={
                                                                           "form-control" +
                                                                           (errors.part_paid &&
-                                                                            touched.part_paid
+                                                                          touched.part_paid
                                                                             ? " is-invalid"
                                                                             : "")
                                                                         }
                                                                         style={{
-                                                                          borderTopRightRadius: 0,
-                                                                          borderBottomRightRadius: 0,
+                                                                          borderTopLeftRadius: 0,
+                                                                          borderBottomLeftRadius: 0,
                                                                         }}
                                                                         value={
                                                                           state2.part_paid
@@ -3591,17 +3771,6 @@ const TenantEdit = props => {
                                                                         paid
                                                                       </label>
                                                                     </div>
-                                                                    <span className="input-group-append">
-                                                                      <span
-                                                                        className="input-group-text"
-                                                                        style={{
-                                                                          borderTopLeftRadius: 0,
-                                                                          borderBottomLeftRadius: 0,
-                                                                        }}
-                                                                      >
-                                                                        ৳
-                                                                      </span>
-                                                                    </span>
                                                                     <ErrorMessage
                                                                       name="part_paid"
                                                                       component="div"
@@ -3744,49 +3913,49 @@ const TenantEdit = props => {
                                                                 </Row>
                                                                 {formTwoButtonValue.rentInvoiceBtn ==
                                                                   1 && (
-                                                                    <Row className="mb-3">
-                                                                      <Col md={4}>
-                                                                        <Label
-                                                                          for="invoice_days_in_advance"
-                                                                          className="form-label"
-                                                                        >
-                                                                          Invoice
-                                                                          days in
-                                                                          advance
-                                                                        </Label>
-                                                                      </Col>
-                                                                      <Col
-                                                                        md={4}
-                                                                        className="d-flex align-items-center"
+                                                                  <Row className="mb-3">
+                                                                    <Col md={4}>
+                                                                      <Label
+                                                                        for="invoice_days_in_advance"
+                                                                        className="form-label"
                                                                       >
-                                                                        <Field
-                                                                          name="invoice_days_in_advance"
-                                                                          type="number"
-                                                                          className={
-                                                                            "form-control" +
-                                                                            (errors.invoice_days_in_advance &&
-                                                                              touched.invoice_days_in_advance
-                                                                              ? " is-invalid"
-                                                                              : "")
-                                                                          }
-                                                                          value={
-                                                                            state2.invoice_days_in_advance
-                                                                          }
-                                                                          onChange={
-                                                                            handlePropertyFormTwoValues
-                                                                          }
-                                                                        />
-                                                                        <ErrorMessage
-                                                                          name="invoice_days_in_advance"
-                                                                          component="div"
-                                                                          className="invalid-feedback"
-                                                                        />
-                                                                      </Col>
-                                                                      <Col
-                                                                        md={4}
-                                                                      ></Col>
-                                                                    </Row>
-                                                                  )}
+                                                                        Invoice
+                                                                        days in
+                                                                        advance
+                                                                      </Label>
+                                                                    </Col>
+                                                                    <Col
+                                                                      md={4}
+                                                                      className="d-flex align-items-center"
+                                                                    >
+                                                                      <Field
+                                                                        name="invoice_days_in_advance"
+                                                                        type="number"
+                                                                        className={
+                                                                          "form-control" +
+                                                                          (errors.invoice_days_in_advance &&
+                                                                          touched.invoice_days_in_advance
+                                                                            ? " is-invalid"
+                                                                            : "")
+                                                                        }
+                                                                        value={
+                                                                          state2.invoice_days_in_advance
+                                                                        }
+                                                                        onChange={
+                                                                          handlePropertyFormTwoValues
+                                                                        }
+                                                                      />
+                                                                      <ErrorMessage
+                                                                        name="invoice_days_in_advance"
+                                                                        component="div"
+                                                                        className="invalid-feedback"
+                                                                      />
+                                                                    </Col>
+                                                                    <Col
+                                                                      md={4}
+                                                                    ></Col>
+                                                                  </Row>
+                                                                )}
 
                                                                 <Row
                                                                   className="mb-3"
@@ -3815,7 +3984,7 @@ const TenantEdit = props => {
                                                                           className={
                                                                             "form-control" +
                                                                             (errors.rent_review_frequency &&
-                                                                              touched.rent_review_frequency
+                                                                            touched.rent_review_frequency
                                                                               ? " is-invalid"
                                                                               : "")
                                                                           }
@@ -3864,7 +4033,8 @@ const TenantEdit = props => {
                                                                           state2.next_rent_review
                                                                         }
                                                                         options={{
-                                                                          altInput: true,
+                                                                          altInput:
+                                                                            true,
                                                                           format:
                                                                             "d/m/Y",
                                                                           altFormat:
@@ -4025,7 +4195,12 @@ const TenantEdit = props => {
                                                               ></div>
                                                             </div>
                                                           </Col>
-                                                          <Col xs={10} sm={9} md={11} lg={11}>
+                                                          <Col
+                                                            xs={10}
+                                                            sm={9}
+                                                            md={11}
+                                                            lg={11}
+                                                          >
                                                             <CardBody
                                                               style={{
                                                                 paddingLeft:
@@ -4049,7 +4224,7 @@ const TenantEdit = props => {
                                                                         className={
                                                                           "form-control" +
                                                                           (errors.bank_reterence &&
-                                                                            touched.bank_reterence
+                                                                          touched.bank_reterence
                                                                             ? " is-invalid"
                                                                             : "")
                                                                         }
@@ -4081,7 +4256,7 @@ const TenantEdit = props => {
                                                                         className={
                                                                           "form-control" +
                                                                           (errors.receipt_warning &&
-                                                                            touched.receipt_warning
+                                                                          touched.receipt_warning
                                                                             ? " is-invalid"
                                                                             : "")
                                                                         }
@@ -4205,43 +4380,69 @@ const TenantEdit = props => {
                         encType="multipart/form-data"
                         onSubmit={saveTenantHandler}
                       >
-
-                        {formTwoButtonValue.rentInvoiceBtn ==
-                          1 ? <RecurringInvoice data={invoice} setData={setInvoice} /> :
+                        {formTwoButtonValue.rentInvoiceBtn == 1 ? (
+                          <RecurringInvoice
+                            data={invoice}
+                            setData={setInvoice}
+                          />
+                        ) : (
                           <Row>
                             <Col md={12}>
                               <div className="w-75">
                                 <Card>
                                   <CardBody>
                                     <div>
-
                                       <div className="w-100 d-flex flex-column justify-content-center align-items-center">
-                                        <span className=""> <i className="fas fa-rocket text-info" /></span>
-                                        <p className="pt-1 lead ">Not yet enabled</p>
-                                        <p style={{ width: '40px' }} className="mb-1 border border-2 border-bottom border-info lead"></p>
+                                        <span className="">
+                                          {" "}
+                                          <i className="fas fa-rocket text-info" />
+                                        </span>
+                                        <p className="pt-1 lead ">
+                                          Not yet enabled
+                                        </p>
+                                        <p
+                                          style={{ width: "40px" }}
+                                          className="mb-1 border border-2 border-bottom border-info lead"
+                                        ></p>
                                         <p className="lead">
-                                          Simplify your invoicing process by allowing charges to be scheduled on a recurring basis. Recurring invoices allows multiple invoices which trigger and send on the same document as rent, providing a more streamlined and professional customer experience.
+                                          Simplify your invoicing process by
+                                          allowing charges to be scheduled on a
+                                          recurring basis. Recurring invoices
+                                          allows multiple invoices which trigger
+                                          and send on the same document as rent,
+                                          providing a more streamlined and
+                                          professional customer experience.
                                         </p>
                                       </div>
                                       <Row>
                                         <Col md={7}>
-                                          <p className="lead text-info py-1">Supercharge your business with more PropertyMe features
+                                          <p className="lead text-info py-1">
+                                            Supercharge your business with more
+                                            PropertyMe features
                                           </p>
                                           <p className="lead">
-                                            To enable, go to Folio and enable Rent Invoices, or click the “Enable” button below.
+                                            To enable, go to Folio and enable
+                                            Rent Invoices, or click the “Enable”
+                                            button below.
                                           </p>
-                                          <Button onClick={toggleInspectionRentEnableBtn} color="info">Enable Rent Invoices</Button>
+                                          <Button
+                                            onClick={
+                                              toggleInspectionRentEnableBtn
+                                            }
+                                            color="info"
+                                          >
+                                            Enable Rent Invoices
+                                          </Button>
                                         </Col>
                                         <Col md={5}></Col>
                                       </Row>
                                     </div>
                                   </CardBody>
                                 </Card>
-
                               </div>
                             </Col>
                           </Row>
-                        }
+                        )}
                       </form>
                     </TabPane>
 
@@ -4252,14 +4453,13 @@ const TenantEdit = props => {
                             <div>
                               <form
                                 className="repeater mt-3"
-                                id='tenant-form-4'
+                                id="tenant-form-4"
                                 encType="multipart/form-data"
                                 onSubmit={handleRowResult2}
-                              // onSubmit={mySubmit}
+                                // onSubmit={mySubmit}
                               >
                                 <table style={{ width: "100%" }}>
                                   <tbody>
-                                    {/* {accErr && <p>Alert</p>} */}
                                     <Card
                                       style={{
                                         borderRadius: "15px",
@@ -4281,10 +4481,10 @@ const TenantEdit = props => {
                                                   <Select
                                                     value={
                                                       state8[idx][
-                                                      "selectedValues"
+                                                        "selectedValues"
                                                       ]
                                                     }
-                                                    onChange={e =>
+                                                    onChange={(e) =>
                                                       handleChangeInput3(
                                                         idx,
                                                         e,
@@ -4303,12 +4503,12 @@ const TenantEdit = props => {
                                               </label>
 
                                               {state8[idx]["payeeType"] ===
-                                                true ? (
+                                              true ? (
                                                 <input
                                                   name="payee"
                                                   type="text"
                                                   className={"form-control"}
-                                                  onChange={e =>
+                                                  onChange={(e) =>
                                                     handlePropertyFormValues8(
                                                       idx,
                                                       e
@@ -4321,13 +4521,13 @@ const TenantEdit = props => {
                                             <Col lg="2" className="mb-3">
                                               <label htmlFor="bsb">BSB</label>
                                               {state8[idx]["bsbType"] ===
-                                                true ? (
+                                              true ? (
                                                 <input
                                                   name="bsb"
                                                   type="text"
                                                   maxLength="6"
                                                   className={"form-control"}
-                                                  onChange={e =>
+                                                  onChange={(e) =>
                                                     handlePropertyFormValues8(
                                                       idx,
                                                       e
@@ -4344,12 +4544,12 @@ const TenantEdit = props => {
                                               </label>
 
                                               {state8[idx]["accountType"] ===
-                                                true ? (
+                                              true ? (
                                                 <input
                                                   name="account"
                                                   type="text"
                                                   className={"form-control"}
-                                                  onChange={e =>
+                                                  onChange={(e) =>
                                                     handlePropertyFormValues8(
                                                       idx,
                                                       e
@@ -4379,7 +4579,7 @@ const TenantEdit = props => {
                                                         color={
                                                           state8[idx][
                                                             "split_type"
-                                                          ] === "৳"
+                                                          ] === "$"
                                                             ? "secondary"
                                                             : "light"
                                                         }
@@ -4387,7 +4587,7 @@ const TenantEdit = props => {
                                                           toggleDollorBtn(idx)
                                                         }
                                                       >
-                                                        <span> ৳</span>
+                                                        <span> $</span>
                                                       </Button>
                                                       <Button
                                                         className="d-flex align-items-center"
@@ -4408,19 +4608,19 @@ const TenantEdit = props => {
                                                   ) : null}
 
                                                   {state8[idx]["split_type"] ===
-                                                    "৳" && (
-                                                      <span className="input-group-append rounded-start">
-                                                        <span
-                                                          className="input-group-text"
-                                                          style={{
-                                                            borderTopRightRadius: 0,
-                                                            borderBottomRightRadius: 0,
-                                                          }}
-                                                        >
-                                                          ৳
-                                                        </span>
+                                                    "$" && (
+                                                    <span className="input-group-append rounded-start">
+                                                      <span
+                                                        className="input-group-text"
+                                                        style={{
+                                                          borderTopRightRadius: 0,
+                                                          borderBottomRightRadius: 0,
+                                                        }}
+                                                      >
+                                                        $
                                                       </span>
-                                                    )}
+                                                    </span>
+                                                  )}
                                                   <input
                                                     name="split"
                                                     type="text"
@@ -4429,7 +4629,7 @@ const TenantEdit = props => {
                                                     onBlur={handleFocusOut}
                                                     value={state8[idx]["split"]}
                                                     placeholder="0.00"
-                                                    onChange={e =>
+                                                    onChange={(e) =>
                                                       handlePropertyFormValues8(
                                                         idx,
                                                         e
@@ -4437,24 +4637,24 @@ const TenantEdit = props => {
                                                     }
                                                     disabled={
                                                       !state8[idx][
-                                                      "split_type_boolean"
+                                                        "split_type_boolean"
                                                       ]
                                                     }
                                                   />
                                                   {state8[idx]["split_type"] ===
                                                     "%" && (
-                                                      <span className="input-group-append">
-                                                        <span
-                                                          className="input-group-text"
-                                                          style={{
-                                                            borderTopLeftRadius: 0,
-                                                            borderBottomLeftRadius: 0,
-                                                          }}
-                                                        >
-                                                          %
-                                                        </span>
+                                                    <span className="input-group-append">
+                                                      <span
+                                                        className="input-group-text"
+                                                        style={{
+                                                          borderTopLeftRadius: 0,
+                                                          borderBottomLeftRadius: 0,
+                                                        }}
+                                                      >
+                                                        %
                                                       </span>
-                                                    )}
+                                                    </span>
+                                                  )}
                                                 </Col>
                                               </Row>
                                             </Col>
@@ -4463,7 +4663,7 @@ const TenantEdit = props => {
                                               className="form-group align-self-center d-flex justify-content-end"
                                             >
                                               <Button
-                                                onClick={e =>
+                                                onClick={(e) =>
                                                   handleRemoveRow8(e, idx)
                                                 }
                                                 color="danger"
@@ -4538,7 +4738,6 @@ const TenantEdit = props => {
                       >
                         <i className="fas fa-file-alt me-1"></i>
                         {tabState.activeTab === 4 ? "Save" : "Save & Next"}
-
                       </button>
                     </li>
                   </ul>
@@ -4552,7 +4751,7 @@ const TenantEdit = props => {
   );
 };
 
-const mapStateToProps = gstate => {
+const mapStateToProps = (gstate) => {
   const {
     tenant_info_data,
     tenant_info_error,
@@ -4564,6 +4763,9 @@ const mapStateToProps = gstate => {
     property_tenant_info_loading,
     tenant_move_out_loading,
     tenant_move_out_data,
+    tenant_bond_update_data,
+    tenant_bond_update_error,
+    tenant_bond_update_loading,
   } = gstate.property;
   return {
     tenant_info_data,
@@ -4576,6 +4778,9 @@ const mapStateToProps = gstate => {
     property_tenant_info_loading,
     tenant_move_out_loading,
     tenant_move_out_data,
+    tenant_bond_update_data,
+    tenant_bond_update_error,
+    tenant_bond_update_loading,
   };
 };
 
@@ -4590,5 +4795,6 @@ export default withRouter(
     tenantMoveOutFresh,
     tenantMoveOut,
     tenantUpdateFresh,
+    editPropertyTanentBondDetails
   })(TenantEdit)
 );

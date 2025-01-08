@@ -2282,7 +2282,7 @@ const OwnerContactForm = props => {
                                                                                 for="abn"
                                                                                 className="form-label"
                                                                             >
-                                                                                BIN
+                                                                                ABN
                                                                             </Label>
                                                                         </Col>
 

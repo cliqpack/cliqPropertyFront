@@ -19,10 +19,10 @@ import toastr from "toastr";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 
 
+document.title = "MyDay";
 
 
 const NewWithDrawalsReport = (props) => {
-    document.title = "CliqProperty";
     const { month, year } = useParams();
     const history = useHistory();
 
@@ -111,11 +111,11 @@ const NewWithDrawalsReport = (props) => {
 
                                                                             {i === 0 && <td className="col-md-5">From: {item.folioCode} {item.description}</td>}
                                                                             {i === 0 && <td className="col-md-3">{" "}</td>}
-                                                                            {i === 0 && <td className="col-md-3">৳{item.amount}</td>}
+                                                                            {i === 0 && <td className="col-md-3">${item.amount}</td>}
                                                                             {i === 1 && <td className="col-md-6">to: {item.folioCode} {item.description}</td>}
                                                                             {i === 1 && <td className="col-md-3">{" "}</td>}
                                                                             {i === 1 && <td className="col-md-3">{" "}</td>}
-                                                                            {i === 1 && <td className="col-md-3">৳{item.amount}</td>
+                                                                            {i === 1 && <td className="col-md-3">${item.amount}</td>
 
                                                                             }
                                                                         </tr>
@@ -135,7 +135,7 @@ const NewWithDrawalsReport = (props) => {
 
                                                         </td>
                                                         <td className="fw-bold">    </td>
-                                                        <td className="fw-bold">৳{props.nwrd_data?.totalAmount}</td>
+                                                        <td className="fw-bold">${props.nwrd_data?.totalAmount}</td>
 
                                                     </tr>
 

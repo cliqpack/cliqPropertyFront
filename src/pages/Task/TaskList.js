@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Breadcrumbs from "../../components/Common/Breadcrumb";
+
 import { connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import Parser from "html-react-parser";
@@ -35,6 +37,7 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap";
+import DatatableTables2 from "../Tables/DatatableTables2";
 import KanbanBoard from "./KanbanBoard";
 import RemotePagination from "./RemotePagination";
 

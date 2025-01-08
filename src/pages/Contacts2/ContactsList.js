@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 // import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 // import DatatableTables from "../Tables/DatatableTables";
@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { Link, withRouter, useHistory } from "react-router-dom";
-
+import LabelModal from "./LabelModal";
 import classnames from "classnames";
 import {
   contactList,
@@ -20,6 +20,8 @@ import {
   ContactListTenantFresh,
   ContactListSupplierFresh,
   ContactListSellerFresh,
+  updateLabelsContactsFresh,
+  getMessageTemplatesForContactBySelect
 } from "../../store/Contacts2/actions";
 import { ContactsAllActivity } from "store/actions";
 import { tenantUpdateFresh } from "../../store/Properties/actions";
@@ -41,40 +43,173 @@ import {
   Input,
   Button,
   CardHeader,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 import DatatableTables2 from "../Tables/DatatableTables2";
 import Parser from "html-react-parser";
 import RemotePagination from "pages/Task/RemotePagination";
-
+import { TagsInput } from "react-tag-input-component";
+import MessagesModal from "./MessagesModal/MessagesModal";
+import toastr from "toastr";
 function ContactsList(props) {
+  // messagse  
+  console.log(props);
+  
+  const [msgShow, setMsgShow] = useState(false);
+
+  const [msgModal, setMsgModal] = useState(false);
+  const toggleMsgModal = () => {
+    console.log("heelo");
+
+    setMsgModal(prev => !prev);
+    props.getMessageTemplatesForContactBySelect(selectedContacts);
+  };
+  // message end 
+  let node;
+
   const [ownerStateData, setOwnerStateData] = useState([]);
   const [ownerState, setOwnerState] = useState(true);
   let history = useHistory();
   const [state, setState] = useState({
+    dropDownBtn: false,
     activeTab: "1",
     page: 1,
     data: [],
     sizePerPage: 10,
     dataLength: 0,
     loading: false,
+    drp_link: false,
+    disabled: true,
+    selected: [],
   });
+  const [selectedContacts, setSelectedContacts] = useState([]);
+  const [labelModal, setLabelModal] = useState(false);
+  const [labelName, setLabelName] = useState('');
 
+
+  const [modifyLabelModal, setModifyLabelModal] = useState(false);
+
+  const labelModalToggle = () => {
+    setLabelModal(!labelModal);
+  };
+
+  const modifyLabelModalToggle = () => {
+    setModifyLabelModal(!modifyLabelModal);
+  };
+
+  const handleSelectContact = (contactId, isSelected) => {
+
+    if (isSelected) {
+      setSelectedContacts([...selectedContacts, contactId]);
+
+    } else {
+      setSelectedContacts(
+        selectedContacts.filter((id) => id !== contactId)
+      );
+    }
+  };
+
+  const handleSelectAllContacts = (isSelect, contacts) => {
+    if (isSelect) {
+      setSelectedContacts(contacts.map((contact) => contact.id));
+    } else {
+      setSelectedContacts([]);
+    }
+  };
+
+  const handleLabelNameChange = (e) => {
+    setLabelName(e.target.value);
+  };
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => setShowModal(prev => !prev);
+  const toggledeopsitModal = () => {
+    setState(prev => ({ ...prev, drp_link: !prev.drp_link }));
+  };
+  const [selected, setSelected] = useState([])
+  const [actionArray, setActionArray] = useState([]);
+  console.log(selected);
   const [init, setInit] = useState(true);
+  const [filterSeen, setFilterSeen] = useState(true);
 
   const [search, setSearch] = useState("");
+
+  let initialFilterState = {
+    all: [], owner: [], supplier: [], tenant: [], seller: [], archieve: []
+  }
+
+  if (filterSeen) {
+    let localStorageContactData = JSON.parse(localStorage.getItem('filterContact'))
+    if (localStorageContactData) {
+      initialFilterState = {
+        all: localStorageContactData?.propertyManager ? localStorageContactData?.propertyManager : [],
+        owner: localStorageContactData?.owner ? localStorageContactData?.owner : [],
+        tenant: localStorageContactData?.tenant ? localStorageContactData.tenant : [],
+        supplier: localStorageContactData?.supplier ? localStorageContactData?.supplier : [],
+        seller: localStorageContactData?.seller ? localStorageContactData?.seller : [],
+        archieve: localStorageContactData?.archieve ? localStorageContactData?.archieve : [],
+      }
+    }
+    setFilterSeen(false)
+  }
+  const [searchLabels, setSearchLabels] = useState(initialFilterState)
+
   const handleSearchState = e => {
     setSearch(e.target.value);
   };
+
+  const handleLabelClick = () => {
+    console.log("hfadsello");
+  }
   const dueTaskDefaultSorted = [
     {
       dataField: "summary",
       order: "desc",
     },
   ];
+  const nonSelectableId = props.contacts_list_data?.data.map(item => {
+    if (Number(item.received > 0)) {
+      return item.id
+    }
+  })
+
+
+  const handleSelect = (isSelect, rows, e) => {
+    console.log(isSelect.id);
+    if (rows) {
+      setActionArray(prevArray => [...prevArray, isSelect]);
+      setSelected(prev => ([...prev, isSelect.id]))
+    } else {
+      setActionArray(cur => cur.filter(data => data.id !== isSelect.id));
+      setSelected(cur => cur.filter(data => data.id !== rows.id))
+
+    }
+  };
+
+  const handleSelectAll = (isSelect, rows, e) => {
+    // console.log(isSelect, rows);
+    if (isSelect) {
+      setActionArray(rows);
+      setSelected(rows.map(item => item.id))
+    } else {
+      setActionArray([]);
+      setSelected([])
+
+    }
+  };
+  console.log(selectedContacts);
 
   const dueTaskSelectRow = {
     mode: "checkbox",
-    hideSelectColumn: true,
+    // hideSelectColumn: true,
+    selected: selectedContacts,
+    onSelect: (row, isSelect) => handleSelectContact(row.id, isSelect),
+    onSelectAll: handleSelectAllContacts,
+    clickToSelect: true,
+
+
   };
 
   const handleTableChange = (
@@ -91,28 +226,29 @@ function ContactsList(props) {
             null,
             sortField,
             sortOrder,
-            "ssr"
+            "ssr",
+            searchLabels.all
           );
         } else if (state.activeTab == 2) {
-          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Owner");
+          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Owner", searchLabels.owner);
         } else if (state.activeTab == 3) {
-          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Tenant");
+          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Tenant", searchLabels.tenant);
         } else if (state.activeTab == 4) {
-          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Supplier");
+          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Supplier", searchLabels.supplier);
         } else if (state.activeTab == 5) {
-          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Seller");
+          props.contactListType(page, sizePerPage, null, sortField, sortOrder, "Seller", searchLabels.seller);
         }
       } else {
         if (state.activeTab == 1) {
-          props.contactList(page, sizePerPage, null, "id", "desc", "ssr");
+          props.contactList(page, sizePerPage, null, "id", "desc", "ssr", searchLabels.all);
         } else if (state.activeTab == 2) {
-          props.contactListType(page, sizePerPage, null, "id", "desc", "Owner");
+          props.contactListType(page, sizePerPage, null, "id", "desc", "Owner", searchLabels.owner);
         } else if (state.activeTab == 3) {
-          props.contactListType(page, sizePerPage, null, "id", "desc", "Tenant");
+          props.contactListType(page, sizePerPage, null, "id", "desc", "Tenant", searchLabels.tenant);
         } else if (state.activeTab == 4) {
-          props.contactListType(page, sizePerPage, null, "id", "desc", "Supplier");
+          props.contactListType(page, sizePerPage, null, "id", "desc", "Supplier", searchLabels.supplier);
         } else if (state.activeTab == 5) {
-          props.contactListType(page, sizePerPage, null, "id", "desc", "Seller");
+          props.contactListType(page, sizePerPage, null, "id", "desc", "Seller", searchLabels.seller);
         }
       }
     } else {
@@ -124,7 +260,8 @@ function ContactsList(props) {
             search,
             sortField,
             sortOrder,
-            "ssr"
+            "ssr",
+            searchLabels.all
           );
         } else if (state.activeTab == 2) {
           props.contactListType(
@@ -133,7 +270,8 @@ function ContactsList(props) {
             search,
             sortField,
             sortOrder,
-            "Owner"
+            "Owner",
+            searchLabels.owner
           );
         } else if (state.activeTab == 3) {
           props.contactListType(
@@ -142,7 +280,8 @@ function ContactsList(props) {
             search,
             sortField,
             sortOrder,
-            "Tenant"
+            "Tenant",
+            searchLabels.tenant
           );
         } else if (state.activeTab == 4) {
           props.contactListType(
@@ -151,7 +290,8 @@ function ContactsList(props) {
             search,
             sortField,
             sortOrder,
-            "Supplier"
+            "Supplier",
+            searchLabels.supplier
           );
         } else if (state.activeTab == 5) {
           props.contactListType(
@@ -160,20 +300,21 @@ function ContactsList(props) {
             search,
             sortField,
             sortOrder,
-            "Seller"
+            "Seller",
+            searchLabels.seller
           );
         }
       } else {
         if (state.activeTab == 1) {
-          props.contactList(page, sizePerPage, search, "id", "desc", "ssr");
+          props.contactList(page, sizePerPage, search, "id", "desc", "ssr", searchLabels.all);
         } else if (state.activeTab == 2) {
-          props.contactListType(page, sizePerPage, search, "id", "desc", "Owner");
+          props.contactListType(page, sizePerPage, search, "id", "desc", "Owner", searchLabels.owner);
         } else if (state.activeTab == 3) {
-          props.contactListType(page, sizePerPage, search, "id", "desc", "Tenant");
+          props.contactListType(page, sizePerPage, search, "id", "desc", "Tenant", searchLabels.tenant);
         } else if (state.activeTab == 4) {
-          props.contactListType(page, sizePerPage, search, "id", "desc", "Supplier");
+          props.contactListType(page, sizePerPage, search, "id", "desc", "Supplier", searchLabels.supplier);
         } else if (state.activeTab == 5) {
-          props.contactListType(page, sizePerPage, search, "id", "desc", "Seller");
+          props.contactListType(page, sizePerPage, search, "id", "desc", "Seller", searchLabels.seller);
         }
       }
     }
@@ -197,7 +338,6 @@ function ContactsList(props) {
   };
 
   var owner = (cell, row) => {
-    console.log(cell);
     var data = cell.split(",");
     data.pop();
     var output = arrange(data);
@@ -207,7 +347,6 @@ function ContactsList(props) {
   var arrange = data => {
     var output = ``;
     data.map((item, key) => {
-      // console.log(item);
       if (item == "Owner" || item == " Owner") {
         output +=
           '<span className="badge square-pill bg-danger float-start me-1  p-2">' +
@@ -249,6 +388,12 @@ function ContactsList(props) {
   const supplierNameRef = (cell, row) => (
     <span className="">{`${row.first_name} ${row.last_name}`}</span>
   );
+  const labelRef = (cell, row) => {
+    let labels = row?.contact_label?.map(label => `<span className="badge square-pill bg-info float-start me-1 p-2" key={${label.id}}>${label.labels}</span>`).join(' ');
+    if (labels) {
+      return Parser(labels);
+    }
+  }
 
   const columnData = [
     {
@@ -284,6 +429,12 @@ function ContactsList(props) {
       formatter: owner,
       sort: true,
     },
+    {
+      dataField: "",
+      text: "Labels",
+      formatter: labelRef,
+      sort: true,
+    },
   ];
   const columnDataOwner = [
     {
@@ -311,6 +462,12 @@ function ContactsList(props) {
     {
       dataField: "mobile_phone",
       text: "Phone",
+      sort: true,
+    },
+    {
+      dataField: "",
+      text: "Labels",
+      formatter: labelRef,
       sort: true,
     },
   ];
@@ -341,6 +498,12 @@ function ContactsList(props) {
     {
       dataField: "mobile_phone",
       text: "Phone",
+      sort: true,
+    },
+    {
+      dataField: "",
+      text: "Labels",
+      formatter: labelRef,
       sort: true,
     },
   ];
@@ -386,6 +549,7 @@ function ContactsList(props) {
     {
       dataField: "",
       text: "Labels",
+      formatter: labelRef,
       sort: true,
     },
   ];
@@ -418,6 +582,12 @@ function ContactsList(props) {
       text: "Phone",
       sort: true,
     },
+    {
+      dataField: "",
+      text: "Labels",
+      formatter: labelRef,
+      sort: true,
+    },
   ];
 
   useEffect(() => {
@@ -435,7 +605,11 @@ function ContactsList(props) {
         dataLength: props.contacts_list_data?.length,
         loading: false,
       }));
+      setSelectedContacts([])
       props.ContactListFresh();
+      setSelectedContacts([]);
+
+
     }
 
     if (props.contacts_list_owner_loading == "Success") {
@@ -447,6 +621,7 @@ function ContactsList(props) {
         dataLength: props.contacts_list_owner?.length,
         loading: false,
       }));
+      setSelectedContacts([])
       props.ContactListOwnerFresh();
     }
 
@@ -459,6 +634,7 @@ function ContactsList(props) {
         dataLength: props.contacts_list_tenant?.length,
         loading: false,
       }));
+      setSelectedContacts([])
       props.ContactListTenantFresh();
     }
 
@@ -471,6 +647,7 @@ function ContactsList(props) {
         dataLength: props.contacts_list_supplier?.length,
         loading: false,
       }));
+      setSelectedContacts([])
       props.ContactListSupplierFresh();
     }
 
@@ -484,6 +661,7 @@ function ContactsList(props) {
         dataLength: props.contacts_list_seller?.length,
         loading: false,
       }));
+      setSelectedContacts([])
       props.ContactListSellerFresh();
     }
 
@@ -509,6 +687,78 @@ function ContactsList(props) {
     props.contacts_show_loading,
   ]);
 
+  useEffect(() => {
+    if (props.contact_label_select_update === "Success") {
+      toastr.success("Labels updated successfully!");
+      labelModalToggle()
+      if (state.activeTab == "1") {
+        props.contactList(
+          1,
+          state.sizePerPage,
+          null,
+          "id",
+          "desc",
+          "ssr",
+          searchLabels.all
+        );
+        setSelectedContacts([])
+      } else if (state.activeTab == "2") {
+        props.contactListType(
+          1,
+          state.sizePerPage,
+          null,
+          "id",
+          "desc",
+          "Owner",
+          searchLabels.owner
+        );
+        setSelectedContacts([])
+      } else if (state.activeTab == "3") {
+        props.contactListType(
+          1,
+          state.sizePerPage,
+          null,
+          "id",
+          "desc",
+          "Tenant",
+          searchLabels.tenant
+        );
+        setSelectedContacts([])
+      } else if (state.activeTab == "4") {
+        props.contactListType(
+          1,
+          state.sizePerPage,
+          null,
+          "id",
+          "desc",
+          "Supplier",
+          searchLabels.supplier
+        );
+        setSelectedContacts([])
+      } else if (state.activeTab == "5") {
+        props.contactListType(
+          1,
+          state.sizePerPage,
+          null,
+          "id",
+          "desc",
+          "Seller",
+          searchLabels.seller
+        );
+        setSelectedContacts([])
+      }
+
+
+      props.updateLabelsContactsFresh();
+      setState({ ...state, selected: [] })
+      setSelectedContacts([]);
+      setSelected([])
+      setState({ ...state, selected: [] })
+      console.log('dasd');
+
+    }
+  }, [props.contact_label_select_update])
+
   const toggle = (tab, type) => {
 
     if (state.activeTab !== tab) {
@@ -522,8 +772,11 @@ function ContactsList(props) {
         loading: true,
         activeTab: tab,
       }));
+      setSelectedContacts([])
+
     } else {
       setState(prev => ({ ...prev, loading: true }));
+      setSelectedContacts([])
     }
     setSearch("");
 
@@ -534,8 +787,10 @@ function ContactsList(props) {
         null,
         "id",
         "desc",
-        "ssr"
+        "ssr",
+        searchLabels.all
       );
+      setSelectedContacts([])
     } else if (tab == "2") {
       props.contactListType(
         1,
@@ -543,8 +798,10 @@ function ContactsList(props) {
         null,
         "id",
         "desc",
-        type
+        type,
+        searchLabels.owner
       );
+      setSelectedContacts([])
     } else if (tab == "3") {
       props.contactListType(
         1,
@@ -552,8 +809,10 @@ function ContactsList(props) {
         null,
         "id",
         "desc",
-        type
+        type,
+        searchLabels.tenant
       );
+      setSelectedContacts([])
     } else if (tab == "4") {
       props.contactListType(
         1,
@@ -561,26 +820,273 @@ function ContactsList(props) {
         null,
         "id",
         "desc",
-        type
+        type,
+        searchLabels.supplier
       );
+      setSelectedContacts([])
     } else if (tab == "5") {
-      console.log(state);
       props.contactListType(
         1,
         state.sizePerPage,
         null,
         "id",
         "desc",
-        type
+        type,
+        searchLabels.seller
       );
+      setSelectedContacts([])
     }
-    console.log(state);
   };
 
   let url = "/contactsInfo/";
   let ownerUrl = "/contactsInfo/owner/";
   let tenantUrl = "/contactsInfo/tenant/";
   let supplierUrl = "/contactsInfo/supplier/";
+
+  let modalBodyForAll = <div className="mb-3">
+    <label
+      htmlFor="labels"
+    >
+      Labels
+    </label>
+    <TagsInput
+      value={searchLabels.all}
+      onChange={e => setSearchLabels(prev => ({ ...prev, all: e }))}
+      name="level"
+      placeHolder="Add a label"
+    />
+  </div>
+
+  const setFilterContactOnLocalStorage = (type) => {
+    const contact = localStorage.getItem('filterContact');
+    let item
+    switch (type) {
+      case "ALL":
+        if (contact == null) {
+          item = { propertyManager: searchLabels.all }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        } else {
+          let data = JSON.parse(contact);
+          item = { ...data, propertyManager: searchLabels.all }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "OWNER":
+        if (contact == null) {
+          item = { owner: searchLabels.owner }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        } else {
+          let data = JSON.parse(contact);
+          item = { ...data, owner: searchLabels.owner }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "TENANT":
+        if (contact == null) {
+          item = { tenant: searchLabels.tenant }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        } else {
+          let data = JSON.parse(contact);
+          item = { ...data, tenant: searchLabels.tenant }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "SUPPLIER":
+        if (contact == null) {
+          item = { supplier: searchLabels.supplier }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        } else {
+          let data = JSON.parse(contact);
+          item = { ...data, supplier: searchLabels.supplier }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "SELLER":
+        if (contact == null) {
+          item = { seller: searchLabels.seller }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        } else {
+          let data = JSON.parse(contact);
+          item = { ...data, seller: searchLabels.seller }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "ARCHIEVE": break;
+      default:
+        localStorage.removeItem('filterContact')
+        break;
+    }
+  }
+  const clearFilterContactOnLocalStorage = (type) => {
+    const contact = localStorage.getItem('filterContact');
+    let item
+    switch (type) {
+      case "ALL":
+        if (contact !== null) {
+          let data = JSON.parse(contact);
+          item = { ...data, propertyManager: [] }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "OWNER":
+        if (contact !== null) {
+          let data = JSON.parse(contact);
+          item = { ...data, owner: [] }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "TENANT":
+        if (contact !== null) {
+          let data = JSON.parse(contact);
+          item = { ...data, tenant: [] }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "SUPPLIER":
+        if (contact !== null) {
+          let data = JSON.parse(contact);
+          item = { ...data, supplier: [] }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "SELLER":
+        if (contact !== null) {
+          let data = JSON.parse(contact);
+          item = { ...data, seller: [] }
+          localStorage.setItem('filterContact', JSON.stringify(item))
+        }
+        break;
+      case "ARCHIEVE": break;
+      default:
+        localStorage.removeItem('filterContact')
+        break;
+    }
+  }
+
+  const filterActionForAll = () => {
+    setFilterContactOnLocalStorage('ALL')
+    props.contactList(
+      1,
+      state.sizePerPage,
+      null,
+      "id",
+      "desc",
+      "ssr",
+      searchLabels.all
+    )
+    setState(prev => ({ ...prev, loading: true }))
+  }
+
+  let modalBodyForOwner = <div className="mb-3">
+    <label
+      htmlFor="labels"
+    >
+      Labels
+    </label>
+    <TagsInput
+      value={searchLabels.owner}
+      onChange={e => setSearchLabels(prev => ({ ...prev, owner: e }))}
+      name="level"
+      placeHolder="Add a label"
+    />
+  </div>
+
+  const filterActionForOwner = () => {
+    setFilterContactOnLocalStorage('OWNER')
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", "Owner", searchLabels.owner);
+    setState(prev => ({ ...prev, loading: true }));
+  }
+
+  let modalBodyForTenant = <div className="mb-3">
+    <label
+      htmlFor="labels"
+    >
+      Labels
+    </label>
+    <TagsInput
+      value={searchLabels.tenant}
+      onChange={e => setSearchLabels(prev => ({ ...prev, tenant: e }))}
+      name="level"
+      placeHolder="Add a label"
+    />
+  </div>
+
+  const filterActionForTenant = () => {
+    setFilterContactOnLocalStorage('TENANT')
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", "Tenant", searchLabels.tenant);
+    setState(prev => ({ ...prev, loading: true }));
+  }
+
+  let modalBodyForSupplier = <div className="mb-3">
+    <label
+      htmlFor="labels"
+    >
+      Labels
+    </label>
+    <TagsInput
+      value={searchLabels.supplier}
+      onChange={e => setSearchLabels(prev => ({ ...prev, supplier: e }))}
+      name="level"
+      placeHolder="Add a label"
+    />
+  </div>
+
+  const filterActionForSupplier = () => {
+    setFilterContactOnLocalStorage('SUPPLIER')
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", "Supplier", searchLabels.supplier);
+    setState(prev => ({ ...prev, loading: true }));
+  }
+
+  let modalBodyForSeller = <div className="mb-3">
+    <label
+      htmlFor="labels"
+    >
+      Labels
+    </label>
+    <TagsInput
+      value={searchLabels.seller}
+      onChange={e => setSearchLabels(prev => ({ ...prev, seller: e }))}
+      name="level"
+      placeHolder="Add a label"
+    />
+  </div>
+
+  const filterActionForSeller = () => {
+    setFilterContactOnLocalStorage('SELLER')
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", "Seller", searchLabels.seller);
+    setState(prev => ({ ...prev, loading: true }));
+  }
+
+  const filterResetManager = (param = null) => {
+    clearFilterContactOnLocalStorage('ALL')
+    setSearchLabels(prev => ({ ...prev, all: [] }))
+    setState(prev => ({ ...prev, loading: true }));
+    props.contactList(1, state.sizePerPage, null, "id", "desc", "ssr", [])
+  }
+  const filterResetOwner = (param = null) => {
+    clearFilterContactOnLocalStorage('OWNER')
+    setSearchLabels(prev => ({ ...prev, owner: [] }))
+    setState(prev => ({ ...prev, loading: true }));
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", 'Owner', [])
+  }
+  const filterResetTenant = (param = null) => {
+    clearFilterContactOnLocalStorage('TENANT')
+    setSearchLabels(prev => ({ ...prev, tenant: [] }))
+    setState(prev => ({ ...prev, loading: true }));
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", 'Tenant', [])
+  }
+  const filterResetSupplier = (param = null) => {
+    clearFilterContactOnLocalStorage('SUPPLIER')
+    setSearchLabels(prev => ({ ...prev, supplier: [] }))
+    setState(prev => ({ ...prev, loading: true }));
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", 'Supplier', [])
+  }
+  const filterResetSeller = (param = null) => {
+    clearFilterContactOnLocalStorage('SELLER')
+    setSearchLabels(prev => ({ ...prev, seller: [] }))
+    setState(prev => ({ ...prev, loading: true }));
+    props.contactListType(1, state.sizePerPage, null, "id", "desc", 'Seller', [])
+  }
 
   return (
     <div className="page-content">
@@ -611,16 +1117,39 @@ function ContactsList(props) {
                       </button>
                     </Link>
 
-                    {/* <button type="button" className="btn btn-secondary">
-                      <i className="fas fas fa-paper-plane font-size-12 align-middle me-2"></i>
+                    {/* Messages   */}
+
+                    <button
+                      type="button"
+                      className="btn btn-info custom-button-side-row-font-size"
+                      onClick={toggleMsgModal}
+                    >
+
                       Message
-                      <i className="fas fas fa-chevron-down font-size-12 align-middle ms-2"></i>
+                      <i className="fas fa-angle-right me-1 font-size-16" />
                     </button>
 
-                    <button disable type="button" className="btn btn-secondary">
-                      Actions
-                      <i className="fas fas fa-chevron-down font-size-12 align-middle ms-2"></i>
-                    </button> */}
+
+                    <ButtonDropdown
+                      isOpen={state.drp_link}
+                      toggle={() => setState(prev => ({ ...prev, drp_link: !prev.drp_link }))}
+                    >
+                      <DropdownToggle
+                        caret
+                        color="secondary"
+                        disabled={selectedContacts.length === 0}
+                      >
+                        Actions <i className="mdi mdi-chevron-down"></i>
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        {/* <DropdownItem >
+                                  Modify Labels
+                                </DropdownItem> */}
+                        <DropdownItem onClick={labelModalToggle}>
+                          Edit Label
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </ButtonDropdown>
                   </div>
                 </CardBody>
               </Card>
@@ -727,9 +1256,8 @@ function ContactsList(props) {
                             <CardText className="mb-0">
                               {state.activeTab == 1 && (
                                 <RemotePagination
-                                  data={
-                                    state.data?.length > 0 ? state.data : []
-                                  }
+                                  data={state.data?.length > 0 ? state.data : []}
+
                                   page={state.page}
                                   sizePerPage={state.sizePerPage}
                                   totalSize={state.dataLength}
@@ -740,6 +1268,11 @@ function ContactsList(props) {
                                   loading={state.loading}
                                   selectRow={dueTaskSelectRow}
                                   defaultSorted={dueTaskDefaultSorted}
+                                  filterBtnProps={searchLabels.all?.length > 0 ? true : false}
+                                  filterProps={modalBodyForAll}
+                                  filterStatus={true}
+                                  filterAction={filterActionForAll}
+                                  filterReset={filterResetManager}
                                 />
                               )}
                             </CardText>
@@ -765,6 +1298,11 @@ function ContactsList(props) {
                                   loading={state.loading}
                                   selectRow={dueTaskSelectRow}
                                   defaultSorted={dueTaskDefaultSorted}
+                                  filterBtnProps={searchLabels.owner?.length > 0 ? true : false}
+                                  filterProps={modalBodyForOwner}
+                                  filterStatus={true}
+                                  filterAction={filterActionForOwner}
+                                  filterReset={filterResetOwner}
                                 />
                               )}
                             </CardText>
@@ -790,6 +1328,11 @@ function ContactsList(props) {
                                   loading={state.loading}
                                   selectRow={dueTaskSelectRow}
                                   defaultSorted={dueTaskDefaultSorted}
+                                  filterBtnProps={searchLabels.tenant?.length > 0 ? true : false}
+                                  filterProps={modalBodyForTenant}
+                                  filterStatus={true}
+                                  filterAction={filterActionForTenant}
+                                  filterReset={filterResetTenant}
                                 />
                               )}
                             </CardText>
@@ -815,6 +1358,11 @@ function ContactsList(props) {
                                   loading={state.loading}
                                   selectRow={dueTaskSelectRow}
                                   defaultSorted={dueTaskDefaultSorted}
+                                  filterBtnProps={searchLabels.supplier?.length > 0 ? true : false}
+                                  filterProps={modalBodyForSupplier}
+                                  filterStatus={true}
+                                  filterAction={filterActionForSupplier}
+                                  filterReset={filterResetSupplier}
                                 />
                               )}
                             </CardText>
@@ -840,6 +1388,11 @@ function ContactsList(props) {
                                   loading={state.loading}
                                   selectRow={dueTaskSelectRow}
                                   defaultSorted={dueTaskDefaultSorted}
+                                  filterBtnProps={searchLabels.seller?.length > 0 ? true : false}
+                                  filterProps={modalBodyForSeller}
+                                  filterStatus={true}
+                                  filterAction={filterActionForSeller}
+                                  filterReset={filterResetSeller}
                                 />
                               )}
                             </CardText>
@@ -878,6 +1431,18 @@ function ContactsList(props) {
           </Col>
         </Row>
       </Container>
+      {labelModal && (
+        <LabelModal
+          labelModal={labelModal}
+          toggle={labelModalToggle}
+          labelName={labelName}
+          setLabelName={handleLabelNameChange}
+          selectedContacts={selectedContacts}
+          setSelectedContacts={setSelectedContacts}
+        // handleSave={handleSaveLabel}
+        />
+      )}
+      {msgModal && <MessagesModal toggle={toggleMsgModal} msgModal={msgModal} selectedContacts={selectedContacts} />}
     </div >
   );
 }
@@ -908,6 +1473,10 @@ const mapStateToProps = gstate => {
 
     contacts_add_loading,
     supplier_add_loading,
+    contact_label_select_update,
+    gmtfbs_contacts_data,
+    gmtfbs_contacts_error,
+    gmtfbs_contacts_loading,
   } = gstate.Contacts2;
   const { tenant_update_loading } = gstate.property;
   return {
@@ -937,6 +1506,10 @@ const mapStateToProps = gstate => {
 
     tenant_update_loading,
     supplier_add_loading,
+    contact_label_select_update,
+    gmtfbs_contacts_data,
+    gmtfbs_contacts_error,
+    gmtfbs_contacts_loading,
   };
 };
 
@@ -954,5 +1527,7 @@ export default withRouter(
     ContactListTenantFresh,
     ContactListSupplierFresh,
     ContactListSellerFresh,
+    updateLabelsContactsFresh,
+    getMessageTemplatesForContactBySelect,
   })(ContactsList)
 );

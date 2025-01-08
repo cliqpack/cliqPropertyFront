@@ -234,7 +234,7 @@ function TaskAdd(props) {
           display: "flex",
           justifyContent: "space-between",
           borderRadius: "5px",
-          backgroundColor: taskModal ? "#6E62E5" : "#6E62E5"
+          backgroundColor: taskModal ? "#2C88C6" : "#153D58"
         }} onClick={toggle} >
 
         New Task <i className="bx bx-plus-circle font-size-18 align-middle ms-1" />
@@ -242,7 +242,7 @@ function TaskAdd(props) {
       </button>
       <Loder status={showModal} />
       <Modal isOpen={taskModal} >
-        <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
+        <ModalHeader style={{ backgroundColor: "#153D58" }}>
           <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
             <div>
               {/* <i className="bx bx-task text-white"></i>&nbsp; */}

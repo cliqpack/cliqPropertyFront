@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {
   useParams,
   withRouter,
+  useHistory
 } from "react-router-dom";
 import {
   Card,
@@ -19,10 +20,11 @@ import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
+document.title = "MyDay";
 
 const FolioLedger = props => {
-  document.title = "FolioLedger";
   const { year, month, day } = useParams();
+  const history = useHistory()
 
   function printDiv(divName) {
     var printContents = document.getElementById(divName).innerHTML;
@@ -36,21 +38,37 @@ const FolioLedger = props => {
   }
 
   function downloadPdfDocument() {
-    let pWidth = 595.28; // 595.28 is the width of a4
-    let srcWidth = document.getElementById('printableArea').scrollWidth;
-    let margin = 24; // narrow margin - 1.27 cm (36);
-    let scale = (pWidth - margin * 2) / srcWidth;
-    console.log(scale);
-    let pdf = new jsPDF('p', 'pt', 'a4');
-    pdf.html(document.getElementById('printableArea'), {
-      margin: [40, 40, 40, 40],
-      html2canvas: {
-        scale: scale,
-      },
-      callback: (pdf) => {
-        pdf.save('folioLedger.pdf');
-      }
+    const element = document.getElementById('printableArea');
+
+    // Configuration for html2pdf
+    const opt = {
+      margin: 0.2, // margins around the content
+      filename: 'folioLedger.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    // Call the html2pdf library with the element and options
+    html2pdf().set(opt).from(element).save();
+  }
+
+  function sendDocumentInEmail() {
+    const element = document.getElementById('printableArea');
+    const opt = {
+      margin: [1, 0.5, 1, 0.5],
+      filename: 'folioLedger.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 1.5 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).toPdf().get('pdf').then((pdf) => {
+      const pdfBlob = pdf.output('blob');
+      const formData = new FormData();
+      formData.append('image[]', pdfBlob, 'folioLedger.pdf');
+      props.storeAttachmentForSendInEmail(formData);
     });
+    history.push('/messages', { uploaded: true });
   }
 
   const dateHandler = date => moment(date).format("YYYY/MM/DD");
@@ -70,12 +88,10 @@ const FolioLedger = props => {
     }
   }, [props.fl_loading]);
 
-  console.log(props?.fl_data);
-
   return (
     <React.Fragment>
       <div>
-        <InvoiceHeader printDiv={printDiv} downloadPdfDocument={downloadPdfDocument} />
+        <InvoiceHeader printDiv={printDiv} downloadPdfDocument={downloadPdfDocument} sendDocumentInEmail={sendDocumentInEmail} />
 
         <Container className="" fluid id="printableArea">
           <Row>
@@ -153,7 +169,7 @@ const FolioLedger = props => {
                                           // colSpan="3"
                                           className="fw-bold"
                                         >
-                                          ৳{item2?.opening_balance ? item2?.opening_balance : 0}
+                                          ${item2?.opening_balance ? item2?.opening_balance : 0}
                                         </td>
                                       </tr>
 
@@ -201,7 +217,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "debit"
+                                                  ${item3.type == "debit"
                                                     ? item3.amount
                                                     : 0}
                                                 </td>
@@ -215,7 +231,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "credit"
+                                                  ${item3.type == "credit"
                                                     ? item3.amount
                                                     : 0}
                                                 </td>
@@ -229,7 +245,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "credit"
+                                                  ${item3.type == "credit"
                                                     ? (balance =
                                                       parseInt(item3.amount) +
                                                       parseInt(balance))
@@ -254,10 +270,10 @@ const FolioLedger = props => {
                                         <th></th>
                                         <th></th>
                                         <th>Closing Balance:</th>
-                                        <th>৳{debitTotal ? debitTotal : 0}</th>
-                                        <th>৳{creditTotal ? creditTotal : 0}</th>
+                                        <th>${debitTotal ? debitTotal : 0}</th>
+                                        <th>${creditTotal ? creditTotal : 0}</th>
 
-                                        <th>৳{item2?.closing_balance ? item2?.closing_balance : 0}</th>
+                                        <th>${item2?.closing_balance ? item2?.closing_balance : 0}</th>
                                       </tr>
                                     </>
                                   );
@@ -329,7 +345,7 @@ const FolioLedger = props => {
                                         <td></td>
                                         <td></td>
                                         <td className="fw-bold">
-                                        ৳{item2.opening_balance ? item2.opening_balance : 0}
+                                          ${item2.opening_balance ? item2.opening_balance : 0}
                                         </td>
                                       </tr>
 
@@ -374,7 +390,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "debit"
+                                                  ${item3.type == "debit"
                                                     ? item3.amount
                                                     : 0}
                                                 </td>
@@ -388,7 +404,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "credit"
+                                                  ${item3.type == "credit"
                                                     ? item3.amount
                                                     : 0}
                                                 </td>
@@ -402,7 +418,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "credit"
+                                                  ${item3.type == "credit"
                                                     ? (balance =
                                                       parseInt(item3.amount) +
                                                       parseInt(balance))
@@ -429,10 +445,10 @@ const FolioLedger = props => {
                                         <th></th>
                                         <th></th>
                                         <th>Closing Balance</th>
-                                        <th>৳{debitTotal ? debitTotal : 0}</th>
-                                        <th>৳{creditTotal ? creditTotal : 0}</th>
+                                        <th>${debitTotal ? debitTotal : 0}</th>
+                                        <th>${creditTotal ? creditTotal : 0}</th>
 
-                                        <th>৳{item2.closing_balance ? item2.closing_balance : 0}</th>
+                                        <th>${item2.closing_balance ? item2.closing_balance : 0}</th>
                                       </tr>
                                     </>
                                   );
@@ -503,7 +519,7 @@ const FolioLedger = props => {
                                         <td></td>
                                         <td></td>
                                         <td className="fw-bold">
-                                        ৳{item2?.opening_balance ? item2?.opening_balance : 0}
+                                          ${item2?.opening_balance ? item2?.opening_balance : 0}
                                         </td>
                                       </tr>
 
@@ -548,7 +564,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "debit"
+                                                  ${item3.type == "debit"
                                                     ? item3.amount
                                                     : 0}
                                                 </td>
@@ -562,7 +578,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "credit"
+                                                  ${item3.type == "credit"
                                                     ? item3.amount
                                                     : 0}
                                                 </td>
@@ -576,7 +592,7 @@ const FolioLedger = props => {
                                                       : ""
                                                   }
                                                 >
-                                                  ৳{item3.type == "credit"
+                                                  ${item3.type == "credit"
                                                     ? (balance =
                                                       parseInt(item3.amount) +
                                                       parseInt(balance))
@@ -603,10 +619,10 @@ const FolioLedger = props => {
                                         <th></th>
                                         <th></th>
                                         <th>Closing Balance</th>
-                                        <th>৳{debitTotal ? debitTotal : 0}</th>
-                                        <th>৳{creditTotal ? creditTotal : 0}</th>
+                                        <th>${debitTotal ? debitTotal : 0}</th>
+                                        <th>${creditTotal ? creditTotal : 0}</th>
 
-                                        <th>৳{item2.closing_balance ? item2.closing_balance : 0}</th>
+                                        <th>${item2.closing_balance ? item2.closing_balance : 0}</th>
                                       </tr>
                                     </>
                                   );

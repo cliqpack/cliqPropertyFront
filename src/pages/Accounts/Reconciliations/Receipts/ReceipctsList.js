@@ -44,11 +44,11 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 
+document.title = "Reconciliations";
 
 
 
 function ReceiptsList(props) {
-    document.title = "Receipt List";
     const [state, setState] = useState({
         activeTab: "1", showReverse: true
     });
@@ -101,7 +101,7 @@ function ReceiptsList(props) {
 
 
     const amountRef = (cell, row) => {
-        return <span>৳{row.amount}</span>
+        return <span>${row.amount}</span>
     }
 
     const uploadBillDetails = (row) => {

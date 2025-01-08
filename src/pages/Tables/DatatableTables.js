@@ -149,7 +149,7 @@ class DatatableTables extends Component {
     const { SearchBar } = Search;
 
     //meta title
-    document.title = "CliqProperty";
+    document.title = "myday";
 
     return (
       <React.Fragment>

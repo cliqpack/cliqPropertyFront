@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.a9de15da.css",
-    "main.js": "/static/js/main.32c16324.js",
-    "static/js/498.f98b9759.chunk.js": "/static/js/498.f98b9759.chunk.js",
+    "main.css": "/static/css/main.a4e3cf0c.css",
+    "main.js": "/static/js/main.4e080fe0.js",
+    "static/js/498.20febb92.chunk.js": "/static/js/498.20febb92.chunk.js",
     "static/js/703.29855915.chunk.js": "/static/js/703.29855915.chunk.js",
-    "static/js/513.a0e78b2d.chunk.js": "/static/js/513.a0e78b2d.chunk.js",
+    "static/js/513.bb30b1f2.chunk.js": "/static/js/513.bb30b1f2.chunk.js",
     "static/media/4.jpg": "/static/media/4.2512763b208d97bd7e55.jpg",
     "static/media/3.jpg": "/static/media/3.ec8dba3fc54ccdfbf2af.jpg",
     "static/media/materialdesignicons-webfont.eot": "/static/media/materialdesignicons-webfont.52adde0de9840940801f.eot",
@@ -16,13 +16,10 @@
     "static/media/materialdesignicons-webfont.woff?v=5.8.55": "/static/media/materialdesignicons-webfont.d06df622bc47f0db9812.woff",
     "static/media/property.png": "/static/media/property.a0279b602a06c35a3327.png",
     "static/media/5.jpg": "/static/media/5.f62c1ca3f87ae585fc9e.jpg",
-    "static/media/img-7.jpg": "/static/media/img-7.f6859a84e2d525273230.jpg",
     "static/media/materialdesignicons-webfont.woff2?v=5.8.55": "/static/media/materialdesignicons-webfont.6147fc3741c622c5de2c.woff2",
-    "static/media/img-6.jpg": "/static/media/img-6.22e5e101c600a7c016a1.jpg",
     "static/media/boxicons.eot": "/static/media/boxicons.6829ebb16362074c0c30.eot",
     "static/media/boxicons.woff": "/static/media/boxicons.dcaf6a260cca4a061aff.woff",
     "static/media/boxicons.ttf": "/static/media/boxicons.e2ffa5b9254ec286b380.ttf",
-    "static/media/img-4.jpg": "/static/media/img-4.d54eed02ef5a376c9b2b.jpg",
     "static/media/fa-solid-900.eot": "/static/media/fa-solid-900.7eefe04dc985dd4ad38b.eot",
     "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.32267f3b4db33a7c85ee.ttf",
     "static/media/layout-2.jpg": "/static/media/layout-2.39f5fc8100fe7e10d4f0.jpg",
@@ -46,6 +43,7 @@
     "static/media/Pro-4.png": "/static/media/Pro-4.da10828664c0d60f118a.png",
     "static/media/fa-solid-900.woff": "/static/media/fa-solid-900.a940d584750708f5435c.woff",
     "static/media/img-1.png": "/static/media/img-1.2ed33261782573bf2aec.png",
+    "static/media/folioLedger.pdf": "/static/media/folioLedger.cdd480be539d4c526cc1.pdf",
     "static/media/megamenu-img.png": "/static/media/megamenu-img.8b069df40f2e8fc97bf9.png",
     "static/media/dripicons-v2.svg": "/static/media/dripicons-v2.de54f4eb6e267d60dda5.svg",
     "static/media/img-6.png": "/static/media/img-6.def468534c0b952978c4.png",
@@ -73,8 +71,8 @@
     "static/media/Logo realtyme.png": "/static/media/Logo realtyme.9eceb8a11fb3d76452d5.png",
     "static/media/profile-img.png": "/static/media/profile-img.43b59e598ba15abe6eab.png",
     "static/media/fa-regular-400.eot": "/static/media/fa-regular-400.0747be4cba2f8600544f.eot",
+    "static/media/Asset5.png": "/static/media/Asset5.57a83605a7418cc8e817.png",
     "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.c3146b3524e97475c094.ttf",
-    "static/media/noise-light.png": "/static/media/noise-light.f3a4ba48141cdd06e5c1.png",
     "static/media/mail_realty_me_logo.png": "/static/media/mail_realty_me_logo.b761bb2ebfaa03a6af92.png",
     "static/media/dripicons-v2.woff": "/static/media/dripicons-v2.f19dcc0358afed69d277.woff",
     "static/media/color_long.png": "/static/media/color_long.81dc82dc0f1fedfea190.png",
@@ -95,7 +93,7 @@
     "static/media/avatar-5.jpg": "/static/media/avatar-5.a5c59cee7b3dfda1156d.jpg",
     "static/media/avatar-2.jpg": "/static/media/avatar-2.feb0f89de58f0ef9b424.jpg",
     "static/media/owl.video.play.html": "/static/media/owl.video.play.10af16ecabcf640061e9.html",
-    "static/media/fraction.cjs": "/static/media/fraction.a641cd80e2310e4e5e60.cjs",
+    "static/media/fraction.cjs": "/static/media/fraction.7992481f3d8339b77604.cjs",
     "static/media/new_myday_image.svg": "/static/media/new_myday_image.62bc22965d65f911ab4ec8ef83f47b09.svg",
     "static/media/logo_purple 2-svg.svg": "/static/media/logo_purple 2-svg.ba337aa8b27a11acb79f4fb6404abd25.svg",
     "static/media/banking.svg": "/static/media/banking.b12709bb9203f3933745c04d2ceed03b.svg",
@@ -105,14 +103,14 @@
     "static/media/icon-realestate.svg": "/static/media/icon-realestate.89b3968c3cd2e4c81dc2edb16cf3daf4.svg",
     "static/media/circle.svg": "/static/media/circle.ac6616ba7765c18533bca250a24efbe9.svg",
     "static/media/index.cjs": "/static/media/index.cd351d7c31d0d3fccf96.cjs",
-    "main.a9de15da.css.map": "/static/css/main.a9de15da.css.map",
-    "main.32c16324.js.map": "/static/js/main.32c16324.js.map",
-    "498.f98b9759.chunk.js.map": "/static/js/498.f98b9759.chunk.js.map",
+    "main.a4e3cf0c.css.map": "/static/css/main.a4e3cf0c.css.map",
+    "main.4e080fe0.js.map": "/static/js/main.4e080fe0.js.map",
+    "498.20febb92.chunk.js.map": "/static/js/498.20febb92.chunk.js.map",
     "703.29855915.chunk.js.map": "/static/js/703.29855915.chunk.js.map",
-    "513.a0e78b2d.chunk.js.map": "/static/js/513.a0e78b2d.chunk.js.map"
+    "513.bb30b1f2.chunk.js.map": "/static/js/513.bb30b1f2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a9de15da.css",
-    "static/js/main.32c16324.js"
+    "static/css/main.a4e3cf0c.css",
+    "static/js/main.4e080fe0.js"
   ]
 }

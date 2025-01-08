@@ -41,9 +41,9 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import Loder from "components/Loder/Loder";
 
+document.title = "Upload Invoices";
 
 function UploadInvoice(props) {
-    document.title = "Upload Invoices";
     const date = moment().format("yyyy-MM-DD");
     const [state, setState] = useState({ invoiceDate: date, uploaded: 'Uploaded', loader: false });
     const inputRef = useRef(null);

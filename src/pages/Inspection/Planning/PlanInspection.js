@@ -75,9 +75,9 @@ var days = date.setMonth(date.getMonth() + Number(1));
 var days = date_get(days);
 
 // console.log(days);
+document.title = "myday";
 
 const PlanInspection = props => {
-  document.title = "CliqProperty";
   const history = useHistory();
   const [state, setState] = useState({
     manager: "All",

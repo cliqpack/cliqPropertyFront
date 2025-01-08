@@ -54,13 +54,15 @@ export const contactList = (
   search = null,
   sortField = null,
   sortValue = null,
-  ssr
+  ssr,
+  labels = null
 ) => {
   const authUser = JSON.parse(localStorage.getItem("authUser"));
 
   let url;
   if (ssr) {
-    url = `${process.env.REACT_APP_LOCALHOST}/contacts-ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+    const encodedLabels = encodeURIComponent(JSON.stringify(labels));
+    url = `${process.env.REACT_APP_LOCALHOST}/contacts-ssr?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}&labels=${encodedLabels}`;
   } else {
     url = `${process.env.REACT_APP_LOCALHOST}/contacts`;
   }
@@ -108,11 +110,12 @@ export const contactListType = (
   search = null,
   sortField = null,
   sortValue = null,
-  type
+  type,
+  labels = null
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-
-  var url = `${process.env.REACT_APP_LOCALHOST}/contactType-ssr/${type}?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}`;
+  const encodedLabels = encodeURIComponent(JSON.stringify(labels));
+  var url = `${process.env.REACT_APP_LOCALHOST}/contactType-ssr/${type}?page=${page}&sizePerPage=${sizePerPage}&q=${search}&sortField=${sortField}&sortValue=${sortValue}&labels=${encodedLabels}`;
 
   const headers = {
     "Content-Type": "application/json",
@@ -197,6 +200,25 @@ export const contactListType = (
           });
         });
     };
+  } else if (type === "Archive") {
+    return dispatch => {
+      axios
+        .get(url, { headers: headers })
+        .then(response => {
+          dispatch({
+            type: "CONTACT_LIST_TYPE_ARCHIVE",
+            payload: response.data,
+            status: "Success",
+          });
+        })
+        .catch(error => {
+          dispatch({
+            type: "CONTACT_LIST_TYPE_ARCHIVE",
+            payload: error,
+            status: "Failed",
+          });
+        });
+    };
   }
 };
 
@@ -236,6 +258,15 @@ export const ContactListSellerFresh = () => {
   };
 };
 
+export const ContactListArchiveFresh = () => {
+  return dispatch => {
+    dispatch({
+      type: "CONTACT_LIST_TYPE_ARCHIVE",
+      status: false,
+    });
+  };
+};
+
 export const showContact = id => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
 
@@ -258,7 +289,7 @@ export const showContact = id => {
           payload: response.data,
           status: "Success",
         });
-      })
+      }) 
       .catch(error => {
         dispatch({
           type: "SHOW_CONTACT",
@@ -277,6 +308,124 @@ export const showContactFresh = () => {
     });
   };
 };
+
+export const deleteContact = id => {
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+
+  var url = `${process.env.REACT_APP_LOCALHOST}/contacts/${id}`;
+
+  return dispatch => {
+    const headers = {
+      "Content-Type": "application/json",
+
+      "Access-Control-Allow-Origin": "*",
+
+      Authorization: "Bearer " + authUser.token,
+    };
+    axios
+      .delete(url, { headers: headers })
+      .then(response => {
+        dispatch({
+          type: "DELETE_CONTACT",
+          payload: response.data,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: "DELETE_CONTACT",
+          payload: error,
+          status: "Failed",
+        });
+      });
+  };
+};
+
+export const deleteContactFresh = () => {
+  return dispatch => {
+    dispatch({
+      type: "DELETE_CONTACT_FRESH",
+      status: false,
+    });
+  };
+};
+
+export const archiveContact = (id) => {
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+
+  var url = `${process.env.REACT_APP_LOCALHOST}/archive-contact/${id}`;
+
+  return dispatch => {
+      const headers = {
+          "Content-Type": "application/json",
+
+          "Access-Control-Allow-Origin": "*",
+
+          Authorization: "Bearer " + authUser.token,
+      };
+      axios
+          .get(url, { headers: headers })
+          .then(response => {
+              dispatch({
+                  type: "ARCHIVE_CONTACT",
+                  payload: response.data,
+                  status: "Success",
+              });
+          })
+          .catch(error => {
+              dispatch({
+                  type: "ARCHIVE_CONTACT",
+                  payload: error,
+                  status: "Failed",
+              });
+          });
+  };
+};
+
+export const archiveContactFresh = () => {
+  return dispatch =>
+      dispatch({
+          type: "ARCHIVE_CONTACT",
+          status: false,
+      });
+};
+
+export const restoreContact = (id) => {
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+  var url = `${process.env.REACT_APP_LOCALHOST}/restore-contact/${id}`;
+  return dispatch => {
+      const headers = {
+          "Content-Type": "application/json",
+
+          "Access-Control-Allow-Origin": "*",
+
+          Authorization: "Bearer " + authUser.token,
+      };
+      axios
+          .get(url, { headers: headers })
+          .then(response => {
+              dispatch({
+                  type: "RESTORE_CONTACT",
+                  status: "Success",
+              });
+          })
+          .catch(error => {
+              dispatch({
+                  type: "RESTORE_CONTACT",
+                  status: "Failed",
+              });
+          });
+  };
+};
+
+export const restoreContactFresh = () => {
+  return dispatch =>
+      dispatch({
+          type: "RESTORE_CONTACT",
+          status: false,
+      });
+};
+
 export const getOwnerContact = id => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
 
@@ -403,9 +552,11 @@ export const addEditContact = contact => {
 
 export const addSupplier = (
   supplier,
+  phone,
   folio,
   physicalAddress,
   postalAddress,
+  formTwoButtonValue,
   payment,
   contact_id = null
 ) => {
@@ -413,6 +564,7 @@ export const addSupplier = (
 
   var url = `${process.env.REACT_APP_LOCALHOST}/property/supplier/store`;
   var pay = payment;
+  console.log(supplier.communication);
 
   const formData = {
     contact_id: contact_id,
@@ -434,6 +586,9 @@ export const addSupplier = (
 
     payment: pay,
   };
+
+  console.log(formData);
+  // return;
 
   return dispatch => {
     const headers = {
@@ -567,7 +722,9 @@ export const getSupplierInfo = id => {
 
 export const editSupplier = (
   supplier,
+  phone,
   folio,
+  formTwoButtonValue,
   payment,
   id,
   physical,
@@ -577,6 +734,7 @@ export const editSupplier = (
   var authUser = JSON.parse(localStorage.getItem("authUser"));
 
   var url = `${process.env.REACT_APP_LOCALHOST}/property/supplier/contact/${id}`;
+  console.log(phone);
   var pay = payment;
   const formData = {
     // supplier_id: supplier_id,
@@ -681,16 +839,101 @@ export const lebelContact = (insId, lebels) => {
       });
   };
 };
+export const lebelContactSelect = (insId, lebels) => {
+  
+  
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+  const newUrl = process.env.REACT_APP_LOCALHOST;
+  const encodedLabels = encodeURIComponent(JSON.stringify(lebels));
+  const encodedLabelsinsId = encodeURIComponent(JSON.stringify(insId));
+  var url = newUrl + `/contact/info/label?contact_id=${encodedLabelsinsId}&labels=${encodedLabels}`;
+  const headers = {
+    "Content-Type": "application/json",
 
+    "Access-Control-Allow-Origin": "*",
+
+    Authorization: "Bearer " + authUser.token,
+  };
+
+  const formData = {
+    contact_id: insId,
+    labels: lebels,
+  };
+
+  console.log(formData);
+
+  return dispatch => {
+    axios
+      .get(url, { headers: headers })
+      .then(response => {
+        dispatch({
+          type: "CONTACT_LABEL_SELECT",
+          payload: response.data,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: "CONTACT_LABEL_SELECT",
+          error: error,
+          status: "Failed",
+        });
+      });
+  };
+};
+export const updateLabelsForContacts = (contactIds, newLabels, removedLabels) => {
+  return dispatch => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + authUser.token,
+    };
+
+    const body = {
+      contact_id: JSON.stringify(contactIds),
+      labels: JSON.stringify(newLabels),
+      removed_labels: JSON.stringify(removedLabels), 
+    };
+
+    axios
+      .post(`${process.env.REACT_APP_LOCALHOST}/contact/info/label/update`, body, { headers })
+      .then(response => {
+        console.log("Labels updated successfully:", response.data);
+        dispatch({ 
+          type: "LABELS_UPDATED_SUCCESS",
+          payload: response.data,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        console.error("Error updating labels:", error);
+        dispatch({ type: "LABELS_UPDATED_FAILED", payload: error });
+      });
+  };
+};
+
+export const updateLabelsContactsFresh = () => {
+  console.log("update fresh");
+  
+  return dispatch =>
+    dispatch({
+      type: "LABELS_UPDATED_FRESH",
+      status: false,
+    });
+};
 export const getMessageTemplatesForContactBySelect = (
   data = null,
-  query = null
+  query = null,
+  data2 = null,
+  contactId
 ) => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-  const newData = data.map(item => item.label);
+  const newData = (data && Array.isArray(data)) ? data.map(item => item.label) : [];
+console.log(newData);
 
   let url = `${process.env.REACT_APP_LOCALHOST}/contacts/message/mail/template/filter`;
   const formData = {
+    contact_id: contactId,
     trigger_to: data,
     trigger_to2: newData,
     query: query,
@@ -723,12 +966,13 @@ export const getMessageTemplatesForContactBySelect = (
   };
 };
 
-export const sendMailFromTemplatesInContacts = (id, sub, contactId) => {
+export const sendMailFromTemplatesInContacts = (id, sub, contactIdMul,contactId) => {
   console.log(id, sub, contactId);
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   var url = `${process.env.REACT_APP_LOCALHOST}/contacts/message/mail/template/activity`;
   const formData = {
-    contact_id: contactId,
+    // contact_id_multiple: contactIdMul,
+    contact_id:contactId ?? contactIdMul,
     template_id: id,
     subject: sub,
   };
@@ -767,6 +1011,38 @@ export const sendMailFromTemplatesInContactsFresh = () => {
       type: "SEND_MAIL_TO_ACTIVITY_CONTACTS_FRESH",
     });
 };
+
+// export const getAllDataForMsgTemplates = () => {
+//   var authUser = JSON.parse(localStorage.getItem("authUser"));
+//   var url = `${process.env.REACT_APP_LOCALHOST}/multiple/contacts/message/mail/template/activity`;
+
+//   return dispatch => {
+//     const headers = {
+//       "Content-Type": "application/json",
+
+//       "Access-Control-Allow-Origin": "*",
+
+//       Authorization: "Bearer " + authUser.token,
+//     };
+
+//     axios
+//       .get(url, { headers: headers })
+//       .then(response => {
+//         dispatch({
+//           type: "CONTACT_MESSAGE_TEMPLATES_ALL",
+//           payload: response.data,
+//           status: "Success",
+//         });
+//       })
+//       .catch(error => {
+//         dispatch({
+//           type: "CONTACT_MESSAGE_TEMPLATES_ALL",
+//           payload: error,
+//           status: "Failed",
+//         });
+//       });
+//   };
+// };
 
 export const emailValidationCheck = (data, text) => {
   console.log(text);

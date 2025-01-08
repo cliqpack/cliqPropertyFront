@@ -646,22 +646,36 @@ export const AllPropertyDocumentFresh = () => {
         });
 };
 
-export const storePropertyDocument = (file, propertyId = null, contactId = null, tenantId = null, ownerId = null, supplier_id = null, selerId = null) => {
-    var authUser = JSON.parse(localStorage.getItem("authUser"));
+export const storePropertyDocument = (
+    file,
+    propertyId = null,
+    contactId = null,
+    tenantId = null,
+    ownerId = null,
+    supplier_id = null,
+    sellerId = null,
+    access = 1
+) => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
     const newUrl = `${process.env.REACT_APP_LOCALHOST}`;
+    const url = `${newUrl}/uploadPropertyDoc`;
+    const formData = new FormData();
 
-    let url = `${newUrl}/uploadPropertyDoc`;
-    let formData = new FormData();
+    // Append files to formData
     for (let i = 0; i < file.length; i++) {
         formData.append("image[]", file[i]);
     }
+
+    // Append other parameters to formData
     formData.append("id", propertyId);
     formData.append("contact_id", contactId);
     formData.append("owner_id", ownerId);
     formData.append("tenant_id", tenantId);
     formData.append("supplier_id", supplier_id);
-    formData.append("seller_id", selerId);
+    formData.append("seller_id", sellerId);
+    formData.append("access", access);
 
+    // Return dispatch
     return dispatch => {
         const headers = {
             "Content-Type": "application/json",
@@ -669,7 +683,7 @@ export const storePropertyDocument = (file, propertyId = null, contactId = null,
             Authorization: "Bearer " + authUser.token,
         };
         axios
-            .post(url, formData, { headers: headers })
+            .post(url, formData, { headers })
             .then(response => {
                 dispatch({
                     type: "STORE_PROPERTY_DOCUMENT",
@@ -686,6 +700,8 @@ export const storePropertyDocument = (file, propertyId = null, contactId = null,
             });
     };
 };
+
+
 
 export const storePropertyDocumentFresh = () => {
     return dispatch =>

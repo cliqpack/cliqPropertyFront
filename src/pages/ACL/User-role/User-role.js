@@ -162,7 +162,7 @@ const UserRole = props => {
   }
 
   //meta title
-  document.title = "CliqProperty";
+  document.title = "myday";
   return (
     <React.Fragment>
       <div className="page-content">

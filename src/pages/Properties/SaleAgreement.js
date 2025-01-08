@@ -218,6 +218,7 @@ const SaleAgreement = props => {
   ]);
   const [optionGroupState3, setOptionGroupState3] = useState(true);
   // const [state, setState] = useState({}); // Form 1 State
+  console.log(state);
 
   const date = moment().format("yyyy-MM-DD");
   const date_end1 = moment()
@@ -249,7 +250,7 @@ const SaleAgreement = props => {
   const [selectedGroup6, setSelectedGroup6] = useState(null);
   const [optionGroup6, setOptionGroup6] = useState([
     {
-      options: [{ label: "Admin Fee (৳)", value: "Admin Fee (৳)" }],
+      options: [{ label: "Admin Fee ($)", value: "Admin Fee ($)" }],
     },
   ]);
 
@@ -261,7 +262,7 @@ const SaleAgreement = props => {
     {
       options: [
         { label: "Commercial Management Fee (%)", value: "1" },
-        { label: "Letting fee (৳)", value: "2" },
+        { label: "Letting fee ($)", value: "2" },
         { label: "Management fee (%)", value: "3" },
       ],
     },
@@ -299,6 +300,7 @@ const SaleAgreement = props => {
       error: "none",
     },
   ]);
+  console.log(state8[0].payee);
   const [optionGroup8, setOptionGroup8] = useState([
     {
       options: [
@@ -423,6 +425,7 @@ const SaleAgreement = props => {
     });
   };
   const dateMoveInHandler2 = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState2({ ...state2, ["agreement_end"]: dateStr });
   };
 
@@ -448,6 +451,7 @@ const SaleAgreement = props => {
       props.propertyOwnerInfoFresh();
     }
     if (props.seller_add_loading === "Success") {
+      console.log("In");
       toastr.success("Success");
       props.addSaleAgreementFresh();
       props.SaleAgreementInfoFresh();
@@ -553,6 +557,7 @@ const SaleAgreement = props => {
 
       props.contacts_show_data?.data?.contact_physical_address?.map(
         (item, key) => {
+          console.log(item);
           let physical = {
             physical_building_name: item.building_name,
             physical_unit: item.unit,
@@ -1049,7 +1054,7 @@ const SaleAgreement = props => {
     const values = [...state3];
 
     await state3.forEach(async (el, idx) => {
-      if (el.fee_template_1 === "Admin Fee (৳)") {
+      if (el.fee_template_1 === "Admin Fee ($)") {
         if (el.amount_1.length === 0) {
           values[idx]["errorState"] = true;
           values[idx]["error"] = " Invalid amount.";
@@ -1092,7 +1097,7 @@ const SaleAgreement = props => {
           values1[idx]["error"] = "";
           await setState7(values1);
         }
-      } else if (el.fee_template_2 === "Letting fee (৳)") {
+      } else if (el.fee_template_2 === "Letting fee ($)") {
         if (el.amount_2.length === 0) {
           values1[idx]["errorState"] = true;
           values1[idx]["error"] = " Invalid amount.";
@@ -1166,7 +1171,7 @@ const SaleAgreement = props => {
       values[idx]["fee_trigger_2"] = "Rental receipt";
       values[idx]["notes_2"] = "";
     } else if (e.value === "2") {
-      values[idx]["income_account_2"] = "Letting fee (inc. tax) (৳)";
+      values[idx]["income_account_2"] = "Letting fee (inc. tax) ($)";
       values[idx]["fee_trigger_2"] = "First rent receipt";
       values[idx]["notes_2"] = "";
     } else if (e.value === "3") {
@@ -1361,7 +1366,7 @@ const SaleAgreement = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -1395,15 +1400,6 @@ const SaleAgreement = props => {
           if (values[idx]["split_type"] == "%") {
             split += Number(element.split);
           }
-          if (split > 100 || Number(element.split) === 0) {
-            values[lengthSp - 1]["errorState"] = true;
-            values[lengthSp - 1]["error"] = "Invalid Percentage";
-            await setState8(values);
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            await setState8(values);
-          }
         }
         if (element.method == "EFT") {
           if (element.payee == "") {
@@ -1411,7 +1407,7 @@ const SaleAgreement = props => {
             values[idx]["error"] = "Enter a Payee for EFT payment";
             await setState8(values);
             return;
-          } else if (element.bsb.length < 6 || isNaN(element.bsb)) {
+          } else if (element.bsb.length < 6) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a 6-digit BSB";
             await setState8(values);
@@ -1419,11 +1415,6 @@ const SaleAgreement = props => {
           } else if (element.account == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = " Enter an Account number";
-            await setState8(values);
-            return;
-          } else if (isNaN(element.account)) {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "Account number must be numeric";
             await setState8(values);
             return;
           } else {
@@ -1443,6 +1434,11 @@ const SaleAgreement = props => {
             values[idx]["error"] = "";
             await setState8(values);
           }
+        }
+        if (split > 100 || element.split === 0) {
+          values[lengthSp - 1]["errorState"] = true;
+          values[lengthSp - 1]["error"] = "Invalid Percentage";
+          await setState8(values);
         }
       });
 
@@ -1747,6 +1743,7 @@ const SaleAgreement = props => {
     postal[e.target.name] = e.target.value;
     postals[idx] = postal;
     setPostalAddress(postals);
+    console.log(e.target.name);
     let fullpostals = [...fullPostalAddress];
     let fullpostal = fullpostals[idx];
     let bld = "",
@@ -2317,9 +2314,12 @@ const SaleAgreement = props => {
 
 
                                     if (emptyNames.length > 0) {
+                                      console.log("Objects with empty first_name or last_name found:");
+                                      console.log(emptyNames);
                                       const fName = state.contacts.filter(item => !item.first_name.trim())
                                       const lName = state.contacts.filter(item => !item.last_name.trim())
                                       const email = state.contacts.filter(item => !item.email.trim())
+                                      console.log(fName, lName, email);
                                       // toastr.warning('Please enter First & Last Name')
                                       toastr.warning(`Please enter ${fName.length > 0 ? 'First Name' : ''} ${lName.length > 0 ? 'Last Name' : ''} ${email.length > 0 ? 'Email' : ''}`)
 
@@ -2688,6 +2688,9 @@ const SaleAgreement = props => {
                                                       ></div>
 
                                                       {state.contacts?.map((item, idx) => {
+                                                        {
+                                                          /* console.log("checking"); */
+                                                        }
                                                         return (
                                                           <div
                                                             key={idx}
@@ -2881,7 +2884,7 @@ const SaleAgreement = props => {
                                                                 }
                                                               />
 
-                                                              <label htmlFor="usr">BIN</label>
+                                                              <label htmlFor="usr">ABN</label>
                                                             </div>
                                                             <ErrorMessage
                                                               name="abn"
@@ -3226,6 +3229,17 @@ const SaleAgreement = props => {
                                                         </Row>
                                                         <Row>
                                                           <Col md={12} className="d-flex">
+                                                            <div className="input-group-append rounded-start">
+                                                              <span
+                                                                className="input-group-text"
+                                                                style={{
+                                                                  borderTopRightRadius: 0,
+                                                                  borderBottomRightRadius: 0,
+                                                                }}
+                                                              >
+                                                                $
+                                                              </span>
+                                                            </div>
                                                             <div className="form-group-new w-100">
                                                               <Field
                                                                 id="asking_price"
@@ -3240,8 +3254,8 @@ const SaleAgreement = props => {
                                                                     : "")
                                                                 }
                                                                 style={{
-                                                                  borderTopRightRadius: 0,
-                                                                  borderBottomRightRadius: 0,
+                                                                  borderTopLeftRadius: 0,
+                                                                  borderBottomLeftRadius: 0,
                                                                 }}
                                                                 value={
                                                                   state2.asking_price
@@ -3251,17 +3265,6 @@ const SaleAgreement = props => {
                                                                 }
                                                               />
                                                               <label htmlFor="usr"> Asking price</label>
-                                                            </div>
-                                                            <div className="input-group-append rounded-start">
-                                                              <span
-                                                                className="input-group-text"
-                                                                style={{
-                                                                  borderTopLeftRadius: 0,
-                                                                  borderBottomLeftRadius: 0,
-                                                                }}
-                                                              >
-                                                                ৳
-                                                              </span>
                                                             </div>
                                                             <ErrorMessage
                                                               name="asking_price"
@@ -3280,7 +3283,7 @@ const SaleAgreement = props => {
                                                                     borderBottomRightRadius: 0,
                                                                   }}
                                                                 >
-                                                                  ৳
+                                                                  $
                                                                 </span>
                                                               </span>
                                                               <div className="form-group-new">
@@ -3318,6 +3321,18 @@ const SaleAgreement = props => {
                                                         </Row>
                                                         <Row className="mb-3">
                                                           <Col md={12} className="d-flex">
+
+                                                            <div className="input-group-append rounded-start">
+                                                              <span
+                                                                className="input-group-text"
+                                                                style={{
+                                                                  borderTopRightRadius: 0,
+                                                                  borderBottomRightRadius: 0,
+                                                                }}
+                                                              >
+                                                                $
+                                                              </span>
+                                                            </div>
                                                             <div className="form-group-new w-100">
                                                               <Field
                                                                 id="commission"
@@ -3332,8 +3347,8 @@ const SaleAgreement = props => {
                                                                     : "")
                                                                 }
                                                                 style={{
-                                                                  borderTopRightRadius: 0,
-                                                                  borderBottomRightRadius: 0,
+                                                                  borderTopLeftRadius: 0,
+                                                                  borderBottomLeftRadius: 0,
                                                                 }}
                                                                 value={state2.commission}
                                                                 onChange={
@@ -3341,17 +3356,6 @@ const SaleAgreement = props => {
                                                                 }
                                                               />
                                                               <label htmlFor="usr">Commission</label>
-                                                            </div>
-                                                            <div className="input-group-append rounded-start">
-                                                              <span
-                                                                className="input-group-text"
-                                                                style={{
-                                                                  borderTopLeftRadius: 0,
-                                                                  borderBottomLeftRadius: 0,
-                                                                }}
-                                                              >
-                                                                ৳
-                                                              </span>
                                                             </div>
                                                             <ErrorMessage
                                                               name="commission"
@@ -3481,7 +3485,7 @@ const SaleAgreement = props => {
                                                       className="d-flex align-items-center"
                                                       color={
                                                         state8[idx]["split_type"] ===
-                                                          "৳"
+                                                          "$"
                                                           ? "secondary"
                                                           : "light"
                                                       }
@@ -3489,7 +3493,7 @@ const SaleAgreement = props => {
                                                         toggleDollorBtn(idx)
                                                       }
                                                     >
-                                                      <span> ৳</span>
+                                                      <span> $</span>
                                                     </Button>
                                                     <Button
                                                       className="d-flex align-items-center"

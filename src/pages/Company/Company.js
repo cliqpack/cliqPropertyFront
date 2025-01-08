@@ -33,7 +33,7 @@ import { propTypes } from "react-bootstrap-editable";
 
 const Company = props => {
   const [state, setState] = useState();
-  document.title = "CliqProperty";
+  document.title = "myday";
   useEffect(() => {
 
 

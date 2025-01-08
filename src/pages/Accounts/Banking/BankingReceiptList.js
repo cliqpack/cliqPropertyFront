@@ -33,9 +33,9 @@ import {
 import toastr from "toastr";
 import moment from 'moment';
 
+document.title = "Banking";
 
 function BankingReceiptList(props) {
-    document.title = "Banking";
     let date = moment().format("dddd, DD");
     let node;
     const { month, year } = useParams();
@@ -109,13 +109,13 @@ function BankingReceiptList(props) {
     }
 
     const cashRef = (cell, row) => {
-        return <span>{row?.receipt?.payment_method === 'cash' ? <>৳{row?.receipt?.amount}</> : ''}</span>
+        return <span>{row?.receipt?.payment_method === 'cash' ? <>${row?.receipt?.amount}</> : ''}</span>
     }
     const cardRef = (cell, row) => {
-        return <span>{row?.receipt?.payment_method === 'card' ? <>৳{row?.receipt?.amount}</> : ''}</span>
+        return <span>{row?.receipt?.payment_method === 'card' ? <>${row?.receipt?.amount}</> : ''}</span>
     }
     const chequeRef = (cell, row) => {
-        return <span>{row?.receipt?.payment_method === 'cheque' ? <>৳{row?.receipt?.amount}</> : ''}</span>
+        return <span>{row?.receipt?.payment_method === 'cheque' ? <>${row?.receipt?.amount}</> : ''}</span>
     }
 
     const pushToProperty = (id) => {
@@ -216,7 +216,7 @@ function BankingReceiptList(props) {
                                                     <h5 className="font-size-15 mb-2">
                                                         <span className="badge badge-soft-success">
                                                             <b>
-                                                            ৳{cash}
+                                                                ${cash}
                                                             </b>
                                                         </span>
                                                     </h5>
@@ -230,7 +230,7 @@ function BankingReceiptList(props) {
                                             <div className="bg-light p-3 d-flex mb-3 rounded">
                                                 <div className="flex-grow-1">
                                                     <h5 className="font-size-15 mb-2">
-                                                        <span className="badge badge-soft-success"><b>৳{cheque}</b></span>
+                                                        <span className="badge badge-soft-success"><b>${cheque}</b></span>
                                                     </h5>
                                                     <p className="mb-0 text-muted">
                                                         <i className="fas fa-file-invoice-dollar"></i> Cheque
@@ -242,7 +242,7 @@ function BankingReceiptList(props) {
                                             <div className="bg-light p-3 d-flex mb-3 rounded">
                                                 <div className="flex-grow-1">
                                                     <h5 className="font-size-15 mb-2">
-                                                        <span className="badge badge-soft-success"><b>৳{card}</b></span>
+                                                        <span className="badge badge-soft-success"><b>${card}</b></span>
                                                     </h5>
                                                     <p className="mb-0 text-muted">
                                                         <i className="far fa-credit-card"></i> Card
@@ -254,7 +254,7 @@ function BankingReceiptList(props) {
                                             <div className="bg-light p-3 d-flex mb-3 rounded">
                                                 <div className="flex-grow-1">
                                                     <h5 className="font-size-15 mb-2">
-                                                        <span className="badge badge-soft-success"><b>৳{total}</b></span>
+                                                        <span className="badge badge-soft-success"><b>${total}</b></span>
                                                     </h5>
                                                     <p className="mb-0 text-muted">
                                                         Total

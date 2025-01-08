@@ -19,9 +19,10 @@ import Loder from "components/Loder/Loder";
 const ContactsInfoOfOwner = ({
   item,
   items,
-  handleOwnerFiles, show, setShow
+  show,
+  setShow
 }) => {
-  console.log(item);
+
   const history = useHistory();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -35,7 +36,6 @@ const ContactsInfoOfOwner = ({
   };
 
   const ownerFolioHandler = (contactId, oId, folioCode, fId) => {
-    // history.push(`/ownerFolio/${id}/${contactId}/${oId}`);
     history.push({
       pathname: `/ownerFolio/${item.property_id}/${fId}`,
       state: { contactId, oId, folioCode, fId },
@@ -74,8 +74,6 @@ const ContactsInfoOfOwner = ({
     ));
   };
 
-
-
   return (
     <React.Fragment>
       <Card data-aos="fade-right" data-aos-once={true} className="custom_card_border_design me-2">
@@ -86,51 +84,74 @@ const ContactsInfoOfOwner = ({
               <Col md={6} className="d-flex">
                 <h4 className="ms-1 text-primary fw-bold">
                   Owner
+                  {
+                    items?.owner_properties?.current_owner_folio === null || items?.owner_properties?.current_owner_folio?.archive === 1 && <span className="font-size-14">
+                      {" "}(Archived on{" "}
+                      {moment(items?.owner_properties?.current_owner_folio?.updated_at).format(
+                        "DD MMM YYYY"
+                      )})
+                    </span>
+                  }
                 </h4>
 
               </Col>
-              <Col
-                md={6}
-                className="d-flex justify-content-end align-items-center"
-              >
-
-                <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "labelColor", borderRadius: "5px" }} />
-
-                <input
-                  type="file"
-                  onChange={handleUploadFiles}
-                  ref={inputFile}
-                  style={{ display: "none" }}
-                  multiple
-                />
-
-                <Button
-                  className="btn"
-                  color="info"
-                  onClick={() => inputFile.current.click()}
+              {items?.owner_properties?.current_owner_folio === null || items?.owner_properties?.current_owner_folio?.archive == 1 ?
+                (<Col md={6} className="d-flex justify-content-end align-items-center">
+                  <i
+                    className="fas fa-archive font-size-16 text-muted"
+                    style={{ padding: "9px 12px", borderRadius: "5px", backgroundColor: "#d3d3d3" }}
+                    title="This item is archived"
+                  />
+                </Col>) :
+                (<Col
+                  md={6}
+                  className="d-flex justify-content-end align-items-center"
                 >
-                  {" "}
-                  <i className="bx bx-camera d-block font-size-18"></i>
-                </Button>
-                <button
-                  type="button"
-                  className="ms-1 btn btn-info"
-                  onClick={() => {
-                    ownerEditHandler(item.id, 2, items?.owner_properties?.current_owner_folio?.id, item.property_id);
-                  }}
-                >
-                  <i className="fa fa-solid fa-pen" />
-                </button>
-
-              </Col>
+                  <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "#0F2E5A", borderRadius: "5px" }} />
+                  <input
+                    type="file"
+                    onChange={handleUploadFiles}
+                    ref={inputFile}
+                    style={{ display: "none" }}
+                    multiple
+                  />
+                  <Button
+                    className="btn"
+                    color="info"
+                    onClick={() => inputFile.current.click()}
+                  >
+                    {" "}
+                    <i className="bx bx-camera d-block font-size-18"></i>
+                  </Button>
+                  <button
+                    type="button"
+                    className="ms-1 btn btn-info"
+                    onClick={() => {
+                      ownerEditHandler(item.id, 2, items?.owner_properties?.current_owner_folio?.id, item.property_id);
+                    }}
+                  >
+                    <i className="fa fa-solid fa-pen" />
+                  </button>
+                  <Button
+                    type="button"
+                    className="ms-1 btn btn-labelColor"
+                    onClick={() => {
+                      ownerFolioHandler(
+                        items?.owner_properties?.current_owner_folio?.owner_contact_id,
+                        items?.id,
+                        items?.owner_properties?.current_owner_folio?.folio_code,
+                        items?.owner_properties?.current_owner_folio?.id
+                      );
+                    }}>
+                    <i className="fa fa-solid fa-dollar-sign" />
+                  </Button>
+                </Col>)}
             </Row>{" "}
             <div
               className="w-100 mt-2 "
               style={{ borderBottom: "1.2px solid #153D56" }}
             />
-
           </div>
-
           <div
             onDragOver={tenantDrag}
             onDragLeave={tenantDragend}
@@ -227,12 +248,12 @@ const ContactsInfoOfOwner = ({
                                 items?.owner_properties?.current_owner_folio?.total_money &&
                                 items?.owner_properties?.current_owner_folio?.regular_intervals ? (
                                 <p>
-                                  on balance of
-                                  ৳{items?.owner_properties?.current_owner_folio?.balance
+                                  on balance of $
+                                  {items?.owner_properties?.current_owner_folio?.balance
                                     ? items?.owner_properties?.current_owner_folio?.balance
                                     : ""}{" "}
-                                  /on total money in of
-                                  ৳{items?.owner_properties?.current_owner_folio?.balance
+                                  /on total money in of $
+                                  {items?.owner_properties?.current_owner_folio?.balance
                                     ? items?.owner_properties?.current_owner_folio?.total_money
                                     : ""}
                                   /at
@@ -320,7 +341,8 @@ const ContactsInfoOfOwner = ({
                           </Col>
                           <Col md={7}>
                             <p>
-                              ৳{items?.owner_properties?.current_owner_folio?.balance
+                              $
+                              {items?.owner_properties?.current_owner_folio?.balance
                                 ? items?.owner_properties?.current_owner_folio?.balance
                                 : "0.00"}
                             </p>
@@ -340,7 +362,8 @@ const ContactsInfoOfOwner = ({
                           </Col>
                           <Col md={7}>
                             <p>
-                              ৳{items?.owner_properties?.current_owner_folio?.withhold_amount
+                              $
+                              {items?.owner_properties?.current_owner_folio?.withhold_amount
                                 ? items?.owner_properties?.current_owner_folio?.withhold_amount
                                 : "0.00"}
                             </p>
@@ -367,7 +390,7 @@ const ContactsInfoOfOwner = ({
                                 <p>
                                   {item.owner_payment.length === 0 ? 'None' : item.owner_payment.length === 1 ? item.owner_payment[0]?.method : `Split(
                                             ${item.owner_payment.map(item =>
-                                    item.split_type == '৳' ? `৳${item.split ? item.split : '0'}.00` : ` ${item.split}%`
+                                    item.split_type == '$' ? `$${item.split ? item.split : '0'}.00` : ` ${item.split}%`
                                   )}
                                           )`
                                   }

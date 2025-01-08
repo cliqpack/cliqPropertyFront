@@ -1,15 +1,19 @@
 import React, { Fragment, useEffect, useState } from "react";
 import './propertyTenantBondDetails.css';
-import { Modal, Row, Col, ErrorMessage, Label, Field } from "reactstrap";
+import { Modal, Row, Col, ErrorMessage, Label, Field,ModalFooter, Button, ModalHeader } from "reactstrap";
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 
 const TenantMoveOutDetails = (props) => {
 
-
+    const [state, setState] = useState(false);
     const toggle = () => {
         setState((prev) => !prev);
     }
+    const handleAdjust = () => {
+       
+        props.toggleMoveOutDetails();
+    };
 
     const handlePropertyFormTwoValues = e => {
         console.log(e.target.name);
@@ -28,6 +32,12 @@ const TenantMoveOutDetails = (props) => {
         console.log(dateStr);
         props.setState2({ ...props.state2, ["termination"]: dateStr });
     };
+    const handleSave = () => {
+        console.log("call api bond");
+        
+        props.handleBondDetails(); 
+        props.toggle();
+      };
 
     return (
         <Fragment>
@@ -68,7 +78,7 @@ const TenantMoveOutDetails = (props) => {
                                         Move out
                                     </Label>
                                 </Col>
-                                <Col md={5}>
+                                <Col md={7}>
                                     <Flatpickr
                                         className="form-control d-block"
                                         placeholder="Pick a date..."
@@ -98,9 +108,9 @@ const TenantMoveOutDetails = (props) => {
                                         Break lease
                                     </Label>
                                 </Col>
-                                <Col md={5}>
+                                <Col md={7}>
                                     {/* <input
-                                        placeholder='0.00'
+                                        placeholder='$0.00'
                                         name="break_lease"
                                         id="break_lease"
                                         type="date"
@@ -154,7 +164,7 @@ const TenantMoveOutDetails = (props) => {
                                         Termination
                                     </Label>
                                 </Col>
-                                <Col md={5}>
+                                <Col md={7}>
                                     {/* <input
                                         placeholder='$0.00'
                                         name="termination"
@@ -214,9 +224,9 @@ const TenantMoveOutDetails = (props) => {
                                     </Label>
                                 </Col>
                                 <Col md={7}>
-                                    <textarea className="form-control" name="bond_notes" onChange={handlePropertyFormTwoValues} value={props.state2.bond_notes}></textarea>
+                                    <textarea className="form-control"  onChange={handlePropertyFormTwoValues} value={props.state2.bond_notes}></textarea>
                                     {/* <input
-                                        placeholder='$0.00'
+                                        // placeholder='$0.00'
                                         name="bond_held"
                                         id="bond_held"
                                         type="number"
@@ -232,21 +242,25 @@ const TenantMoveOutDetails = (props) => {
                                         value={
                                             props.state2.bond_paid
                                         }
-                                        onChange={
-                                            props.handlePropertyFormTwoValues
-                                        }
+                                       
                                     /> */}
-                                    {/* <ErrorMessage
-                                        name="bond_held"
-                                        component="div"
-                                        className="invalid-feedback"
-                                    /> */}
+                                   
                                 </Col>
                             </Row>
                         </Col>
                     </Row>
                 </div>
+                <ModalFooter style={{ backgroundColor: "#F2F6FA" }}>
+                
+                    <Button style={{ backgroundColor: "#6e6e6e" }}  onClick={props.toggle} color="primary">
+                        <i className="fas fa-times me-1"></i> Close
+                    </Button>
+                    <Button  onClick={handleSave} color="primary" >
+                        <i className="fas fa-file-alt me-1"></i> Save
+                    </Button>
+                </ModalFooter>
             </Modal>
+               
         </Fragment>
     )
 }

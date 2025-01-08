@@ -179,6 +179,12 @@ const OTDashboard = (state = initialState, action) => {
                 owner_panel_doc_loading: action.status,
             };
             break;
+        case "OWNER_PANEL_DOC_FRESH":
+            state = {
+                ...state,
+                owner_panel_doc_loading: action.status,
+            };
+            break;
         default:
             state = { ...state };
             break;

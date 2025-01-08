@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumbs from "components/Common/Breadcrumb";
+// import Breadcrumbs from "components/Common/Breadcrumb";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { Link, withRouter, useHistory, useParams } from "react-router-dom";
 import {
-    supplierFolioForTransaction, supplierFolioForBill, supplierFolioForInvoice, supplierFolioInfo, transactionsListByIdForSupplierFolio, transactionsListByIdForSupplierFolioFresh, PendingBillsForSupplier, PendingBillsForSupplierFresh, paidBillsForSupplier, paidBillsForSupplierFresh,
+    supplierFolioForTransaction, supplierFolioForBill, supplierFolioForInvoice, supplierFolioInfoWithArchive, transactionsListByIdForSupplierFolio, transactionsListByIdForSupplierFolioFresh, PendingBillsForSupplier, PendingBillsForSupplierFresh, paidBillsForSupplier, paidBillsForSupplierFresh,
     PendingInvoicesForSupplier, PendingInvoicesForSupplierFresh, deleteInvoice,
-    deleteInvoiceFresh,
+    deleteInvoiceFresh, restoreSupplier, restoreSupplierFresh
 } from 'store/actions'
 
 import classnames from "classnames";
@@ -15,7 +15,7 @@ import {
     Card,
     Alert,
     CardBody,
-    CardTitle,
+
     Col,
     Container,
     Row,
@@ -25,11 +25,7 @@ import {
     NavLink,
     TabContent,
     TabPane,
-    Label,
-    Input,
     Button,
-    CardHeader,
-    Badge,
     Dropdown,
     DropdownItem,
     DropdownMenu,
@@ -50,12 +46,15 @@ import AddInvoiceModal from "pages/Accounts/Invoice/AddInvoiceModal";
 import DeleteModal from "components/Common/DeleteModal";
 import AddReceipt from "pages/Accounts/Transactions/AddReceipt";
 import AddDepositReceipt from "pages/Accounts/Transactions/AddDepositReceipt";
+import SupplierArchiveModal from "./SupplierArchiveModal";
+import Loder from "components/Loder/Loder";
 
 export default function SupplierFolio() {
     const { folio_id } = useParams();
     const { location } = useHistory();
-
+    const history = useHistory();
     // console.log(location?.state?.id);
+    console.log(folio_id);
 
     const dispatch = useDispatch()
     const { supplier_folio_transactions_data, supplier_folio_bill_data, supplier_folio_invoice_data, add_tenant_receipt_loading } = useSelector(state => state.AccountsTransactions)
@@ -63,15 +62,13 @@ export default function SupplierFolio() {
     const { supplier_folio_info_data, supplier_folio_info_error, supplier_folio_info_loading, transaction_list_id_supplier_folio_data, transaction_list_id_supplier_folio_error, transaction_list_id_supplier_folio_loading, pending_bills_supplier_folio_data,
         pending_bills_supplier_folio_error, pending_bills_supplier_folio_loading, paid_bills_supplier_folio_data,
         paid_bills_supplier_folio_error, paid_bills_supplier_folio_loading, pending_invoices_supplier_folio_data,
-        pending_invoices_supplier_folio_error, pending_invoices_supplier_folio_loading } = useSelector(state => state.supplier);
-
-    console.log(supplier_folio_info_data?.data);
+        pending_invoices_supplier_folio_error, pending_invoices_supplier_folio_loading, archive_supplier_loading, restore_supplier_loading } = useSelector(state => state.supplier);
 
     const [state, setState] = useState({
         activeTab: "1",
         dropDownBtn: false,
         dropDownBtn1: false,
-
+        dropDownReportBtn: false,
         transactionInfoModalReverse: false,
         transactionInfoModalEdit: false,
         clearFundModal: false,
@@ -83,10 +80,6 @@ export default function SupplierFolio() {
         clearFundModal: false,
         loader: false,
     });
-
-    // console.log(state.activeTab);
-
-    const ownerInfoData = '';
 
     const [data, setData] = useState({});
     // console.log(data);
@@ -137,13 +130,6 @@ export default function SupplierFolio() {
     };
 
     const supplierBillApiCall = () => {
-        // if (state.activeTab == 3) {
-        //     dispatch(PendingBillsForSupplier(folio_id))
-
-        // } else {
-        //     dispatch(paidBillsForSupplier(folio_id))
-
-        // }
         setData({})
         toggle(state.activeTab)
     }
@@ -162,8 +148,6 @@ export default function SupplierFolio() {
 
     const toggleAdd = () => {
         setShowModalAdd(prev => !prev);
-
-        // props.tenantInfoFresh();
     };
 
 
@@ -179,28 +163,29 @@ export default function SupplierFolio() {
         setShowDepositModal(prev => !prev);
     };
 
+
+    const pushToSupplierLedgerReport = () => {
+        history.push(`/supplierfolioLedger/${folio_id}`)
+    };
     useEffect(() => {
-        // dispatch(supplierFolioForTransaction());
-        //  dispatch(supplierFolioForBill());
-        //   dispatch(supplierFolioForInvoice())
-        dispatch(supplierFolioInfo(folio_id))
+        dispatch(supplierFolioInfoWithArchive(folio_id))
         dispatch(transactionsListByIdForSupplierFolio(
             "this_month",
             folio_id
-
         ));
     }, [])
-
+    useEffect(() => {
+        if (archive_supplier_loading === 'Success') {
+            dispatch(supplierFolioInfoWithArchive(folio_id))
+        }
+    }, [archive_supplier_loading])
 
     useEffect(() => {
         if (delete_invoice_loading === "Success") {
             toastr.error("Invoice Deleted");
             dispatch(deleteInvoiceFresh());
-
             toggle(state.activeTab);
         }
-
-
         if (add_tenant_receipt_loading === "Success") {
             toastr.success('Success')
             dispatch(deleteInvoiceFresh())
@@ -208,13 +193,25 @@ export default function SupplierFolio() {
         }
     }, [delete_invoice_loading, add_tenant_receipt_loading])
 
+    useEffect(() => {
+        if (restore_supplier_loading === 'Success') {
+            setState(prev => ({ ...prev, loader: false }))
+            toastr.success('Supplier Restored Successfully')
+            dispatch(supplierFolioInfoWithArchive(folio_id))
+            dispatch(restoreSupplierFresh())
+        } else if (restore_supplier_loading === 'Failed') {
+            setState(prev => ({ ...prev, loader: false }))
+            toastr.error('Something went wrong!')
+            dispatch(restoreSupplierFresh())
+        }
+    }, [restore_supplier_loading])
+
     const toggleModalTransactions = () => {
         setState(prev => ({
             ...prev,
             transactionInfoModal: !prev.transactionInfoModal,
         }));
     };
-
 
     const transactionsDetails = (e, column, columnIndex, row, rowIndex) => {
         setState({ ...state, transactionId: row.id, transactionsDetails: row });
@@ -224,18 +221,14 @@ export default function SupplierFolio() {
     const checkingRefDebit = (cell, row) => (
         <span>
             {" "}
-            {/* {row?.type == "Bill" && `$${cell}`}
-          {row?.type == "Payment" && `$${cell}`} */}
-            {cell && `৳${cell}`}
+            {cell && `$${cell}`}
         </span>
     );
 
     const checkingRefCredit = (cell, row) => (
         <span>
             {" "}
-            {/* {row?.type == "Tenant Receipt" && `$${cell}`}
-          {row?.type == "Folio Receipt" && `$${cell}`} */}
-            {cell && `৳${cell}`}
+            {cell && `$${cell}`}
         </span>
     );
 
@@ -366,17 +359,16 @@ export default function SupplierFolio() {
                 className={`badge rounded-pill p-1 ${balance >= cell ? "bg-success" : "bg-danger"
                     }`}
             >
-                ৳{cell}
+                ${cell}
             </span>
         );
         return amount;
     };
 
-
     const folioBalanceFormatter = (cell, row) => (
-        <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
+        <span>${row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
     );
-    const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
+    const paidFormatter = (cell, row) => <span>${row.paid ? row.paid : 0}</span>;
 
 
     const pendingBillData = [
@@ -610,11 +602,9 @@ export default function SupplierFolio() {
     ];
 
     const invAmountFormatter = (cell, row) => {
-        let amount = <span>৳{cell}</span>;
+        let amount = <span>${cell}</span>;
         return amount;
     };
-
-
     const invoiceDetails = (e, row) => {
         setModalDataItem(row);
         setId(row.id);
@@ -740,12 +730,6 @@ export default function SupplierFolio() {
         },
     ];
 
-    const supplierEditHandler = (id, tabId) => {
-        // history.push({ pathname: `/supplier/edit/${id}/${fId}/${tabId}`, state: { proId: propertyId } });
-        // history.push({ pathname: `/supplier/edit/${id}/${2}` });
-        history.push('/supplier/edit/' + id + '/' + 2)
-    };
-
     const toggleDisburse = () => {
         setState(prev => ({
             ...prev,
@@ -800,8 +784,21 @@ export default function SupplierFolio() {
         setDeleteState(false);
     };
 
+    const handleUndoArchive = () => {
+        dispatch(restoreSupplier(folio_id));
+        setState(prev => ({ ...prev, loader: true }))
+    };
+
+    const pushToSupplierSummaryReport = () => {
+        history.push(`/supplier/summary/${folio_id}`)
+    };
+
     return (
         <>
+            {state.loader && <Loder status={state.loader} />}
+            {state.archiveModal && (
+                <SupplierArchiveModal toggle={toggleArchive} state={state} id={folio_id} setState={setState} />
+            )}
             <div className="page-content">
                 <Container fluid={true}>
                     <h4 className="text-primary py-2">Supplier Folio</h4>
@@ -824,15 +821,55 @@ export default function SupplierFolio() {
                                                     </h4>
                                                 </div>
                                                 <div className="d-flex justify-content-center">
-                                                    {/* {props.property_owner_info_data?.data?.data?.status ==
-                                                        "1" && ( */}
+                                                    {supplier_folio_info_data?.data?.archive === 0 &&
+                                                        <Dropdown
+                                                            isOpen={state.dropDownBtn}
+                                                            toggle={() =>
+                                                                setState(prev => {
+                                                                    return {
+                                                                        ...prev,
+                                                                        dropDownBtn: !prev.dropDownBtn,
+                                                                    };
+                                                                })
+                                                            }
+                                                            className="mt-4 mt-sm-0 me-2"
+                                                        >
+                                                            <DropdownToggle
+                                                                className="btn btn-info btn-md"
+                                                                caret
+                                                            >
+                                                                Actions <i className="mdi mdi-chevron-down"></i>
+                                                            </DropdownToggle>
+                                                            <DropdownMenu>
+                                                                <DropdownItem>
+                                                                    <Link to={`/supplier/edit/${location?.state?.id}/2`}>
+                                                                        Edit
+                                                                    </Link>
+
+                                                                </DropdownItem>
+                                                                <DropdownItem
+                                                                    onClick={toggleDisburse}
+                                                                >
+                                                                    Disburse
+                                                                </DropdownItem>
+
+                                                                <DropdownItem
+                                                                    onClick={toggleArchive}
+                                                                >
+                                                                    Archive
+                                                                </DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
+                                                    }
+                                                </div>
+                                                <div className="d-flex justify-content-center mt-3">
                                                     <Dropdown
-                                                        isOpen={state.dropDownBtn}
+                                                        isOpen={state.dropDownReportBtn}
                                                         toggle={() =>
                                                             setState(prev => {
                                                                 return {
                                                                     ...prev,
-                                                                    dropDownBtn: !prev.dropDownBtn,
+                                                                    dropDownReportBtn: !prev.dropDownReportBtn,
                                                                 };
                                                             })
                                                         }
@@ -842,33 +879,19 @@ export default function SupplierFolio() {
                                                             className="btn btn-info btn-md"
                                                             caret
                                                         >
-                                                            Actions <i className="mdi mdi-chevron-down"></i>
+                                                            Reports <i className="mdi mdi-chevron-down"></i>
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            <DropdownItem
-                                                            // onClick={() =>
-                                                            //     supplierEditHandler(location.state.id, 2)
-                                                            // }
-                                                            >
-                                                                <Link to={`/supplier/edit/${location?.state?.id}/2`}>
-                                                                    Edit
-                                                                </Link>
-
+                                                            <DropdownItem onClick={pushToSupplierSummaryReport}>
+                                                                Folio Summary
                                                             </DropdownItem>
-                                                            <DropdownItem
-                                                                onClick={toggleDisburse}
-                                                            >
-                                                                Disburse
+                                                        </DropdownMenu>
+                                                        <DropdownMenu>
+                                                            <DropdownItem onClick={pushToSupplierLedgerReport}>
+                                                                Folio Ledger
                                                             </DropdownItem>
-
-                                                            {/* <DropdownItem
-                                                                onClick={toggleArchive}
-                                                            >
-                                                                Archive
-                                                            </DropdownItem> */}
                                                         </DropdownMenu>
                                                     </Dropdown>
-                                                    {/* )} */}
                                                 </div>
                                             </Col>
                                         </Row>
@@ -895,7 +918,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Opening</span>
                                                         <span className="text-muted">
-                                                        ৳{supplier_folio_info_data?.data?.opening || "0.00"}
+                                                            ${supplier_folio_info_data?.data?.opening || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -912,7 +935,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Money in</span>
                                                         <span className="text-muted">
-                                                        ৳{supplier_folio_info_data?.data?.money_in || "0.00"}
+                                                            ${supplier_folio_info_data?.data?.money_in || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -932,7 +955,7 @@ export default function SupplierFolio() {
                                                         </span>
                                                         <span className="text-muted">
                                                             {console.log(supplier_folio_info_data?.data?.money_out, '----')}
-                                                            ৳{supplier_folio_info_data?.data?.money_out || "0.00"}
+                                                            ${supplier_folio_info_data?.data?.money_out || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -951,7 +974,7 @@ export default function SupplierFolio() {
                                                             Uncleared
                                                         </span>
                                                         <span className="text-muted">
-                                                        ৳{supplier_folio_info_data?.data?.uncleared || "0.00"}
+                                                            ${supplier_folio_info_data?.data?.uncleared || "0.00"}
                                                         </span>
                                                     </Col>
                                                     <Col
@@ -970,7 +993,7 @@ export default function SupplierFolio() {
                                                             Payments pending
                                                         </span>
                                                         <span className="text-muted">
-                                                        ৳
+                                                            $
                                                             {supplier_folio_info_data?.data
                                                                 ?.total_bills_amount_sum_amount
                                                                 ? supplier_folio_info_data?.data
@@ -978,48 +1001,6 @@ export default function SupplierFolio() {
                                                                 : "0.00"}
                                                         </span>
                                                     </Col>
-                                                    {/* <Col
-                                                        className="d-flex flex-column justify-content-center"
-                                                        style={{
-                                                            borderStyle: "dotted",
-                                                            borderWidth: "thin",
-                                                            borderColor: "#DCDCDC",
-                                                            backgroundColor: "#F0FFFF",
-                                                            padding: "10px",
-                                                            borderRadius: "10px",
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        <span className="text-muted fw-bold">
-                                                            Invoices pending
-                                                        </span>
-                                                        <span className="text-muted">
-                                                            ৳
-                                                            {supplier_folio_info_data?.data?.pending_invoice_bill
-                                                                ? supplier_folio_info_data?.data?.pending_invoice_bill
-                                                                : "0.00"}
-                                                        </span>
-                                                    </Col> */}
-                                                    {/* <Col
-                                                        className="d-flex flex-column justify-content-center"
-                                                        style={{
-                                                            borderStyle: "dotted",
-                                                            borderWidth: "thin",
-                                                            borderColor: "#DCDCDC",
-                                                            backgroundColor: "#F0FFFF",
-                                                            padding: "10px",
-                                                            borderRadius: "10px",
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        <span className="text-muted fw-bold">Withhold</span>
-                                                        <span className="text-muted">
-                                                            ৳
-                                                            {supplier_folio_info_data?.data?.withhold_amount
-                                                                ? supplier_folio_info_data?.data?.withhold_amount
-                                                                : "0.00"}
-                                                        </span>
-                                                    </Col> */}
                                                     <Col
                                                         className="d-flex flex-column justify-content-center"
                                                         style={{
@@ -1034,7 +1015,7 @@ export default function SupplierFolio() {
                                                     >
                                                         <span className="text-muted fw-bold">Balance</span>
                                                         <span className="text-muted">
-                                                        ৳{supplier_folio_info_data?.data?.balance > 0 ? supplier_folio_info_data?.data?.balance : "0.00"}
+                                                            ${supplier_folio_info_data?.data?.balance > 0 ? supplier_folio_info_data?.data?.balance : "0.00"}
                                                         </span>
                                                     </Col>
                                                 </Row>
@@ -1042,7 +1023,6 @@ export default function SupplierFolio() {
                                         </Row>
                                     </CardBody>
                                 </Card>
-                                {/* )} */}
                             </div>
                         </Col>
 
@@ -1050,12 +1030,12 @@ export default function SupplierFolio() {
                             <div>
                                 <Card style={{ borderRadius: "14px" }}>
                                     <CardBody>
-                                        {/* {ownerInfoData?.data?.status == "0" && (
+                                        {supplier_folio_info_data?.data?.archive == 1 && (
                                             <Alert color="info">
                                                 <div className="d-flex justify-content-between">
                                                     <span className="font-size-20">
                                                         <i className="fas fa-archive"></i> Archived on{" "}
-                                                        {moment(ownerInfoData?.data?.updated_at).format(
+                                                        {moment(supplier_folio_info_data?.data?.updated_at).format(
                                                             "DD MMM YYYY"
                                                         )}
                                                     </span>
@@ -1068,7 +1048,7 @@ export default function SupplierFolio() {
                                                     </Button>
                                                 </div>
                                             </Alert>
-                                        )} */}
+                                        )}
                                         <Row>
                                             <Col sm={9}>
                                                 <Nav
@@ -1345,7 +1325,7 @@ export default function SupplierFolio() {
             )}
 
             {state.disburseModal && (
-                <DisburseModal toggle={toggleDisburse} state={state} supplierId={folio_id} supplierInfoApi={() => dispatch(supplierFolioInfo(folio_id))} tabcall={() => toggle('1')} />
+                <DisburseModal toggle={toggleDisburse} state={state} supplierId={folio_id} supplierInfoApi={() => dispatch(supplierFolioInfoWithArchive(folio_id))} tabcall={() => toggle('1')} />
             )}
 
             {showModalInvoice && (

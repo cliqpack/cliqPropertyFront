@@ -84,7 +84,7 @@ const EditSupplier = props => {
         { label: "None", value: "None" },
         { label: "Cheque", value: "Cheque" },
         { label: "EFT", value: "EFT" },
-        // { label: "BPay", value: "BPay" },
+        { label: "BPay", value: "BPay" },
       ],
     },
   ]);
@@ -134,7 +134,7 @@ const EditSupplier = props => {
         { label: "None", value: "None" },
         { label: "Check", value: "Check" },
         { label: "EFT", value: "EFT" },
-        // { label: "Bpay", value: "Bpay" },
+        { label: "Bpay", value: "Bpay" },
       ],
     },
   ]);
@@ -692,7 +692,7 @@ const EditSupplier = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -717,7 +717,8 @@ const EditSupplier = props => {
     }
     setState8(data);
   };
-  const handleRowResult2 = e => {
+
+  const handleRowResult2 = async e => {
     e.preventDefault();
     let forBPay = false;
     if (state8.length === 0) {
@@ -726,32 +727,37 @@ const EditSupplier = props => {
       const values = [...state8];
       var split = 0;
       var lengthSp = state8.length;
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
+        if (lengthSp > 1) {
+          if (values[idx]["split_type"] == "%") {
+            split += Number(element.split);
+          }
+        }
         if (element.payment_method == "EFT") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a Payee for EFT payment";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (element.bsb.length < 6 || isNaN(element.bsb)) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a 6-digit BSB";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (element.account_no == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = " Enter an Account number";
-            setState8(values);
+            await setState8(values);
             return;
           } else if (isNaN(element.account_no)) {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Account number must be numeric";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
         if (element.payment_method == "BPay") {
@@ -759,49 +765,34 @@ const EditSupplier = props => {
           if (element.biller_code == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "The Biller Code should be at least 1 digit";
-            setState8(values);
-            return;
-          } else if (isNaN(element.biller_code)) {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "The Biller Code must be numeric";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
         if (element.payment_method == "Cheque") {
           if (element.payee == "") {
             values[idx]["errorState"] = true;
             values[idx]["error"] = "Enter a Payee for Cheque payment";
-            setState8(values);
+            await setState8(values);
             return;
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
           }
         }
-        if (lengthSp > 1) {
-          if (values[idx]["split_type"] == "%") {
-            split += Number(element.split);
-          }
-          if (split > 100 || Number(element.split) === 0) {
-            values[lengthSp - 1]["errorState"] = true;
-            values[lengthSp - 1]["error"] = "Invalid Percentage";
-            setState8(values);
-            return
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            setState8(values);
-          }
+        if (split > 100) {
+          values[lengthSp - 1]["errorState"] = true;
+          values[lengthSp - 1]["error"] = "Invalid Percentage";
+          await setState8(values);
         }
       });
 
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
         if (forBPay && state8.length > 1) {
           setBpayErrorState(true);
           setTimeout(() => {
@@ -819,7 +810,9 @@ const EditSupplier = props => {
     setEnteredState(false);
     props.editSupplier(
       state,
+      phone,
       state2,
+      formTwoButtonValue,
       state8,
       id,
       physicalAddress,
@@ -861,7 +854,7 @@ const EditSupplier = props => {
 
   console.log(checkState);
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
   //----------Multi-reference form hendler------------//
   const handleBtnRows = () => {
@@ -2610,7 +2603,7 @@ const EditSupplier = props => {
                                                                       }
                                                                     />
                                                                     <label htmlFor="usr">
-                                                                      BIN
+                                                                      ABN
                                                                     </label>
                                                                   </div>
                                                                   <ErrorMessage
@@ -2942,7 +2935,7 @@ const EditSupplier = props => {
                                                           color={
                                                             state8[idx][
                                                               "split_type"
-                                                            ] === "৳"
+                                                            ] === "$"
                                                               ? "secondary"
                                                               : "light"
                                                           }
@@ -2950,7 +2943,7 @@ const EditSupplier = props => {
                                                             toggleDollorBtn(idx)
                                                           }
                                                         >
-                                                          <span> ৳</span>
+                                                          <span> $</span>
                                                         </Button>
                                                         <Button
                                                           className="d-flex align-items-center"

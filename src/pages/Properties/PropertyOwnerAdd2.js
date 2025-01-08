@@ -869,7 +869,7 @@ const PropertyOwnerAdd2 = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {
@@ -890,7 +890,7 @@ const PropertyOwnerAdd2 = props => {
     setState8(data);
   };
 
-  const handleRowResult2 = e => {
+  const handleRowResult2 = async e => {
     e.preventDefault();
     if (state8.length === 0) {
       setEnteredState(true);
@@ -898,46 +898,7 @@ const PropertyOwnerAdd2 = props => {
       const values = [...state8];
       var split = 0;
       var lengthSp = state8.length;
-      state8.forEach((element, idx) => {
-        if (element.method == "EFT") {
-          if (element.payee == "") {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "Enter a Payee for EFT payment";
-            setState8(values);
-            return;
-          } else if ((element.bsb.length < 6) || isNaN(element.bsb)) {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "Enter a 6-digit BSB";
-            setState8(values);
-            return;
-          } else if (element.account == "") {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = " Enter an Account number";
-            setState8(values);
-            return;
-          } else if (isNaN(element.account)) {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "Account number must be numeric";
-            setState8(values);
-            return;
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            setState8(values);
-          }
-        }
-        if (element.method == "Cheque") {
-          if (element.payee == "") {
-            values[idx]["errorState"] = true;
-            values[idx]["error"] = "Enter a Payee for Cheque payment";
-            setState8(values);
-            return;
-          } else {
-            values[idx]["errorState"] = false;
-            values[idx]["error"] = "";
-            setState8(values);
-          }
-        }
+      await state8.forEach(async (element, idx) => {
         if (lengthSp > 1) {
           if (values[idx]["split_type"] == "%") {
             split += Number(element.split);
@@ -945,17 +906,55 @@ const PropertyOwnerAdd2 = props => {
           if (split > 100 || Number(element.split) === 0) {
             values[lengthSp - 1]["errorState"] = true;
             values[lengthSp - 1]["error"] = "Invalid Percentage";
-            setState8(values);
-            return
+            await setState8(values);
           } else {
             values[idx]["errorState"] = false;
             values[idx]["error"] = "";
-            setState8(values);
+            await setState8(values);
+          }
+        }
+        if (element.method == "EFT") {
+          if (element.payee == "") {
+            values[idx]["errorState"] = true;
+            values[idx]["error"] = "Enter a Payee for EFT payment";
+            await setState8(values);
+            return;
+          } else if ((element.bsb.length < 6) || isNaN(element.bsb)) {
+            values[idx]["errorState"] = true;
+            values[idx]["error"] = "Enter a 6-digit BSB";
+            await setState8(values);
+            return;
+          } else if (element.account == "") {
+            values[idx]["errorState"] = true;
+            values[idx]["error"] = " Enter an Account number";
+            await setState8(values);
+            return;
+          } else if (isNaN(element.account)) {
+            values[idx]["errorState"] = true;
+            values[idx]["error"] = "Account number must be numeric";
+            await setState8(values);
+            return;
+          } else {
+            values[idx]["errorState"] = false;
+            values[idx]["error"] = "";
+            await setState8(values);
+          }
+        }
+        if (element.method == "Cheque") {
+          if (element.payee == "") {
+            values[idx]["errorState"] = true;
+            values[idx]["error"] = "Enter a Payee for Cheque payment";
+            await setState8(values);
+            return;
+          } else {
+            values[idx]["errorState"] = false;
+            values[idx]["error"] = "";
+            await setState8(values);
           }
         }
       });
 
-      state8.forEach((element, idx) => {
+      await state8.forEach(async (element, idx) => {
         if (element.errorState == false) {
           setEnteredState(true);
         } else {
@@ -2307,7 +2306,7 @@ const PropertyOwnerAdd2 = props => {
                                                                   handlePropertyFormValues
                                                                 }
                                                               />
-                                                              <label htmlFor="usr">BIN</label>
+                                                              <label htmlFor="usr">ABN</label>
                                                             </div>
                                                             <ErrorMessage
                                                               name="abn"
@@ -2595,8 +2594,16 @@ const PropertyOwnerAdd2 = props => {
                                                                 state2.new_folio ==
                                                                   false ? (
                                                                   <Row className="d-flex mb-2 my-3">
+                                                                    <Col md={3}>
+                                                                      {/* <Label
+                                                                for="folio"
+                                                                className="form-label"
+                                                              >
+                                                                Choose folio
+                                                              </Label> */}
+                                                                    </Col>
 
-                                                                    <Col md={6}>
+                                                                    <Col md={3}>
                                                                       <div className="form-group-new">
                                                                         <Select
                                                                           value={
@@ -2686,6 +2693,17 @@ const PropertyOwnerAdd2 = props => {
                                                                       md={6}
                                                                       className="d-flex"
                                                                     >
+                                                                      <span className="input-group-append rounded-start">
+                                                                        <span
+                                                                          className="input-group-text"
+                                                                          style={{
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
+                                                                          }}
+                                                                        >
+                                                                          $
+                                                                        </span>
+                                                                      </span>
                                                                       <div className="form-group-new">
                                                                         <Field
                                                                           name="total_money"
@@ -2702,8 +2720,8 @@ const PropertyOwnerAdd2 = props => {
                                                                             state2.total_money
                                                                           }
                                                                           style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
+                                                                            borderTopLeftRadius: 0,
+                                                                            borderBottomLeftRadius: 0,
                                                                           }}
 
                                                                           onChange={
@@ -2715,17 +2733,6 @@ const PropertyOwnerAdd2 = props => {
                                                                           money
                                                                         </label>
                                                                       </div>
-                                                                      <span className="input-group-append rounded-start">
-                                                                        <span
-                                                                          className="input-group-text"
-                                                                          style={{
-                                                                            borderTopLeftRadius: 0,
-                                                                            borderBottomLeftRadius: 0,
-                                                                          }}
-                                                                        >
-                                                                          ৳
-                                                                        </span>
-                                                                      </span>
                                                                       <ErrorMessage
                                                                         name="total_money"
                                                                         component="div"
@@ -2746,6 +2753,17 @@ const PropertyOwnerAdd2 = props => {
                                                                       md={6}
                                                                       className="d-flex"
                                                                     >
+                                                                      <span className="input-group-append rounded-start">
+                                                                        <span
+                                                                          className="input-group-text"
+                                                                          style={{
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
+                                                                          }}
+                                                                        >
+                                                                          $
+                                                                        </span>
+                                                                      </span>
                                                                       <div className="form-group-new">
                                                                         <Field
                                                                           name="balance"
@@ -2762,8 +2780,8 @@ const PropertyOwnerAdd2 = props => {
                                                                             state2.balance
                                                                           }
                                                                           style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
+                                                                            borderTopLeftRadius: 0,
+                                                                            borderBottomLeftRadius: 0,
                                                                           }}
 
                                                                           onChange={
@@ -2772,17 +2790,6 @@ const PropertyOwnerAdd2 = props => {
                                                                         />
                                                                         <label htmlFor="usr"> Balance   </label>
                                                                       </div>
-                                                                      <span className="input-group-append rounded-start">
-                                                                        <span
-                                                                          className="input-group-text"
-                                                                          style={{
-                                                                            borderTopLeftRadius: 0,
-                                                                            borderBottomLeftRadius: 0,
-                                                                          }}
-                                                                        >
-                                                                          ৳
-                                                                        </span>
-                                                                      </span>
                                                                       <ErrorMessage
                                                                         name="balance"
                                                                         component="div"
@@ -3168,61 +3175,57 @@ const PropertyOwnerAdd2 = props => {
                                                               <div className="w-100">
                                                                 <Row className="mt-4 mb-3 justify-content-evenly align-items-start">
                                                                   <Col
-                                                                    md={12} style={{ display: "flex" }}
+                                                                    md={12}
                                                                   >
-
-                                                                    <Col
-                                                                      md={11}
-                                                                    >
-                                                                      <div className="form-group-new">
-                                                                        <Field
-                                                                          name="withhold_amount"
-                                                                          type="text"
-                                                                          placeholder="0.00"
-                                                                          className={
-                                                                            "form-control" +
-                                                                            (errors.withhold_amount &&
-                                                                              touched.withhold_amount
-                                                                              ? " is-invalid"
-                                                                              : "")
-                                                                          }
-                                                                          value={
-                                                                            state2.withhold_amount
-                                                                          }
-                                                                          style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
-                                                                          }}
-
-                                                                          onChange={
-                                                                            handlePropertyFormValues2
-                                                                          }
-                                                                        />
-                                                                        <label htmlFor="usr">Withhold amount </label>
-
-                                                                      </div>
-                                                                    </Col>
-                                                                    <Col md={1}>
+                                                                    <div className="d-flex">
                                                                       <span className="input-group-append rounded-start">
                                                                         <span
                                                                           className="input-group-text"
                                                                           style={{
-                                                                            borderTopLeftRadius: 0,
-                                                                            borderBottomLeftRadius: 0,
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
                                                                           }}
                                                                         >
-                                                                          ৳
+                                                                          $
                                                                         </span>
                                                                       </span>
-                                                                    </Col>
+                                                                      <div className="d-flex flex-column w-100">
+                                                                        <div className="form-group-new">
+                                                                          <Field
+                                                                            name="withhold_amount"
+                                                                            type="text"
+                                                                            placeholder="0.00"
+                                                                            className={
+                                                                              "form-control" +
+                                                                              (errors.withhold_amount &&
+                                                                                touched.withhold_amount
+                                                                                ? " is-invalid"
+                                                                                : "")
+                                                                            }
+                                                                            value={
+                                                                              state2.withhold_amount
+                                                                            }
+                                                                            style={{
+                                                                              borderTopLeftRadius: 0,
+                                                                              borderBottomLeftRadius: 0,
+                                                                            }}
 
-                                                                    <ErrorMessage
-                                                                      name="withhold_amount"
-                                                                      component="div"
-                                                                      className="invalid-feedback"
-                                                                    />
+                                                                            onChange={
+                                                                              handlePropertyFormValues2
+                                                                            }
+                                                                          />
+                                                                          <label htmlFor="usr">   Withhold amount </label>
+
+                                                                        </div>
 
 
+                                                                        <ErrorMessage
+                                                                          name="withhold_amount"
+                                                                          component="div"
+                                                                          className="invalid-feedback"
+                                                                        />
+                                                                      </div>
+                                                                    </div>
                                                                   </Col>
                                                                 </Row>
 
@@ -3681,7 +3684,7 @@ const PropertyOwnerAdd2 = props => {
                                                       color={
                                                         state8[idx][
                                                           "split_type"
-                                                        ] === "৳"
+                                                        ] === "$"
                                                           ? "secondary"
                                                           : "light"
                                                       }
@@ -3689,7 +3692,7 @@ const PropertyOwnerAdd2 = props => {
                                                         toggleDollorBtn(idx)
                                                       }
                                                     >
-                                                      <span> ৳</span>
+                                                      <span> $</span>
                                                     </Button>
                                                     <Button
                                                       className="d-flex align-items-center"
@@ -3708,6 +3711,20 @@ const PropertyOwnerAdd2 = props => {
                                                     </Button>
                                                   </div>
                                                 ) : null}
+                                                {state8[idx]["split_type"] ===
+                                                  "$" && (
+                                                    <span className="input-group-append rounded-start">
+                                                      <span
+                                                        className="input-group-text"
+                                                        style={{
+                                                          borderTopRightRadius: 0,
+                                                          borderBottomRightRadius: 0,
+                                                        }}
+                                                      >
+                                                        $
+                                                      </span>
+                                                    </span>
+                                                  )}
                                                 <input
                                                   name="split"
                                                   type="text"
@@ -3727,20 +3744,6 @@ const PropertyOwnerAdd2 = props => {
                                                     ]
                                                   }
                                                 />
-                                                {state8[idx]["split_type"] ===
-                                                  "৳" && (
-                                                    <span className="input-group-append rounded-start">
-                                                      <span
-                                                        className="input-group-text"
-                                                        style={{
-                                                          borderTopLeftRadius: 0,
-                                                          borderBottomLeftRadius: 0,
-                                                        }}
-                                                      >
-                                                        ৳
-                                                      </span>
-                                                    </span>
-                                                  )}
                                                 {state8[idx]["split_type"] ===
                                                   "%" && (
                                                     <span className="input-group-append">

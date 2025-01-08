@@ -629,7 +629,7 @@ const ContactForm = props => {
               <div className="form-group-new">
                 <Button
                   className="d-flex justify-content-evenly align-items-start"
-                  style={{ marginTop: -30, backgroundColor: "#564BC6" }}
+                  style={{ marginTop: -30 }}
                   onClick={e => setAddAditionalEmail(prev => prev + 1)}
                   disabled={addAditionalEmail < 3 ? false : true}
                 >
@@ -961,7 +961,7 @@ const ContactForm = props => {
                                 props.handlePostalFormFieldValues(e, props.idx)
                               }
                             />
-                            <label htmlFor="usr">District</label>
+                            <label htmlFor="usr">Suburb</label>
                           </div>
                         </Col>
                         <Col md={6}>
@@ -998,7 +998,7 @@ const ContactForm = props => {
                                 props.handlePostalFormFieldValues(e, props.idx)
                               }
                             />
-                            <label htmlFor="usr">Division</label>
+                            <label htmlFor="usr">State</label>
                           </div>
                         </Col>
 
@@ -1209,7 +1209,7 @@ const ContactForm = props => {
                                 )
                               }
                             />
-                            <label htmlFor="usr">District</label>
+                            <label htmlFor="usr">Suburb</label>
                           </div>
                         </Col>
                         <Col md={6}>
@@ -1252,7 +1252,7 @@ const ContactForm = props => {
                                 )
                               }
                             />
-                            <label htmlFor="usr"> Division</label>
+                            <label htmlFor="usr"> State</label>
                           </div>
                         </Col>
                         <Col md={6}>

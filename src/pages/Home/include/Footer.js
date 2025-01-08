@@ -188,7 +188,7 @@ const Footer = props => {
                   target="_blank"
                   rel="noreferrer noopener"
                 > */}
-                  CliqProperty {" "}
+                  MyDay {" "}
                 {/* </a>{" "}
                 &amp; <a href="https://creative-tim.com/">Creative Tim</a>{" "} */}
                 <span className={random['current-year']}>2022</span>. All rights reserved.

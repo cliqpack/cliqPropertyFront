@@ -144,9 +144,9 @@ import CommentData from "pages/Activity/CommentData";
 
 let propertyId = undefined;
 
+document.title = "myday";
 
 const JobInfo = props => {
-  document.title = "CliqProperty";
   const { t } = useTranslation();
   const localizeItem = text => `${t(text)}`
   //const navigate = usenavigate();
@@ -944,10 +944,6 @@ const JobInfo = props => {
 
   const navigateToWorkOrder = () => {
     history.push("/tasks")
-  }
-
-  const handleCancelBtn = () => {
-    history.goBack();
   }
 
   return (
@@ -2054,7 +2050,7 @@ const JobInfo = props => {
                                     {item?.reference}
                                   </td>
                                   <td style={{ width: "24%" }}>
-                                    {item?.amount ? `৳${item?.amount}` : ''}
+                                    {item?.amount ? `$${item?.amount}` : ''}
                                   </td>
                                   <td style={{ width: "20%" }}>
                                     {item?.status == "init" ? (
@@ -2130,7 +2126,7 @@ const JobInfo = props => {
                                 "DD/MM/yyyy"
                               )})`}</th>
                             <td>{jobData?.bill?.details || ""}</td>
-                            <td>৳{jobData?.bill?.amount}</td>
+                            <td>${jobData?.bill?.amount}</td>
                             <td></td>
                           </tr>
                         </tbody>
@@ -2319,7 +2315,7 @@ const JobInfo = props => {
                   >
                     <button
                       className="btn btn-buttonCancelColor w-md"
-                      onClick={handleCancelBtn}
+                      type="submit"
                     >
                       <i className="fas fa-times me-1"></i> {t('Cancel')}
                     </button>
@@ -2336,6 +2332,17 @@ const JobInfo = props => {
             </Card>
           </Col>
         </Row>
+
+
+
+
+
+
+
+
+
+
+
 
         {/* ================= activity modal start ===================*/}
         <Modal

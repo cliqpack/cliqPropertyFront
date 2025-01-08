@@ -128,7 +128,7 @@ const { SearchBar } = Search;
 
 
 //meta title
-document.title = "CliqProperty";
+document.title = "myday";
 
 const TableModal = props => {
 

@@ -459,7 +459,7 @@ const Contacts = props => {
                         "Please Enter Country"
                       ),
 
-                      abn: Yup.string().required("Please Enter BIN"),
+                      abn: Yup.string().required("Please Enter ABN"),
                       notes: Yup.string().required("Please Enter Notes"),
                     })}
                     onSubmit={(values, onSubmitProps) => {
@@ -1493,7 +1493,7 @@ const Contacts = props => {
                             <Card>
                               <CardBody>
                                 <h4 className="text-primary mb-3">
-                                  BIN
+                                  ABN
 
                                 </h4>
                                 <div className="w-75" style={{
@@ -1504,7 +1504,7 @@ const Contacts = props => {
                                   <Row className="mt-3">
                                     <Col md={2}>
                                       <Label for="abn" className="form-label">
-                                        BIN
+                                        ABN
                                       </Label>
                                     </Col>
 

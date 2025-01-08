@@ -20,9 +20,9 @@ import BankStatementModal from "./BankStatementModal";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import toastr from "toastr";
 
+document.title = "Reconciliations";
 
 function Reconciliation(props) {
-    document.title = "Reconciliations";
     const { location } = useHistory();
     const params = useParams();
     const [seen, setSeen] = useState(false);
@@ -192,7 +192,7 @@ function Reconciliation(props) {
                                             </div>
                                         </Col>
                                         <Col md={6} className='d-flex justify-content-end'>
-                                            <div><b>৳{data?.bank_statement_balance}</b></div>
+                                            <div><b>${data?.bank_statement_balance}</b></div>
                                         </Col>
                                     </Row>
                                     <Row className="py-1">
@@ -210,7 +210,7 @@ function Reconciliation(props) {
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>+</Col >
-                                                <Col md={6} className='d-flex justify-content-end'>৳{data?.unreconciled_deposits}</Col >
+                                                <Col md={6} className='d-flex justify-content-end'>${data?.unreconciled_deposits}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
@@ -227,7 +227,7 @@ function Reconciliation(props) {
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>-</Col >
-                                                <Col md={6} className='d-flex justify-content-end'>৳{data?.unreconciled_withdrawals}</Col >
+                                                <Col md={6} className='d-flex justify-content-end'>${data?.unreconciled_withdrawals}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
@@ -244,7 +244,7 @@ function Reconciliation(props) {
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>+</Col >
-                                                <Col md={6} className='d-flex justify-content-end'>৳{data?.adjustment}</Col >
+                                                <Col md={6} className='d-flex justify-content-end'>${data?.adjustment}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
@@ -261,7 +261,7 @@ function Reconciliation(props) {
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>+</Col>
-                                                <Col md={6} className='d-flex justify-content-end'>৳{data?.cash_not_banked}</Col >
+                                                <Col md={6} className='d-flex justify-content-end'>${data?.cash_not_banked}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
@@ -278,7 +278,7 @@ function Reconciliation(props) {
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>-</Col >
-                                                <Col md={6} className='d-flex justify-content-end border-bottom border-secondary'>৳{data?.withdrawals_not_processed}</Col >
+                                                <Col md={6} className='d-flex justify-content-end border-bottom border-secondary'>${data?.withdrawals_not_processed}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
@@ -287,7 +287,7 @@ function Reconciliation(props) {
                                             <div>Reconciled bank statement balance</div>
                                         </Col>
                                         <Col md={6} className='d-flex justify-content-end'>
-                                            <div className="fw-bold">{reconciledBankStatementBalance > 0 ? `৳${reconciledBankStatementBalance}` : '৳0.00'}</div>
+                                            <div className="fw-bold">{reconciledBankStatementBalance > 0 ? `$${reconciledBankStatementBalance}` : '$0.00'}</div>
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -299,23 +299,23 @@ function Reconciliation(props) {
 
                                     <Row className="py-1">
                                         <Col md={6}>Balance brought forward from: <b>{moment().format('01, MMMM YYYY')}</b>	</Col>
-                                        <Col md={6} className='d-flex justify-content-end align-items-center fw-bold'>৳{data?.cashbook_amount}</Col>
+                                        <Col md={6} className='d-flex justify-content-end align-items-center fw-bold'> ${data?.cashbook_amount} </Col>
                                     </Row>
                                     <Row className="py-1">
                                         <Col md={6}>Add: <Link to={`/receiptsList/${state?.date}`}>new receipts</Link></Col>
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>+</Col>
-                                                <Col md={6} className='d-flex justify-content-end'>৳{data?.new_receipts}</Col >
+                                                <Col md={6} className='d-flex justify-content-end'>${data?.new_receipts}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
                                     <Row className="py-1">
-                                        <Col md={6}>Less: <Link to={`/withDrawals/{state?.month}/${state?.year}`}>new withdrawals</Link></Col>
+                                        <Col md={6}>Less: <Link to={`/withDrawals/${state?.month}/${state?.year}`}>new withdrawals</Link></Col>
                                         <Col md={6} className='d-flex justify-content-end'>
                                             <Row className="w-100 fw-bold">
                                                 <Col md={6} className='d-flex justify-content-end font-size-18'>-</Col>
-                                                <Col md={6} className='d-flex justify-content-end border-bottom border-secondary'>৳{data?.new_withdrawals}</Col >
+                                                <Col md={6} className='d-flex justify-content-end border-bottom border-secondary'>${data?.new_withdrawals}</Col >
                                             </Row>
                                         </Col>
                                     </Row>
@@ -325,7 +325,7 @@ function Reconciliation(props) {
                                             <div>Balance as at 1 {moment().format('DD, MMMM YYYY')}	</div>
                                         </Col>
                                         <Col md={6} className='d-flex justify-content-end'>
-                                            <div className="fw-bold">৳{cashBookBalance > 0 ? cashBookBalance : "0.00"}</div>
+                                            <div className="fw-bold">${cashBookBalance > 0 ? cashBookBalance : "0.00"}</div>
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -337,7 +337,7 @@ function Reconciliation(props) {
                                     <Row className="py-1">
                                         <Col md={6}>Folio balances as at <b>{moment().format('DD, MMMM YYYY')}</b></Col>
                                         <Col md={6} className='d-flex justify-content-end'>
-                                            <div className="fw-bold">৳{folioBalance > 0 ? folioBalance : "0.00"}</div>
+                                            <div className="fw-bold">${folioBalance > 0 ? folioBalance : "0.00"}</div>
                                         </Col>
                                     </Row>
                                 </CardBody>

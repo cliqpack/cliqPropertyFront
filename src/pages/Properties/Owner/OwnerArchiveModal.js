@@ -1,22 +1,15 @@
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Modal, ModalHeader, ModalFooter } from "reactstrap";
 import { connect } from "react-redux";
 
 import { ownerArchive, ownerArchiveFresh } from "store/actions";
 
 import toastr from "toastr";
-import { useHistory, useParams } from "react-router-dom";
-import { set } from "lodash";
 
 const OwnerArchiveModal = props => {
-  const { id } = useParams();
-  const currentDate = moment().format("YYYY-MM-DD");
-
-  const [state, setState] = useState({ date: currentDate });
-
   const handleSave = e => {
     e.preventDefault();
+    props.setState(prev => ({ ...prev, loader: true }))
     props.ownerArchive(props.id,'0');
   };
 
@@ -32,6 +25,7 @@ const OwnerArchiveModal = props => {
         } else {
             toastr.success('Success');
         }
+        props.setState(prev => ({ ...prev, loader: false }))
         props.ownerArchiveFresh();
         props.toggle();
     }
@@ -47,7 +41,7 @@ const OwnerArchiveModal = props => {
       >
         <ModalHeader toggle={props.toggle}>
           <span className="text-primary">
-            Are you sure you want to archive the folio OWN00033 from all future
+            Are you sure you want to archive the folio OWN000{props.id} from all future
             transactions?
           </span>
         </ModalHeader>

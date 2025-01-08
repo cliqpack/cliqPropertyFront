@@ -131,7 +131,33 @@ const initialState = {
 
   cancel_rent_loading: false,
 
-  generate_rent_invoice_loading: false
+  generate_rent_invoice_loading: false,
+  restore_tenant_loading: false,
+  restore_owner_loading: false,
+  restore_seller_loading: false,
+  owner_fl_data: null,
+  supplier_fl_data: null,
+  seller_fl_data: null,
+  owner_fs_properties: null,
+  owner_fs_transaction: null,
+  owner_fs_transaction_loading: false,
+  od_fs_transaction: null,
+  od_fs_transaction_loading: false,
+  owner_statements: null,
+  owner_statements_loading: false,
+  summary_transaction_by_date: null,
+  summary_transaction_by_date_loading: false,
+  summary_by_monthly_info: null,
+  summary_by_monthly_info_loading: false,
+  supplier_fs_transaction: null,
+  supplier_fs_transaction_loading: false,
+  supplier_summary_transaction_by_date: null,
+  supplier_summary_transaction_by_date_loading: false,
+  supplier_summary_by_monthly_info: null,
+  supplier_summary_by_monthly_info_loading: false,
+  owner_financial_activity_loading: false,
+  owner_financial_activity_data: null,
+  delete_owner_financial_activity_data_loading: false,
 };
 
 const AccountsTransactions = (state = initialState, action) => {
@@ -332,6 +358,18 @@ const AccountsTransactions = (state = initialState, action) => {
         archive_tenant_loading: action.status,
       };
       break;
+    case "RESTORE_TENANT":
+      state = {
+        ...state,
+        restore_tenant_loading: action.status,
+      };
+      break;
+    case "RESTORE_TENANT_FRESH":
+      state = {
+        ...state,
+        restore_tenant_loading: action.status,
+      };
+      break;
     case "ARCHIVE_OWNER":
       state = {
         ...state,
@@ -339,6 +377,12 @@ const AccountsTransactions = (state = initialState, action) => {
         archive_owner_data: action.payload,
         archive_owner_error: action.status,
         archive_owner_loading: action.status,
+      };
+      break;
+    case "RESTORE_OWNER":
+      state = {
+        ...state,
+        restore_owner_loading: action.status,
       };
       break;
     case "ARCHIVE_SELLER":
@@ -698,6 +742,203 @@ const AccountsTransactions = (state = initialState, action) => {
         ...state,
 
         generate_rent_invoice_loading: action.status,
+      };
+      break;
+    case "RESTORE_SELLER":
+      state = {
+        ...state,
+        restore_seller_loading: action.status,
+      };
+      break;
+    case "OWNER_FL_DATA":
+      state = {
+        ...state,
+        owner_fl_data: action.payload,
+      };
+      break;
+    case "OWNER_FILTER_FOLIO_LEDGER_REPORT_API":
+      state = {
+        ...state,
+        owner_fl_data: action.payload,
+        owner_fl_data_loading: action.status,
+      };
+      break;
+    case "OWNER_FILTER_FOLIO_LEDGER_REPORT_API_FRESH":
+      state = {
+        ...state,
+        owner_fl_data_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_FL_DATA":
+      state = {
+        ...state,
+        supplier_fl_data: action.payload,
+      };
+      break;
+    case "SUPPLIER_FILTER_FOLIO_LEDGER_REPORT_API":
+      state = {
+        ...state,
+        supplier_fl_data: action.payload,
+        supplier_fl_data_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_FILTER_FOLIO_LEDGER_REPORT_API_FRESH":
+      state = {
+        ...state,
+        supplier_fl_data_loading: action.status,
+      };
+      break;
+    case "SELLER_FL_DATA":
+      state = {
+        ...state,
+        seller_fl_data: action.payload,
+      };
+      break;
+    case "SELLER_FILTER_FOLIO_LEDGER_REPORT_API":
+      state = {
+        ...state,
+        seller_fl_data: action.payload,
+        seller_fl_data_loading: action.status,
+      };
+      break;
+    case "SELLER_FILTER_FOLIO_LEDGER_REPORT_API_FRESH":
+      state = {
+        ...state,
+        seller_fl_data_loading: action.status,
+      };
+      break;
+    case "OWNER_FS_TRANSACTIONS":
+      state = {
+        ...state,
+        owner_fs_transaction: action.payload,
+        owner_fs_transaction_loading: action.status,
+      };
+      break;
+    case "OWNER_FS_TRANSACTIONS_FRESH":
+      state = {
+        ...state,
+        owner_fs_transaction_loading: action.status,
+      };
+      break;
+    case "OD_FS_TRANSACTIONS":
+      state = {
+        ...state,
+        od_fs_transaction: action.payload,
+        od_fs_transaction_loading: action.status,
+      };
+      break;
+    case "OD_FS_TRANSACTIONS_FRESH":
+      state = {
+        ...state,
+        od_fs_transaction_loading: action.status,
+      };
+      break;
+    case "OWNER_FS_PROPERTIES":
+      state = {
+        ...state,
+        owner_fs_properties: action.payload,
+      };
+      break;
+    case "OWNER_STATEMENTS":
+      state = {
+        ...state,
+        owner_statements: action.payload,
+        owner_statements_loading: action.status,
+      };
+      break;
+    case "OWNER_STATEMENTS_FRESH":
+      state = {
+        ...state,
+        owner_statements_loading: action.status,
+      };
+      break;
+    case "SUMMARY_TRANSACTION_BY_DATE":
+      state = {
+        ...state,
+        summary_transaction_by_date: action.payload,
+        summary_transaction_by_date_loading: action.status,
+      };
+      break;
+    case "SUMMARY_TRANSACTION_BY_DATE_FRESH":
+      state = {
+        ...state,
+        summary_transaction_by_date_loading: action.status,
+      };
+      break;
+    case "SUMMARY_BY_MONTHLY_INFO":
+      state = {
+        ...state,
+        summary_by_monthly_info: action.payload,
+        summary_by_monthly_info_loading: action.status,
+      };
+      break;
+    case "SUMMARY_BY_MONTHLY_INFO_FRESH":
+      state = {
+        ...state,
+        summary_by_monthly_info_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_FS_TRANSACTIONS":
+      state = {
+        ...state,
+        supplier_fs_transaction: action.payload,
+        supplier_fs_transaction_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_FS_TRANSACTIONS_FRESH":
+      state = {
+        ...state,
+        supplier_fs_transaction_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_SUMMARY_TRANSACTION_BY_DATE":
+      state = {
+        ...state,
+        supplier_summary_transaction_by_date: action.payload,
+        supplier_summary_transaction_by_date_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_SUMMARY_TRANSACTION_BY_DATE_FRESH":
+      state = {
+        ...state,
+        supplier_summary_transaction_by_date_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_SUMMARY_BY_MONTHLY_INFO":
+      state = {
+        ...state,
+        supplier_summary_by_monthly_info: action.payload,
+        supplier_summary_by_monthly_info_loading: action.status,
+      };
+      break;
+    case "SUPPLIER_SUMMARY_BY_MONTHLY_INFO_FRESH":
+      state = {
+        ...state,
+        supplier_summary_by_monthly_info_loading: action.status,
+      };
+      break;
+    case "OWNER_FINANCIAL_ACTIVITY_STORE":
+      state = {
+        ...state,
+        owner_financial_activity_loading: action.status,
+      };
+      break;
+    case "OWNER_FINANCIAL_ACTIVITY_STORE_FRESH":
+      state = {
+        ...state,
+        owner_financial_activity_loading: action.status,
+      };
+      break;
+    case "OWNER_FINANCIAL_ACTIVITY_DATA":
+      state = {
+        ...state,
+        owner_financial_activity_data: action.payload,
+      };
+      break;
+    case "DELETE_OWNER_FINANCIAL_ACTIVITY_DATA":
+      state = {
+        ...state,
+        delete_owner_financial_activity_data_loading: action.payload,
       };
       break;
     default:

@@ -64,7 +64,7 @@ const ContactEdit = props => {
   const [fullPostalAddress, setFullPostalAddress] = useState([]);
 
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
 
   useEffect(() => {
@@ -1255,7 +1255,7 @@ const ContactEdit = props => {
                                   <Col xs={10} sm={9} md={11} lg={11}>
                                     <CardBody style={{ paddingLeft: "0px" }}>
                                       <CardTitle tag="h5">
-                                        BIN
+                                        ABN
                                       </CardTitle>
                                       <div className="my-3">
                                         <Row className="d-flex justify-content-evenly align-items-center">

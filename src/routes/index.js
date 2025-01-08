@@ -19,7 +19,7 @@ import Dashboard from "../pages/Dashboard/index";
 // Charts
 // import ChartApex from "../pages/Charts/Apexcharts";
 // import ChartistChart from "../pages/Charts/ChartistChart";
-// import ChartjsChart from "../pages/Charts/ChartjsChart";
+import ChartjsChart from "../pages/Charts/ChartjsChart";
 // import EChart from "../pages/Charts/EChart";
 // import SparklineChart from "../pages/Charts/SparklineChart";
 // import ChartsKnob from "../pages/Charts/charts-knob";
@@ -126,6 +126,7 @@ import JobAllActivity from "pages/Jobs/Activity/JobAllActivity";
 import OTInspectionInfo from "pages/OwnerTenantDashboard/OTInspectionInfo";
 import OTJobInfo from "pages/OwnerTenantDashboard/OTJobInfo";
 import OTPropInfo from "pages/OwnerTenantDashboard/OTPropInfo";
+import ODFinancialSummary from "pages/OwnerTenantDashboard/OwnerDashboard/ODFinancialSummary";
 import TenantDDetails from "pages/OwnerTenantDashboard/TenantDDetails";
 
 import ViewOriginalTemplateData from "pages/Jobs/Activity/ViewOriginalTemplateData";
@@ -168,6 +169,17 @@ import Withdrawals from "pages/Accounts/Reconciliations/Withdrawals";
 import ReconciliationReport from "pages/Accounts/Reconciliations/Reports/ReconciliationReport";
 import UnreconcileItems from "pages/Accounts/Reconciliations/Reports/UnreconcileItems";
 import FolioLedger from "pages/Accounts/Reconciliations/Reports/FolioLedger";
+import OwnerFolioLedger from "pages/Properties/Owner/OwnerFolioLedger";
+import OwnerFolioSummary from "pages/Properties/Owner/OwnerSummaryReport/OwnerFolioSummary";
+import EditFinancialSummary from "pages/Properties/Owner/OwnerSummaryReport/EditFinancialSummary";
+import SupplierFolioLedger from "pages/Contacts2/Supplier/SupplierFolioLedger";
+import SellerFolioLedger from "pages/Properties/Seller/SellerFolioLedger";
+import SummaryByDate from "pages/Properties/Owner/OwnerSummaryReport/SummaryByDate";
+import SummaryByMonthInfo from "pages/Properties/Owner/OwnerSummaryReport/SummaryByMonthInfo";
+import SummaryByStatement from "pages/Properties/Owner/OwnerSummaryReport/SummaryByStatement";
+import SummaryGroupBy from "pages/Properties/Owner/OwnerSummaryReport/SummaryGroupBy";
+import OwnerStatementReport from "pages/Properties/Owner/OwnerStatementReport/OwnerStatementReport";
+import SellerStatementReport from "pages/Properties/Seller/SellerStatementReport/SellerStatementReport";
 import TrialBalance from "pages/Accounts/Reconciliations/Reports/TrialBalance";
 import TransactionAuditReport from "pages/Accounts/Reconciliations/Reports/TransactionAuditReport";
 import CashBookReport from "pages/Accounts/Reconciliations/Reports/CashBookReport";
@@ -219,20 +231,18 @@ import Address from "common/Address/Address";
 import SellerFolio from "pages/Properties/Seller/SellerFolio";
 import SaleReceipt from "pages/Accounts/Transactions/Sale/SaleReceipt";
 import SupplierFolio from "pages/Contacts2/Supplier/SupplierFolio";
+import SupplierFolioSummary from "pages/Contacts2/Supplier/SupplierFolioSummary/SupplierFolioSummary";
+import AddFinancialSummary from "pages/Properties/Owner/OwnerSummaryReport/AddFinancialSummary";
+import EditSupplierFinancialSummary from "pages/Contacts2/Supplier/SupplierFolioSummary/EditFinancialSummary";
+import SupplierSummaryByDate from "pages/Contacts2/Supplier/SupplierFolioSummary/SummaryByDate";
+import SupplierSummaryByStatement from "pages/Contacts2/Supplier/SupplierFolioSummary/SummaryByStatement";
+import SupplierSummaryByMonthInfo from "pages/Contacts2/Supplier/SupplierFolioSummary/SummaryByMonthInfo";
 import ProviderSettings from "pages/Settings/Integrations/ProviderSettings";
 import ProviderSettingsForCompany from "pages/Settings/Integrations/ProviderSettingsForCompany";
 import AddProvider from "pages/Settings/Integrations/AddProvider";
 import ListingAllDocs from "pages/Listings/Activity/ListingAllDocs";
-import MainReport from "pages/Reports/MainReport";
-import BillsReport from "pages/Reports/FinancialReport/BillsReport";
-import LettingFeeBills from "pages/Reports/FinancialReport/LettingFeeBills";
-import LettingFeeLastMonthBills from "pages/Reports/FinancialReport/LettingFeeLastMonthBills";
-import LettingFeeThisMonthBills from "pages/Reports/FinancialReport/LettingFeeThisMonthBills";
-import UnpaidBills from "pages/Reports/FinancialReport/UnpaidBills";
-// import CashBook from "pages/Reports/FinancialReport/CashBook/CashBookReport";
-import CashBookApiReport from "pages/Reports/FinancialReport/CashBook/CashBookApiReport";
-import FolioLedgerApiReport from "pages/Reports/FinancialReport/FolioLedger/FolioLedgerApiReport";
-import TransactionAuditApiReport from "pages/Reports/FinancialReport/TransactionAudit/TransactionAuditApiReport";
+import EChart from "pages/Charts/EChart";
+import { exact } from "prop-types";
 
 ///////////////////starts from here////////////////////////////////////////
 
@@ -277,7 +287,7 @@ const authProtectedRoutes = [
   // { path: "/supplier/edit/:id", component: EditSupplier },
   { path: "/supplier/edit/:id/:tId", component: EditSupplier },
   { path: "/set/setAddSupplier/:id", component: SetAddSupplier },
-  { path: "/contactsInfo/:id", component: ContactsInfo2 },
+  { path: "/contactsInfo/:id", component: ContactsInfo2,exact:true },
   { path: "/contactsInfo/owner/:id", component: OwnerInfo },
   { path: "/contactsInfo/tenant/:id", component: TenantInfo },
   { path: "/contactsInfo/supplier/:id", component: SupplierInfo },
@@ -289,6 +299,8 @@ const authProtectedRoutes = [
   { path: "/ownerFolio/:propertyId/:fId", component: OwnerFolio },
   { path: "/sellerFolio/:propertyId/:fId", component: SellerFolio },
   { path: "/supplierFolio/:folio_id", component: SupplierFolio },
+  { path: "/supplier/summary/:id", component: SupplierFolioSummary },
+  { path: "/edit/supplier/financial/summary/:id", component: EditSupplierFinancialSummary },
 
   // Inspections
   { path: "/inspectionInfo/:id", component: InspectionInfo },
@@ -333,8 +345,8 @@ const authProtectedRoutes = [
   //Charts
   // { path: "/apex-charts", component: ChartApex },
   // { path: "/chartist-charts", component: ChartistChart },
-  // { path: "/chartjs-charts", component: ChartjsChart },
-  // { path: "/e-charts", component: EChart },
+  { path: "/chartjs-charts", component: ChartjsChart },
+  { path: "/e-charts", component: EChart },
   // { path: "/sparkline-charts", component: SparklineChart },
   // { path: "/charts-knob", component: ChartsKnob },
   // { path: "/re-charts", component: ReCharts },
@@ -496,8 +508,11 @@ const authProtectedRoutes = [
   { path: "/emailSettings", component: Email, settings: true },
   //address
   { path: "/address", component: Address, settings: true },
-  // REPORTS
-  { path: "/reports", component: MainReport },
+  { path: "/owner/summary/:id", component: OwnerFolioSummary },
+  { path: "/add/financial/summary/:id", component: AddFinancialSummary },
+  { path: "/edit/financial/summary/:id", component: EditFinancialSummary },
+  { path: "/owner/statements/:id/:property_id", component: OwnerStatementReport },
+  
 
 ];
 
@@ -520,6 +535,7 @@ const publicRoutes = [
   //Owner and tenant dashboard
   { path: "/owner-tenant-dashboard", component: OTDashboard },
   { path: "/info/:id", component: OTPropInfo },
+  { path: "/od/financialsummary/:id", component: ODFinancialSummary },
   { path: "/DashboardTenantInfo/:id", component: TenantDDetails },
   { path: "/tenantActivity/:id", component: TenantDDetailsActivity },
   { path: "/tenantDocuments/:id", component: TenantDocuments },
@@ -535,6 +551,9 @@ const publicRoutes = [
   { path: "/reconciliationReport/:id", component: ReconciliationReport },
   { path: "/unreconcileItems/:date/:id", component: UnreconcileItems },
   { path: "/folioLedger/:year/:month/:day", component: FolioLedger },
+  { path: "/ownerfolioLedger/:id", component: OwnerFolioLedger },
+  { path: "/supplierfolioLedger/:id", component: SupplierFolioLedger },
+ 
   { path: "/trialBalance/:year/:month/:day", component: TrialBalance },
   {
     path: "/transactionAuditReport/:year/:month",
@@ -551,16 +570,18 @@ const publicRoutes = [
     component: NewWithdrawalsReport,
   },
   { path: "/printRecieptTransaction/:id", component: PrintRecieptInvoice },
-  
-  // REPORT
-  { path: "/reports/bills", component: BillsReport },
-  { path: "/reports/unpaid-bills", component: UnpaidBills },
-  { path: "/reports/letting/fee", component: LettingFeeBills },
-  { path: "/reports/letting/fee/last-month", component: LettingFeeLastMonthBills },
-  { path: "/reports/letting/fee/this-month", component: LettingFeeThisMonthBills },
-  { path: "/reports/cashbook", component: CashBookApiReport },
-  { path: "/reports/folioledger", component: FolioLedgerApiReport },
-  { path: "/reports/transactionaudit", component: TransactionAuditApiReport },
+  // OWNER SUMMARY REPORT
+  { path: "/summary/bydate/:id/:fromdate/:todate", component: SummaryByDate },
+  { path: "/summary/monthinfo/:id/:fromdate/:todate", component: SummaryByMonthInfo },
+  { path: "/summary/bystatement/:id/:fromdate/:todate", component: SummaryByStatement },
+  { path: "/summary/groupby/:id/:fromdate/:todate", component: SummaryGroupBy },
+  // SUPPLIER SUMMARY REPORT
+  { path: "/supplier/summary/bydate/:id/:fromdate/:todate", component: SupplierSummaryByDate },
+  { path: "/supplier/summary/monthinfo/:id/:fromdate/:todate", component: SupplierSummaryByMonthInfo },
+  { path: "/supplier/summary/bystatement/:id/:fromdate/:todate", component: SupplierSummaryByStatement },
+  { path: "/supplier/summary/groupby/:id/:fromdate/:todate", component: SupplierSummaryByDate },
+  { path: "/seller/statements/:id/:property_id", component: SellerStatementReport },
+  { path: "/sellerfolioLedger/:id", component: SellerFolioLedger },
 ];
 
 export { authProtectedRoutes, publicRoutes };

@@ -1428,16 +1428,12 @@ export const addReminderImageFresh = () => {
 };
 
 export const addReminderProperty = (data, data2, id) => {
-  console.log(data, data2, id);
-  // return;
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   var url = `${process.env.REACT_APP_LOCALHOST}/property/reminder`;
   const formData = {
     property_id: data2.selectedProperty && data2.selectedProperty.value || id,
     reminder_setting_id: data2.selectedReminder && data2.selectedReminder.value,
-
     frequency_type: data.frequency_type,
-
     contact: data.default_contact,
     frequency: data.frequency,
     name: data2.selectedReminder && data2.selectedReminder.label,
@@ -1446,18 +1442,12 @@ export const addReminderProperty = (data, data2, id) => {
     notes: data.notes,
     certificate_expiry: data.certificate_expiry,
     due: data.due,
-
-
   };
-  console.log(formData);
-  // return;
 
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
     axios
@@ -1489,15 +1479,12 @@ export const addReminderPropertyFresh = () => {
 
 export const getReminderProperty = () => {
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-
   var url = `${process.env.REACT_APP_LOCALHOST}/properties/reminder/name`;
   const formData = {};
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
     axios

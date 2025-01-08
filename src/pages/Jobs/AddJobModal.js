@@ -1,15 +1,31 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
+  Card,
+  Alert,
+  CardBody,
+  CardTitle,
   Col,
+  Container,
+  Row,
+  CardText,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
   Label,
   Input,
   Button,
+  CardHeader,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
   Form,
   FormGroup,
+  FormText,
+  InputGroup
 } from "reactstrap";
 import { connect } from "react-redux";
 
@@ -20,7 +36,7 @@ import {
   JobsList,
 } from "store/actions";
 import { propertyList } from "../../store/Properties/actions";
-import { getUser, getJobPropertyAccess, getJobPropertyAccessFresh } from "store/actions";
+import { addInspectionInfo, InspectionListFresh, getUser, getJobPropertyAccess, getJobPropertyAccessFresh } from "store/actions";
 
 import toastr from "toastr";
 import { useHistory, useParams } from "react-router-dom";
@@ -38,6 +54,7 @@ const AddJobModal = props => {
   const history = useHistory();
   const [inspectionModal, setInspectionModal] = useState(false);
   const [state, setState] = useState({});
+  console.log(state);
   const [state2, setState2] = useState({});
 
   const [contactIds, setContactIds] = useState({});
@@ -56,6 +73,7 @@ const AddJobModal = props => {
   const [tenantBtn1, setTenantBtn1] = useState(false);
 
   const [open, setOpen] = useState(false);
+  console.log(open);
   const [ownerBtnShow, setOwnerBtnShow] = useState(false);
   const [tenantBtnShow, setTenantBtnShow] = useState(false)
   const [ownerCheckShow, setOwnerCheckShow] = useState(false)
@@ -121,11 +139,17 @@ const AddJobModal = props => {
     });
   }
 
+
   const dateHandler = (selectedDates, dateStr, instance) => {
+    console.log(dateStr);
     setState({ ...state, ['due_by']: dateStr });
   }
 
+
   useEffect(() => {
+
+
+
     let optionManager;
     if (props.user_list_data?.data) {
       optionManager = props.user_list_data?.data.map(item => ({
@@ -154,8 +178,11 @@ const AddJobModal = props => {
       props.addJobModalFresh();
       props.JobsListFresh();
       props.JobsList(props.tab, '1', '10', null, "id", "desc");
+      console.log(props.job_modal_add_id);
 
       if (open && props.job_modal_add_id?.job_id) {
+        console.log('ok');
+        console.log(props.job_modal_add_id?.job_id);
         history.push("/maintenanceInfo/" + props.job_modal_add_id?.job_id);
         setOpen(false)
 
@@ -179,6 +206,8 @@ const AddJobModal = props => {
       setOwnerBtn1(true);
       setOwnerBtnShow(true);
       setOwnerCheckShow(true);
+      console.log('Owner');
+
     }
     if (
       props.job_property_access_data?.data?.tenant[0] !== undefined &&
@@ -188,6 +217,7 @@ const AddJobModal = props => {
       setTenantBtn1(true);
       setOwnerBtnShow(true);
       setTenantBtnShow(true);
+      console.log('Tenant');
     }
     if (
       props.job_property_access_data?.data?.owner[0] === undefined &&
@@ -198,6 +228,8 @@ const AddJobModal = props => {
       setTenantBtn1(true);
       setTenantBtnShow(true)
       setTenantCheckShow(true);
+      console.log('Tenant 2');
+
     }
   }, [
     props.user_list_loading,
@@ -210,6 +242,11 @@ const AddJobModal = props => {
 
   const selectHandler = e => {
     setState({ ...state, [e.target.name]: e.target.value });
+  };
+  const selectHandlerForProperty = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+    setPropertySelectDataShow(true);
+    props.getJobPropertyAccessFresh();
   };
 
   const SaveAndOpenHandler = e => {
@@ -289,7 +326,7 @@ const AddJobModal = props => {
 
       <Modal isOpen={inspectionModal} toggle={toggleOff} scrollable={true}>
 
-        <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
+        <ModalHeader style={{ backgroundColor: "#153D58" }}>
           {/* <i className="fas fa-wrench font-size-20 me-2 text-info"></i>
           <span className="text-info">New Job</span> */}
 

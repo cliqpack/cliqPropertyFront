@@ -1025,7 +1025,7 @@ const TenantEdit = props => {
     if (typeof value === "number") {
       if (formTwoButtonValue.wfmBtn === "Weekly") {
         setWeeklyRent(value);
-        value *= 4;
+        value *= 4.33;
         value = value.toFixed(2);
         setState2({ ...state2, rent: e.target.value, bond_required: value });
         setFortNightlyRent();
@@ -1693,7 +1693,7 @@ const TenantEdit = props => {
     });
   };
 
-  document.title = "CliqProperty";
+  document.title = "myday";
   return (
     <React.Fragment>
       <div className="page-content">

@@ -281,7 +281,7 @@ const NewFeesModal = props => {
                 propertyBtn: val?.charging === 'Ownership' ? true : false,
                 ownerBtn: val?.charging === 'Ownership' ? false : true,
                 percentBtn: val?.value === '%' ? true : false,
-                amountBtn: val?.value === '৳' ? true : false,
+                amountBtn: val?.value === '$' ? true : false,
                 time: val?.time ? val?.time : '06:00',
                 notes: val?.note,
                 selectedFrequencyType: val?.frequnecy_type ? { label: val?.frequnecy_type, value: val?.frequnecy_type } : {},

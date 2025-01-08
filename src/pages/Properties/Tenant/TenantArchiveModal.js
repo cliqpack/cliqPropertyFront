@@ -27,50 +27,47 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 import { tenantArchive, tenantArchiveFresh } from "store/actions";
-
-
-
+import Loder from 'components/Loder/Loder';
 import toastr from "toastr";
 import { useHistory } from 'react-router-dom';
 
 
 const TenantArchiveModal = (props) => {
     const history = useHistory();
-
-
-    const [state, setState] = useState({
-
-    })
-
     const submitHandler = () => {
-        props.tenantArchive(props.id,'false');
+        props.tenantArchive(props.id, 'false');
+        props.setLoader(true)
     }
+    
     useEffect(() => {
-        if (props.archive_tenant_loading === 'Success') {
-            if (props.archive_tenant_data?.staus == 0) {
-                toastr.warning(props.archive_tenant_data?.message);
-            } else {
-                toastr.success('Success');
-            }
+        if (props.archive_tenant_loading === 'Failed') {
+            toastr.error(props.archive_tenant_data)
             props.tenantArchiveFresh();
+            props.setLoader(false)
+            props.toggle();
+        } else if (props.archive_tenant_loading === 'Success') {
+            toastr.success(props.archive_tenant_data)
+            props.tenantArchiveFresh();
+            props.setLoader(false)
+            props.toggle();
+        } else if (props.archive_tenant_loading === 'SQL ERROR') {
+            toastr.success("Something went wrong!")
+            props.tenantArchiveFresh();
+            props.setLoader(false)
             props.toggle();
         }
-    }, [props.archive_tenant_loading, props.archive_tenant_data]);
+    }, [props.archive_tenant_loading]);
 
 
     return (
         <>
-
-
             {/* ===============Inspection modal start from here ================*/}
-
             <Modal isOpen={props.state.archiveModal} toggle={props.toggle} >
                 <ModalHeader toggle={props.toggle}>
                 </ModalHeader>
 
                 <ModalBody>
-                    Are you sure you want to archive the folio TEN00034 from all future transactions?
-
+                    Are you sure you want to archive the folio TEN000{props.id} from all future transactions?
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={props.toggle}>
@@ -82,10 +79,7 @@ const TenantArchiveModal = (props) => {
 
                 </ModalFooter>
             </Modal>
-
-            {/* ===============Inspection modal ends here ================*/}
         </>
-
     )
 }
 const mapStateToProps = gstate => {
@@ -95,12 +89,8 @@ const mapStateToProps = gstate => {
 
     return {
         transaction_list_id_loading, archive_tenant_loading, archive_tenant_data
-
     };
 };
 export default connect(mapStateToProps, {
     tenantArchive, tenantArchiveFresh
-
 })(TenantArchiveModal);
-
-

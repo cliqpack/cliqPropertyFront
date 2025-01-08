@@ -35,10 +35,10 @@ import AddDepositReceipt from "./AddDepositReceipt";
 
 
 
+document.title = "Transactions";
 
 
 function TransactionList(props) {
-    document.title = "Transactions";
     const history = useHistory()
     const inputRef = useRef();
     const [state, setState] = useState({
@@ -104,7 +104,7 @@ function TransactionList(props) {
         toggleModalTransactions();
     };
     const amountRef = (cell, row) => {
-        return <span>৳{cell}</span>
+        return <span>${cell}</span>
     }
     const typeFormatter = (cell, row) => {
         return <span>
@@ -257,7 +257,7 @@ function TransactionList(props) {
                                                 setState(prev => ({ ...prev, drp_link: !prev.drp_link }))
                                             }
                                         >
-                                            <DropdownToggle caret color="buttonColor">
+                                            <DropdownToggle caret color="secondary">
                                                 Actions <i className="mdi mdi-chevron-down"></i>
                                             </DropdownToggle>
                                             <DropdownMenu>
@@ -283,7 +283,12 @@ function TransactionList(props) {
                                 </Col>
                             </Row>
                             {
-                                showModalAdd ? <AddReceipt toggle={toggleAdd} toggleDepositModal={toggleDepositModal} showModal={showModalAdd} setShowModal={setShowModalAdd} /> : null
+                                showModalAdd ? <AddReceipt
+                                    toggle={toggleAdd}
+                                    toggleDepositModal={toggleDepositModal}
+                                    showModal={showModalAdd}
+                                    setShowModal={setShowModalAdd} /> :
+                                    null
                             }
                         </CardBody>
                     </Card>

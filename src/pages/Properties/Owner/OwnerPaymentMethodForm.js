@@ -635,7 +635,7 @@ const OwnerPaymentMethodForm = props => {
     const toggleDollorBtn = idx => {
         let data = [...state8];
         let splitval = data[idx]["split"];
-        data[idx]["split_type"] = "৳";
+        data[idx]["split_type"] = "$";
         if (splitval) {
             let totalVal = 0;
             data.forEach(element => {
@@ -850,7 +850,7 @@ const OwnerPaymentMethodForm = props => {
                                                                             className="d-flex align-items-center"
                                                                             color={
                                                                                 state8[idx]["split_type"] ===
-                                                                                    "৳"
+                                                                                    "$"
                                                                                     ? "secondary"
                                                                                     : "light"
                                                                             }
@@ -858,7 +858,7 @@ const OwnerPaymentMethodForm = props => {
                                                                                 toggleDollorBtn(idx)
                                                                             }
                                                                         >
-                                                                            <span> ৳</span>
+                                                                            <span> $</span>
                                                                         </Button>
                                                                         <Button
                                                                             className="d-flex align-items-center"
@@ -877,7 +877,7 @@ const OwnerPaymentMethodForm = props => {
                                                                     </div>
                                                                 ) : null}
                                                                 {state8[idx]["split_type"] ===
-                                                                    "৳" && (
+                                                                    "$" && (
                                                                         <span className="input-group-append rounded-start">
                                                                             <span
                                                                                 className="input-group-text"
@@ -886,7 +886,7 @@ const OwnerPaymentMethodForm = props => {
                                                                                     borderBottomRightRadius: 0,
                                                                                 }}
                                                                             >
-                                                                                ৳
+                                                                                $
                                                                             </span>
                                                                         </span>
                                                                     )}

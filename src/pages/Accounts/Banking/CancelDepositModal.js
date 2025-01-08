@@ -64,7 +64,7 @@ const CancelDepositModal = (props) => {
     let modalBody = <span>No deposit record found</span>
     if (props.last_deposit_data?.current) {
         modalBody = <div>
-            <span> The last bank deposit was on <b>{moment(props.last_deposit_data?.current?.deposit_date).format('DD/MM/YYYY')}</b> with total amount <b>৳{props.last_deposit_data?.current?.total}</b> <br /></span>
+            <span> The last bank deposit was on <b>{moment(props.last_deposit_data?.current?.deposit_date).format('DD/MM/YYYY')}</b> with total amount <b>${props.last_deposit_data?.current?.total}</b> <br /></span>
             <span>  Are you sure you want to cancel the <b>last bank deposit</b>?</span>
         </div>
     }

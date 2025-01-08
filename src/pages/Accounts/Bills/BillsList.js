@@ -47,9 +47,9 @@ import toastr from "toastr";
 import Loder from "components/Loder/Loder";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
+document.title = "myday";
 
 function BillsList(props) {
-  document.title = "CliqProperty";
   const [state, setState] = useState({
     activeTab: "1",
     disabled: true,
@@ -140,9 +140,9 @@ function BillsList(props) {
     let balance = (+row?.owner?.owner_folio?.money_in + (row?.owner?.owner_folio?.opening_balance ? +row?.owner?.owner_folio?.opening_balance : 0)) - (+row?.owner?.owner_folio?.money_out + +row?.owner?.owner_folio?.uncleared)
     let amount;
     if (row.status === 'Paid') {
-      amount = <span>৳{cell}</span>;
+      amount = <span>${cell}</span>;
     } else {
-      amount = <span className={`badge rounded-pill p-1 ${balance >= cell ? 'bg-success' : 'bg-danger'}`}>৳{cell}</span>;
+      amount = <span className={`badge rounded-pill p-1 ${balance >= cell ? 'bg-success' : 'bg-danger'}`}>${cell}</span>;
     }
     return amount;
   };

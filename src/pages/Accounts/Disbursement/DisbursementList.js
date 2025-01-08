@@ -23,9 +23,9 @@ import { dueDisbursementList, dueDisbursementListFresh, previewDisbursement, pre
 import moment from "moment";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import RemotePagination from "pages/Task/RemotePagination";
+document.title = "myday";
 
 function DisbursementList(props) {
-    document.title = "CliqProperty";
     const [loader, setLoader] = useState(false);
     const [dataState, setDataState] = useState({
         page: 1,
@@ -158,8 +158,8 @@ function DisbursementList(props) {
     const dueAmount = (cell, row) => {
         let payout = totalPayout(row)
         if (payout > 0) {
-            return `৳${payout}`;
-        } else return '৳0';
+            return '$' + payout;
+        } else return '$0';
 
     }
 
@@ -171,13 +171,13 @@ function DisbursementList(props) {
     };
 
     const supplierBillPending = (cell, row) => {
-        return <span>{row.total_bills_pending_sum_amount ? `৳${row.total_bills_pending_sum_amount}` : '৳0'}</span>
+        return <span>{row.total_bills_pending_sum_amount ? '$' + row.total_bills_pending_sum_amount : '$0'}</span>
     };
     const supplierInvoicePending = (cell, row) => {
-        return <span>{row.total_due_invoice_sum_amount ? `৳${(+row.total_due_invoice_sum_amount - +row.total_due_invoice_sum_paid)}` : '৳0'}</span>
+        return <span>{row.total_due_invoice_sum_amount ? '$' + (+row.total_due_invoice_sum_amount - +row.total_due_invoice_sum_paid) : '$0'}</span>
     };
     const supplierBalance = (cell, row) => {
-        return <span>৳{row.balance}</span>
+        return <span>${row.balance}</span>
     };
     const payBySupplier = (cell, row) => {
         let payby = row?.supplier_payment?.map((item, idx) => {
@@ -187,13 +187,13 @@ function DisbursementList(props) {
     };
 
     const ownerBillPending = (cell, row) => {
-        return <span>{row.total_bills_amount_sum_amount ? '৳' + row.total_bills_amount_sum_amount : '৳0'}</span>
+        return <span>{row.total_bills_amount_sum_amount ? '$' + row.total_bills_amount_sum_amount : '$0'}</span>
     };
     const ownerInvoicePending = (cell, row) => {
-        return <span>{row.total_due_invoice_sum_amount ? '৳' + row.total_due_invoice_sum_amount : '৳0'}</span>
+        return <span>{row.total_due_invoice_sum_amount ? '$' + row.total_due_invoice_sum_amount : '$0'}</span>
     };
     const withholdRef = (cell, row) => {
-        return <span>৳{row.withhold_amount ? row.withhold_amount : 0}</span>
+        return <span>${row.withhold_amount ? row.withhold_amount : 0}</span>
     }
     const previewDoc = (row) => {
         startLoader();

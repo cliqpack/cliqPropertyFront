@@ -25,9 +25,9 @@ import {
 import DeleteUploadBillsModal from "./DeleteUploadBillsModal";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import Loder from "components/Loder/Loder";
+document.title = "Approval Bill List";
 
 function UploadBillsList(props) {
-    document.title = "Approval Bill List";
     const [loader, setLoader] = useState(false);
     const [state, setState] = useState({
         activeTab: "1", deleteModal: false, selected: [],
@@ -115,7 +115,7 @@ function UploadBillsList(props) {
         <span className="fw-bold">{cell?.slice(0, 12).concat("...")}</span>
     );
     const detailRef = (cell, row) => <span className="">{cell}</span>;
-    const amountRef = (cell, row) => <span className="">৳{cell}</span>;
+    const amountRef = (cell, row) => <span className="">${cell}</span>;
     const billDetails = (e, column, columnIndex, row, rowIndex) => {
         setId(row.id);
         setModalData(row);

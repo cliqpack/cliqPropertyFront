@@ -1,35 +1,19 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
-  Card,
-  Alert,
-  CardBody,
-  CardTitle,
   Col,
-  Container,
   Row,
-  CardText,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
   Label,
-  Input,
   Button,
-  CardHeader,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
   Form,
   FormGroup,
-  FormText,
 } from "reactstrap";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import { connect } from "react-redux";
-import Select from "react-select";
 import Loder from "components/Loder/Loder";
 
 import {
@@ -43,30 +27,21 @@ import {
 } from "store/actions";
 
 import toastr from "toastr";
-import { useHistory, useParams } from "react-router-dom";
 import Switch from "react-switch";
-// Form Editor
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 
 const EditScheduleModal = props => {
-  // console.log(props);
   const [state, setState] = useState({});
   const [editMailStatus, setEditMailStatus] = useState(false);
 
   const [form1state, setForm1State] = useState({
     switch1: true,
-    // switch2: false,
-    // selectedFiles: [],
   });
   const handleSaveSchedule = e => {
     e.preventDefault();
-    console.log("========================I am MAIL======================");
     props.toggle();
     setEditMailStatus(true);
-    // console.log(form1state.switch1, state.body)
-    // console.log(props.schedule.templateData.id)
-    //props.editSchedule(props.schedule.templateData, form1state, state)
     props.editSchedule(
       props.schedule.templateData.id,
       form1state.switch1,
@@ -76,17 +51,48 @@ const EditScheduleModal = props => {
 
   const handleSaveScheduleForSMS = e => {
     e.preventDefault();
-    console.log("==============I am sms===============");
     props.toggle();
     setEditMailStatus(true);
-    console.log(form1state.switch1, state.body);
-    console.log(props.schedule.templateData.id);
-    //props.editSchedule(props.schedule.templateData, form1state, state)
     props.templateListBySMSId(
       props.schedule.templateData.id,
       form1state.switch1,
       state.body
     );
+  };
+
+  const handleSaveScheduleForLetter = async (e) => {
+    e.preventDefault();
+
+    if (state.body === "") {
+      toastr.warning("Body con not be empty");
+      return;
+    }
+
+    props.toggle();
+    setEditMailStatus(true);
+
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+
+    const Url = `${process.env.REACT_APP_LOCALHOST}/letter/templates/${props.schedule.templateData.id}`;
+
+    const data = {
+      message: state.body,
+      status: form1state.switch1,
+    }
+
+    try {
+      const response = await axios.put(Url, data, { headers: headers });
+      toastr.success(response.data.message)
+      setEditMailStatus(false);
+      props.fetchLetterTemplate(null, "updated_at", "desc", 1, 10);
+    } catch (error) {
+      toastr.warning(error.message);
+      setEditMailStatus(false);
+    }
   };
 
   useEffect(() => {
@@ -97,7 +103,6 @@ const EditScheduleModal = props => {
       props.templateList();
     }
     if (props.schedule_sms_temp_edit === "Success") {
-      console.log("=====I am here======");
       toastr.success("Successfully Edited");
       setEditMailStatus(false);
       props.templateListBySMSIdFresh();
@@ -105,7 +110,6 @@ const EditScheduleModal = props => {
       props.templateList();
     }
     // else if (props.schedule_sms_temp_edit === 'Failed') {
-    //     //console.log("=====I am here======")
     //     toastr.warning("Error");
     //     setEditMailStatus(false);
     // }
@@ -121,12 +125,7 @@ const EditScheduleModal = props => {
     props.schedule.templateData,
     props.schedule_sms_temp_edit,
   ]);
-  // console.log(props.edit_schedule_loading);
-  // console.log(props.schedule_sms_temp_edit);
-  // console.log(props.schedule_sms_temp_edit_data, props.schedule_sms_temp_edit_error);
-  // console.log(props.schedule);
-  // console.log(props.schedule.templateData);
-  // console.log(props.schedule?.templateData?.body);
+
   const Offsymbol = () => {
     return (
       <div
@@ -249,13 +248,6 @@ const EditScheduleModal = props => {
                   </Label>
                   <Col sm={8}>
                     <div className="d-flex p-2">
-                      {/* <input
-                      className="form-control"
-                      type="text"
-                      name="name"
-                      onChange={scheduleHandler}
-                      placeholder="What will this be called?"
-                    /> */}
                       <i className="fas fa-lock me-2" />
                       {props?.schedule?.templateData?.name}
                     </div>
@@ -267,13 +259,6 @@ const EditScheduleModal = props => {
                   </Label>
                   <Col sm={8}>
                     <div className="d-flex p-2">
-                      {/* <Select
-                      value={schedule.selectRegarding}
-                      onChange={handleSelectRegion}
-                      options={schedule.optionRegarding}
-                      // placeholder="Contact"
-                      classNamePrefix="select2-selection"
-                    /> */}
                       <i className="fas fa-lock me-2" />
                       {props?.schedule?.templateData?.message_action_name}
                     </div>
@@ -285,12 +270,6 @@ const EditScheduleModal = props => {
                   </Label>
                   <Col sm={8}>
                     <div className="d-flex p-2">
-                      {/* <Select
-                      value={schedule.selectTo}
-                      onChange={handleSelectTo}
-                      options={schedule.optionTo}
-                      classNamePrefix="select2-selection"
-                    /> */}
                       <i className="fas fa-lock me-2" />
                       {props?.schedule?.templateData?.message_trigger_to}
                     </div>
@@ -303,12 +282,6 @@ const EditScheduleModal = props => {
                   </Label>
                   <Col sm={8}>
                     <div className="d-flex p-2">
-                      {/* <Select
-                      value={schedule.selectFrom}
-                      onChange={handleSelectFrom}
-                      options={schedule.optionFrom}
-                      classNamePrefix="select2-selection"
-                    /> */}
                       <i className="fas fa-lock me-2" />
                       {props?.schedule?.templateData?.messsage_trigger_point}
                     </div>
@@ -325,8 +298,6 @@ const EditScheduleModal = props => {
                         : props.schedule?.templateData?.message
                     }
                     onReady={editor => {
-                      console.log("Editor is ready to use!", editor);
-
                       if (editor) {
                         editor.ui
                           .getEditableElement()
@@ -340,9 +311,6 @@ const EditScheduleModal = props => {
                     }}
                     onChange={(event, editor) => {
                       const data = editor.getData();
-
-                      console.log(data);
-
                       setState({ ...state, body: data });
                     }}
                   />
@@ -357,31 +325,20 @@ const EditScheduleModal = props => {
           </Button>
           <Button
             color="info"
-            onClick={
-              props.schedule?.templateData?.type === "mail"
-                ? handleSaveSchedule
-                : handleSaveScheduleForSMS
-            }
+            onClick={(e) => {
+              const { type } = props.schedule?.templateData || {};
+
+              type === "mail"
+                ? handleSaveSchedule(e)
+                : type === "sms"
+                  ? handleSaveScheduleForSMS(e)
+                  : type === "letter"
+                    ? handleSaveScheduleForLetter(e)
+                    : console.warn("Unknown type");
+            }}
           >
             Save
           </Button>
-          {/* <FormGroup row>
-                        <Label for="button" sm={3}></Label>
-                        <Col sm={9} className="gap-3">
-                            <Button color="info"
-                            // onClick={toggleTempModal}
-                            >
-                                <i className="fa-solid fa-xmark"></i>Cancel
-                            </Button>{" "}
-                            <Button
-                                color="info"
-
-                                onClick={handleSaveSchedule}
-                            >
-                                <i className="far fa-save"></i> &nbsp; Save
-                            </Button>{" "}
-                        </Col>
-                    </FormGroup> */}
         </ModalFooter>
       </Modal>
 

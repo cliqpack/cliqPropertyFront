@@ -1,66 +1,40 @@
-import React, { useState, useEffect, useRef } from "react";
-import moment from "moment";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import PropTypes, { number } from "prop-types";
-import { useDispatch } from "react-redux";
 import {
     Card,
-    Alert,
     CardBody,
     CardText,
-    CardTitle,
     Col,
     Container,
     Row,
-    Label,
-    Input,
     Button,
-    CardHeader,
     Nav,
     NavItem,
     NavLink,
     TabContent,
     TabPane
 } from "reactstrap";
-import Select from "react-select";
 import { getSettingsEmailStationaryData, addEmailSettings, addEmailSettingsFresh } from "store/actions";
-import { Link, useHistory, withRouter } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
-import * as Yup from "yup";
+import { Link, withRouter } from "react-router-dom";
 import toastr from "toastr";
-import ToolkitProvider, {
-    Search,
-} from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-    PaginationProvider,
-    PaginationListStandalone,
-    SizePerPageDropdownStandalone,
-} from "react-bootstrap-table2-paginator";
 import classnames from "classnames";
 import EmailImage from "./EmailImage";
-import ColorPicker from '@vtaits/react-color-picker';
 import '@vtaits/react-color-picker/dist/index.css';
 import ColorBtn from "common/Button/ColorBtn";
 import SelectSearch from "common/Select-Search/SelectSearch";
 
-
+document.title = "myday";
 
 const Email = props => {
-    document.title = "CliqProperty";
-    const history = useHistory();
     const [isLoading, setIsLoading] = useState(false)
-
     const [init, setInit] = useState(true)
     const [state, setState] = useState({
         leftHeaderBtn: true, middleHeaderBtn: false, rightHeaderBtn: false,
         leftHeaderTextBtn: true, middleHeaderTextBtn: false, rightHeaderTextBtn: false,
         leftFooterBtn: true, middleFooterBtn: false, rightFooterBtn: false,
         leftFooterTextBtn: true, middleFooterTextBtn: false, rightFooterTextBtn: false,
-        HeaderText: "", FooterText: '',
-
+        HeaderText: "", FooterText: "",
         activeTab: '1', headerBgColor: "#FFFFFF", footerBgColor: "#FFFFFF", bodyColor: "#FFFFFF", bodyBgColor: "#FFFFFF", headerImgHeight: '22', footerImgHeight: '22', headerColor: "#FFFFFF", footerColor: '#FFFFFF',
-
         selectedFont: [],
         optionFont: [
             { label: 'Arial', value: 'Arial' },
@@ -77,14 +51,9 @@ const Email = props => {
             { label: 14, value: 14 },
             { label: 15, value: 15 },
             { label: 16, value: 16 },
-
         ]
 
     });
-
-    // console.log(state);
-
-
     const togglePositionHeaderBtn = (data) => {
         setState(prev => ({
             ...prev,
@@ -98,7 +67,6 @@ const Email = props => {
         }))
     }
     const togglePositionFooterBtn = (data) => {
-
         setState(prev => ({
             ...prev,
             leftFooterBtn: data == 'Left' ? true : false, middleFooterBtn: data == 'Middle' ? true : false, rightFooterBtn: data == 'Right' ? true : false,
@@ -115,15 +83,11 @@ const Email = props => {
 
     useEffect(() => {
         if (props.settingsEmailData?.data?.email_settings) {
-
-
             const {
                 left_header_btn, middle_header_btn, right_header_btn, left_header_text_btn, middle_header_text_btn, right_header_text_btn, headerImgHeight, header_bg_color, left_footer_btn, middle_footer_btn, right_footer_btn, left_footer_text_btn, middle_footer_text_btn, right_footer_text_btn, footer_bg_color,
                 body_color, body_bg_color, selected_font, selected_font_size, header_text, footer_text,
 
             } = props.settingsEmailData?.data?.email_settings;
-
-
             setState({
                 ...state,
                 leftHeaderBtn: left_header_btn == 1 ? true : false,
@@ -132,11 +96,8 @@ const Email = props => {
                 leftHeaderTextBtn: left_header_text_btn == 1 ? true : false,
                 middleHeaderTextBtn: middle_header_text_btn == 1 ? true : false,
                 rightHeaderTextBtn: right_header_text_btn == 1 ? true : false,
-                // headerImgHeight: headerImgHeight,
                 headerBgColor: header_bg_color,
                 HeaderText: header_text,
-
-
                 FooterText: footer_text,
                 leftFooterBtn: left_footer_btn == 1 ? true : false,
                 middleFooterBtn: middle_footer_btn == 1 ? true : false,
@@ -145,18 +106,11 @@ const Email = props => {
                 middleFooterTextBtn: middle_footer_text_btn == 1 ? true : false,
                 rightFooterTextBtn: right_footer_text_btn == 1 ? true : false,
                 footerBgColor: footer_bg_color,
-
                 bodyColor: body_color,
                 bodyBgColor: body_bg_color,
-
                 selectedFont: { label: selected_font, value: selected_font },
-                selectedFontSize: { label: selected_font_size, value: selected_font_size },
-
-                // headerImg: props.settingsEmailData?.data?.header_image,
-                // footerImg: props.settingsEmailData?.data?.footer_image
-
+                selectedFontSize: { label: selected_font_size, value: selected_font_size }
             })
-
         }
 
         if (props.settingsEmailData?.data) {
@@ -166,13 +120,8 @@ const Email = props => {
                 headerImgFile: props.settingsEmailData?.data?.header_image && props.settingsEmailData?.data?.header_image,
                 footerImg: props.settingsEmailData?.data?.footer_image?.mail_image ? `${process.env.REACT_APP_IMAGE}${props.settingsEmailData?.data?.footer_image?.mail_image}` : "",
                 footerImgFile: props.settingsEmailData?.data?.footer_image && props.settingsEmailData?.data?.footer_image
-
             })
         }
-
-
-
-
 
         if (init) {
             props.getSettingsEmailStationaryData();
@@ -217,40 +166,26 @@ const Email = props => {
     const onDragRgb3 = (c1) => {
         setState({ ...state, bodyBgColor: c1 })
     }
-    const colorHandler = e => {
-        console.log(e.target.name);
-        return
-        setState({ ...state, [e.target.name]: e.target.value });
-    }
-
     const stateHandler = e => {
         setState({ ...state, [e.target.name]: e.target.value });
     }
-
     const editorHandler = (data, tab) => {
-
-        // return
         setState({
             ...state,
             [tab == "Header" ? "HeaderText" : 'FooterText']: data.replace('<p>', '').replace('</p>', '')
         })
     }
-
     const handleSelectFont = e => {
         setState({ ...state, selectedFont: e });
     };
     const handleSelectFontSize = e => {
         setState({ ...state, selectedFontSize: e });
     };
-
     const saveHandler = () => {
         setIsLoading(true)
         props.addEmailSettings(state, img);
     }
-
     const removeImage = (e, type) => {
-
-        console.log(type);
         if (type == 'Header') {
             setImg({
                 ...img,
@@ -262,16 +197,13 @@ const Email = props => {
         } else {
             setImg({
                 ...img,
-
                 footerImg: null,
                 footerImgFile: null,
                 footerImageRemoved: 'footer'
-
             })
         }
-
     }
-
+    
     return (
         <React.Fragment>
             <div className="page-content">
@@ -287,26 +219,20 @@ const Email = props => {
                                             borderBottom: "1.2px dotted #c9c7c7",
                                         }}
                                     ></div>
-
                                 </CardBody>
                             </Card>
-
                             <Card>
                                 <CardBody>
                                     <CardText className="pt-3">
                                         <Row>
                                             <Col md={8}>
                                                 <div className="p-1">
-                                                    {/* Header */}
-
                                                     <div
                                                         onClick={() => toggle("1")}
                                                         style={{
                                                             background: state.headerBgColor ? state.headerBgColor : '',
                                                             height: '70px'
-                                                        }}
-                                                    // className={`d-flex ${state.leftHeaderBtn || state.leftHeaderTextBtn ? `justify-content-start` : state.middleHeaderBtn || state.middleHeaderTextBtn ? `justify-content-center` : `justify-content-end`} align-items-center`}
-                                                    >
+                                                        }}>
                                                         <Row>
                                                             <Col className='d-flex align-items-center' md={state.leftHeaderBtn ? 6 : ''}>
                                                                 {state.leftHeaderBtn &&
@@ -349,12 +275,7 @@ const Email = props => {
                                                                 {state.rightHeaderTextBtn && state.HeaderText}
                                                             </Col>
                                                         </Row>
-
                                                     </div>
-
-
-                                                    {/* body */}
-
                                                     <div
                                                         style={{ background: state.bodyColor }} >
                                                         <Row
@@ -393,18 +314,13 @@ const Email = props => {
                                                         </Row>
                                                     </div>
                                                     {/* Footer */}
-
                                                     <div style={{
                                                         background: state.footerBgColor ? state.footerBgColor : '',
                                                         paddingTop: '40px'
                                                     }}>
                                                         <div
                                                             onClick={() => toggle("2")}
-
-
                                                         >
-
-
                                                             <Row>
                                                                 <Col className='d-flex align-items-center' md={state.leftFooterBtn ? 6 : ''}>
                                                                     {state.leftFooterBtn &&
@@ -495,16 +411,13 @@ const Email = props => {
                                                         </NavLink>
                                                     </NavItem>
                                                 </Nav>
-
                                                 <TabContent
                                                     activeTab={state.activeTab}
-                                                    className="p-3 text-muted"
-                                                >
+                                                    className="p-3 text-muted">
                                                     <TabPane tabId="1">
                                                         <Row>
                                                             <Col sm="12">
                                                                 <CardText className="mb-0">
-
                                                                     <EmailImage
                                                                         img={img}
                                                                         setImg={setImg}
@@ -526,21 +439,24 @@ const Email = props => {
                                                                             handler={stateHandler}
                                                                         />
                                                                     </div>
-
-
                                                                 </CardText>
                                                             </Col>
-
                                                         </Row>
                                                     </TabPane>
                                                     <TabPane tabId="2">
                                                         <Row>
                                                             <Col sm="12">
                                                                 <CardText className="mb-0">
-                                                                    <EmailImage img={img} setImg={setImg} state={state} togglePositionHeaderBtn={togglePositionHeaderBtn}
+                                                                    <EmailImage
+                                                                        img={img}
+                                                                        setImg={setImg}
+                                                                        state={state}
+                                                                        togglePositionHeaderBtn={togglePositionHeaderBtn}
                                                                         togglePositionFooterBtn={togglePositionFooterBtn}
                                                                         togglePositionFooterTextBtn={togglePositionFooterTextBtn}
-                                                                        stateHandler={stateHandler} tab='Footer' editorHandler={editorHandler}
+                                                                        stateHandler={stateHandler}
+                                                                        tab='Footer'
+                                                                        editorHandler={editorHandler}
                                                                         name='footerImgHeight'
                                                                         removeImage={removeImage}
                                                                     />
@@ -570,7 +486,6 @@ const Email = props => {
                                                                 options={state.optionFontSize} />
                                                         </div>
                                                         <div className="py-1 mt-2 d-flex">
-
                                                             <ColorBtn
                                                                 onDrag={onDragRgb2}
                                                                 text='Body'
@@ -578,7 +493,6 @@ const Email = props => {
                                                                 rgb={state.bodyColor}
                                                                 handler={stateHandler}
                                                             />
-
                                                             <ColorBtn
                                                                 onDrag={onDragRgb3}
                                                                 text='Background'
@@ -587,9 +501,7 @@ const Email = props => {
                                                                 handler={stateHandler}
                                                             />
                                                         </div>
-
                                                     </TabPane>
-
                                                 </TabContent>
                                                 <div
                                                     className="w-100 mt-2 mb-4"
@@ -597,13 +509,11 @@ const Email = props => {
                                                         borderBottom: "1.2px dotted #c9c7c7",
                                                     }}
                                                 ></div>
-
                                                 <div className="d-flex justify-content-end">
                                                     <Button disabled={isLoading} onClick={saveHandler} color="info">Save</Button>
                                                 </div>
                                             </Col>
                                         </Row>
-
                                     </CardText>
                                 </CardBody>
                             </Card>
@@ -618,7 +528,6 @@ const Email = props => {
 const mapStateToProps = gstate => {
     const { } = gstate.property;
     const { settingsEmailData, settingsEmailDataStatus, add_email_settings_loading } = gstate.Portfolio;
-
     return { settingsEmailData, settingsEmailDataStatus, add_email_settings_loading };
 };
 

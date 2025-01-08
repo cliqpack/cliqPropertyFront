@@ -730,7 +730,7 @@ const AddTenant = props => {
         if (typeof value === 'number') {
             if (formTwoButtonValue.wfmBtn === 'Weekly') {
                 setWeeklyRent(value);
-                value *= 4;
+                value *= 4.33;
                 value = value.toFixed(2);
                 setState2({ ...state2, rent: e.target.value, bond_required: value });
                 setFortNightlyRent();
@@ -1126,7 +1126,7 @@ const AddTenant = props => {
                                                                                                         <Field
                                                                                                             name="rent"
                                                                                                             type="text"
-                                                                                                            placeholder="৳0.00"
+                                                                                                            placeholder="$0.00"
                                                                                                             className={
                                                                                                                 "form-control" +
                                                                                                                 (errors.rent &&
@@ -1271,7 +1271,7 @@ const AddTenant = props => {
                                                                                                                 for="bond_required"
                                                                                                                 className="form-label text-dark"
                                                                                                             >
-                                                                                                                Security Deposit required
+                                                                                                                Bond required
                                                                                                             </Label>
                                                                                                         </Col>
                                                                                                         <Col md={4}>
@@ -1279,7 +1279,7 @@ const AddTenant = props => {
                                                                                                                 name="bond_required"
                                                                                                                 id="bond_required"
                                                                                                                 type="text"
-                                                                                                                placeholder="৳0.00"
+                                                                                                                placeholder="$0.00"
                                                                                                                 className={
                                                                                                                     "form-control" +
                                                                                                                     (errors.bond_required &&
@@ -1357,7 +1357,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='৳0.00'
+                                                                                placeholder='$0.00'
                                                                                 name="bond_required"
                                                                                 id="bond_required"
                                                                                 type="number"
@@ -1394,7 +1394,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='৳0.00'
+                                                                                placeholder='$0.00'
                                                                                 name="bond_already_paid"
                                                                                 id="bond_already_paid"
                                                                                 type="number"
@@ -1436,7 +1436,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='৳0.00'
+                                                                                placeholder='$0.00'
                                                                                 name="bond_receipted"
                                                                                 id="bond_receipted"
                                                                                 type="number"
@@ -1478,7 +1478,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='৳0.00'
+                                                                                placeholder='$0.00'
                                                                                 name="bond_held"
                                                                                 id="bond_held"
                                                                                 type="number"
@@ -1518,7 +1518,7 @@ const AddTenant = props => {
                                                                             </Col>
                                                                             <Col md={3}>
                                                                               <Field
-                                                                                placeholder='৳0.00'
+                                                                                placeholder='$0.00'
                                                                                 name="bond_held"
                                                                                 id="bond_held"
                                                                                 type="number"
@@ -1623,7 +1623,7 @@ const AddTenant = props => {
                                                                                                                 for="bond_held"
                                                                                                                 className="form-label text-dark"
                                                                                                             >
-                                                                                                                Security Deposit held
+                                                                                                                Bond held
                                                                                                             </Label>
                                                                                                         </Col>
                                                                                                         <Col md={4}>

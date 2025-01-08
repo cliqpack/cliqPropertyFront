@@ -499,7 +499,7 @@ const setPropertyTenantAdd = props => {
       if (formTwoButtonValue.wfmBtn === 'Weekly') {
         // console.log('weekly');
         setWeeklyRent(value);
-        value *= 4;
+        value *= 4.33;
         value = value.toFixed(2);
         setState2({ ...state2, rent: e.target.value, bond_required: value });
         setFortNightlyRent();
@@ -991,7 +991,7 @@ const setPropertyTenantAdd = props => {
                                       //   "Please Enter Communication"
                                       // ),
                                       abn: Yup.string().required(
-                                        "Please Enter BIN"
+                                        "Please Enter ABN"
                                       ),
                                       // notes:
                                       //   Yup.string().required(
@@ -2255,7 +2255,7 @@ const setPropertyTenantAdd = props => {
                                                         for="abn"
                                                         className="form-label"
                                                       >
-                                                        BIN
+                                                        ABN
                                                       </Label>
                                                     </Col>
 
@@ -2421,7 +2421,7 @@ const setPropertyTenantAdd = props => {
                                               ),
                                               bond_required:
                                                 Yup.string().required(
-                                                  "Security Deposit is required"
+                                                  "Bond is required"
                                                 ),
                                               move_in: Yup.date()
                                                 .typeError(
@@ -2716,7 +2716,7 @@ const setPropertyTenantAdd = props => {
                                                                 for="bond_required"
                                                                 className="form-label"
                                                               >
-                                                                Security Deposit required
+                                                                Bond required
                                                               </Label>
                                                             </Col>
                                                             <Col md={4}>
@@ -2758,7 +2758,7 @@ const setPropertyTenantAdd = props => {
                                                                 for="bond_held"
                                                                 className="form-label"
                                                               >
-                                                                Security Deposit held
+                                                                Bond held
                                                               </Label>
                                                             </Col>
                                                             <Col md={4}>

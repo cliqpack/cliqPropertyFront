@@ -169,13 +169,13 @@ const AddDepositReceipt = (props) => {
                                         </Row>
                                         <Row className="pb-3 border-bottom border-2">
                                             <label className="col-sm-4">Details</label>
-                                            <div className="col-sm-8"><p>৳{props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent} {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent_type}</p></div>
+                                            <div className="col-sm-8"><p>$ {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent} {props?.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.rent_type}</p></div>
                                         </Row>
                                     </Col>
                                     <Col md="6">
                                         <Row className="pb-3">
                                             <Col md={6}></Col>
-                                            <Col md={6}><b>Deposit balance ৳{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit}</b></Col>
+                                            <Col md={6}><b>Deposit balance ${props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit}</b></Col>
                                         </Row>
                                     </Col>
                                 </Row>
@@ -205,6 +205,17 @@ const AddDepositReceipt = (props) => {
                                                             <div
                                                                 className="d-flex"
                                                             >
+                                                                <span className="input-group-append rounded-start">
+                                                                    <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
+                                                                        }}
+                                                                    >
+                                                                        $
+                                                                    </span>
+                                                                </span>
                                                                 <div className="d-flex flex-column">
                                                                     <Input
                                                                         className="form-control "
@@ -213,22 +224,11 @@ const AddDepositReceipt = (props) => {
                                                                         onChange={e => handleInputChange(e)}
                                                                         value={state.rent_amount}
                                                                         style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                                <span className="input-group-append rounded-start">
-                                                                    <span
-                                                                        className="input-group-text"
-                                                                        style={{
                                                                             borderTopLeftRadius: 0,
                                                                             borderBottomLeftRadius: 0,
                                                                         }}
-                                                                    >
-                                                                        ৳
-                                                                    </span>
-                                                                </span>
+                                                                    />
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -236,14 +236,25 @@ const AddDepositReceipt = (props) => {
                                                     {
                                                         !props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_cleared_date &&
                                                         <tr>
-                                                            <td>Security Deposit</td>
+                                                            <td>Bond</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_due_date}</td>
                                                             <td>{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_part_paid_description}</td>
-                                                            <td>৳{props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}</td>
+                                                            <td>${props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_required - (props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held ? props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.bond_held : 0)}</td>
                                                             <td>
                                                                 <div
                                                                     className="d-flex"
                                                                 >
+                                                                    <span className="input-group-append rounded-start">
+                                                                        <span
+                                                                            className="input-group-text"
+                                                                            style={{
+                                                                                borderTopRightRadius: 0,
+                                                                                borderBottomRightRadius: 0,
+                                                                            }}
+                                                                        >
+                                                                            $
+                                                                        </span>
+                                                                    </span>
                                                                     <div className="d-flex flex-column">
                                                                         <Input
                                                                             className="form-control "
@@ -252,22 +263,11 @@ const AddDepositReceipt = (props) => {
                                                                             name="bond_amount"
                                                                             onChange={e => handleInputChange(e)}
                                                                             style={{
-                                                                                borderTopRightRadius: 0,
-                                                                                borderBottomRightRadius: 0,
-                                                                            }}
-                                                                        />
-                                                                    </div>
-                                                                    <span className="input-group-append rounded-start">
-                                                                        <span
-                                                                            className="input-group-text"
-                                                                            style={{
                                                                                 borderTopLeftRadius: 0,
                                                                                 borderBottomLeftRadius: 0,
                                                                             }}
-                                                                        >
-                                                                            ৳
-                                                                        </span>
-                                                                    </span>
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -281,11 +281,22 @@ const AddDepositReceipt = (props) => {
                                                                     <td>Invoices</td>
                                                                     <td>{item.invoice_billing_date}</td>
                                                                     <td>Invoice-ID:{item.id}</td>
-                                                                    <td>৳{item.paid === 0 ? item.amount : item.amount - item.paid}</td>
+                                                                    <td>${item.paid === 0 ? item.amount : item.amount - item.paid}</td>
                                                                     <td>
                                                                         <div
                                                                             className="d-flex"
                                                                         >
+                                                                            <span className="input-group-append rounded-start">
+                                                                                <span
+                                                                                    className="input-group-text"
+                                                                                    style={{
+                                                                                        borderTopRightRadius: 0,
+                                                                                        borderBottomRightRadius: 0,
+                                                                                    }}
+                                                                                >
+                                                                                    $
+                                                                                </span>
+                                                                            </span>
                                                                             <div className="d-flex flex-column">
                                                                                 <Input
                                                                                     className="form-control "
@@ -293,22 +304,11 @@ const AddDepositReceipt = (props) => {
                                                                                     name="invoices_amount"
                                                                                     onChange={e => handleInputChangeInvoices(e, item.id, item.details, item.chart_of_account_id, item.taxAmount)}
                                                                                     style={{
-                                                                                        borderTopRightRadius: 0,
-                                                                                        borderBottomRightRadius: 0,
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                            <span className="input-group-append rounded-start">
-                                                                                <span
-                                                                                    className="input-group-text"
-                                                                                    style={{
                                                                                         borderTopLeftRadius: 0,
                                                                                         borderBottomLeftRadius: 0,
                                                                                     }}
-                                                                                >
-                                                                                    ৳
-                                                                                </span>
-                                                                            </span>
+                                                                                />
+                                                                            </div>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -332,29 +332,29 @@ const AddDepositReceipt = (props) => {
                                                             <div
                                                                 className="d-flex"
                                                             >
+                                                                <span className="input-group-append rounded-start">
+                                                                    <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
+                                                                        }}
+                                                                    >
+                                                                        $
+                                                                    </span>
+                                                                </span>
                                                                 <div className="d-flex flex-column">
                                                                     <Input
                                                                         className="form-control "
                                                                         type="text"
                                                                         style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
+                                                                            borderTopLeftRadius: 0,
+                                                                            borderBottomLeftRadius: 0,
                                                                         }}
                                                                         value={props.tenant_info_data?.tenantContact?.tenant_one?.tenant_folio?.deposit}
                                                                         disabled={true}
                                                                     />
                                                                 </div>
-                                                                <span className="input-group-append rounded-start">
-                                                                    <span
-                                                                        className="input-group-text"
-                                                                        style={{
-                                                                            borderTopLeftRadius: 0,
-                                                                            borderBottomLeftRadius: 0,
-                                                                        }}
-                                                                    >
-                                                                        ৳
-                                                                    </span>
-                                                                </span>
                                                             </div>
                                                         </td>
                                                     </tr>

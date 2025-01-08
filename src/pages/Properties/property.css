@@ -48,22 +48,6 @@
     z-index: 20;
 }
 
-.backgroundImageLogin {
-    background-image: url('../../assets/images/noise-light.png');
-    background-color: #564BC6;
-    height: 100vh;
-    width: 100vw;
-    object-fit:contain;
-    overflow: hidden;
-}
-
-.cliqCircle {
-    position: absolute;
-    top: -25%;
-    right: -25%;
-    max-width: 60% !important;
-    opacity: 0.1;
-}
 
 .form-group-new>label {
     bottom: 50px;

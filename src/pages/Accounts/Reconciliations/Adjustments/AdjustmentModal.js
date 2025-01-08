@@ -104,6 +104,17 @@ const AdjustmentModal = props => {
                   </Label>
                 </Col>
                 <Col md={4} className="d-flex">
+                  <span className="input-group-append rounded-start">
+                    <span
+                      className="input-group-text"
+                      style={{
+                        borderTopRightRadius: 0,
+                        borderBottomRightRadius: 0,
+                      }}
+                    >
+                      $
+                    </span>
+                  </span>
                   <div className="d-flex flex-column">
                     <input
                       className={
@@ -113,8 +124,8 @@ const AdjustmentModal = props => {
                       type="text"
                       placeholder="0.00"
                       style={{
-                        borderTopRightRadius: 0,
-                        borderBottomRightRadius: 0,
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
                       }}
                       value={
                         state.amount
@@ -124,17 +135,6 @@ const AdjustmentModal = props => {
                       }
                     />
                   </div>
-                  <span className="input-group-append rounded-start">
-                    <span
-                      className="input-group-text"
-                      style={{
-                        borderTopLeftRadius: 0,
-                        borderBottomLeftRadius: 0,
-                      }}
-                    >
-                      ৳
-                    </span>
-                  </span>
                 </Col>
               </Row>
             </div>

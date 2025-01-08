@@ -538,7 +538,7 @@ const InspectionExitReport = props => {
                                     type="text"
                                     className="form-control"
                                     id="horizontal-password-Input"
-                                    placeholder="৳0.00"
+                                    placeholder="$0.00"
                                     name="rent"
                                     value={form1state.rent}
                                     onChange={e => {

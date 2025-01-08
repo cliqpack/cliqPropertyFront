@@ -197,7 +197,7 @@ const QuotesDownModal = (props) => {
                                                     borderBottomRightRadius: 0,
                                                 }}
                                             >
-                                                ৳
+                                                $
                                             </span>
                                         </span>
                                         <Input

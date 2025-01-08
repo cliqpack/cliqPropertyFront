@@ -174,8 +174,8 @@ const ShowInvoiceModal = props => {
                                             <td>
                                                 {/* {props.data.include_tax === 1 ? <i className="fas fa-check"></i> : ''} */}
                                             </td>
-                                            <td>৳{props.data?.rent_management?.due}</td>
-                                            <td>৳{props.data?.rent_management?.received}</td>
+                                            <td>${props.data?.rent_management?.due}</td>
+                                            <td>${props.data?.rent_management?.received}</td>
                                         </tr>
                                     }
                                     <tr>
@@ -185,15 +185,15 @@ const ShowInvoiceModal = props => {
                                         <td>{props.data.details}</td>
                                         <td><a href={process.env.REACT_APP_IMAGE + props.data?.file} target="_blank" rel="noreferrer noopener">{props.data?.file ? <i className="fas fa-paperclip" /> : ''}</a></td>
                                         <td>{props.data.include_tax === 1 ? <i className="fas fa-check"></i> : ''}</td>
-                                        <td>৳{props.data?.amount}</td>
-                                        {props.data.rent_management_id && <td>৳{props.data?.paid}</td>}
+                                        <td>${props.data?.amount}</td>
+                                        {props.data.rent_management_id && <td>${props.data?.paid}</td>}
                                     </tr>
                                 </tbody>
                             </Table>
                         </div>
                         <div className="d-flex justify-content-end align-items-center py-2 pe-4 pb-4">
                             <span className="pe-5 h4">Total</span>
-                            <span className="me-3 h4">৳{props.data?.amount}</span>
+                            <span className="me-3 h4">${props.data?.amount}</span>
                         </div>
                     </div>
 

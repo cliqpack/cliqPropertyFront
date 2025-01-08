@@ -9,8 +9,8 @@ import { connect } from "react-redux";
 import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
+document.title = "MyDay";
 const JournalsReport = (props) => {
-    document.title = "Journal Report";
     const { month, year } = useParams();
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
@@ -86,7 +86,7 @@ const JournalsReport = (props) => {
                                                                             <td>{item.ref}	</td>
                                                                             <td>{item.type}</td>
                                                                             <td>From: {r_item.folioCode} {r_item.description}</td>
-                                                                            <td>৳{r_item.amount}</td>
+                                                                            <td>${r_item.amount}</td>
                                                                             <td>{" "}</td>
                                                                         </tr>
                                                                     }
@@ -98,7 +98,7 @@ const JournalsReport = (props) => {
                                                                             <td></td>
                                                                             <td>to: {r_item.folioCode} {r_item.description}</td>
                                                                             <td>{" "}</td>
-                                                                            <td>৳{r_item.amount}</td>
+                                                                            <td>${r_item.amount}</td>
                                                                         </tr>
                                                                     }
                                                                 </>
@@ -112,8 +112,8 @@ const JournalsReport = (props) => {
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td className="fw-bold">৳{props.jrd_data?.journalBalanceSum}</td>
-                                                        <td className="fw-bold">৳{props.jrd_data?.journalBalanceSum}</td>
+                                                        <td className="fw-bold">${props.jrd_data?.journalBalanceSum}</td>
+                                                        <td className="fw-bold">${props.jrd_data?.journalBalanceSum}</td>
                                                     </tr>
                                                 </tbody>
                                             </Table>

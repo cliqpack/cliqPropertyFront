@@ -16,7 +16,7 @@ const TenantBondDetails = (props) => {
                 onClick={toggle}
                 className="text-primary hoverBondDetails"
             >
-                Edit Security Deposit details {" "}<i className="fas fa-pen"></i>
+                Edit bond details {" "}<i className="fas fa-pen"></i>
             </div>
 
             <Modal
@@ -25,7 +25,7 @@ const TenantBondDetails = (props) => {
             >
                 <div className="modal-header">
                     <h5 className="modal-title mt-0" id="myModalLabel">
-                        Security Deposit Details
+                        Bond Details
                     </h5>
                     <button
                         type="button"
@@ -48,12 +48,12 @@ const TenantBondDetails = (props) => {
                                         for="bond_required"
                                         className="form-label text-dark"
                                     >
-                                        Security Deposit required
+                                        Bond required
                                     </Label>
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="bond_required"
                                         id="bond_required"
                                         type="number"
@@ -85,12 +85,12 @@ const TenantBondDetails = (props) => {
                                         for="bond_paid"
                                         className="form-label text-dark"
                                     >
-                                        Security Deposit already paid
+                                        Bond already paid
                                     </Label>
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="bond_paid"
                                         id="bond_paid"
                                         type="number"
@@ -117,7 +117,7 @@ const TenantBondDetails = (props) => {
                                 </Col>
                                 <Col>
                                     <p className="text-muted">
-                                        Security Deposit money already paid to the authority
+                                        Bond money already paid to the bond authority
                                     </p>
                                 </Col>
                             </Row>
@@ -128,12 +128,12 @@ const TenantBondDetails = (props) => {
                                         for="bond_receipted"
                                         className="form-label text-dark"
                                     >
-                                        Security Deposit receipted
+                                        Bond receipted
                                     </Label>
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="bond_receipted"
                                         id="bond_receipted"
                                         type="number"
@@ -169,12 +169,12 @@ const TenantBondDetails = (props) => {
                                         for="bond_held"
                                         className="form-label text-dark"
                                     >
-                                        Security Deposit held
+                                        Bond held
                                     </Label>
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="bond_held"
                                         id="bond_held"
                                         type="number"
@@ -208,12 +208,12 @@ const TenantBondDetails = (props) => {
                                         for="bond_held"
                                         className="form-label text-dark"
                                     >
-                                        Security Deposit arrears
+                                        Bond arrears
                                     </Label>
                                 </Col>
                                 <Col md={3}>
                                     <input
-                                        placeholder='৳0.00'
+                                        placeholder='$0.00'
                                         name="bond_arrears"
                                         id="bond_arrears"
                                         type="number"
@@ -247,7 +247,7 @@ const TenantBondDetails = (props) => {
                                         for="bond_reference"
                                         className="form-label text-dark"
                                     >
-                                        Security Deposit reference
+                                        Bond reference
                                     </Label>
                                 </Col>
                                 <Col md={7}>

@@ -34,9 +34,9 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 
+document.title = "myday";
 
 const Log = props => {
-  document.title = "CliqProperty";
   const history = useHistory();
   const [state, setState] = useState({ reasonModal: false, checked: false, init: true });
 

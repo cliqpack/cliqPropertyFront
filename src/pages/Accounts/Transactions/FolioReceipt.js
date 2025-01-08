@@ -191,6 +191,17 @@ const FolioReceipt = props => {
                                         <Col md={5}><b>Amount</b></Col>
                                         <Col md={7}>
                                             <div className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                    <span
+                                                        className="input-group-text"
+                                                        style={{
+                                                            borderTopRightRadius: 0,
+                                                            borderBottomRightRadius: 0,
+                                                        }}
+                                                    >
+                                                        $
+                                                    </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                     <Input
                                                         name="amount"
@@ -198,8 +209,8 @@ const FolioReceipt = props => {
                                                         placeholder="0.00"
                                                         className="rounded-end form-control"
                                                         style={{
-                                                            borderTopRightRadius: 0,
-                                                            borderBottomRightRadius: 0,
+                                                            borderTopLeftRadius: 0,
+                                                            borderBottomLeftRadius: 0,
                                                         }}
                                                         id="formrow-InputCity"
                                                         value={
@@ -210,17 +221,6 @@ const FolioReceipt = props => {
                                                         }
                                                     />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                    <span
-                                                        className="input-group-text"
-                                                        style={{
-                                                            borderTopLeftRadius: 0,
-                                                            borderBottomLeftRadius: 0,
-                                                        }}
-                                                    >
-                                                        ৳
-                                                    </span>
-                                                </span>
                                             </div>
                                         </Col>
                                     </Row>
@@ -451,6 +451,17 @@ const FolioReceipt = props => {
                                                 onChange={handleState}
                                             /> */}
                                             <div className="d-flex">
+                                                <span className="input-group-append rounded-start">
+                                                    <span
+                                                        className="input-group-text"
+                                                        style={{
+                                                            borderTopRightRadius: 0,
+                                                            borderBottomRightRadius: 0,
+                                                        }}
+                                                    >
+                                                        $
+                                                    </span>
+                                                </span>
                                                 <div className="d-flex flex-column">
                                                     <Input
                                                         name="amount"
@@ -458,8 +469,8 @@ const FolioReceipt = props => {
                                                         placeholder="0.00"
                                                         className="rounded-end form-control"
                                                         style={{
-                                                            borderTopRightRadius: 0,
-                                                            borderBottomRightRadius: 0,
+                                                            borderTopLeftRadius: 0,
+                                                            borderBottomLeftRadius: 0,
                                                         }}
                                                         id="formrow-InputCity"
                                                         value={
@@ -470,17 +481,6 @@ const FolioReceipt = props => {
                                                         }
                                                     />
                                                 </div>
-                                                <span className="input-group-append rounded-start">
-                                                    <span
-                                                        className="input-group-text"
-                                                        style={{
-                                                            borderTopLeftRadius: 0,
-                                                            borderBottomLeftRadius: 0,
-                                                        }}
-                                                    >
-                                                        ৳
-                                                    </span>
-                                                </span>
                                             </div>
                                         </div>
                                     </Col>
@@ -507,6 +507,17 @@ const FolioReceipt = props => {
                         </Col>
                         <Col md={3}>
                             <div className="d-flex">
+                                <span className="input-group-append rounded-start">
+                                    <span
+                                        className="input-group-text"
+                                        style={{
+                                            borderTopRightRadius: 0,
+                                            borderBottomRightRadius: 0,
+                                        }}
+                                    >
+                                        $
+                                    </span>
+                                </span>
                                 <div className="d-flex flex-column">
                                     <Input
                                         name="amount"
@@ -514,8 +525,8 @@ const FolioReceipt = props => {
                                         placeholder="0.00"
                                         className="rounded-end form-control"
                                         style={{
-                                            borderTopRightRadius: 0,
-                                            borderBottomRightRadius: 0,
+                                            borderTopLeftRadius: 0,
+                                            borderBottomLeftRadius: 0,
                                         }}
                                         id="formrow-InputCity2"
                                         value={
@@ -526,17 +537,6 @@ const FolioReceipt = props => {
                                         }
                                     />
                                 </div>
-                                <span className="input-group-append rounded-start">
-                                    <span
-                                        className="input-group-text"
-                                        style={{
-                                            borderTopLeftRadius: 0,
-                                            borderBottomLeftRadius: 0,
-                                        }}
-                                    >
-                                        ৳
-                                    </span>
-                                </span>
                             </div>
                         </Col>
                     </Row>

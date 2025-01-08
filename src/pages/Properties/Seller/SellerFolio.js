@@ -21,8 +21,8 @@ import {
   ownerArchiveFresh,
 } from "store/actions";
 import {
-  SaleAgreementInfoForProperty,
-  SaleAgreementInfoForPropertyFresh,
+  SaleAgreementInfoForPropertyWithArchive,
+  SaleAgreementInfoForPropertyWithArchiveFresh,
   editSaleAgreementInfoFresh,
   transactionsListByIdForSellerFolio,
   transactionsListByIdForSellerFolioFresh,
@@ -30,6 +30,7 @@ import {
   PendingBillsForSellerFresh,
   PaidBillsForSeller,
   PaidBillsForSellerFresh,
+  restoreSeller, restoreSellerFresh,
   sellerArchive,
   sellerArchiveFresh,
 } from "store/actions";
@@ -74,10 +75,11 @@ import AddReceipt from "pages/Accounts/Transactions/AddReceipt";
 import Loder from "components/Loder/Loder";
 import moment from "moment";
 
+document.title = "MyDay";
 
 function SellerFolio(props) {
-  document.title = "CliqProperty";
   const { propertyId, fId } = useParams();
+
   const { location } = useHistory();
   const history = useHistory();
   const [init, setInit] = useState(true);
@@ -227,20 +229,28 @@ function SellerFolio(props) {
     toggleModalTransactions();
   };
 
+  const pushToSellerLedgerReport = () => {
+    history.push(`/sellerfolioLedger/${fId}`)
+  };
+
+  // const pushToOwnerStatementsReport = () => {
+  //   history.push(`/seller/statements/${fId}/${propertyId}`)
+  // };
+  
+  const pushToSellerStatementsReport = () => {
+    history.push(`/seller/statements/${fId}/${propertyId}`)
+  };
+  
   const checkingRefDebit = (cell, row) => (
     <span>
       {" "}
-      {/* {row?.type == "Bill" && `$${cell}`}
-      {row?.type == "Payment" && `$${cell}`} */}
-      {cell && `৳${cell}`}
+      {cell && `$${cell}`}
     </span>
   );
   const checkingRefCredit = (cell, row) => (
     <span>
       {" "}
-      {/* {row?.type == "Tenant Receipt" && `$${cell}`}
-      {row?.type == "Folio Receipt" && `$${cell}`} */}
-      {cell && `৳${cell}`}
+      {cell && `$${cell}`}
     </span>
   );
   const statusRef = (row, cell) => {
@@ -370,13 +380,13 @@ function SellerFolio(props) {
         className={`badge rounded-pill p-1 ${balance >= cell ? "bg-success" : "bg-danger"
           }`}
       >
-        ৳{cell}
+        ${cell}
       </span>
     );
     return amount;
   };
   const invAmountFormatter = (cell, row) => {
-    let amount = <span>৳{cell}</span>;
+    let amount = <span>${cell}</span>;
     return amount;
   };
 
@@ -614,9 +624,9 @@ function SellerFolio(props) {
   };
 
   const folioBalanceFormatter = (cell, row) => (
-    <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
+    <span>${row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
   );
-  const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
+  const paidFormatter = (cell, row) => <span>${row.paid ? row.paid : 0}</span>;
 
   const pendingInvoiceData = [
     {
@@ -739,13 +749,13 @@ function SellerFolio(props) {
   };
 
   const editSaleHandler = (saleId, tabId) => {
-    props.SaleAgreementInfoForPropertyFresh();
+    props.SaleAgreementInfoForPropertyWithArchiveFresh();
     props.editSaleAgreementInfoFresh();
     history.push(`/editSaleAgreement/${propertyId}/${saleId}/${tabId}`);
   };
 
   const addbuyer = (saleId) => {
-    props.SaleAgreementInfoForPropertyFresh();
+    props.SaleAgreementInfoForPropertyWithArchiveFresh();
     props.editSaleAgreementInfoFresh();
     history.push(`/addBuyer/${propertyId}/${saleId}`);
   };
@@ -767,11 +777,11 @@ function SellerFolio(props) {
         saleInfoData?.sales_contact?.id,
         fId
       );
-      props.SaleAgreementInfoForProperty(propertyId);
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
     }
 
     if (props.seller_info_property_loading === false) {
-      props.SaleAgreementInfoForProperty(propertyId);
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
     }
 
     if (props.delete_invoice_loading === "Success") {
@@ -803,10 +813,10 @@ function SellerFolio(props) {
       props.PendingInvoicesForOwner(propertyId, fId);
     }
     if (props.pay_bill_loading === "Success") {
-      props.SaleAgreementInfoForProperty(propertyId);
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
     }
     if (props.delete_bill_loading === "Success") {
-      props.SaleAgreementInfoForProperty(propertyId);
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
       endLoader();
     }
     if (props.edit_bills_loading === "Success") {
@@ -823,7 +833,7 @@ function SellerFolio(props) {
       }
     }
     if (props.store_single_disbursement_loading === "Success") {
-      props.SaleAgreementInfoForProperty(propertyId);
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
       if (state.activeTab === "1") {
         props.transactionsListByIdForSellerFolio(
           "this_month",
@@ -850,7 +860,7 @@ function SellerFolio(props) {
         console.log("archive done");
         toastr.success("Success");
       }
-      props.SaleAgreementInfoForProperty(propertyId);
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
       props.ownerArchiveFresh();
     }
     setSeen(true);
@@ -871,6 +881,19 @@ function SellerFolio(props) {
     props.archive_seller_loading,
   ]);
 
+  useEffect(() => {
+    if (props.restore_seller_loading === 'Success') {
+      setState(prev => ({ ...prev, loader: false }))
+      toastr.success('Seller Restored Successfully')
+      props.SaleAgreementInfoForPropertyWithArchive(fId);
+      props.restoreSellerFresh()
+    } else if (props.restore_seller_loading === 'Failed') {
+      setState(prev => ({ ...prev, loader: false }))
+      toastr.error('Something went wrong!')
+      props.restoreSellerFresh()
+    }
+  }, [props.restore_seller_loading])
+
   let moneyIn = saleInfoData?.sales_contact?.seller_folio?.money_in
     ? saleInfoData?.sales_contact?.seller_folio?.money_in
     : 0;
@@ -886,7 +909,8 @@ function SellerFolio(props) {
   };
 
   const handleUndoArchive = () => {
-    props.sellerArchive(fId, propertyId, "1");
+    props.restoreSeller(fId);
+    setState(prev => ({ ...prev, loader: true }))
   };
 
   return (
@@ -984,117 +1008,148 @@ function SellerFolio(props) {
                           </Dropdown>
                         )}
                       </div>
+                      <div className="d-flex justify-content-center mt-3">
+                        <Dropdown
+                          isOpen={state.dropDownReportBtn}
+                          toggle={() =>
+                            setState(prev => {
+                              return {
+                                ...prev,
+                                dropDownReportBtn: !prev.dropDownReportBtn,
+                              };
+                            })
+                          }
+                          className="mt-4 mt-sm-0 me-2"
+                        >
+                          <DropdownToggle
+                            className="btn btn-info btn-md"
+                            caret
+                          >
+                            Reports <i className="mdi mdi-chevron-down"></i>
+                          </DropdownToggle>
+                          <DropdownMenu>
+                          
+                            <DropdownItem onClick={pushToSellerLedgerReport} >
+                              Folio Ledger
+                            </DropdownItem>
+                            <DropdownItem >
+                            <Link style={{ color: 'black' }} to={`/seller/statements/${fId}/${propertyId}`} target='blank'>Sale Statement</Link>
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </div>
                     </Col>
                   </Row>
                 </CardBody>
               </Card>
-              {saleInfoData?.status == "1" && (
-                <Card style={{ borderRadius: "14px" }}>
-                  <CardBody>
-                    <Row>
-                      <Col md={12}>
-                        <Row className="p-1 d-flex flex-column gap-3">
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Money in</span>
-                            <span className="text-muted">
-                              ৳{saleInfoData?.sales_contact?.seller_folio
-                                ?.money_in || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Money out
-                            </span>
-                            <span className="text-muted">
-                              ৳{saleInfoData?.sales_contact?.seller_folio
-                                ?.money_out || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Uncleared
-                            </span>
-                            <span className="text-muted">
-                              ৳{saleInfoData?.sales_contact?.seller_folio
-                                ?.uncleared || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Bills pending
-                            </span>
-                            <span className="text-muted">
-                              ৳{props.seller_info_property_data?.data?.total_bill ? props.seller_info_property_data?.data?.total_bill : '0.00'}
-                            </span>
-                          </Col>
+              <Card style={{ borderRadius: "14px" }}>
+                <CardBody>
+                  <Row>
+                    <Col md={12}>
+                      <Row className="p-1 d-flex flex-column gap-3">
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Money in</span>
+                          <span className="text-muted">
+                            $
+                            {saleInfoData?.sales_contact?.seller_folio
+                              ?.money_in || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Money out
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {saleInfoData?.sales_contact?.seller_folio
+                              ?.money_out || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Uncleared
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {saleInfoData?.sales_contact?.seller_folio
+                              ?.uncleared || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Bills pending
+                          </span>
+                          <span className="text-muted">
+                            ${props.seller_info_property_data?.data?.total_bill ? props.seller_info_property_data?.data?.total_bill : '0.00'}
+                          </span>
+                        </Col>
 
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Balance</span>
-                            <span className="text-muted">
-                              ৳{totalBalance > 0 ? totalBalance : "0.00"}
-                            </span>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              )}
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Balance</span>
+                          <span className="text-muted">
+                            ${totalBalance > 0 ? totalBalance : "0.00"}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
             </div>
           </Col>
 
@@ -1102,7 +1157,7 @@ function SellerFolio(props) {
             <div>
               <Card style={{ borderRadius: "14px" }}>
                 <CardBody>
-                  {saleInfoData?.status == "0" && (
+                  {saleInfoData?.status == 0 && (
                     <Alert color="info">
                       <div className="d-flex justify-content-between">
                         <span className="font-size-20">
@@ -1314,7 +1369,7 @@ function SellerFolio(props) {
       }
       {/* <ReverseModal toggle={toggleReverse} state={state} /> */}
       {state.archiveModal &&
-        <SellerArchiveModal toggle={toggleArchive} state={state} id={fId} propertyId={propertyId} folio_code={saleInfoData?.sales_contact?.seller_folio?.folio_code} />
+        <SellerArchiveModal toggle={toggleArchive} state={state} setState={setState} id={fId} propertyId={propertyId} folio_code={saleInfoData?.sales_contact?.seller_folio?.folio_code} />
       }
 
       <TransactionsInfoModal
@@ -1434,6 +1489,8 @@ const mapStateToProps = gstate => {
     archive_seller_data,
     archive_seller_error,
     archive_seller_loading,
+
+    restore_seller_loading,
   } = gstate.AccountsTransactions;
 
   const { pay_bill_loading, delete_bill_loading, edit_bills_loading } =
@@ -1491,6 +1548,8 @@ const mapStateToProps = gstate => {
     archive_seller_data,
     archive_seller_error,
     archive_seller_loading,
+
+    restore_seller_loading,
   };
 };
 
@@ -1508,8 +1567,8 @@ export default withRouter(
     ownerArchive,
     ownerArchiveFresh,
 
-    SaleAgreementInfoForProperty,
-    SaleAgreementInfoForPropertyFresh,
+    SaleAgreementInfoForPropertyWithArchive,
+    SaleAgreementInfoForPropertyWithArchiveFresh,
     editSaleAgreementInfoFresh,
     transactionsListByIdForSellerFolio,
     transactionsListByIdForSellerFolioFresh,
@@ -1519,5 +1578,6 @@ export default withRouter(
     PaidBillsForSellerFresh,
     sellerArchive,
     sellerArchiveFresh,
+    restoreSeller, restoreSellerFresh,
   })(SellerFolio)
 );

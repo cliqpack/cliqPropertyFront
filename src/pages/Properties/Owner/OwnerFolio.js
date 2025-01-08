@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumbs from "components/Common/Breadcrumb";
 import { connect } from "react-redux";
-import { Link, withRouter, useHistory, useParams } from "react-router-dom";
+import { withRouter, useHistory, useParams } from "react-router-dom";
 
 import classnames from "classnames";
 import DatatableTables2 from "pages/Tables/DatatableTables2";
@@ -12,19 +11,19 @@ import {
   PendingBillsForOwner,
   PaidBillsForOwner,
   PendingInvoicesForOwner,
-  getPropertyOwnerInfo,
+  getPropertyOwnerInfoWithArchive,
   deleteInvoice,
   deleteInvoiceFresh,
   tenantInfoFresh,
   storeSingleDisbursementFresh,
   ownerArchive,
   ownerArchiveFresh,
+  restoreOwner, restoreOwnerFresh
 } from "store/actions";
 import {
   Card,
   Alert,
   CardBody,
-  CardTitle,
   Col,
   Container,
   Row,
@@ -34,11 +33,7 @@ import {
   NavLink,
   TabContent,
   TabPane,
-  Label,
-  Input,
   Button,
-  CardHeader,
-  Badge,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -60,10 +55,11 @@ import toastr from "toastr";
 import AddReceipt from "pages/Accounts/Transactions/AddReceipt";
 import Loder from "components/Loder/Loder";
 import moment from "moment";
+import axios from "axios";
 
+document.title = "MyDay";
 
 function OwnerFolio(props) {
-  document.title = "CliqProperty";
   const { propertyId, fId } = useParams();
   const { location } = useHistory();
   const history = useHistory();
@@ -74,6 +70,7 @@ function OwnerFolio(props) {
   const [state, setState] = useState({
     activeTab: "1",
     dropDownBtn: false,
+    dropDownReportBtn: false,
     dropDownBtn1: false,
     transactionInfoModal: false,
     transactionInfoModalReverse: false,
@@ -82,7 +79,6 @@ function OwnerFolio(props) {
     archiveModal: false,
     disburseModal: false,
     reverseModal: false,
-    archiveModal: false,
     transactionInfoModal: false,
     transactionInfoModalReverse: false,
     clearFundModal: false,
@@ -214,12 +210,22 @@ function OwnerFolio(props) {
     toggleModalTransactions();
   };
 
+  const pushToOwnerLedgerReport = () => {
+    history.push(`/ownerfolioLedger/${fId}`)
+  };
+  const pushToOwnerSummaryReport = () => {
+    history.push(`/owner/summary/${fId}`)
+  };
+  const pushToOwnerStatementsReport = () => {
+    history.push(`/owner/statements/${fId}/${propertyId}`)
+  };
+
   const checkingRefDebit = (cell, row) => (
     <span>
       {" "}
       {/* {row?.type == "Bill" && `$${cell}`}
       {row?.type == "Payment" && `$${cell}`} */}
-      {cell && `৳${cell}`}
+      {cell && `$${cell}`}
     </span>
   );
   const checkingRefCredit = (cell, row) => (
@@ -227,7 +233,7 @@ function OwnerFolio(props) {
       {" "}
       {/* {row?.type == "Tenant Receipt" && `$${cell}`}
       {row?.type == "Folio Receipt" && `$${cell}`} */}
-      {cell && `৳${cell}`}
+      {cell && `$${cell}`}
     </span>
   );
   const statusRef = (row, cell) => {
@@ -357,13 +363,13 @@ function OwnerFolio(props) {
         className={`badge rounded-pill p-1 ${balance >= cell ? "bg-success" : "bg-danger"
           }`}
       >
-        ৳{cell}
+        ${cell}
       </span>
     );
     return amount;
   };
   const invAmountFormatter = (cell, row) => {
-    let amount = <span>৳{cell}</span>;
+    let amount = <span>${cell}</span>;
     return amount;
   };
 
@@ -604,9 +610,9 @@ function OwnerFolio(props) {
   };
 
   const folioBalanceFormatter = (cell, row) => (
-    <span>৳{row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
+    <span>${row?.tenant_folio?.deposit ? row?.tenant_folio?.deposit : 0}</span>
   );
-  const paidFormatter = (cell, row) => <span>৳{row.paid ? row.paid : 0}</span>;
+  const paidFormatter = (cell, row) => <span>${row.paid ? row.paid : 0}</span>;
 
   const pendingInvoiceData = [
     {
@@ -732,6 +738,8 @@ function OwnerFolio(props) {
   };
 
   const ownerInfoData = props.property_owner_info_data?.data;
+  console.log(ownerInfoData);
+
 
   const handleDeleteProject = () => {
     props.deleteInvoice(Id);
@@ -746,11 +754,11 @@ function OwnerFolio(props) {
         ownerInfoData?.data?.id,
         fId
       );
-      props.getPropertyOwnerInfo(propertyId);
+      props.getPropertyOwnerInfoWithArchive(fId);
     }
 
     if (props.property_owner_info_loading === false) {
-      props.getPropertyOwnerInfo(propertyId);
+      props.getPropertyOwnerInfoWithArchive(fId);
     }
 
     if (props.delete_invoice_loading === "Success") {
@@ -782,10 +790,10 @@ function OwnerFolio(props) {
       props.PendingInvoicesForOwner(propertyId, fId);
     }
     if (props.pay_bill_loading === "Success") {
-      props.getPropertyOwnerInfo(propertyId);
+      props.getPropertyOwnerInfoWithArchive(fId);
     }
     if (props.delete_bill_loading === "Success") {
-      props.getPropertyOwnerInfo(propertyId);
+      props.getPropertyOwnerInfoWithArchive(fId);
       endLoader();
     }
     if (props.edit_bills_loading === "Success") {
@@ -802,7 +810,7 @@ function OwnerFolio(props) {
       }
     }
     if (props.store_single_disbursement_loading === "Success") {
-      props.getPropertyOwnerInfo(propertyId);
+      props.getPropertyOwnerInfoWithArchive(fId);
       if (state.activeTab === "1") {
         props.transactionsListByIdForOwnerFolio(
           "this_month",
@@ -825,11 +833,7 @@ function OwnerFolio(props) {
       // props.storeSingleDisbursementFresh();
     }
     if (props.archive_owner_loading == "Success") {
-      if (props.archive_owner_data?.status == 1) {
-        console.log("archive done");
-        toastr.success("Success");
-      }
-      props.getPropertyOwnerInfo(propertyId);
+      props.getPropertyOwnerInfoWithArchive(fId);
       props.ownerArchiveFresh();
     }
     setSeen(true);
@@ -848,6 +852,19 @@ function OwnerFolio(props) {
     props.archive_owner_data,
     props.property_owner_info_data,
   ]);
+
+  useEffect(() => {
+    if (props.restore_owner_loading === 'Success') {
+      setState(prev => ({ ...prev, loader: false }))
+      toastr.success('Owner Restored Successfully')
+      props.getPropertyOwnerInfoWithArchive(fId);
+      props.restoreOwnerFresh()
+    } else if (props.restore_owner_loading === 'Failed') {
+      setState(prev => ({ ...prev, loader: false }))
+      toastr.error('Something went wrong!')
+      props.restoreOwnerFresh()
+    }
+  }, [props.restore_owner_loading])
 
   let moneyIn =
     (ownerInfoData?.folio?.money_in ? ownerInfoData?.folio?.money_in : 0) +
@@ -868,8 +885,24 @@ function OwnerFolio(props) {
     props.tenantInfoFresh();
   };
 
-  const handleUndoArchive = () => {
-    props.ownerArchive(fId, "1");
+  const handleUndoArchive = async () => {
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authUser.token}`
+    };
+    const Url = `${process.env.REACT_APP_LOCALHOST}/restore/owner/${fId}`;
+    setState(prev => ({ ...prev, loader: true }))
+    try {
+      const response = await axios.get(Url, { headers: headers });
+      toastr.success(response.data.message);
+      setState(prev => ({ ...prev, loader: false }))
+      props.getPropertyOwnerInfoWithArchive(fId);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred while archiving the owner.";
+      toastr.warning(errorMessage);
+      setState(prev => ({ ...prev, loader: false }))
+    }
   };
 
   return (
@@ -907,222 +940,254 @@ function OwnerFolio(props) {
                           style={{ fontSize: "14px" }}
                         >
                           {ownerInfoData?.data?.reference} Owner Folio{" "}
-                          {location.state?.folioCode
-                            ? `${location.state?.folioCode}`
-                            : ""}
+                          ({ownerInfoData?.folio?.folio_code
+                            ? `${ownerInfoData?.folio?.folio_code}`
+                            : ""})
                         </h4>
                       </div>
                       <div className="d-flex justify-content-center">
-                        {props.property_owner_info_data?.data?.data?.status ==
-                          "1" && (
-                            <Dropdown
-                              isOpen={state.dropDownBtn}
-                              toggle={() =>
-                                setState(prev => {
-                                  return {
-                                    ...prev,
-                                    dropDownBtn: !prev.dropDownBtn,
-                                  };
-                                })
-                              }
-                              className="mt-4 mt-sm-0 me-2"
+                        {ownerInfoData?.folio?.archive == 0 && (
+                          <Dropdown
+                            isOpen={state.dropDownBtn}
+                            toggle={() =>
+                              setState(prev => {
+                                return {
+                                  ...prev,
+                                  dropDownBtn: !prev.dropDownBtn,
+                                };
+                              })
+                            }
+                            className="mt-4 mt-sm-0 me-2"
+                          >
+                            <DropdownToggle
+                              className="btn btn-info btn-md"
+                              caret
                             >
-                              <DropdownToggle
-                                className="btn btn-info btn-md"
-                                caret
+                              Actions <i className="mdi mdi-chevron-down"></i>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem
+                                onClick={() =>
+                                  ownerEditHandler(location.state.oId, 2, fId)
+                                }
                               >
-                                Actions <i className="mdi mdi-chevron-down"></i>
-                              </DropdownToggle>
-                              <DropdownMenu>
-                                <DropdownItem
-                                  onClick={() =>
-                                    ownerEditHandler(location.state.oId, 2, fId)
-                                  }
-                                >
-                                  Edit
-                                </DropdownItem>
-                                <DropdownItem onClick={toggleDisburse}>
-                                  Disburse
-                                </DropdownItem>
-                                {/* <DropdownItem onClick={toggleReverse}>
+                                Edit
+                              </DropdownItem>
+                              <DropdownItem onClick={toggleDisburse}>
+                                Disburse
+                              </DropdownItem>
+                              {/* <DropdownItem onClick={toggleReverse}>
                               Reverse Last Disbursement
                             </DropdownItem> */}
-                                <DropdownItem onClick={toggleArchive}>
-                                  Archive
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </Dropdown>
-                          )}
+                              <DropdownItem onClick={toggleArchive}>
+                                Archive
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        )}
+                      </div>
+                      <div className="d-flex justify-content-center mt-3">
+                        <Dropdown
+                          isOpen={state.dropDownReportBtn}
+                          toggle={() =>
+                            setState(prev => {
+                              return {
+                                ...prev,
+                                dropDownReportBtn: !prev.dropDownReportBtn,
+                              };
+                            })
+                          }
+                          className="mt-4 mt-sm-0 me-2"
+                        >
+                          <DropdownToggle
+                            className="btn btn-info btn-md"
+                            caret
+                          >
+                            Reports <i className="mdi mdi-chevron-down"></i>
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            <DropdownItem onClick={pushToOwnerSummaryReport}>
+                              Folio Summary
+                            </DropdownItem>
+                            <DropdownItem onClick={pushToOwnerLedgerReport}>
+                              Folio Ledger
+                            </DropdownItem>
+                            <DropdownItem onClick={pushToOwnerStatementsReport}>
+                              Folio Statements
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
                       </div>
                     </Col>
                   </Row>
                 </CardBody>
               </Card>
-              {props.property_owner_info_data?.data?.data?.status == "1" && (
-                <Card style={{ borderRadius: "14px" }}>
-                  <CardBody>
-                    <Row>
-                      <Col md={12}>
-                        <Row className="p-1 d-flex flex-column gap-3">
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              height: "70px",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Opening</span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.folio?.opening_balance || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Money in</span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.folio?.money_in || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Money out
-                            </span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.folio?.money_out || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Uncleared
-                            </span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.folio?.uncleared || "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Bills pending
-                            </span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.ownerPendingBill
+              <Card style={{ borderRadius: "14px" }}>
+                <CardBody>
+                  <Row>
+                    <Col md={12}>
+                      <Row className="p-1 d-flex flex-column gap-3">
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            height: "70px",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Opening</span>
+                          <span className="text-muted">
+                            ${ownerInfoData?.folio?.opening_balance || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Money in</span>
+                          <span className="text-muted">
+                            ${ownerInfoData?.folio?.money_in || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Money out
+                          </span>
+                          <span className="text-muted">
+                            ${ownerInfoData?.folio?.money_out || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Uncleared
+                          </span>
+                          <span className="text-muted">
+                            ${ownerInfoData?.folio?.uncleared || "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Bills pending
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {ownerInfoData?.ownerPendingBill
+                              ?.total_bills_amount_sum_amount
+                              ? ownerInfoData?.ownerPendingBill
                                 ?.total_bills_amount_sum_amount
-                                ? ownerInfoData?.ownerPendingBill
-                                  ?.total_bills_amount_sum_amount
-                                : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">
-                              Invoices pending
-                            </span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.pending_invoice_bill
-                                ? ownerInfoData?.pending_invoice_bill
-                                : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Withhold</span>
-                            <span className="text-muted">
-                              ৳{ownerInfoData?.folio?.withhold_amount
-                                ? ownerInfoData?.folio?.withhold_amount
-                                : "0.00"}
-                            </span>
-                          </Col>
-                          <Col
-                            className="d-flex flex-column justify-content-center"
-                            style={{
-                              borderStyle: "dotted",
-                              borderWidth: "thin",
-                              borderColor: "#DCDCDC",
-                              backgroundColor: "#F0FFFF",
-                              padding: "10px",
-                              borderRadius: "10px",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span className="text-muted fw-bold">Balance</span>
-                            <span className="text-muted">
-                              ৳{totalBalance > 0 ? totalBalance : "0.00"}
-                            </span>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              )}
+                              : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">
+                            Invoices pending
+                          </span>
+                          <span className="text-muted">
+                            $
+                            {ownerInfoData?.pending_invoice_bill
+                              ? ownerInfoData?.pending_invoice_bill
+                              : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Withhold</span>
+                          <span className="text-muted">
+                            $
+                            {ownerInfoData?.folio?.withhold_amount
+                              ? ownerInfoData?.folio?.withhold_amount
+                              : "0.00"}
+                          </span>
+                        </Col>
+                        <Col
+                          className="d-flex flex-column justify-content-center"
+                          style={{
+                            borderStyle: "dotted",
+                            borderWidth: "thin",
+                            borderColor: "#DCDCDC",
+                            backgroundColor: "#F0FFFF",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span className="text-muted fw-bold">Balance</span>
+                          <span className="text-muted">
+                            ${totalBalance > 0 ? totalBalance : "0.00"}
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
             </div>
           </Col>
 
@@ -1130,12 +1195,12 @@ function OwnerFolio(props) {
             <div>
               <Card style={{ borderRadius: "14px" }}>
                 <CardBody>
-                  {ownerInfoData?.data?.status == "0" && (
+                  {ownerInfoData?.folio?.archive == 1 && (
                     <Alert color="info">
                       <div className="d-flex justify-content-between">
                         <span className="font-size-20">
                           <i className="fas fa-archive"></i> Archived on{" "}
-                          {moment(ownerInfoData?.data?.updated_at).format(
+                          {moment(ownerInfoData?.folio?.updated_at).format(
                             "DD MMM YYYY"
                           )}
                         </span>
@@ -1342,7 +1407,7 @@ function OwnerFolio(props) {
       )}
       <ReverseModal toggle={toggleReverse} state={state} />
       {state.archiveModal && (
-        <OwnerArchiveModal toggle={toggleArchive} state={state} id={fId} />
+        <OwnerArchiveModal toggle={toggleArchive} state={state} id={fId} setState={setState} />
       )}
 
       <TransactionsInfoModal
@@ -1445,6 +1510,7 @@ const mapStateToProps = gstate => {
     tenant_deposit_receipt_loading,
     archive_owner_loading,
     archive_owner_data,
+    restore_owner_loading
   } = gstate.AccountsTransactions;
 
   const { pay_bill_loading, delete_bill_loading, edit_bills_loading } =
@@ -1479,6 +1545,7 @@ const mapStateToProps = gstate => {
     store_single_disbursement_loading,
     archive_owner_loading,
     archive_owner_data,
+    restore_owner_loading
   };
 };
 
@@ -1488,12 +1555,13 @@ export default withRouter(
     PendingBillsForOwner,
     PaidBillsForOwner,
     PendingInvoicesForOwner,
-    getPropertyOwnerInfo,
+    getPropertyOwnerInfoWithArchive,
     deleteInvoice,
     deleteInvoiceFresh,
     tenantInfoFresh,
     storeSingleDisbursementFresh,
     ownerArchive,
     ownerArchiveFresh,
+    restoreOwner, restoreOwnerFresh
   })(OwnerFolio)
 );

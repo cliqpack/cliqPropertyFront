@@ -95,6 +95,17 @@ const DisburseModal = props => {
             <span className="mt-1 p-1">Create commission bill</span>
             {checker && (
               <>
+                <span className="input-group-append">
+                  <span
+                    className="input-group-text"
+                    style={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }}
+                  >
+                    $
+                  </span>
+                </span>
                 <div className="d-flex flex-column">
                   <input
                     className="form-control"
@@ -103,24 +114,13 @@ const DisburseModal = props => {
                     type="text"
                     placeholder="0.00"
                     style={{
-                      borderTopRightRadius: 0,
-                      borderBottomRightRadius: 0,
+                      borderTopLeftRadius: 0,
+                      borderBottomLeftRadius: 0,
                     }}
                     value={state.amount}
                     onChange={handleState}
                   />
                 </div>
-                <span className="input-group-append">
-                  <span
-                    className="input-group-text"
-                    style={{
-                      borderTopLeftRadius: 0,
-                      borderBottomLeftRadius: 0,
-                    }}
-                  >
-                    ৳
-                  </span>
-                </span>
                 <span className="mt-1 p-1">Tax inc</span>
               </>
             )}

@@ -20,7 +20,13 @@ const initialState = {
     pending_invoices_supplier_folio_error: false,
     pending_invoices_supplier_folio_loading: false,
 
-    supplier_folio_disbursement_loading: false
+    supplier_folio_disbursement_loading: false,
+
+    archive_supplier_data: null,
+    archive_supplier_error: null,
+    archive_supplier_loading: false,
+
+    restore_supplier_loading: false,
 }
 const supplier = (state = initialState, action) => {
     switch (action.type) {
@@ -103,6 +109,20 @@ const supplier = (state = initialState, action) => {
             state = {
                 ...state,
                 supplier_folio_disbursement_loading: action.status,
+            };
+            break;
+        case "ARCHIVE_SUPPLIER":
+            state = {
+                ...state,
+                archive_supplier_data: action.payload,
+                archive_supplier_error: action.status,
+                archive_supplier_loading: action.status,
+            };
+            break;
+        case "RESTORE_SUPPLIER":
+            state = {
+                ...state,
+                restore_supplier_loading: action.status,
             };
             break;
 

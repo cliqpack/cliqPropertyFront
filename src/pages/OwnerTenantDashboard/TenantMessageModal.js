@@ -54,7 +54,6 @@ const TenantMessageModal = props => {
   useEffect(() => {
     if (props.mail_send_tenant_loading === 'Success') {
       props.sendMessageTenantFresh();
-      toastr.success('Success')
     }
   }, [props.mail_send_tenant_loading]);
   // console.log(props.mail_send_tenant_loading);
@@ -63,11 +62,11 @@ const TenantMessageModal = props => {
       {/* <Button className="btn w-md m-1" color="info" onClick={togglemodal}>
         <i className="fab fa-rocketchat me-2"></i>Message Agent
       </Button> */}
-      <Link to="/messages-tenant">
-        <Button className="btn w-md m-1 w-100" color="info">
+      {/* <Link to="/messages-tenant"> */}
+        <Button className="btn w-md m-1 w-100" color="info" onClick={togglemodal}>
           <i className="fab fa-rocketchat me-2"></i>Message Agent
         </Button>
-      </Link>
+      {/* </Link> */}
 
       <Modal
         isOpen={state.modal}

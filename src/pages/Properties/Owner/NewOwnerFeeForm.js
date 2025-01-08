@@ -203,7 +203,7 @@ const NewOwnerFeeForm = (props) => {
                             <Row>
                                 <Col className="d-flex justify-content-center align-items-center">
                                     {props.state3[idx].types ==
-                                        "৳" && (
+                                        "$" && (
                                             <span className="input-group-append rounded-start">
                                                 <span
                                                     className="input-group-text"
@@ -214,7 +214,7 @@ const NewOwnerFeeForm = (props) => {
                                                         borderBottomLeftRadius: 5,
                                                     }}
                                                 >
-                                                    ৳
+                                                    $
                                                 </span>
                                             </span>
                                         )}
@@ -225,12 +225,12 @@ const NewOwnerFeeForm = (props) => {
                                         style={{
                                             borderTopLeftRadius:
                                                 props.state3[idx]
-                                                    .types == "৳"
+                                                    .types == "$"
                                                     ? 0
                                                     : 5,
                                             borderBottomLeftRadius:
                                                 props.state3[idx]
-                                                    .types == "৳"
+                                                    .types == "$"
                                                     ? 0
                                                     : 5,
                                             borderTopRightRadius:

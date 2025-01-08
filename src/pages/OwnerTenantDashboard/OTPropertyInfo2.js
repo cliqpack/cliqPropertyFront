@@ -1,82 +1,63 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   Col,
-  Container,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Row,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
   Card,
   CardBody,
-  Button,
   Badge,
   CardImg,
   Table
 } from "reactstrap";
 import { useHistory, useParams, withRouter } from "react-router-dom";
-import { map } from "lodash";
-import { projects } from "./Data";
-import classnames from "classnames";
 import {
   getPropertyInfo,
   JobsListById,
   ListingListInspectionInfo,
   propertyListForOwnerById,
   JobsListByIdOT,
-  currentBalanceInfoOwnerById, financialChartData, ownerPanelDoc
+  currentBalanceInfoOwnerById, financialChartData, ownerPanelDoc, ownerPanelDocFresh
 } from "store/actions";
 import moment from "moment";
 import "./pInfo.css";
 import CardProjectsForJob from "./CardProjectsForJob";
-
 import Img from "../../assets/Property/5.jpg";
 import CardProjectForInspection from "./CardProjectForInspection";
 import Apaexlinecolumn from "pages/AllCharts/apex/apaexlinecolumn";
 import Apexchart from "./Chart/ApexChart";
-import { withTranslation, useTranslation } from "react-i18next";
-import ApartmentAndAddress from "./Common/ApartmentAndAddress";
+import { useTranslation } from "react-i18next";
 
 
 const OTPropertyInfo2 = props => {
   const { id } = useParams();
   const history = useHistory();
   const { t } = useTranslation();
-
   const [init, setInit] = useState(true);
-
+  const [controlDocumentState, setControlDocumentState] = useState({
+    length: 0, showDoc: 3
+  })
   let language = localStorage.getItem("i18nextLng");
-
 
   useEffect(() => {
     if (init) {
       props.getPropertyInfo(id);
-
-      // props.JobsListById(id);
-
       props.ListingListInspectionInfo(id);
-
       props.propertyListForOwnerById(id);
-
       props.JobsListByIdOT(id);
-
       props.currentBalanceInfoOwnerById(id);
-
       props.financialChartData(id);
-
       props.ownerPanelDoc(language, id)
-
       setInit(false);
     }
   }, []);
 
-
+  useEffect(() => {
+    if (props.owner_panel_doc_loading == 'Success') {
+      setControlDocumentState(prev => ({ ...prev, length: props.owner_panel_doc_data?.data?.property_docs.length }))
+      props.ownerPanelDocFresh()
+    }
+  }, [props.owner_panel_doc_loading])
+  console.log(controlDocumentState);
 
 
   const propertyData = props.property_info_data?.data?.data;
@@ -91,34 +72,16 @@ const OTPropertyInfo2 = props => {
   // });
 
   const sortData = ownerDocData.sort(function (a, b) {
-    // Turn your strings into dates, and then subtract them
-    // to get a value that is either negative, positive, or zero.
     return new Date(b.created_at) - new Date(a.created_at);
   })
 
-
-
-
-
-  // ownerDocData.sort((a, b) => b.created_at - a.created_at)
-  //  [...props.owner_panel_doc_data?.data?.property_docs, ...props.owner_panel_doc_data?.data?.all_property_docs
-  // ]
-
   const address = propertyData?.property_address;
   const jobData = props.jobs_list_by_id_ot_data?.data;
-
   let ownerInfoData = props.current_balance_ownerPanel_data;
 
-
-
-
-
   const inspectionData = props.listing_list_inspection_info_data?.data;
-  // console.log(props.listing_list_inspection_info_loading);
   const tenantData = props.property_list_t_id_data?.data;
   const propertyImage = props.property_list_t_id_data?.data[0]?.owner_properties?.property_images[props.property_list_t_id_data?.data[0]?.owner_properties?.property_images?.length - 1]?.property_image
-
-
 
   const tenantName = `${props.property_list_t_id_data?.data[0]?.owner_properties?.tenant_one
     ?.first_name
@@ -139,18 +102,19 @@ const OTPropertyInfo2 = props => {
     props.property_list_t_id_data?.data[0]?.owner_properties?.tenant_one
       ?.tenant_folio;
 
+  console.log(props.owner_panel_doc_loading);
+  const controlDocHandler = () => {
+    setControlDocumentState(prev => ({ ...prev, showDoc: prev.showDoc + 3 }))
+  }
+
   return (
     <React.Fragment>
       <div className="main-property" style={{ marginTop: "100px" }}>
         <Row className="m-3">
-
-
-
           <Col md={7} lg={7} xs={12} sm={12} >
             <Card className="p-details custom_card_border_design me-2" style={{ height: { md: "350px", sx: "500px" } }}>
               <CardBody style={{ height: "340px", }}>
                 <Row className="py-2">
-
                   <Col md={10} xs={12} className="d-flex flex-column">
                     <h3>{propertyData?.reference}</h3>
                     <div className="d-flex justify-content-between py-2">
@@ -158,7 +122,6 @@ const OTPropertyInfo2 = props => {
                         <p className="fw-bold">{t('Address')}</p>
                       </Col>
                       <Col md={8} >
-
                         {address?.building_name}
                         {" "}
                         {address?.unit}
@@ -172,7 +135,6 @@ const OTPropertyInfo2 = props => {
                         {address?.country} <br />
                       </Col>
                     </div>
-
                     <div className="d-flex justify-content-between py-2">
                       <Col md={4}>
                         <p className="fw-bold">{t('Apartment')}</p>
@@ -208,8 +170,6 @@ const OTPropertyInfo2 = props => {
                         </div>
                       </Col>
                     </div>
-
-
                     <div className="d-flex justify-content-between py-2">
                       <Col md={4}>
                         <p className="fw-bold">{t('General Comment')}</p>
@@ -220,7 +180,7 @@ const OTPropertyInfo2 = props => {
                           {t('pays')}{" "}
                           {tenantFolioData?.rent && (
                             <b>
-                              ৳{tenantFolioData?.rent}{" "}
+                              ${tenantFolioData?.rent}{" "}
 
                               {t(tenantFolioData?.rent_type)}
                             </b>
@@ -236,7 +196,6 @@ const OTPropertyInfo2 = props => {
                         </span>
                       </Col>
                     </div>
-
                     <div className="d-flex justify-content-between py-2">
                       <Col md={4}>
                         <p className="fw-bold">{t('Agreement')} {t('Duration')}</p>
@@ -258,42 +217,25 @@ const OTPropertyInfo2 = props => {
                         </span>
                       </Col>
                     </div>
-
                   </Col>
                 </Row>
               </CardBody>
             </Card>
           </Col>
-
-
           <Col md={5} sm={12} xs={12}>
             <Card className="custom_card_border_design me-2">
               <CardImg
                 src={propertyImage ? process.env.REACT_APP_IMAGE + propertyImage : Img}
-                // src={Img}
                 className="img-fluid"
                 style={{ height: "340px", objectFit: "cover", borderRadius: "10px" }}
               />
             </Card>
           </Col>
-
-
-
         </Row>
-
-
         <Row className="m-3">
           <Col md={1}></Col>
           <Col md={12}>
             <div>
-
-              {/* <Card>
-                <CardBody>
-
-                  <ApartmentAndAddress propertyData={propertyData} address={address} />
-                </CardBody>
-              </Card> */}
-
               {/* ============ Current Balance (all properties) start from here ========== */}
               <div>
                 <div>
@@ -305,16 +247,9 @@ const OTPropertyInfo2 = props => {
                           <h4>{t('Current')} {t('Balance')}</h4>
                         </div>
                         <hr />
-
-                        {/* <Row style={{ cursor: "pointer" }}>
-                          {jobData?.map((data, i) => (
-                            <CardProjectsForJob key={i} data={data} />
-                          ))}
-                        </Row> */}
                         <Table responsive borderless>
                           <thead>
                             <tr>
-
                               <th>
                                 {t('Opening')} {t('balance')}
                               </th>
@@ -330,33 +265,31 @@ const OTPropertyInfo2 = props => {
                               <th>
                                 {t('Net')} {t('balance')}
                               </th>
-
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-
                               <td>
                                 <span className="text-muted">
-                                ৳
+                                  $
                                   {ownerInfoData?.data?.owner_folio?.opening_balance == null ? "0.00" : ownerInfoData?.data?.owner_folio?.opening_balance}
                                 </span>
                               </td>
                               <td>
                                 <span className="text-muted">
-                                ৳
+                                  $
                                   {ownerInfoData?.data?.owner_folio?.money_in ? ownerInfoData?.data?.owner_folio?.money_in : "0.00"}
                                 </span>
                               </td>
                               <td>
                                 <span className="text-muted">
                                   { }
-                                  ৳{ownerInfoData?.data?.owner_folio?.money_out ? ownerInfoData?.data?.owner_folio?.money_out : "0.00"}
+                                  ${ownerInfoData?.data?.owner_folio?.money_out ? ownerInfoData?.data?.owner_folio?.money_out : "0.00"}
                                 </span>
                               </td>
                               <td>
                                 <span className="text-muted">
-                                ৳
+                                  $
                                   {ownerInfoData?.ownerPendingBill
                                     ?.total_bills_amount_sum_amount
                                     ? ownerInfoData?.ownerPendingBill
@@ -366,16 +299,14 @@ const OTPropertyInfo2 = props => {
                               </td>
                               <td>
                                 <span className="text-muted">
-                                ৳
+                                  $
                                   {ownerInfoData?.data?.owner_folio?.money_in == 0
                                     ? "0.00"
                                     : props.current_balance_ownerPanel_data?.folio?.money_in ? props.current_balance_ownerPanel_data?.folio?.money_in : 0 -
                                       (ownerInfoData?.data?.owner_folio?.money_out ? ownerInfoData?.data?.owner_folio?.money_out : 0 +
                                         ownerInfoData?.data?.owner_folio?.uncleared ? ownerInfoData?.data?.owner_folio?.uncleared : 0)}
-
                                 </span>
                               </td>
-
                             </tr>
                           </tbody>
                         </Table>
@@ -390,16 +321,18 @@ const OTPropertyInfo2 = props => {
               {props.chart_data?.data?.money_in.length > 0 || props.chart_data?.data?.money_out.length > 0 ? <div>
                 <div>
                   <div>
-
                     <Card className="custom_card_border_design me-2">
                       <CardBody>
                         <div>
                           {" "}
-                          <h4>{t('Financial')} {t('Activity')} ({t('all')} {t('properties')}) </h4>
+                          <h4>
+                            {t('Financial')} {t('Activity')} ({t('all')} {t('properties')}) {" "}
+                            <button type="button" className="btn btn-sm btn-info" onClick={financialHandler}>
+                              more details <i className="fas fa-arrow-right ms-1" />
+                            </button>
+                          </h4>
                         </div>
                         <hr />
-                        {/* <Apaexlinecolumn /> */}
-
                         {props.chart_data?.data?.money_in.length > 0 || props.chart_data?.data?.money_out.length > 0 ? <Apexchart data={props.chart_data?.data} /> : ""}
                       </CardBody>
                     </Card>
@@ -407,7 +340,6 @@ const OTPropertyInfo2 = props => {
                 </div>
               </div> : null}
               {/* ============ Financial Activity (all properties)  ends here ========== */}
-
               <div>
                 <div>
                   <div>
@@ -418,7 +350,6 @@ const OTPropertyInfo2 = props => {
                           <h4>{t('Jobs')}</h4>
                         </div>
                         <hr />
-
                         {jobData ? <Row style={{ cursor: "pointer" }}>
                           {jobData?.map((data, i) => (
                             <CardProjectsForJob key={i} data={data} />
@@ -431,22 +362,17 @@ const OTPropertyInfo2 = props => {
                   </div>
                 </div>
               </div>
-
-
               <Card className="custom_card_border_design me-2">
-
                 <CardBody>
                   <div>
                     <h4>{t('Inspections')}</h4>
                     <hr />
-
                     {inspectionData ? <Row style={{ cursor: "pointer" }}>
                       {inspectionData?.map((data, i) => (
                         <CardProjectForInspection data={data} key={i} />
                       ))}
                     </Row> :
                       <div className="w-100 d-flex justify-content-center">Loading...</div>
-
                     }
                   </div>
                 </CardBody>
@@ -459,50 +385,53 @@ const OTPropertyInfo2 = props => {
                       <h4>{t('Documents')}</h4>
                     </div>
                     <hr />
-                    {sortData ? '' : <div>
-                      <span className="text-muted">
-                        {t('Click')} a {t('document')} row to show that document and any
-                        attached files.
-                      </span>
-                    </div>}
-
-                    {sortData.map((item, key) => (
-                      <div
-                        className="ps-4 pe-3 mt-1 py-3 d-flex justify-content-between"
-                        style={{ backgroundColor: "#DCDCDC" }}
-                        key={key}
-                      >
-                        <div>
-                          <div>
-
-                            <a
-                              href={process.env.REACT_APP_DOCUMENT_2 + item.doc_path}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <i className="fas fa-file me-2"></i> {t('Document')} #
-                              {item.id}{" "}{item.name}
-                            </a>
-                          </div>
-                          <div>
-                            {/* <a
-                              href={process.env.REACT_APP_DOCUMENT_2 + item.doc_path}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {item.doc_path}
-                            </a> */}
-                          </div>
-                        </div>
-                        <span>
-                          {" "}
-                          {moment(item?.created_at).format("DD MMM YYYY")}
+                    {
+                      controlDocumentState.length > 0 &&
+                      <div>
+                        <span className="text-muted">
+                          {t('Click')} a {t('document')} row to show that document and any
+                          attached files.
                         </span>
                       </div>
-                    ))}
-                    {/* <div className="d-flex justify-content-end">
-                      <span className="p-1">Show more documents</span>
-                    </div> */}
+                    }
+
+                    {sortData.map((item, key) => {
+                      if ((key + 1) <= controlDocumentState.showDoc) {
+                        return <div
+                          className="ps-4 pe-3 mt-1 py-3 d-flex justify-content-between"
+                          style={{ backgroundColor: "#DCDCDC" }}
+                          key={key}
+                        >
+                          <div>
+                            <div>
+
+                              <a
+                                href={process.env.REACT_APP_DOCUMENT_2 + item.doc_path}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <i className="fas fa-file me-2"></i> {t('Document')} #
+                                {item.id}{" "}{item.name}
+                              </a>
+                            </div>
+                            <div>
+                            </div>
+                          </div>
+                          <span>
+                            {" "}
+                            {moment(item?.created_at).format("DD MMM YYYY")}
+                          </span>
+                        </div>
+                      }
+                    })}
+                    {
+                      controlDocumentState.showDoc < controlDocumentState.length &&
+                      <div className="d-flex justify-content-end mt-2">
+                        <button className="btn btn-sm btn-info" onClick={controlDocHandler}>
+                          Show more documents
+                        </button>
+                      </div>
+                    }
                   </div>
                 </CardBody>
               </Card>
@@ -528,7 +457,8 @@ const mapStateToProps = gstate => {
 
     chart_data,
 
-    owner_panel_doc_data
+    owner_panel_doc_data,
+    owner_panel_doc_loading
   } = gstate.OTDashboard;
 
   const { property_info_data, property_info_error, property_info_loading } =
@@ -561,7 +491,8 @@ const mapStateToProps = gstate => {
 
     chart_data,
 
-    owner_panel_doc_data
+    owner_panel_doc_data,
+    owner_panel_doc_loading
   };
 };
 
@@ -574,6 +505,6 @@ export default withRouter(
     JobsListByIdOT,
     currentBalanceInfoOwnerById,
     financialChartData,
-    ownerPanelDoc
+    ownerPanelDoc, ownerPanelDocFresh
   })(OTPropertyInfo2)
 );

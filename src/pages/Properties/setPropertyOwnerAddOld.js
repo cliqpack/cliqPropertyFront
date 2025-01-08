@@ -123,7 +123,7 @@ const setPropertyOwnerAdd = props => {
   const [optionGroup6, setOptionGroup6] = useState([
     {
       options: [
-        { label: "Admin Fee (৳)", value: "Admin Fee (৳)" },
+        { label: "Admin Fee ($)", value: "Admin Fee ($)" },
       ],
     },
   ]);
@@ -138,7 +138,7 @@ const setPropertyOwnerAdd = props => {
     {
       options: [
         { label: "Commercial Management Fee (%)", value: "1" },
-        { label: "Letting fee (৳)", value: "2" },
+        { label: "Letting fee ($)", value: "2" },
         { label: "Management fee (%)", value: "3" },
       ],
     },
@@ -510,7 +510,7 @@ const setPropertyOwnerAdd = props => {
       values[idx]['income_account_2'] = 'Letting fee (inc. tax)';
       values[idx]['fee_trigger_2'] = 'First rent receipt';
       values[idx]['notes_2'] = '';
-      values[idx]['amountPlaceholder'] = '৳0.00';
+      values[idx]['amountPlaceholder'] = '$0.00';
     } else if (e.value === "3") {
       values[idx]['income_account_2'] = 'Management fee (inc. tax)';
       values[idx]['fee_trigger_2'] = 'Rental receipt';
@@ -654,7 +654,7 @@ const setPropertyOwnerAdd = props => {
 
   const toggleDollorBtn = (idx) => {
     let data = [...state8];
-    data[idx]['split_type'] = '৳';
+    data[idx]['split_type'] = '$';
     data[idx]['split'] = '';
     data[idx]['splitTypeEnableBtn'] = false;
     data[idx]['splitTypeDisableBtn'] = true;
@@ -2367,7 +2367,7 @@ const setPropertyOwnerAdd = props => {
                                                         <Field
                                                           name="total_money"
                                                           type="number"
-                                                          placeholder="৳0.00"
+                                                          placeholder="$0.00"
                                                           className={
                                                             "form-control" +
                                                             (errors.total_money &&
@@ -2401,7 +2401,7 @@ const setPropertyOwnerAdd = props => {
                                                         <Field
                                                           name="balance"
                                                           type="number"
-                                                          placeholder="৳0.00"
+                                                          placeholder="$0.00"
                                                           className={
                                                             "form-control" +
                                                             (errors.balance &&
@@ -2520,7 +2520,7 @@ const setPropertyOwnerAdd = props => {
                                                         <Field
                                                           name="withhold_amount"
                                                           type="number"
-                                                          placeholder="৳0.00"
+                                                          placeholder="$0.00"
                                                           className={
                                                             "form-control" +
                                                             (errors.withhold_amount &&
@@ -3263,7 +3263,7 @@ const setPropertyOwnerAdd = props => {
                                                     }
                                                     onClick={() => toggleDollorBtn(idx)}
                                                   >
-                                                    <span> ৳</span>
+                                                    <span> $</span>
                                                   </Button>
                                                 </div>
                                                 <div className="btn-group">

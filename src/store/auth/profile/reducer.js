@@ -10,7 +10,6 @@ const initialState = {
   error: "",
   success: "",
   profile_edit_status: false,
-  profile_edit_data: null,
   password_update_status: false,
   pro_pic: undefined,
   pro_pic_status: false,
@@ -25,7 +24,7 @@ const profile = (state = initialState, action) => {
 
   switch (action.type) {
     case EDIT_PROFILE:
-      state = { ...state, profile_edit_status: action.status, profile_details: undefined, profile_edit_data: action.payload };
+      state = { ...state, profile_edit_status: action.status, profile_details: undefined };
       break;
     case EDIT_PASSWORD:
 

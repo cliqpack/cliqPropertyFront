@@ -177,7 +177,7 @@ const NewAddonModal = props => {
             }));
         }
         if (state.price !== '' && isNaN(state.price)) {
-            setState(prev => ({ ...prev, price: '' }))
+            setState(prev => ({...prev, price: ''}))
             setError(prev => ({
                 ...prev,
                 price: 'Only numerical number will be taken',
@@ -305,7 +305,7 @@ const NewAddonModal = props => {
                 propertyBtn: val?.charging === 'Ownership' ? true : false,
                 ownerBtn: val?.charging === 'Ownership' ? false : true,
                 percentBtn: val?.value === '%' ? true : false,
-                amountBtn: val?.value === '৳' ? true : false,
+                amountBtn: val?.value === '$' ? true : false,
                 time: val?.time ? val?.time : '06:00',
                 notes: val?.note,
                 selectedFrequencyType: val?.frequnecy_type ? { label: val?.frequnecy_type, value: val?.frequnecy_type } : {},
@@ -379,7 +379,7 @@ const NewAddonModal = props => {
 
 
 
-                <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
+                <ModalHeader style={{ backgroundColor: "#153D58" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", width: "470px", marginTop: "10px" }}>
                         <div>
 
@@ -451,7 +451,7 @@ const NewAddonModal = props => {
                                     <div className="btn-group btn-group-justified">
                                         <div className="btn-group">
                                             <Button
-                                                color={state.propertyBtn ? "buttonColor" : "light"}
+                                                color={state.propertyBtn ? "secondary" : "light"}
                                             //onClick={togglePropertyBtn}
                                             >
                                                 {state.propertyBtn ? (
@@ -700,6 +700,20 @@ const NewAddonModal = props => {
                                                 md={12}
                                                 className="d-flex mb-1"
                                             >
+                                                {
+                                                    state.amountBtn &&
+                                                    <span className="input-group-append">
+                                                        <span
+                                                            className="input-group-text"
+                                                            style={{
+                                                                borderTopRightRadius: 0,
+                                                                borderBottomRightRadius: 0,
+                                                            }}
+                                                        >
+                                                            $
+                                                        </span>
+                                                    </span>
+                                                }
                                                 <div className="form-group-new">
                                                     <input
                                                         className="form-control"
@@ -708,30 +722,16 @@ const NewAddonModal = props => {
                                                         type="text"
                                                         placeholder="0.00"
                                                         style={{
-                                                            borderTopRightRadius: 0,
-                                                            borderBottomRightRadius: 0,
-                                                            borderTopLeftRadius: 5,
-                                                            borderBottomLeftRadius: 5,
+                                                            borderTopLeftRadius: state.percentBtn ? 5 : 0,
+                                                            borderBottomLeftRadius: state.percentBtn ? 5 : 0,
+                                                            borderTopRightRadius: state.amountBtn ? 5 : 0,
+                                                            borderBottomRightRadius: state.amountBtn ? 5 : 0,
                                                         }}
                                                         value={state.price}
                                                         onChange={stateHandler}
                                                     />
                                                     <label htmlFor="usr">Price</label>
                                                 </div>
-                                                {
-                                                    state.amountBtn &&
-                                                    <span className="input-group-append">
-                                                        <span
-                                                            className="input-group-text"
-                                                            style={{
-                                                                borderTopLeftRadius: 0,
-                                                                borderBottomLeftRadius: 0,
-                                                            }}
-                                                        >
-                                                            ৳
-                                                        </span>
-                                                    </span>
-                                                }
                                                 {
                                                     state.percentBtn &&
                                                     <span className="input-group-append">
@@ -759,7 +759,7 @@ const NewAddonModal = props => {
                                         <div className="btn-group btn-group-justified">
                                             <div className="btn-group">
                                                 <Button
-                                                    color={state.percentBtn ? "#6E62E5" : "light"}
+                                                    color={state.percentBtn ? "secondary" : "light"}
                                                     onClick={togglePercentBtn}
                                                     disabled={state.ownerBtn && true || state.disableBtn && true}
                                                 // disabled={!state.ownerBtn ? false : true }
@@ -772,7 +772,7 @@ const NewAddonModal = props => {
                                             </div>
                                             <div className="btn-group">
                                                 <Button
-                                                    color={state.amountBtn ? "#6E62E5" : "light"}
+                                                    color={state.amountBtn ? "secondary" : "light"}
                                                     onClick={toggleAmountBtn}
                                                     disabled={!state.ownerBtn ? false : true}
                                                 >

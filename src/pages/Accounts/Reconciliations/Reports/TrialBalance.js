@@ -11,9 +11,9 @@ import { connect } from "react-redux";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
+document.title = "MyDay";
 
 const UnreconcileItems = (props) => {
-    document.title = "CliqProperty";
     const { year, month, day } = useParams();
 
     // const goBack = () => history.push(`/maintenanceInfo/${id}`)
@@ -101,10 +101,10 @@ const UnreconcileItems = (props) => {
                                                                 <tr key={i} className={props.trial_data?.owner.length - 1 === i ? `border-bottom border-1 border-secondary` : ``}>
 
                                                                     <td className="col-md-8">{item?.owner_folio?.owner_contacts?.reference}	</td>
-                                                                    <td className="col-md-1">৳{item?.opening_balance}</td>
-                                                                    <td className="col-md-1">৳{item?.amount_debit}	</td>
-                                                                    <td className="col-md-1">৳{item?.amount_credit}		</td>
-                                                                    <td className="col-md-1">৳{item?.closing_balance}</td>
+                                                                    <td className="col-md-1">${item?.opening_balance}</td>
+                                                                    <td className="col-md-1">${item?.amount_debit}	</td>
+                                                                    <td className="col-md-1">${item?.amount_credit}		</td>
+                                                                    <td className="col-md-1">${item?.closing_balance}</td>
 
                                                                 </tr>
                                                             )
@@ -113,10 +113,10 @@ const UnreconcileItems = (props) => {
 
                                                     <tr className="">
                                                         <td className="col-md-8 fw-bold">Total Owner folios Funds		</td>
-                                                        <td className="col-md-1 fw-bold">৳{props.trial_data?.ownerOpening}	</td>
-                                                        <td className="col-md-1 fw-bold">৳{totalDebit}	</td>
-                                                        <td className="col-md-1 fw-bold">৳{totalCredit}		</td>
-                                                        <td className="col-md-1 fw-bold">৳{props.trial_data?.ownerClosing}</td>
+                                                        <td className="col-md-1 fw-bold">${props.trial_data?.ownerOpening}	</td>
+                                                        <td className="col-md-1 fw-bold">${totalDebit}	</td>
+                                                        <td className="col-md-1 fw-bold">${totalCredit}		</td>
+                                                        <td className="col-md-1 fw-bold">${props.trial_data?.ownerClosing}</td>
 
                                                     </tr>
 
@@ -144,10 +144,10 @@ const UnreconcileItems = (props) => {
                                                         return (
                                                             <tr key={i} className={props.trial_data?.tenant.length - 1 === i ? `border-bottom border-1 border-secondary` : ``}>
                                                                 <td className="col-md-8">{item?.tenant_folio?.tenant_contact?.reference}	</td>
-                                                                <td className="col-md-1">৳{item?.opening_balance}	</td>
-                                                                <td className="col-md-1">৳{item?.amount_debit}	</td>
-                                                                <td className="col-md-1">৳{item?.amount_credit}		</td>
-                                                                <td className="col-md-1">৳{item?.closing_balance}</td>
+                                                                <td className="col-md-1">${item?.opening_balance}	</td>
+                                                                <td className="col-md-1">${item?.amount_debit}	</td>
+                                                                <td className="col-md-1">${item?.amount_credit}		</td>
+                                                                <td className="col-md-1">${item?.closing_balance}</td>
 
                                                             </tr>
                                                         )
@@ -156,10 +156,10 @@ const UnreconcileItems = (props) => {
 
                                                     <tr className="border-bottom border-0">
                                                         <td className="col-md-8 fw-bold">Total Tenant folios Funds	</td>
-                                                        <td className="col-md-1 fw-bold">৳{props.trial_data?.tenantOpening}	</td>
-                                                        <td className="col-md-1 fw-bold">৳{totalDebit2}	</td>
-                                                        <td className="col-md-1 fw-bold">৳{totalCredit2}		</td>
-                                                        <td className="col-md-1 fw-bold">৳{props.trial_data?.tenantClosing}</td>
+                                                        <td className="col-md-1 fw-bold">${props.trial_data?.tenantOpening}	</td>
+                                                        <td className="col-md-1 fw-bold">${totalDebit2}	</td>
+                                                        <td className="col-md-1 fw-bold">${totalCredit2}		</td>
+                                                        <td className="col-md-1 fw-bold">${props.trial_data?.tenantClosing}</td>
                                                     </tr>
                                                 </tbody>
                                             </Table>
@@ -184,10 +184,10 @@ const UnreconcileItems = (props) => {
                                                         return (
                                                             <tr key={i} className={props.trial_data?.supplier.length - 1 === i ? `border-bottom border-1 border-secondary` : ``}>
                                                                 <td className="col-md-8">{item?.supplier_details?.supplier_contact?.reference}	</td>
-                                                                <td className="col-md-1">৳{item?.opening_balance}	</td>
-                                                                <td className="col-md-1">৳{item?.amount_debit}	</td>
-                                                                <td className="col-md-1">৳{item?.amount_credit}		</td>
-                                                                <td className="col-md-1">৳{item?.closing_balance}</td>
+                                                                <td className="col-md-1">${item?.opening_balance}	</td>
+                                                                <td className="col-md-1">${item?.amount_debit}	</td>
+                                                                <td className="col-md-1">${item?.amount_credit}		</td>
+                                                                <td className="col-md-1">${item?.closing_balance}</td>
 
                                                             </tr>
                                                         )
@@ -197,10 +197,10 @@ const UnreconcileItems = (props) => {
 
                                                     <tr className="border-bottom border-0">
                                                         <td className="col-md-8 fw-bold">Total Supplier folios Funds	</td>
-                                                        <td className="col-md-1 fw-bold">৳{props.trial_data?.supplierOpening}	</td>
-                                                        <td className="col-md-1 fw-bold">৳{totalDebit3}	</td>
-                                                        <td className="col-md-1 fw-bold">৳{totalCredit3}		</td>
-                                                        <td className="col-md-1 fw-bold">৳{props.trial_data?.supplierClosing}</td>
+                                                        <td className="col-md-1 fw-bold">${props.trial_data?.supplierOpening}	</td>
+                                                        <td className="col-md-1 fw-bold">${totalDebit3}	</td>
+                                                        <td className="col-md-1 fw-bold">${totalCredit3}		</td>
+                                                        <td className="col-md-1 fw-bold">${props.trial_data?.supplierClosing}</td>
                                                     </tr>
                                                 </tbody>
                                             </Table>

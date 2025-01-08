@@ -18,6 +18,10 @@ import {
   Button,
   CardHeader,
   Badge,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
 } from "reactstrap";
 import classnames from "classnames";
 import {
@@ -27,7 +31,7 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
-import { showContact, editContactFresh } from "../../store/Contacts2/actions";
+import { showContact, editContactFresh, deleteContact, deleteContactFresh, archiveContact, archiveContactFresh, restoreContact, restoreContactFresh } from "../../store/Contacts2/actions";
 import {
   TenantInfoFresh,
   tenantUpdateFresh,
@@ -44,7 +48,6 @@ import {
   storePropertyDocumentFresh,
   AllContactDocument, storeContactDocFresh
 } from "store/actions";
-import { propTypes } from "react-bootstrap-editable";
 import { connect } from "react-redux";
 import ContactsInfoOfOwner from "./Info/ContactsInfoOfOwner";
 import ContactsInfoOfInfo from "./Info/ContactsInfoOfInfo";
@@ -52,21 +55,19 @@ import ContactsInfoOfTenant from "./Info/ContactsInfoOfTenant";
 import ContactsInfoOfSupplier from "./Info/ContactsInfoOfSupplier";
 import TaskAdd from "pages/Task/TaskAdd";
 import moment from "moment";
-import MailTemplateModal from "pages/Jobs/Activity/MailTemplateModal";
 import toastr from "toastr";
-import Comment from "pages/Activity/Comment";
 
 import Aos from "aos";
 import "aos/dist/aos.css";
 import ContactsInfoOfSeller from "./Info/ContactsInfoOfSeller";
 import ContactsInfoOfBuyer from "./Info/ContactsInfoOfBuyer";
 import MessagesModal from "./MessagesModal/MessagesModal";
-import ShowActivityData from "pages/Properties/Activity/ShowActivityData";
-import Breadcrumbs from "components/Common/Breadcrumb";
-import { set } from "lodash";
 import ContactActivityNdoc from "./Activity/ContactActivityNdoc";
+import Loder from "components/Loder/Loder";
 
 const ContactsInfo = props => {
+  // console.log("karim");
+  
   const history = useHistory();
   const { id } = useParams();
   const [state, setState] = useState({
@@ -74,11 +75,11 @@ const ContactsInfo = props => {
   });
 
   const [showDropZone, setShowDropZone] = useState(false);
+  const [dropdownState, setDropDownState] = useState({ open: false, loader: false, disableDeleteBtn: false });
 
   const [selectedLevel, setSelectedLevel] = useState([]);
 
   const [message, setMessage] = useState("");
-  const [msgState, setMsgState] = useState("");
   const [init, setInit] = useState(true);
   const [msgShow, setMsgShow] = useState(false);
   const msgToggle = () => setMsgShow(prev => !prev);
@@ -91,13 +92,6 @@ const ContactsInfo = props => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-
-    // if (props.add_message_data_loading === "Success") {
-    //   toastr.success("Comment Added Successfully");
-
-    //   props.getMessageContacts(id);
-    //   props.addCommentFresh();
-    // }
     if (props.store_property_document_loading === "Success") {
       toastr.success("Uploaded Successfully");
       props.storePropertyDocumentFresh();
@@ -124,12 +118,6 @@ const ContactsInfo = props => {
     if (props.tenant_update_loading === "Success") {
       props.tenantUpdateFresh();
     }
-    // if (props.contacts_show_loading === false) {
-    //   props.showContact(id);
-    //   props.AllContactDocument(id);
-    //   props.getMessageContacts(id);
-    //   props.ContactsAllActivity(id);
-    // }
     if (props.tenant_info_loading === "Success") {
       props.TenantInfoFresh();
     }
@@ -151,7 +139,6 @@ const ContactsInfo = props => {
       props.sendEmailFresh();
     }
   }, [
-    // props.contacts_show_loading,
     props.tenant_info_loading,
     props.contacts_edit_loading,
     props.tenant_update_loading,
@@ -165,11 +152,48 @@ const ContactsInfo = props => {
 
   useEffect(() => { props.OwnerInfoFresh() }, [])
 
+  useEffect(() => {
+    if (props.delete_contact_loading === 'Success') {
+      setDropDownState(prev => ({ ...prev, loader: false }))
+      history.push('/contactList')
+      props.deleteContactFresh()
+    } else if (props.delete_contact_loading === 'Failed') {
+      toastr.error("Something went wrong");
+      setDropDownState(prev => ({ ...prev, loader: false, disableDeleteBtn: false }))
+      props.deleteContactFresh()
+    }
+  }, [props.delete_contact_loading])
+
+  useEffect(() => {
+    if (props.archive_contact_loading === 'Success') {
+      setDropDownState(prev => ({ ...prev, loader: false }))
+      toastr.success('Contact archived Successfully')
+      props.showContact(id);
+      props.archiveContactFresh()
+    } else if (props.archive_contact_loading === 'Failed') {
+      setDropDownState(prev => ({ ...prev, loader: false }))
+      toastr.error('Something went wrong!')
+      props.archiveContactFresh()
+    }
+  }, [props.archive_contact_loading])
+
+  useEffect(() => {
+    if (props.restore_contact_loading === 'Success') {
+      setDropDownState(prev => ({ ...prev, loader: false }))
+      toastr.success('Contact Restored Successfully')
+      props.showContact(id);
+      props.restoreContactFresh()
+    } else if (props.restore_contact_loading === 'Failed') {
+      setDropDownState(prev => ({ ...prev, loader: false }))
+      toastr.error('Something went wrong!')
+      props.restoreContactFresh()
+    }
+  }, [props.restore_contact_loading])
+
 
 
   if (init) {
     props.showContact(id);
-    // props.AllContactDocument(id);
     props.getMessageContacts(id);
     props.ContactsAllActivity(id);
     setInit(false);
@@ -196,12 +220,10 @@ const ContactsInfo = props => {
     );
   };
 
-  const activityData = props.contacts_all_activity?.data?.data;
   const msgData = props.contacts_message_data?.data?.data;
 
   var authUserData = JSON.parse(localStorage.getItem("authUser"));
   const managerNameData = authUserData?.user?.first_name;
-  var authUser = JSON.parse(localStorage.getItem("authUser"));
 
   const msgHandlerSubmit = e => {
     e.preventDefault();
@@ -222,8 +244,6 @@ const ContactsInfo = props => {
         activeTab: tab,
       });
     }
-    const tabCall = tab == 2 && props.AllContactDocument(id);
-
   };
 
   let communication = [];
@@ -250,11 +270,6 @@ const ContactsInfo = props => {
     );
   }
 
-  //style={{ backgroundColor: item.communication == 'Email' ? 'tomato' : item.communication == 'SMS' ? 'yellow' : 'violet' }}
-  // const ownerEditHandler = id => {
-  //   history.push(`/owner/edit/${id}/2`);
-  // };
-
   let tenantData = [];
   if (props.contacts_show_data) {
     if (props.contacts_show_data?.tenant?.length > 0) {
@@ -275,7 +290,6 @@ const ContactsInfo = props => {
     }
   }
 
-  console.log(props.contacts_show_data?.owner);
   let ownerData = [];
   if (props.contacts_show_data) {
     if (props.contacts_show_data?.owner?.length > 0) {
@@ -317,7 +331,7 @@ const ContactsInfo = props => {
         );
       });
     }
-  }
+  } 
 
   let buyerData = [];
   if (props.contacts_show_data) {
@@ -365,6 +379,23 @@ const ContactsInfo = props => {
   const [documentModal, setDocument] = useState(false);
   const toggleDocument = () => setDocument(!documentModal);
 
+  const onDeleteContact = () => {
+    props.deleteContact(id)
+    setDropDownState(prev => ({ ...prev, loader: true, disableDeleteBtn: true }))
+  }
+
+  const archiveContactHandler = () => {
+    setDropDownState(prev => ({ ...prev, loader: true }))
+    props.archiveContact(id)
+  }
+
+  const contactRestoreHandler = () => {
+    setDropDownState(prev => ({ ...prev, loader: true }))
+    props.restoreContact(id)
+  }
+
+  console.log(props.contacts_show_data);
+
   return (
     <div
       className="page-content"
@@ -372,6 +403,7 @@ const ContactsInfo = props => {
       onDragLeave={dragend}
       onDrop={dropFile}
     >
+      {dropdownState.loader && <Loder status={dropdownState.loader} />}
       {/* <Breadcrumbs title="Contacts Info" breadcrumbItem="Contacts" /> */}
       <h4 className="ms-2 text-primary">Contact Info</h4>
 
@@ -401,8 +433,9 @@ const ContactsInfo = props => {
                         //justifyContent: "space-between"
                       }}
                     >
-                      {/* <Button
-                        className="btn w-100"
+                      <Button
+                        type="button"
+                        className="btn btn-info w-100"
                         color={msgModal ? "modalButtonColor" : "labelColor"}
                         onClick={toggleMsgModal}
                         style={{ display: "flex", justifyContent: "space-between", borderRadius: "5px" }}
@@ -410,7 +443,7 @@ const ContactsInfo = props => {
 
                         Message
                         <i className="fas fa-angle-right ms-1" />
-                      </Button> */}
+                      </Button>
 
                       <TaskAdd
                         contactRef={props.contacts_show_data?.data?.reference}
@@ -462,6 +495,39 @@ const ContactsInfo = props => {
                         Documents
                         <i className="fas fa-list font-size-12 align-middle me-2"></i>{" "}
                       </Button>
+                      {props.contacts_show_data?.data?.archive == 0 &&
+                        <Dropdown
+                          isOpen={dropdownState.open}
+                          toggle={() =>
+                            setDropDownState(prev => ({ ...prev, open: !prev.open }))
+                          }
+                        >
+                          <DropdownToggle
+                            tag="button"
+                            className="btn btn-labelColor w-100"
+                            style={{ display: "flex", justifyContent: "space-between", borderRadius: "5px" }}
+                            disabled={props.contacts_show_data?.contact_archive_status == true ? false : true}
+                          >
+                            Action
+                            {dropdownState.open ? (
+                              <i className="fas fa-angle-down font-size-12 align-middle mx-2 mt-1"></i>
+                            ) : (
+                              <i className="fas fa-angle-right font-size-12 align-middle mx-2 mt-1"></i>
+                            )}
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            <DropdownItem onClick={archiveContactHandler}>
+                              Archive
+                            </DropdownItem>
+                            {
+                              (props.contacts_show_data?.owner == 0 && props.contacts_show_data?.tenant == 0 && props.contacts_show_data?.supplier == 0 && props.contacts_show_data?.seller == 0) &&
+                              <DropdownItem onClick={onDeleteContact} disabled={dropdownState.disableDeleteBtn}>
+                                Delete
+                              </DropdownItem>
+                            }
+                          </DropdownMenu>
+                        </Dropdown>
+                      }
                     </div>
 
                   </Col>
@@ -475,6 +541,25 @@ const ContactsInfo = props => {
         {/* <Row className="d-flex justify-content-center"> */}
         <Col md={12} lg={10} xs={12} className="p-0">
           <div>
+            {props.contacts_show_data?.data?.archive == 1 && (
+              <Alert color="info">
+                <div className="d-flex justify-content-between">
+                  <span className="font-size-20">
+                    <i className="fas fa-archive"></i> Archived on{" "}
+                    {moment(props.contacts_show_data?.data?.updated_at).format(
+                      "DD MMM YYYY"
+                    )}
+                  </span>
+                  <Button
+                    color="info"
+                    className="btn btn-sm"
+                    onClick={contactRestoreHandler}
+                  >
+                    <i className="fas fa-undo-alt"></i> Restore
+                  </Button>
+                </div>
+              </Alert>
+            )}
             <ContactsInfoOfInfo
               props={props}
               communication={communication}
@@ -497,11 +582,6 @@ const ContactsInfo = props => {
             {/* Buyer div */}
             {buyerData || ""}
 
-
-
-            {/* <Card data-aos="fade-right" data-aos-once={true}>
-              <CardBody> */}
-
             {state.activeTab == 1 ?
               <ContactActivityNdoc state={state} toggle={toggle} msgToggle={msgToggle} msgShow={msgShow} msgData={msgData} managerNameData={managerNameData}
                 msgHandlerSubmit={msgHandlerSubmit} setMessage={setMessage} data={props.all_contact_document?.data?.data} modalShow={activityModal} toggleActivity={toggleActivity} />
@@ -509,20 +589,8 @@ const ContactsInfo = props => {
                 <ContactActivityNdoc state={state} toggle={toggle} msgToggle={msgToggle} msgShow={msgShow} msgData={msgData} managerNameData={managerNameData}
                   msgHandlerSubmit={msgHandlerSubmit} setMessage={setMessage} data={props.all_contact_document?.data?.data} modalShowDoc={documentModal} toggleDocument={toggleDocument} />
                 : ""}
-            {/* </CardBody>
-            </Card> */}
           </div>
         </Col>
-        {/* <Col md={10} className="p-0">
-          <Card data-aos="fade-right" data-aos-once={true}>
-            <CardBody>
-
-
-              <ContactActivityNdoc state={state} toggle={toggle} msgToggle={msgToggle} msgShow={msgShow} msgData={msgData} managerNameData={managerNameData}
-                msgHandlerSubmit={msgHandlerSubmit} setMessage={setMessage} data={props.all_contact_document?.data?.data} />
-            </CardBody>
-          </Card>
-        </Col> */}
       </Row>
       {msgModal && <MessagesModal toggle={toggleMsgModal} msgModal={msgModal} contactId={id} />}
     </div>
@@ -536,7 +604,7 @@ Aos.init({
 const mapStateToProps = gstate => {
   const { get_task_info_loading } = gstate.tasks;
 
-  const { contacts_show_data, contacts_show_loading, contacts_edit_loading } =
+  const { contacts_show_data, contacts_show_loading, contacts_edit_loading, delete_contact_loading, archive_contact_loading, restore_contact_loading } =
     gstate.Contacts2;
 
   const {
@@ -587,7 +655,9 @@ const mapStateToProps = gstate => {
     all_contact_document_error,
     all_contact_document_loading,
 
-    add_message_data_loading, store_contact_doc_loading
+    add_message_data_loading, store_contact_doc_loading,
+
+    delete_contact_loading, archive_contact_loading, restore_contact_loading
   };
 };
 export default withRouter(
@@ -607,6 +677,7 @@ export default withRouter(
     sendEmailFresh,
     storePropertyDocument,
     storePropertyDocumentFresh,
-    AllContactDocument, storeContactDocFresh
+    AllContactDocument, storeContactDocFresh,
+    deleteContact, deleteContactFresh, archiveContact, archiveContactFresh, restoreContact, restoreContactFresh
   })(ContactsInfo)
 );

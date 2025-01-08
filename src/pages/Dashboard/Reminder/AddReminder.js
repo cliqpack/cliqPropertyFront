@@ -1,36 +1,17 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
-    Card,
-    Alert,
-    CardBody,
-    CardTitle,
     Col,
-    Container,
     Row,
-    CardText,
-    Nav,
-    NavItem,
-    NavLink,
-    TabContent,
-    TabPane,
-    Label,
     Input,
     Button,
-    CardHeader,
     Modal,
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Form,
-    FormGroup,
-    FormText,
 } from "reactstrap";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import { connect } from "react-redux";
 import Select from "react-select";
-
 import {
     addReminder,
     addReminderFresh,
@@ -50,14 +31,9 @@ import {
     completeReminderFresh,
     completeReminder, addReminderImage, addReminderImageFresh
 } from "store/actions";
-
 import toastr from "toastr";
 import { useHistory, useParams, Link } from "react-router-dom";
 import Loder from "components/Loder/Loder";
-import Switch from "react-switch";
-// Form Editor
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import Flatpickr from "react-flatpickr";
 import DragAndDrop from "common/DragAndDrop/DragAndDrop";
 
@@ -72,13 +48,9 @@ const AddReminder = (props) => {
         activeBtn: false,
         init: true,
     });
-    console.log(state);
-    console.log(props.data);
     const [status, setStatus] = useState(false)
-
-    const [state2, setState2] = useState({ optionSupplier: [] });
+    const [state2, setState2] = useState({ optionSupplier: [], selectedProperty: props.selectedContacts });
     const [file, setFile] = useState('')
-    // console.log(file);
     const [form1state, setForm1State] = useState({
         switch1: true,
         switch2: false,
@@ -137,9 +109,15 @@ const AddReminder = (props) => {
     };
 
     const handleSave = () => {
-        setStatus(true)
-        props.addReminderProperty(state, state2, id);
+        setStatus(true);
+        if (props.list) {
+            props.addReminderProperty(state, state2, props.selectedContacts);
+            return;
+        } else {
+            props.addReminderProperty(state, state2, id);
+        }
     };
+
     const handleEdit = () => {
         setStatus(true)
         props.editReminderProperty(
@@ -157,7 +135,6 @@ const AddReminder = (props) => {
             props.addReminderImageFresh()
             props.toggleTab()
             setStatus(false)
-
             props.toggle();
 
         }
@@ -165,48 +142,41 @@ const AddReminder = (props) => {
             toastr.succeerrorss('Failed')
             props.addReminderImageFresh()
             setStatus(false)
-
         }
         if (props.complete_reminder_loading == "Success") {
             toastr.success("Success");
             props.completeReminderFresh();
             props.getPropertyReminder();
-            // props.setActionArray([]);
             setStatus(false)
-
             props.toggle();
         }
         if (props.complete_reminder_loading == "Failed") {
             toastr.error("Failed");
             props.completeReminderFresh();
             setStatus(false)
-
         }
         if (props.add_reminder_property_loading == "Success") {
             toastr.success("Success");
             props.addReminderPropertyFresh();
             props.toggleTab()
-
-            props.setActionArray([]);
             setStatus(false)
-
             props.toggle();
+            if (!props.list) {
+                props.setActionArray([]);
+            }
         }
         if (props.add_reminder_property_loading == "Failed") {
             toastr.error("Failed");
             props.addReminderPropertyFresh();
             setStatus(false)
-
             props.toggle();
-        }
 
+        }
         if (props.edit_reminder_property_loading == "Success") {
             toastr.success("Success");
             props.editReminderPropertyFresh();
             props.toggleTab()
-
             setStatus(false)
-
             props.toggle();
             props.setActionArray([]);
         }
@@ -214,13 +184,14 @@ const AddReminder = (props) => {
             toastr.error("Failed");
             props.editReminderPropertyFresh();
             setStatus(false)
-
         }
 
         if (state.init) {
             props.SupplierList();
             props.getReminderProperty();
-            props.propertyList();
+            if (!props.list) {
+                props.propertyList();
+            }
             setState({ ...state, init: false });
         }
 
@@ -356,7 +327,6 @@ const AddReminder = (props) => {
 
     const completeHandler = () => {
         setStatus(true)
-
         props.completeReminder("Closed", props.data?.id);
     };
 
@@ -390,7 +360,9 @@ const AddReminder = (props) => {
                             activeBtn: false,
                             init: true,
                         });
-                        props.setActionArray([]);
+                        if (!props.list) {
+                            props.setActionArray([]);
+                        }
                     }}
                 >
                     {props.data?.id
@@ -402,7 +374,7 @@ const AddReminder = (props) => {
                 <ModalBody>
                     <Row>
                         <Col lg={12}>
-                            {props.data?.id ? (
+                            {props.data?.id || props.list ? (
                                 ""
                             ) : (
                                 <Row className="py-3">
@@ -742,7 +714,9 @@ const AddReminder = (props) => {
                                 color="danger"
                                 onClick={(e) => {
                                     props.toggle();
-                                    props.setActionArray([]);
+                                    if (!props.list) {
+                                        props.setActionArray([]);
+                                    }
                                 }}
                             >
                                 <i className="fas fa-times me-1"></i>Cancel
@@ -761,7 +735,9 @@ const AddReminder = (props) => {
                                         activeBtn: false,
                                         init: true,
                                     });
-                                    props.setActionArray([]);
+                                    if (!props.list) {
+                                        props.setActionArray([]);
+                                    }
                                 }}
                             >
                                 <i className="fas fa-times me-1"></i>Cancel
@@ -801,7 +777,6 @@ const mapStateToProps = (gstate) => {
     return {
         supplier_list_loading,
         supplier_list_data,
-
         add_reminder_loading,
         edit_reminder_loading,
         add_reminder_property_loading,

@@ -193,7 +193,7 @@ const PropertyOwnerAdd2 = props => {
   const [selectedGroup6, setSelectedGroup6] = useState(null);
   const [optionGroup6, setOptionGroup6] = useState([
     {
-      options: [{ label: "Admin Fee (৳)", value: "Admin Fee (৳)" }],
+      options: [{ label: "Admin Fee ($)", value: "Admin Fee ($)" }],
     },
   ]);
 
@@ -205,7 +205,7 @@ const PropertyOwnerAdd2 = props => {
     {
       options: [
         { label: "Commercial Management Fee (%)", value: "1" },
-        { label: "Letting fee (৳)", value: "2" },
+        { label: "Letting fee ($)", value: "2" },
         { label: "Management fee (%)", value: "3" },
       ],
     },
@@ -905,16 +905,16 @@ const PropertyOwnerAdd2 = props => {
   const handlePropertyFormValuesTotalMoney = e => {
     let dollar = e.target.value;
 
-    var lol = e.target.value.split("৳");
+    var lol = e.target.value.split("$");
 
     // const data = lol.length == 2 ? `$${lol[1]}` : `$${lol[0]}`;
     var blur = null;
     var data = 0;
     if (lol.length == 2 && dollar != "") {
-      blur = `৳${lol[1]}`;
+      blur = `$${lol[1]}`;
       data = lol[1];
     } else if (lol.length == 1 && dollar != "") {
-      blur = `৳${lol[0]}`;
+      blur = `$${lol[0]}`;
       data = lol[0];
     }
 
@@ -924,15 +924,15 @@ const PropertyOwnerAdd2 = props => {
 
   const handlePropertyFormValuesBalanace = e => {
     let dollar = e.target.value;
-    var lol = e.target.value.split("৳");
+    var lol = e.target.value.split("$");
     // const data = `$${lol.length == 2 ? lol[1] : lol[0]}`;
     var blur;
     var data = 0;
     if (lol.length == 2 && dollar != "") {
-      blur = `৳${lol[1]}`;
+      blur = `$${lol[1]}`;
       data = lol[1];
     } else if (lol.length == 1 && dollar != "") {
-      blur = `৳${lol[0]}`;
+      blur = `$${lol[0]}`;
       data = lol[0];
     }
 
@@ -942,15 +942,15 @@ const PropertyOwnerAdd2 = props => {
 
   const handlePropertyFormValuesWithHoldAmount = e => {
     let dollar = e.target.value;
-    var lol = e.target.value.split("৳");
+    var lol = e.target.value.split("$");
     // const data = `$${lol.length == 2 ? lol[1] : lol[0]}`;
     var blur = null;
     var data = 0;
     if (lol.length == 2 && dollar != "") {
-      blur = `৳${lol[1]}`;
+      blur = `$${lol[1]}`;
       data = lol[1];
     } else if (lol.length == 1 && dollar != "") {
-      blur = `৳${lol[0]}`;
+      blur = `$${lol[0]}`;
       data = lol[0];
     }
 
@@ -1007,7 +1007,7 @@ const PropertyOwnerAdd2 = props => {
     const values = [...state3];
 
     await state3.forEach(async (el, idx) => {
-      if (el.fee_template_1 === "Admin Fee (৳)") {
+      if (el.fee_template_1 === "Admin Fee ($)") {
         if (el.amount_1.length === 0) {
           values[idx]["errorState"] = true;
           values[idx]["error"] = " Invalid amount.";
@@ -1050,7 +1050,7 @@ const PropertyOwnerAdd2 = props => {
           values1[idx]["error"] = "";
           await setState7(values1);
         }
-      } else if (el.fee_template_2 === "Letting fee ()") {
+      } else if (el.fee_template_2 === "Letting fee ($)") {
         if (el.amount_2.length === 0) {
           values1[idx]["errorState"] = true;
           values1[idx]["error"] = " Invalid amount.";
@@ -1135,10 +1135,10 @@ const PropertyOwnerAdd2 = props => {
       values[idx]["notes_2"] = "";
       values[idx]["types"] = "%";
     } else if (e.value === "2") {
-      values[idx]["income_account_2"] = "Letting fee (inc. tax) (৳)";
+      values[idx]["income_account_2"] = "Letting fee (inc. tax) ($)";
       values[idx]["fee_trigger_2"] = "First rent receipt";
       values[idx]["notes_2"] = "";
-      values[idx]["types"] = "৳";
+      values[idx]["types"] = "$";
     } else if (e.value === "3") {
       values[idx]["income_account_2"] = "Management fee (inc. tax) (%)";
       values[idx]["fee_trigger_2"] = "Rental receipt";
@@ -1350,7 +1350,7 @@ const PropertyOwnerAdd2 = props => {
   const toggleDollorBtn = idx => {
     let data = [...state8];
     let splitval = data[idx]["split"];
-    data[idx]["split_type"] = "৳";
+    data[idx]["split_type"] = "$";
     if (splitval) {
       let totalVal = 0;
       data.forEach(element => {

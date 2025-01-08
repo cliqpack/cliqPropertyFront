@@ -30,9 +30,9 @@ import * as Yup from "yup";
 import toastr from "toastr";
 import DepositClearanceModal from "./DepositClearanceModal";
 
+document.title = "myday";
 
 const PortfolioBanking = props => {
-  document.title = "CliqProperty";
   const history = useHistory();
   const [isLoading, setIsloading] = useState(false)
   const [init, setInit] = useState(true);

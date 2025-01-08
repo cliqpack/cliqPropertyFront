@@ -32,9 +32,9 @@ import { reconcileBankFile, reconcileBankFileFresh, tenantInfoFresh, tenantInfor
 import AddReceipt from "./AddReceipt";
 import toastr from "toastr";
 
+document.title = "MyDay";
 
 function TransactionProcess(props) {
-    document.title = "CliqProperty";
     const history = useHistory();
     const [seen, setSeen] = useState(false);
     const inputRef = useRef();
@@ -131,7 +131,7 @@ function TransactionProcess(props) {
                                                             return (
                                                                 <tr key={idx}>
                                                                     <td>{item.date} ({item.description})</td>
-                                                                    <td>{item.credit > 0 ? `৳${item.credit} (CREDIT)` : ''} {item.debit > 0 ? `${item.debit}৳ (DEBIT)` : ''}</td>
+                                                                    <td>{item.credit > 0 ? `$${item.credit} (CREDIT)` : ''} {item.debit > 0 ? `$${item.debit} (DEBIT)` : ''}</td>
                                                                     <td>
                                                                         {
                                                                             item.tenant_folios ?
@@ -142,7 +142,7 @@ function TransactionProcess(props) {
                                                                                 </> :
                                                                                 <>
                                                                                     No match < br />
-                                                                                    {item.credit > 0 ? `৳${item.credit}` : ''} {item.debit > 0 ? `৳${item.debit}` : ''}
+                                                                                    {item.credit > 0 ? `$${item.credit}` : ''} {item.debit > 0 ? `$${item.debit}` : ''}
                                                                                 </>
                                                                         }
 

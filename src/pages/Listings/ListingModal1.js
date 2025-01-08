@@ -140,7 +140,7 @@ const ListingsModal1 = (props) => {
 
     return (
         <>
-            <button className="btn btn-buttonColor custom-button-side-row-font-size" onClick={toggle}>
+            <button className="btn btn-info custom-button-side-row-font-size" onClick={toggle}>
 
                 New Listings <i className="bx bx-plus-circle font-size-18 align-middle ms-2" />
 
@@ -149,7 +149,7 @@ const ListingsModal1 = (props) => {
             {/* ===============Inspection modal start from here ================*/}
 
             <Modal isOpen={inspectionModal} toggle={toggle} >
-                <ModalHeader style={{ backgroundColor: "#6E62E5" }}>
+                <ModalHeader style={{ backgroundColor: "#153D58" }}>
 
                     <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
                         <div>

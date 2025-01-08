@@ -30,7 +30,7 @@ import { useHistory } from "react-router-dom";
 
 export default function SaleReceipt() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history=useHistory();
   const {
     seller_folio_list_data,
     seller_folio_list_data_loading,
@@ -95,7 +95,7 @@ export default function SaleReceipt() {
       options = seller_folio_list_data?.data.map(item => ({
         label: `${item.seller_contacts.reference} (${item.folio_code}) [${item.seller_contacts.property.reference}]`,
         value: item.id,
-        property_id: item.seller_contacts.property.id,
+        property_id:item.seller_contacts.property.id,
       }));
 
       setSelect(prev => ({ ...prev, optionsFolio: options }));
@@ -149,7 +149,7 @@ export default function SaleReceipt() {
   const handlerSelectedFolio = e => {
     dispatch(sellerFolioListById(e.value));
     setSelect({ ...select, selectedFolio: e });
-    setState(prev => ({ ...prev, property_id: e.property_id }));
+    setState(prev=>({...prev,property_id:e.property_id}));
   };
   const handlerSelectedAccount = e => {
     setSelect({ ...select, selectedAccount: e });
@@ -392,29 +392,29 @@ export default function SaleReceipt() {
                           <Col md={4}>Amount</Col>
                           <Col md={8}>
                             <div className="d-flex">
+                              <span className="input-group-append rounded-start">
+                                <span
+                                  className="input-group-text"
+                                  style={{
+                                    borderTopRightRadius: 0,
+                                    borderBottomRightRadius: 0,
+                                  }}
+                                >
+                                  $
+                                </span>
+                              </span>
                               <input
-                                className="form-control rounded-start"
+                                className="rounded-end form-control"
                                 style={{
-                                  borderTopRightRadius: 0,
-                                  borderBottomRightRadius: 0,
+                                  borderTopLeftRadius: 0,
+                                  borderBottomLeftRadius: 0,
                                 }}
                                 type="text"
                                 name="amount"
                                 value={state.amount}
-                                placeholder="৳0.00"
+                                placeholder="$0.00"
                                 onChange={stateHandler}
                               />
-                              <span className="input-group-append rounded-end">
-                                <span
-                                  className="input-group-text"
-                                  style={{
-                                    borderTopLeftRadius: 0,
-                                    borderBottomLeftRadius: 0,
-                                  }}
-                                >
-                                  ৳
-                                </span>
-                              </span>
                             </div>
                           </Col>
                         </Row>
@@ -561,32 +561,32 @@ export default function SaleReceipt() {
                                                 onChange={handleState}
                                             /> */}
                                     <div className="d-flex">
+                                      <span className="input-group-append rounded-start">
+                                        <span
+                                          className="input-group-text"
+                                          style={{
+                                            borderTopRightRadius: 0,
+                                            borderBottomRightRadius: 0,
+                                          }}
+                                        >
+                                          $
+                                        </span>
+                                      </span>
                                       <div className="d-flex flex-column">
                                         <Input
                                           name="amount"
                                           type="text"
                                           placeholder="0.00"
-                                          className="form-control rounded-start"
+                                          className="rounded-end form-control"
                                           style={{
-                                            borderTopRightRadius: 0,
-                                            borderBottomRightRadius: 0,
+                                            borderTopLeftRadius: 0,
+                                            borderBottomLeftRadius: 0,
                                           }}
                                           id="formrow-InputCity"
                                           value={state.amount}
                                           onChange={handleAmount}
                                         />
                                       </div>
-                                      <span className="rounded-end input-group-append">
-                                        <span
-                                          className="input-group-text"
-                                          style={{
-                                            borderTopLeftRadius: 0,
-                                            borderBottomLeftRadius: 0,
-                                          }}
-                                        >
-                                          ৳
-                                        </span>
-                                      </span>
                                     </div>
                                   </div>
                                 </td>
@@ -638,29 +638,29 @@ export default function SaleReceipt() {
                                 </td>
                                 <td>
                                   <div className="d-flex w-100">
+                                    <span className="input-group-append rounded-start">
+                                      <span
+                                        className="input-group-text"
+                                        style={{
+                                          borderTopRightRadius: 0,
+                                          borderBottomRightRadius: 0,
+                                        }}
+                                      >
+                                        $
+                                      </span>
+                                    </span>
                                     <input
                                       type="text"
                                       name="amount"
                                       value={state.amount}
-                                      className="form-control rounded-start"
+                                      className="rounded-end form-control"
                                       style={{
-                                        borderTopRightRadius: 0,
-                                        borderBottomRightRadius: 0,
+                                        borderTopLeftRadius: 0,
+                                        borderBottomLeftRadius: 0,
                                       }}
-                                      placeholder="৳0.00"
+                                      placeholder="$0.00"
                                       onChange={stateHandler}
                                     />
-                                    <span className="input-group-append rounded-end">
-                                      <span
-                                        className="input-group-text"
-                                        style={{
-                                          borderTopLeftRadius: 0,
-                                          borderBottomLeftRadius: 0,
-                                        }}
-                                      >
-                                        ৳
-                                      </span>
-                                    </span>
                                   </div>
                                 </td>
                               </tr>

@@ -56,10 +56,11 @@ const MessagesModal = (props) => {
     })
 
 
+console.log(props.contactId);
 
     const clickHandler = (id, sub) => {
         console.log(id);
-        props.sendMailFromTemplatesInContacts(id, sub, props.contactId);
+        props.sendMailFromTemplatesInContacts(id, sub, props.selectedContacts,props.contactId);
     }
 
     const handleSelectBtn = e => {
@@ -78,7 +79,7 @@ const MessagesModal = (props) => {
             props.toggle();
         }
         if (state.selectedBtn) {
-            if (state.selectedBtn.length > 0) {
+            if (state.selectedBtn.length >= 0) {
                 props.getMessageTemplatesForContactBySelect(state.selectedBtn, null)
             }
         }
@@ -147,15 +148,18 @@ const MessagesModal = (props) => {
                                                             <i className='bx bx-home-circle font-size-16' />
                                                         }
                                                         {item.message_trigger_to == 'Tenant' &&
-                                                            <i className='bx bx-group font-size-16' />}
+                                                            <i className='bx bx-group font-size-16' />
+                                                        }
                                                         {item.message_trigger_to == 'Supplier' &&
-                                                            <i className='bx bx-user-plus font-size-16' />}
+                                                            <i className='bx bx-user-plus font-size-16' />
+                                                        }
+                                                        {item.message_trigger_to == 'Contact' &&
+                                                            <i className='bx bxs-user font-size-16' />
+                                                        }
                                                     </Col>
                                                     <Col md={7}><span className='text-primary' onClick={() => clickHandler(item?.id, item?.subject)}>{item?.subject}</span></Col>
                                                     <Col md={3}>
                                                         <i className='fas fa-envelope me-1' />
-
-
                                                     </Col>
                                                 </Row>
                                             </li>

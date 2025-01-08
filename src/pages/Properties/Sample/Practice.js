@@ -141,7 +141,7 @@ const PropertyOwnerAdd2 = props => {
     const [optionGroup6, setOptionGroup6] = useState([
         {
             options: [
-                { label: "Admin Fee (৳)", value: "Admin Fee (৳)" },
+                { label: "Admin Fee ($)", value: "Admin Fee ($)" },
             ],
         },
     ]);
@@ -156,7 +156,7 @@ const PropertyOwnerAdd2 = props => {
         {
             options: [
                 { label: "Commercial Management Fee (%)", value: "1" },
-                { label: "Letting fee (৳)", value: "2" },
+                { label: "Letting fee ($)", value: "2" },
                 { label: "Management fee (%)", value: "3" },
             ],
         },
@@ -546,10 +546,10 @@ const PropertyOwnerAdd2 = props => {
             values[idx]['notes_2'] = '';
             values[idx]['amountPlaceholder'] = '0.00%';
         } else if (e.value === "2") {
-            values[idx]['income_account_2'] = 'Letting fee (inc. tax) (৳)';
+            values[idx]['income_account_2'] = 'Letting fee (inc. tax) ($)';
             values[idx]['fee_trigger_2'] = 'First rent receipt';
             values[idx]['notes_2'] = '';
-            values[idx]['amountPlaceholder'] = '0.00৳';
+            values[idx]['amountPlaceholder'] = '$0.00';
         } else if (e.value === "3") {
             values[idx]['income_account_2'] = 'Management fee (inc. tax) (%)';
             values[idx]['fee_trigger_2'] = 'Rental receipt';
@@ -764,7 +764,7 @@ const PropertyOwnerAdd2 = props => {
 
     const toggleDollorBtn = (idx) => {
         let data = [...state8];
-        data[idx]['split_type'] = '৳';
+        data[idx]['split_type'] = '$';
         data[idx]['split'] = '';
         data[idx]['splitTypeEnableBtn'] = false;
         data[idx]['splitTypeDisableBtn'] = true;
@@ -2311,7 +2311,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                     for="abn"
                                                                                                     className="form-label"
                                                                                                 >
-                                                                                                    BIN
+                                                                                                    ABN
                                                                                                 </Label>
                                                                                             </Col>
 
@@ -2525,7 +2525,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                                     <Field
                                                                                                                         name="total_money"
                                                                                                                         type="number"
-                                                                                                                        placeholder="৳0.00"
+                                                                                                                        placeholder="$0.00"
                                                                                                                         className={
                                                                                                                             "form-control" +
                                                                                                                             (errors.total_money &&
@@ -2559,7 +2559,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                                     <Field
                                                                                                                         name="balance"
                                                                                                                         type="number"
-                                                                                                                        placeholder="৳0.00"
+                                                                                                                        placeholder="$0.00"
                                                                                                                         className={
                                                                                                                             "form-control" +
                                                                                                                             (errors.balance &&
@@ -2682,7 +2682,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                                         <Field
                                                                                                                             name="withhold_amount"
                                                                                                                             type="number"
-                                                                                                                            placeholder="৳0.00"
+                                                                                                                            placeholder="$0.00"
                                                                                                                             className={
                                                                                                                                 "form-control" +
                                                                                                                                 (errors.withhold_amount &&
@@ -3233,7 +3233,7 @@ const PropertyOwnerAdd2 = props => {
                                                                             <Row>
                                                                                 <Col className="d-flex justify-content-center align-items-center">
                                                                                     <div className="h4 ms-1">
-                                                                                        {state7[idx]['selectedValues'].value === '2' ? '৳' : ''}
+                                                                                        {state7[idx]['selectedValues'].value === '2' ? '$' : ''}
                                                                                     </div>
                                                                                     <input
                                                                                         name="amount_2"
@@ -3431,7 +3431,7 @@ const PropertyOwnerAdd2 = props => {
                                                                                                         }
                                                                                                         onClick={() => toggleDollorBtn(idx)}
                                                                                                     >
-                                                                                                        <span> ৳</span>
+                                                                                                        <span> $</span>
                                                                                                     </Button>
                                                                                                 </div>
                                                                                                 <div className="btn-group btn-group-sm">

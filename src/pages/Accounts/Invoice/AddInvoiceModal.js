@@ -471,6 +471,17 @@ const AddInvoiceModal = props => {
                                     <h4 className="card-title">Total invoice amount</h4>
                                     <Row className="d-flex align-items-center">
                                         <Col md={6} className="d-flex">
+                                            <span className="input-group-append">
+                                                <span
+                                                    className="input-group-text"
+                                                    style={{
+                                                        borderTopRightRadius: 0,
+                                                        borderBottomRightRadius: 0,
+                                                    }}
+                                                >
+                                                    $
+                                                </span>
+                                            </span>
                                             <div className="d-flex flex-column">
                                                 <input
                                                     className="form-control"
@@ -479,8 +490,8 @@ const AddInvoiceModal = props => {
                                                     type="text"
                                                     placeholder="0.00"
                                                     style={{
-                                                        borderTopRightRadius: 0,
-                                                        borderBottomRightRadius: 0,
+                                                        borderTopLeftRadius: 0,
+                                                        borderBottomLeftRadius: 0,
                                                     }}
                                                     value={
                                                         state.totalInvoiceAmount
@@ -490,17 +501,6 @@ const AddInvoiceModal = props => {
                                                     }
                                                 />
                                             </div>
-                                            <span className="input-group-append">
-                                                <span
-                                                    className="input-group-text"
-                                                    style={{
-                                                        borderTopLeftRadius: 0,
-                                                        borderBottomLeftRadius: 0,
-                                                    }}
-                                                >
-                                                    ৳
-                                                </span>
-                                            </span>
                                         </Col>
                                         <Col md={6} >
                                             <div className="form-check mb-3">
@@ -525,7 +525,7 @@ const AddInvoiceModal = props => {
                                     {state.tenantDepositAmount > 0 && <>
                                         <Card>
                                             <CardBody className="border-3 border-start border-danger">
-                                                <p className="fw-bold">Available tenant funds ৳{state.tenantDepositAmount}.</p>
+                                                <p className="fw-bold">Available tenant funds ${state.tenantDepositAmount}.</p>
                                                 <p>Would you like to allocate an amount towards this invoice? If yes, please fill in the allocated amount.</p>
 
                                                 <div className="mb-3 row">
@@ -533,31 +533,31 @@ const AddInvoiceModal = props => {
                                                         <label>Allocated amount</label>
                                                         <Row className="d-flex align-items-center">
                                                             <Col md={4} className="d-flex">
+                                                                <span className="input-group-append">
+                                                                    <span
+                                                                        className="input-group-text"
+                                                                        style={{
+                                                                            borderTopRightRadius: 0,
+                                                                            borderBottomRightRadius: 0,
+                                                                        }}
+                                                                    >
+                                                                        $
+                                                                    </span>
+                                                                </span>
                                                                 <div className="d-flex flex-column">
                                                                     <input
                                                                         className="form-control"
                                                                         type="text"
                                                                         name="allocatedAmount"
-                                                                        placeholder="৳0.00"
+                                                                        placeholder="$0.00"
                                                                         value={state.allocatedAmount}
                                                                         onChange={handleState}
-                                                                        style={{
-                                                                            borderTopRightRadius: 0,
-                                                                            borderBottomRightRadius: 0,
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                                <span className="input-group-append">
-                                                                    <span
-                                                                        className="input-group-text"
                                                                         style={{
                                                                             borderTopLeftRadius: 0,
                                                                             borderBottomLeftRadius: 0,
                                                                         }}
-                                                                    >
-                                                                        ৳
-                                                                    </span>
-                                                                </span>
+                                                                    />
+                                                                </div>
                                                             </Col>
                                                         </Row>
                                                     </div>
@@ -568,7 +568,7 @@ const AddInvoiceModal = props => {
                                                             <p className="text-danger">* {errorMessage}</p>
                                                         </div> : ''
                                                 }
-                                                <p>Remaining amount payable will be <span className="fw-bold">৳{state.remainingAllocatedAmount}</span></p>
+                                                <p>Remaining amount payable will be <span className="fw-bold">${state.remainingAllocatedAmount}</span></p>
                                             </CardBody>
                                         </Card>
                                     </>}

@@ -45,6 +45,10 @@ const initialState = {
   contacts_list_seller_error: null,
   contacts_list_seller_loading: false,
 
+  contacts_list_archive: null,
+  contacts_list_archive_error: null,
+  contacts_list_archive_loading: false,
+
   user_list_data: null,
   user_list_error: null,
   user_list_loading: false,
@@ -52,6 +56,13 @@ const initialState = {
   contact_label: null,
   contact_label_error: null,
   contact_label_loading: false,
+
+
+  contact_label_select: null,
+  contact_label_select_error: null,
+  contact_label_select_loading: false,
+
+  contact_label_select_update: false,
 
   // Activity
   contact_all_activity: null,
@@ -71,6 +82,14 @@ const initialState = {
   contacts_show_folio_data: null,
   contacts_show_folio_error: null,
   contacts_show_folio_loading: false,
+
+  delete_contact_loading: false,
+
+  archive_contact_data: null,
+  archive_contact_error: null,
+  archive_contact_loading: false,
+
+  restore_contact_loading: false,
 };
 
 const contacts = (state = initialState, action) => {
@@ -115,12 +134,40 @@ const contacts = (state = initialState, action) => {
         contacts_list_seller_loading: action.status,
       };
       break;
+    case "CONTACT_LIST_TYPE_ARCHIVE":
+      state = {
+        ...state,
+        contacts_list_archive: action.payload,
+        contacts_list_archive_error: null,
+        contacts_list_archive_loading: action.status,
+      };
+      break;
     case "SHOW_CONTACT":
       state = {
         ...state,
         contacts_show_data: action.payload,
         contacts_show_error: null,
         contacts_show_loading: action.status,
+      };
+      break;
+    case "DELETE_CONTACT":
+      state = {
+        ...state,
+        delete_contact_loading: action.status,
+      };
+      break;
+    case "ARCHIVE_CONTACT":
+      state = {
+        ...state,
+        archive_contact_data: action.payload,
+        archive_contact_error: action.status,
+        archive_contact_loading: action.status,
+      };
+      break;
+    case "RESTORE_CONTACT":
+      state = {
+        ...state,
+        restore_contact_loading: action.status,
       };
       break;
     case "GET_OWNER_CONTACT":
@@ -182,6 +229,12 @@ const contacts = (state = initialState, action) => {
         ...state,
         contacts_show_data: null,
         contacts_show_loading: action.status,
+      };
+      break;
+    case "DELETE_CONTACT_FRESH":
+      state = {
+        ...state,
+        delete_contact_loading: action.status,
       };
       break;
 
@@ -256,6 +309,30 @@ const contacts = (state = initialState, action) => {
         contact_label_loading: action.status,
       };
       break;
+    case "CONTACT_LABEL_SELECT":
+      state = {
+        ...state,
+        contact_label_select: action.payload,
+        contact_label_select_error: action.error,
+        contact_label_select_loading: action.status,
+      };
+      break;
+    case "LABELS_UPDATED_SUCCESS":
+      state = {
+        ...state,
+        contact_label_select_update: action.status,
+        
+      };
+      break;
+
+      case "LABELS_UPDATED_FRESH":
+        state = {
+          ...state,
+  
+          contact_label_select_update: action.status,
+        };
+        break;
+      
     case "GET_MESSAGE_TEMPLATES_FOR_CONTACTS_BY_SELECT":
       state = {
         ...state,

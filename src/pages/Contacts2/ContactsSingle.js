@@ -71,7 +71,7 @@ const ContactsSingle = props => {
   const autoCompletePostalRef = useRef();
   // ------------------------
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
   const [show, setShow] = useState(false);
   const [forRef, setForRef] = useState(false);
@@ -1946,7 +1946,7 @@ const ContactsSingle = props => {
                             </Card>
                             <Card>
                               <CardBody>
-                                <h4 className="text-primary mb-3">BIN</h4>
+                                <h4 className="text-primary mb-3">ABN</h4>
                                 <div
                                   className="w-75"
                                   style={{
@@ -1957,7 +1957,7 @@ const ContactsSingle = props => {
                                   <Row className="mt-3 d-flex justify-content-evenly align-items-center">
                                     <Col md={2}>
                                       <Label for="abn" className="form-label">
-                                        BIN
+                                        ABN
                                       </Label>
                                     </Col>
 

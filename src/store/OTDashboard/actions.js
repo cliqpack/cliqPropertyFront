@@ -275,17 +275,13 @@ export const sendMessageTenant = (mail, state) => {
             Authorization: "Bearer " + authUser.token,
         };
 
-
-
         const formData = {
             to: mail,
-            from: "noreply@myday.com",
+            from: "cliqpack@myday.biz",
             subject: state.subject,
             body: state.body,
             status: "outbox-tenant",
         };
-
-        console.log(formData);
 
         axios
             .post(url, formData, { headers: headers })
@@ -314,7 +310,7 @@ export const sendMessageTenantFresh = () => {
         });
 };
 
-export const addMaintenanceTenant = (state, data) => {
+export const addMaintenanceTenant = (state, data, files) => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));
     const newUrl = process.env.REACT_APP_LOCALHOST;
     var url = newUrl + "/tenantStore";
@@ -328,26 +324,22 @@ export const addMaintenanceTenant = (state, data) => {
             Authorization: "Bearer " + authUser.token,
         };
 
-        const formData = {
-            summary: state.summary,
-            description: state.description,
-
-            property_id: data.property_id,
-            reported_by: 'tenant',
-            access: 'tenant',
-            due_by: "2022-11-03",
-            manager_id: '2',
-            work_order_notes: 'notes',
-            owner_id: 2,
-            tenant_id: 4,
-            tenant_email: "fury@mailinator.com",
-            owner_email: "mirajul.hoque@cliqpack.com",
-
-        };
-
-
-
-        console.log(formData);
+        let formData = new FormData();
+        formData.append("summary", state.summary);
+        formData.append("description", state.description);
+        formData.append("property_id", data.property_id);
+        formData.append("reported_by", 'tenant');
+        formData.append("access", 'tenant');
+        formData.append("due_by", '2022-11-03');
+        formData.append("manager_id", '2');
+        formData.append("work_order_notes", 'notes');
+        formData.append("owner_id", 2);
+        formData.append("tenant_id", 4);
+        formData.append("tenant_email", 'fury@mailinator.com');
+        formData.append("owner_email", 'mirajul.hoque@cliqpack.com');
+        for (let i = 0; i < files.length; i++) {
+            formData.append("image[]", files[i]);
+        }
 
         axios
             .post(url, formData, { headers: headers })
@@ -410,14 +402,11 @@ export const financialChartData = id => {
 
 export const tenantAllDocument = (id) => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));
-    // var url = `${process.env.REACT_APP_LOCALHOST}/tenant/properties/${id}`;
     var url = `${process.env.REACT_APP_LOCALHOST}/getAllModulePropertyDoc/${id}`;
     return dispatch => {
         const headers = {
             "Content-Type": "application/json",
-
             "Access-Control-Allow-Origin": "*",
-
             Authorization: "Bearer " + authUser.token,
         };
         axios
@@ -472,18 +461,14 @@ export const tenantActivityPanel = (p_id, t_id) => {
 
 export const ownerPanelDoc = (data, id) => {
     var authUser = JSON.parse(localStorage.getItem("authUser"));
-
     var url = `${process.env.REACT_APP_LOCALHOST}/ownerPanalShow/${id}`;
     const formData = {
         language: data
     };
-    console.log(formData, data);
     return dispatch => {
         const headers = {
             "Content-Type": "application/json",
-
             "Access-Control-Allow-Origin": "*",
-
             Authorization: "Bearer " + authUser.token,
         };
         axios
@@ -503,4 +488,12 @@ export const ownerPanelDoc = (data, id) => {
                 });
             });
     };
+};
+
+export const ownerPanelDocFresh = () => {
+    return dispatch =>
+        dispatch({
+            type: "OWNER_PANEL_DOC_FRESH",
+            status: false,
+        });
 };

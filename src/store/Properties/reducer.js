@@ -358,6 +358,14 @@ const property = (state = initialState, action) => {
         tenant_update_loading: action.status,
       };
       break;
+    case "TENANT_UPDATE_FOR_BOND_DETAILS":
+      state = {
+        ...state,
+        tenant_bond_update_data: action.payload,
+        tenant_bond_update_error: null,
+        tenant_bond_update_loading: action.status,
+      };
+      break;
     case "TENANT_UPDATE_FRESH":
       state = {
         ...state,

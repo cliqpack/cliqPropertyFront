@@ -537,7 +537,6 @@ const Message = (state = initialState, action) => {
     case "ADD_SCHEDULE":
       state = {
         ...state,
-
         add_schedule_loading: action.status,
       };
       break;

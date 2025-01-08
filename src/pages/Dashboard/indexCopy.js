@@ -142,7 +142,7 @@ class Dashboard extends Component {
 
   render() {
     //meta title
-    document.title = "CliqProperty";
+    document.title = "myday";
 
     return (
       <React.Fragment>

@@ -149,7 +149,7 @@ const TransactionsInfoModal = props => {
                                                             <td>{item.allocation}</td>
                                                             <td>{item.description}</td>
                                                             <td>{item.tax === 1 ? <i className="fas fa-check"></i> : ''}</td>
-                                                            <td>{item.pay_type === 'debit' ? '-' : ''}৳{item.amount}</td>
+                                                            <td>{item.pay_type === 'debit' ? '-' : ''}${item.amount}</td>
                                                         </tr>
                                                     )
                                                 })
@@ -159,7 +159,7 @@ const TransactionsInfoModal = props => {
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center py-2 pe-4 pb-4">
                                     <span className="pe-5 h4">Total</span>
-                                    <span className="me-3 h4">৳{props?.receipt?.amount}</span>
+                                    <span className="me-3 h4">${props?.receipt?.amount}</span>
                                 </div>
                                 {
                                     props?.receipt?.note &&

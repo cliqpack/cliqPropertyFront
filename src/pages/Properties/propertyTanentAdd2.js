@@ -679,7 +679,7 @@ const PropertyTanentAdd2 = props => {
     if (typeof value === "number") {
       if (formTwoButtonValue.wfmBtn === "Weekly") {
         setWeeklyRent(value);
-        value *= 4;
+        value *= 4.33;
         value = value.toFixed(2);
         setState2({ ...state2, rent: e.target.value, bond_required: value });
         setFortNightlyRent();
@@ -752,7 +752,7 @@ const PropertyTanentAdd2 = props => {
     }
   };
 
-  document.title = "CliqProperty";
+  document.title = "myday";
   //----------Multi-reference form hendler------------//
   const handleBtnRows = () => {
     const item = { btn: "" };
@@ -1289,6 +1289,7 @@ const PropertyTanentAdd2 = props => {
 
   const saveTenantHandler = (e) => {
     e.preventDefault();
+    console.log('in---');
     if (tabState.activeTab == 3) {
       // toastr.error('in')
       props.addPropertyTanent(
@@ -2109,7 +2110,7 @@ const PropertyTanentAdd2 = props => {
                                                                   : "")
                                                               }
                                                             />
-                                                            <label htmlFor="usr"> BIN</label>
+                                                            <label htmlFor="usr"> ABN</label>
                                                           </div>
                                                           <ErrorMessage
                                                             name="abn"
@@ -2432,6 +2433,17 @@ const PropertyTanentAdd2 = props => {
                                                                   md={4}
                                                                   className="d-flex"
                                                                 >
+                                                                  <span className="input-group-append rounded-start">
+                                                                    <span
+                                                                      className="input-group-text"
+                                                                      style={{
+                                                                        borderTopRightRadius: 0,
+                                                                        borderBottomRightRadius: 0,
+                                                                      }}
+                                                                    >
+                                                                      $
+                                                                    </span>
+                                                                  </span>
                                                                   <div className="form-group-new">
                                                                     <Field
                                                                       name="rent"
@@ -2445,8 +2457,8 @@ const PropertyTanentAdd2 = props => {
                                                                           : "")
                                                                       }
                                                                       style={{
-                                                                        borderTopRightRadius: 0,
-                                                                        borderBottomRightRadius: 0,
+                                                                        borderTopLeftRadius: 0,
+                                                                        borderBottomLeftRadius: 0,
                                                                       }}
                                                                       id="rent"
                                                                       value={
@@ -2463,17 +2475,6 @@ const PropertyTanentAdd2 = props => {
                                                                     />
                                                                     <label htmlFor="usr">Rent</label>
                                                                   </div>
-                                                                  <span className="input-group-append rounded-start">
-                                                                    <span
-                                                                      className="input-group-text"
-                                                                      style={{
-                                                                        borderTopLeftRadius: 0,
-                                                                        borderBottomLeftRadius: 0,
-                                                                      }}
-                                                                    >
-                                                                      ৳
-                                                                    </span>
-                                                                  </span>
                                                                   <ErrorMessage
                                                                     name="rent"
                                                                     component="div"
@@ -2612,18 +2613,21 @@ const PropertyTanentAdd2 = props => {
 
                                                           <div className="my-3">
                                                             <Row className="mb-3">
-                                                              {/* <Col md={4}>
-                                                                <Label
-                                                                  for="bond_required"
-                                                                  className="form-label text-dark"
-                                                                >
-                                                                  Bond required
-                                                                </Label>
-                                                              </Col> */}
                                                               <Col
-                                                                md={4}
+                                                                md={3}
                                                                 className="d-flex"
                                                               >
+                                                                <span className="input-group-append">
+                                                                  <span
+                                                                    className="input-group-text"
+                                                                    style={{
+                                                                      borderTopRightRadius: 0,
+                                                                      borderBottomRightRadius: 0,
+                                                                    }}
+                                                                  >
+                                                                    $
+                                                                  </span>
+                                                                </span>
                                                                 <div className="form-group-new">
                                                                   <Field
                                                                     name="bond_required"
@@ -2648,19 +2652,8 @@ const PropertyTanentAdd2 = props => {
                                                                       handlePropertyFormTwoValues
                                                                     }
                                                                   />
-                                                                  <label htmlFor="usr"> Security Deposit </label>
+                                                                  <label htmlFor="usr"> Bond required</label>
                                                                 </div>
-                                                                <span className="input-group-append">
-                                                                  <span
-                                                                    className="input-group-text"
-                                                                    style={{
-                                                                      borderTopRightRadius: 0,
-                                                                      borderBottomRightRadius: 0,
-                                                                    }}
-                                                                  >
-                                                                    ৳
-                                                                  </span>
-                                                                </span>
                                                                 <ErrorMessage
                                                                   name="bond_required"
                                                                   component="div"
@@ -2689,6 +2682,17 @@ const PropertyTanentAdd2 = props => {
                                                                 md={4}
                                                                 className="d-flex"
                                                               >
+                                                                <span className="input-group-append rounded-start">
+                                                                  <span
+                                                                    className="input-group-text"
+                                                                    style={{
+                                                                      borderTopRightRadius: 0,
+                                                                      borderBottomRightRadius: 0,
+                                                                    }}
+                                                                  >
+                                                                    $
+                                                                  </span>
+                                                                </span>
                                                                 <div className="form-group-new">
                                                                   <Field
                                                                     name="bond_held"
@@ -2704,8 +2708,8 @@ const PropertyTanentAdd2 = props => {
                                                                         : "")
                                                                     }
                                                                     style={{
-                                                                      borderTopRightRadius: 0,
-                                                                      borderBottomRightRadius: 0,
+                                                                      borderTopLeftRadius: 0,
+                                                                      borderBottomLeftRadius: 0,
                                                                     }}
                                                                     value={
                                                                       state2.bond_held
@@ -2714,19 +2718,8 @@ const PropertyTanentAdd2 = props => {
                                                                       handlePropertyFormTwoValues
                                                                     }
                                                                   />
-                                                                  <label htmlFor="usr">Security Deposit held</label>
+                                                                  <label htmlFor="usr">Bond held</label>
                                                                 </div>
-                                                                <span className="input-group-append rounded-start">
-                                                                  <span
-                                                                    className="input-group-text"
-                                                                    style={{
-                                                                      borderTopLeftRadius: 0,
-                                                                      borderBottomLeftRadius: 0,
-                                                                    }}
-                                                                  >
-                                                                    ৳
-                                                                  </span>
-                                                                </span>
                                                                 <ErrorMessage
                                                                   name="bond_held"
                                                                   component="div"
@@ -2757,7 +2750,7 @@ const PropertyTanentAdd2 = props => {
                                                                       borderBottomRightRadius: 0,
                                                                     }}
                                                                   >
-                                                                    ৳
+                                                                    $
                                                                   </span>
                                                                 </span>
                                                                 <div className="d-flex flex-column">
@@ -3015,6 +3008,17 @@ const PropertyTanentAdd2 = props => {
                                                                 md={3}
                                                                 className="d-flex"
                                                               >
+                                                                <span className="input-group-append">
+                                                                  <span
+                                                                    className="input-group-text"
+                                                                    style={{
+                                                                      borderTopRightRadius: 0,
+                                                                      borderBottomRightRadius: 0,
+                                                                    }}
+                                                                  >
+                                                                    $
+                                                                  </span>
+                                                                </span>
                                                                 <div className="form-group-new">
                                                                   <Field
                                                                     name="part_paid"
@@ -3042,17 +3046,6 @@ const PropertyTanentAdd2 = props => {
                                                                   <label htmlFor="usr">Part paid </label>
 
                                                                 </div>
-                                                                <span className="input-group-append">
-                                                                  <span
-                                                                    className="input-group-text"
-                                                                    style={{
-                                                                      borderTopRightRadius: 0,
-                                                                      borderBottomRightRadius: 0,
-                                                                    }}
-                                                                  >
-                                                                    ৳
-                                                                  </span>
-                                                                </span>
                                                                 <ErrorMessage
                                                                   name="part_paid"
                                                                   component="div"
@@ -3439,6 +3432,15 @@ const PropertyTanentAdd2 = props => {
 
                                                           <div className="mb-3">
                                                             <Row className="mb-3">
+                                                              {/* <Col md={4}>
+                                                                <Label
+                                                                  for="bank_reference"
+                                                                  className="form-label text-dark"
+                                                                >
+                                                                  Bank reference
+                                                                </Label>
+                                                              </Col> */}
+
                                                               <Col md={6}>
                                                                 <div className="form-group-new">
                                                                   <Field
@@ -3495,6 +3497,43 @@ const PropertyTanentAdd2 = props => {
                                                                 />
                                                               </Col>
                                                             </Row>
+                                                            {/* <Row>
+                                                              <Col md={4}>
+                                                                <Label
+                                                                  for="receipt_warning"
+                                                                  className="form-label text-dark"
+                                                                >
+                                                                  Receipt warning
+                                                                </Label>
+                                                              </Col>
+
+                                                              <Col md={4}>
+                                                                <Field
+                                                                  id="receipt_warning"
+                                                                  name="receipt_warning"
+                                                                  type="text"
+                                                                  value={
+                                                                    state2.receipt_warning
+                                                                  }
+                                                                  className={
+                                                                    "form-control" +
+                                                                    (errors.receipt_warning &&
+                                                                      touched.receipt_warning
+                                                                      ? " is-invalid"
+                                                                      : "")
+                                                                  }
+                                                                  onChange={
+                                                                    handlePropertyFormTwoValues
+                                                                  }
+                                                                />
+                                                                <ErrorMessage
+                                                                  name="receipt_warning"
+                                                                  component="div"
+                                                                  className="invalid-feedback"
+                                                                />
+                                                              </Col>
+                                                              <Col md={4}></Col>
+                                                            </Row> */}
                                                           </div>
                                                           <div className="mb-3">
                                                             <Row className="mt-2 mb-3 justify-content-evenly align-items-start">

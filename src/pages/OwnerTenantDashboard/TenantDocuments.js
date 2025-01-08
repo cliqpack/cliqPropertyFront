@@ -1,101 +1,52 @@
 import React, { useEffect, useState } from "react";
-import TenantDInfo from "./TenantDInfo";
 import { connect } from "react-redux";
-
 import { useParams, withRouter, Link } from "react-router-dom";
 import Header from "components/VerticalLayout/Header";
 import {
   Col,
   Container,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Row,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
   Card,
   CardBody,
-  CardHeader,
   Button,
   CardImg,
   Badge,
 } from "reactstrap";
-
-//import logo from "../../assets/images/logo.svg";
-import logoLightPng from "../../assets/images/logo-light.png";
-import logoLightSvg from "../../assets/images/Asset-light.png";
-//import logoDark from "../../assets/images/Myday.png";
 import Img from "../../assets/Property/5.jpg";
 import {
-  propertyListForOwnerAndTenant,
   propertyListForTenantById,
   PropertyAllActivity,
   tenantAllDocument,
 } from "store/actions";
-import moment from "moment";
 import TenantMessageModal from "./TenantMessageModal";
 import TenantMaintenanceModal from "./TenantMaintenanceModal";
-// import logo from "../../assets/images/Myday.png";
 import logo from "../../assets/images/Asset-light.png";
 import logoDark from "../../assets/images/Myday.png";
 
-const TenantDocuments = props => {
+const TenantDocuments = (props) => {
   const [init, setInit] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
     if (init) {
       props.propertyListForTenantById(id);
-      props.tenantAllDocument(
-        props.property_list_tenant_id_data?.data[0]?.property_id
-      );
       setInit(false);
     }
     if (props.property_list_tenant_id_data?.data[0]?.property_id) {
-      props.PropertyAllActivity(
-        props.property_list_tenant_id_data?.data[0]?.property_id
-      );
-      props.tenantAllDocument(
-        props.property_list_tenant_id_data?.data[0]?.property_id
-      );
+      props.PropertyAllActivity(props.property_list_tenant_id_data.data[0].property_id);
+      props.tenantAllDocument(props.property_list_tenant_id_data.data[0].property_id);
     }
-  }, [props.property_list_tenant_id_data?.data[0]?.property_id]);
-  // console.log(props.property_all_activity?.data?.data);
-  console.log(props.tenant_all_doc_data?.invoice);
+  }, [init, props]);
+
   const tenantData = props.property_list_tenant_id_data?.data[0];
 
   const tenantImage =
-    tenantData?.tenant_properties?.property_images?.[
-      tenantData?.tenant_properties?.property_images?.length - 1
-    ]?.property_image;
+    tenantData?.tenant_properties?.property_images?.[tenantData?.tenant_properties?.property_images.length - 1]?.property_image;
   const address = tenantData?.tenant_properties?.property_address;
   const propertyData = tenantData?.tenant_properties;
 
-  console.log(props.tenant_all_doc_data?.invoice);
-
   return (
     <React.Fragment>
-      {/* <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          backgroundColor: "white",
-          zIndex: 999,
-          backgroundColor: "#153D58"
-        }}
-        className="navbar-brand-box"
-      >
-
-        <Link to="/" className="logo logo-light">
-          <span className="logo-lg">
-            <img src={logoDark} alt="" height="19" />
-          </span>
-        </Link>
-      </div> */}
       <div
         style={{
           position: "fixed",
@@ -114,29 +65,17 @@ const TenantDocuments = props => {
             <img src={logoDark} alt="" height="30" />
           </span>
         </Link>
-
-        <Link to="/owner-tenant-dashboard" className="logo logo-light">
-          <span className="logo-sm">
-            <img src={logo} alt="" height="30" />
-          </span>
-          <span className="logo-lg">
-            <img src={logoDark} alt="" height="30" />
-          </span>
-        </Link>
       </div>
 
       <Header />
       <div style={{ marginTop: "100px" }}>
         <div>
           <CardImg
-            src={
-              tenantImage ? `${process.env.REACT_APP_IMAGE}${tenantImage}` : Img
-            }
+            src={tenantImage ? `${process.env.REACT_APP_IMAGE}${tenantImage}` : Img}
             className="img-fluid"
             style={{ height: "300px", objectFit: "cover" }}
           />
         </div>
-        {/* <div className="mt-5"> */}
         <Container>
           <Row>
             <Col md={3} className="p-0">
@@ -153,14 +92,7 @@ const TenantDocuments = props => {
                         Transactions
                       </Button>
                     </Link>
-                    {/* <Link to={`/tenantDocuments/${id}`}>
-                      <Button className="btn w-100 m-1" color="info">
-                        Documents
-                      </Button>
-                    </Link> */}
-                    <TenantMessageModal
-                      mail={tenantData?.tenant_contact?.email}
-                    />
+                    <TenantMessageModal mail={tenantData?.tenant_contact?.email} />
                     <TenantMaintenanceModal data={tenantData} />
                   </div>
                 </CardBody>
@@ -176,17 +108,7 @@ const TenantDocuments = props => {
                       </span>
                       <span>
                         {address?.country ? (
-                          <span>
-                            <span>{`${address?.building_name || ""} ${
-                              address?.unit || ""
-                            }/${address?.number || ""} ${
-                              address?.street || ""
-                            } ${address?.suburb || ""} ${
-                              address?.postcode || ""
-                            } ${address?.state || ""} ${
-                              address?.country || ""
-                            }`}</span>
-                          </span>
+                          <span>{`${address?.building_name || ""} ${address?.unit || ""}/${address?.number || ""} ${address?.street || ""} ${address?.suburb || ""} ${address?.postcode || ""} ${address?.state || ""} ${address?.country || ""}`}</span>
                         ) : (
                           ""
                         )}
@@ -202,27 +124,21 @@ const TenantDocuments = props => {
                             <span>
                               <span className="font-size-11">Bedroom</span>{" "}
                               <i className="fas fa-bed font-size-14 mx-1"></i>{" "}
-                              <span className="font-size-12">
-                                ({propertyData?.bedroom || "0"})
-                              </span>
+                              <span className="font-size-12">({propertyData?.bedroom || "0"})</span>
                             </span>
                           </Badge>
                           <Badge className="py-2 px-4 me-3 bg-secondary">
                             <span>
                               <span className="font-size-11">Bathroom</span>{" "}
                               <i className="fas fa-bath font-size-14 mx-1"></i>{" "}
-                              <span className="font-size-12">
-                                ({propertyData?.bathroom || "0"})
-                              </span>
+                              <span className="font-size-12">({propertyData?.bathroom || "0"})</span>
                             </span>
                           </Badge>
                           <Badge className="py-2 px-4 bg-success">
                             <span>
                               <span className="font-size-11">Car space</span>{" "}
                               <i className="fas fa-car font-size-14 mx-1"></i>{" "}
-                              <span className="font-size-12">
-                                ({propertyData?.car_space || "0"})
-                              </span>
+                              <span className="font-size-12">({propertyData?.car_space || "0"})</span>
                             </span>
                           </Badge>
                         </span>
@@ -232,42 +148,77 @@ const TenantDocuments = props => {
                 </CardBody>
               </Card>
 
-              {props.tenant_all_doc_data?.invoice?.map((data, i) => (
-                <>
-                  <Card key={i}>
-                    {/* <CardHeader className="h5 bg-transparent border-bottom text-uppercase">
-                                        document is avaliable on 22 Feb 2023 76.05 KB
-                                        </CardHeader> */}
-                    <CardBody>
-                      <Row>
-                        <Col md={6}>
-                          <i className="fas fa-file-alt me-2" />{" "}
-                          <span className="h5">{data?.details}</span>
-                        </Col>
-                        <Col md={6}>
-                          <a
-                            target="blank"
-                            href={
-                              process.env.REACT_APP_DOCUMENT + data.doc_path
-                            }
-                          >
-                            <i className="fas fa-download me-1" /> Download
-                          </a>
-                        </Col>
-                      </Row>
-                    </CardBody>
-                  </Card>
-                </>
+              {/* Display tenant documents */}
+              {props.tenant_all_doc_data?.data?.property_docs?.map((doc) => (
+                <Card key={doc.id}>
+                  <CardBody>
+                    <Row>
+                      <Col md={6}>
+                        <i className="fas fa-file-alt me-2" />{" "}
+                        <span className="h5">{doc.name}</span>
+                      </Col>
+                      <Col md={6}>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`${process.env.REACT_APP_DOCUMENT}${doc.doc_path}`}
+                        >
+                          <i className="fas fa-download me-1" /> Download
+                        </a>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              ))}
+
+              {/* Display all property documents */}
+              {props.tenant_all_doc_data?.data?.all_property_docs?.map((doc) => (
+                <Card key={doc.id}>
+                  <CardBody>
+                    <Row>
+                      <Col md={6}>
+                        <i className="fas fa-file-alt me-2" />{" "}
+                        <span className="h5">{doc.name}</span>
+                      </Col>
+                      <Col md={6}>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`${process.env.REACT_APP_DOCUMENT}${doc.doc_path}`}
+                        >
+                          <i className="fas fa-download me-1" /> Download
+                        </a>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              ))}
+              {props.tenant_all_doc_data?.data?.invoice?.map((invoice) => (
+                <Card key={invoice.id}>
+                  <CardBody>
+                    <Row>
+                      <Col md={6}>
+                        <i className="fas fa-file-invoice me-2" />{" "}
+                        <span className="h5">{`Invoice #${invoice.id} - ${invoice.details}`}</span>
+                      </Col>
+                      <Col md={6}>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`${process.env.REACT_APP_DOCUMENT}${invoice.doc_path}`}
+                        >
+                          <i className="fas fa-download me-1" /> Download
+                        </a>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
               ))}
             </Col>
             <Col className="custom_card_border_design p-0">
               <Card className="p-0">
                 <CardImg
-                  src={
-                    tenantImage
-                      ? `${process.env.REACT_APP_IMAGE}${tenantImage}`
-                      : Img
-                  }
+                  src={tenantImage ? `${process.env.REACT_APP_IMAGE}${tenantImage}` : Img}
                   className="img-fluid"
                   style={{
                     height: "350px",
@@ -284,40 +235,19 @@ const TenantDocuments = props => {
   );
 };
 
-// export default TenantDDetailsActivity;
-const mapStateToProps = gstate => {
+const mapStateToProps = (gstate) => {
   const {
-    property_list_ot_data,
-    property_list_ot_error,
-    property_list_ot_loading,
-
-    property_list_t_data,
-    property_list_t_loading,
-
     property_list_tenant_id_data,
     tenant_all_doc_data,
   } = gstate.OTDashboard;
-  const { userDetails } = gstate.Login;
-  const { property_all_activity } = gstate.Activity;
   return {
-    property_list_ot_data,
-    property_list_ot_error,
-    property_list_ot_loading,
-
-    userDetails,
-
-    property_list_t_data,
-    property_list_t_loading,
-
     property_list_tenant_id_data,
-    property_all_activity,
     tenant_all_doc_data,
   };
 };
 
 export default withRouter(
   connect(mapStateToProps, {
-    propertyListForOwnerAndTenant,
     propertyListForTenantById,
     PropertyAllActivity,
     tenantAllDocument,

@@ -258,7 +258,7 @@ const EditPropertyOwnerAdd = props => {
   const toggleSplitEnableBtn = () => {
     setState4({
       ...state4,
-      owner_access: "৳",
+      owner_access: "$",
     });
     setSplitEnableBtn(true);
     setSplitDisableBtn(false);
@@ -548,7 +548,7 @@ const EditPropertyOwnerAdd = props => {
                               // communication: Yup.string().required(
                               //   "Please Enter Communication"
                               // ),
-                              abn: Yup.string().required("Please Enter BIN"),
+                              abn: Yup.string().required("Please Enter ABN"),
                               notes:
                                 Yup.string().required("Please Enter Notes"),
                             })}
@@ -1701,7 +1701,7 @@ const EditPropertyOwnerAdd = props => {
                                               for="abn"
                                               className="form-label"
                                             >
-                                              BIN
+                                              ABN
                                             </Label>
                                           </Col>
 
@@ -1911,7 +1911,7 @@ const EditPropertyOwnerAdd = props => {
                                                       <Field
                                                         name="total_money"
                                                         type="number"
-                                                        placeholder="৳0.00"
+                                                        placeholder="$0.00"
                                                         className={
                                                           "form-control" +
                                                           (errors.total_money &&
@@ -1945,7 +1945,7 @@ const EditPropertyOwnerAdd = props => {
                                                       <Field
                                                         name="balance"
                                                         type="number"
-                                                        placeholder="৳0.00"
+                                                        placeholder="$0.00"
                                                         className={
                                                           "form-control" +
                                                           (errors.balance &&
@@ -2059,7 +2059,7 @@ const EditPropertyOwnerAdd = props => {
                                                       <Field
                                                         name="withhold_amount"
                                                         type="text"
-                                                        placeholder="৳0.00"
+                                                        placeholder="$0.00"
                                                         className={
                                                           "form-control" +
                                                           (errors.withhold_amount &&

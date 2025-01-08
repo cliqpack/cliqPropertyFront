@@ -85,7 +85,7 @@ const FolioWithdraw = props => {
         } else if (state.amount < 0) {
             toastr.warning('Amount cannot be less then 0');
         } else if (state.amount > folioBalance?.balance) {
-            toastr.warning(`A withdrawal of ৳${state.amount} exceeds the cleared balance of ৳${folioBalance?.balance}`);
+            toastr.warning(`A withdrawal of $${state.amount} exceeds the cleared balance of $${folioBalance?.balance}`);
             return;
         } else {
             setShowModal(true);
@@ -285,10 +285,10 @@ const FolioWithdraw = props => {
                                                 <span className={`${folioBalance?.available_balance > 0 ? 'text-success' : 'text-danger'}`}>Available balance</span>
                                             </div>
                                             <div>
-                                                ৳{folioBalance?.balance} <br />
-                                                ৳{folioBalance?.outstanding_bill} <br />
-                                                ৳{folioBalance?.withhold ? <>{folioBalance?.withhold} <br /></> : ''}
-                                                <span className={`${folioBalance?.available_balance > 0 ? 'text-success' : 'text-danger'}`}>৳{folioBalance?.available_balance}</span>
+                                                ${folioBalance?.balance} <br />
+                                                ${folioBalance?.outstanding_bill} <br />
+                                                {folioBalance?.withhold ? <>${folioBalance?.withhold} <br /></> : ''}
+                                                <span className={`${folioBalance?.available_balance > 0 ? 'text-success' : 'text-danger'}`}>${folioBalance?.available_balance}</span>
                                             </div>
                                         </div>
                                     </Col>
@@ -382,6 +382,17 @@ const FolioWithdraw = props => {
                                 <Col md={3}><b>Amount</b></Col>
                                 <Col md={5}>
                                     <div className="d-flex">
+                                        <span className="input-group-append rounded-start">
+                                            <span
+                                                className="input-group-text"
+                                                style={{
+                                                    borderTopRightRadius: 0,
+                                                    borderBottomRightRadius: 0,
+                                                }}
+                                            >
+                                                $
+                                            </span>
+                                        </span>
                                         <div className="d-flex flex-column">
                                             <Input
                                                 name="amount"
@@ -389,8 +400,8 @@ const FolioWithdraw = props => {
                                                 placeholder="0.00"
                                                 className="rounded-end form-control"
                                                 style={{
-                                                    borderTopRightRadius: 0,
-                                                    borderBottomRightRadius: 0,
+                                                    borderTopLeftRadius: 0,
+                                                    borderBottomLeftRadius: 0,
                                                 }}
                                                 value={
                                                     state.amount
@@ -401,17 +412,6 @@ const FolioWithdraw = props => {
                                             />
                                         </div>
                                     </div>
-                                    <span className="input-group-append rounded-start">
-                                            <span
-                                                className="input-group-text"
-                                                style={{
-                                                    borderTopLeftRadius: 0,
-                                                    borderBottomLeftRadius: 0,
-                                                }}
-                                            >
-                                                ৳
-                                            </span>
-                                        </span>
                                 </Col>
                                 <Col md={4}>
                                     <div className="form-check">

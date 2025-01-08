@@ -143,7 +143,7 @@ const Contacts = props => {
   const [contactState, setContactState] = useState(false);
   const [contactId, setContactId] = useState(null);
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
   const handlePropertyFormValues = e => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -968,10 +968,6 @@ const Contacts = props => {
                         toastr.warning(`Please enter ${fName.length > 0 ? 'First Name' : ''} ${lName.length > 0 ? 'Last Name' : ''} ${email.length > 0 ? 'Email' : ''}`)
 
                       } else {
-                        // console.log("No objects with empty first_name or last_name found.");
-                        // console.log(emptyNames);
-                        // toastr.success('in')
-
                         dispatch(
                           addContact(
                             values,
@@ -985,7 +981,6 @@ const Contacts = props => {
                         setStatus(true)
                         props.ContactListFresh();
                         onSubmitProps.resetForm();
-
                       }
                     }}
                   >
@@ -1284,7 +1279,6 @@ const Contacts = props => {
                                                   ? true
                                                   : false
                                               }
-                                              style={{ backgroundColor: "buttonColor" }}
                                             >
                                               Add
                                             </Button>
@@ -1451,7 +1445,7 @@ const Contacts = props => {
                                                   handlePropertyFormValues
                                                 }
                                               />
-                                              <label htmlFor="usr">BIN</label>
+                                              <label htmlFor="usr">ABN</label>
                                             </div>
                                             <ErrorMessage
                                               name="abn"

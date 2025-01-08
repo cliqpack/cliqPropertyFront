@@ -1091,18 +1091,9 @@ export const sendSMSTemplate = (
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
-
-    // let data = {
-    //   id: Math.random(),
-    //   from: "himelhimu6@gmail.com",
-    //   to: state.email,
-    //   body: state.body,
-    // };
 
     const formData = {
       name: name,
@@ -1136,8 +1127,6 @@ export const sendSMSTemplateFresh = () => {
   return dispatch =>
     dispatch({
       type: "SMS_TEMPLATE_SEND_FRESH",
-      // payload: null,
-      // error: null,
       status: false,
     });
 };
@@ -1595,10 +1584,7 @@ export const scheduleTriggerFrom = data => {
 };
 
 export const addSchedule = (data, data2, body, subject) => {
-  // console.log(data, data2, body);
-  // console.log(subject);
   var authUser = JSON.parse(localStorage.getItem("authUser"));
-
   var url = `${process.env.REACT_APP_LOCALHOST}/mail/template`;
   const formData = {
     name: data.name,
@@ -1612,13 +1598,10 @@ export const addSchedule = (data, data2, body, subject) => {
     subject: subject,
     type: "mail",
   };
-  //console.log(formData);
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
     axios
@@ -1644,25 +1627,16 @@ export const addScheduleFresh = () => {
   return dispatch =>
     dispatch({
       type: "ADD_SCHEDULE_FRESH",
-      // payload: null,
-      // error: null,
       status: false,
     });
 };
 
 export const editSchedule = (id, switch1, body) => {
-  console.log(id, switch1, body);
-
   var authUser = JSON.parse(localStorage.getItem("authUser"));
   const newUrl = process.env.REACT_APP_LOCALHOST;
   var url = newUrl + "/mail/template" + "/" + id;
 
-  //var url = newUrl + "/sms/template" + "/" + id;
   const formData = {
-    // name: data.name,
-    // message_action_name_id: data.message_action.name,
-    // message_trigger_to_id: data.action_trigger_to.trigger_to,
-    // messsage_trigger_point_id: data.action_triggerfrom.trigger_point,
     body: body,
     status: switch1,
   };
@@ -1917,16 +1891,13 @@ export const spamMove = (id) => {
   return dispatch => {
     const headers = {
       "Content-Type": "application/json",
-
       "Access-Control-Allow-Origin": "*",
-
       Authorization: "Bearer " + authUser.token,
     };
 
     const formData = {
       id: id,
     };
-
     axios
       .post(url, formData, { headers: headers })
       .then(response => {
@@ -2018,6 +1989,36 @@ export const storeAttachment = (file) => {
     };
     axios
       .post(url, formData, { headers: headers })
+      .then(response => {
+        dispatch({
+          type: "STORE_ATTACHMENT",
+          payload: response,
+          status: "Success",
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: "STORE_ATTACHMENT",
+          error: error,
+          status: "Failed",
+        });
+      });
+  };
+};
+export const storeAttachmentForSendInEmail = (file) => {
+  var authUser = JSON.parse(localStorage.getItem("authUser"));
+  const newUrl = `${process.env.REACT_APP_LOCALHOST}`;
+
+  let url = `${newUrl}/mail/attachment`;
+
+  return dispatch => {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: "Bearer " + authUser.token,
+    };
+    axios
+      .post(url, file, { headers: headers })
       .then(response => {
         dispatch({
           type: "STORE_ATTACHMENT",

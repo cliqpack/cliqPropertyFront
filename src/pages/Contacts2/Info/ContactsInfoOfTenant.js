@@ -28,9 +28,12 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
-
+import TenantBondDetails from "../../Properties/TenantBondDetails";
 import { TenantInfoFresh, storePropertyDocument } from "store/actions";
-
+import {
+  
+  editPropertyTanentBondDetails
+} from "../../../store/Properties/actions";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import moment from "moment";
@@ -41,19 +44,35 @@ const ContactsInfoOfTenant = ({
   items,
   handleTenantFiles, show, setShow
 }) => {
+  console.log(item);
+  console.log(items);
+  const [state, setState] = useState({});
+  const [state2, setState2] = useState({});
   const history = useHistory();
   const dispatch = useDispatch();
   const { id } = useParams();
   const inputFile = useRef(null);
-
+  const [toggleBondState, setToggleBondState] = useState(false);
+  const toggleBondDetails = () => {
+    setToggleBondState((prev) => !prev);
+  };
   const [showDropZone, setShowDropZone] = useState(false);
-
-
+  const [postalAddress, setPostalAddress] = useState([]);
+  const [paymentStatus, setPaymentStatus] = useState("add");
+  const [physicalAddress, setPhysicalAddress] = useState([]);
+  const [formTwoButtonValue, setFormTwoButtonValue] = useState({
+    wfmBtn: "Weekly",
+    rentTax: 0,
+    periodic_tenancy: 0,
+    rentInvoiceBtn: 0,
+    exclude_form_arrears: 0,
+    tenant_access: 0,
+  });
   const tenantEditHandler = (id, tabId) => {
     dispatch(TenantInfoFresh());
     history.push("/tenant/edit/" + id + "/" + tabId);
   };
-
+  const [checkState, setCheckState] = useState([[]]);
   const tenantFolioHandler = (p_id, c_id, t_Id, fId) => {
     history.push(`/tenantFolio/${p_id}/${c_id}/${t_Id}/${fId}`);
   };
@@ -91,8 +110,109 @@ const ContactsInfoOfTenant = ({
       item.property_id, item?.contact_id, item.id,
     ));
   };
+  const handleBondValues = (e) => {
+    let value = e.target.value;
+    value = +value;
+    if (typeof value === "number") {
+      if (formTwoButtonValue.wfmBtn === "Weekly") {
+        setWeeklyRent(value);
+        value *= 4.33;
+        value = value.toFixed(2);
+        setState2({ ...state2, rent: e.target.value, bond_required: value });
+        setFortNightlyRent();
+        setMonthlyRent();
+      } else if (formTwoButtonValue.wfmBtn === "FortNightly") {
+        setFortNightlyRent(value);
+        value *= 2;
+        value = value.toFixed(2);
+        setState2({ ...state2, rent: e.target.value, bond_required: value });
+        setWeeklyRent();
+        setMonthlyRent();
+      } else if (formTwoButtonValue.wfmBtn === "Monthly") {
+        setMonthlyRent(value);
+        value /= 1.1;
+        value = value.toFixed(2);
+        setState2({ ...state2, rent: e.target.value, bond_required: value });
+        setWeeklyRent();
+        setFortNightlyRent();
+      }
+    } else {
+      setState2({ ...state2, rent: e.target.value, bond_required: "" });
+    }
+  };
+  const handlePropertyFormTwoValues = (e) => {
+    if (e.target.name == "agreement_start") {
+      const date_end1 = moment(e.target.value)
+        .add(364, "days")
+        .format("yyyy-MM-DD");
+      const substractDay = moment(e.target.value)
+        .subtract(1, "days")
+        .format("yyyy-MM-DD");
+      const substractDay1 = moment(date_end1)
+        .subtract(3, "Month")
+        .format("yyyy-MM-DD");
+      setState2({
+        ...state2,
+        [e.target.name]: e.target.value,
+        ["agreement_end"]: date_end1,
+        ["paid_to"]: substractDay,
+        ["next_rent_review"]: substractDay1,
+      });
+    } else if (e.target.name == "agreement_end") {
+      const substractMonthThree = moment(e.target.value)
+        .subtract(3, "Month")
+        .format("yyyy-MM-DD");
 
+      setState2({ ...state2, ["agreement_end"]: substractMonthThree });
+    } else if (e.target.name == "rent_review_frequency") {
+      const date_end2 = moment()
+        .add(e.target.value, "Month")
+        .format("yyyy-MM-DD");
+      setState2({
+        ...state2,
+        ["next_rent_review"]: date_end2,
+        ["rent_review_frequency"]: e.target.value,
+      });
+    } else if (e.target.name == "move_out") {
+      setDateCheck({ ...dateCheck, moveOut: true });
+      setState2({ ...state2, [e.target.name]: e.target.value });
+    } else {
+      const { name, value } = e.target;
+      const newState = { ...state2, [name]: value };
+      if (name === "bond_required") {
+        const bondRequired = parseFloat(newState.bond_required) || 0;
+        const bondHeld = parseFloat(newState.bond_held) || 0;
+        newState.bond_arrears = bondRequired - bondHeld;
+      }
+      setState2(newState);
+    }
+  };
+  const handlePropertyFormBond = (e) => {
+    const bond__paid = e.target.value;
+    const bond__arrears =
+      +state2.bond_required - (+state2.bond_receipted + +bond__paid);
+    const bond__held = +state2.bond_receipted + +bond__paid;
 
+    setState2((prev) => ({
+      ...prev,
+      [e.target.name]: bond__paid,
+      bond_arrears: bond__arrears,
+      bond_held: bond__held,
+    }));
+  };
+  const handleBondDetails =  () => {
+    editPropertyTanentBondDetails(
+      state,
+      state2,
+      formTwoButtonValue,
+      id,
+      checkState,
+      postalAddress,
+      physicalAddress,
+      paymentStatus,
+     
+    );
+  }
   return (
     <React.Fragment>
       <Card data-aos="fade-right" data-aos-once={true} className="custom_card_border_design me-2">
@@ -103,42 +223,74 @@ const ContactsInfoOfTenant = ({
                 {" "}
                 <Col md={6} className="d-flex">
                   <h4 className="ms-1 text-primary fw-bold">
-                    {/* <i className="bx bxs-group text-textTitleColor me-1" /> */}
                     Tenant
+                    {
+                      item.tenant_folio?.archive == 1 && <span className="font-size-14">
+                        {" "}(Archived on{" "}
+                        {moment(item.tenant_folio?.updated_at).format(
+                          "DD MMM YYYY"
+                        )})
+                      </span>
+                    }
                   </h4>
-
                 </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-end align-items-center"
-                >
-                  <i className="fas fa-cloud-upload-alt font-size-16 me-1 text-white" style={{ padding: "9px 12px", backgroundColor: "labelColor", borderRadius: "5px" }} />
-                  <input
-                    type="file"
-                    onChange={handleUploadFiles}
-                    ref={inputFile}
-                    style={{ display: "none" }}
-                    multiple
-                  />
-                  <Button
-                    className="btn"
-                    color="info"
-                    onClick={() => inputFile.current.click()}
-                  >
-                    {" "}
-                    <i className="bx bx-camera d-block font-size-20"></i>
-                  </Button>
-                  <button
-                    type="button"
-                    className="ms-1 btn btn-info"
-                    onClick={() => {
-                      tenantEditHandler(item.id, 2);
-                    }}
-                  >
-                    <i className="fa fa-solid fa-pen" />
-                  </button>
+                {item.tenant_folio?.archive === 1 ? (
+                  <Col md={6} className="d-flex justify-content-end align-items-center">
+                    <i
+                      className="fas fa-archive font-size-16 text-muted"
+                      style={{ padding: "9px 12px", borderRadius: "5px", backgroundColor: "#d3d3d3" }}
+                      title="This item is archived"
+                    />
+                  </Col>
+                ) : (
+                  <Col md={6} className="d-flex justify-content-end align-items-center">
+                    <i
+                      className="fas fa-cloud-upload-alt font-size-16 me-1 text-white"
+                      style={{ padding: "9px 12px", backgroundColor: "#0F2E5A", borderRadius: "5px" }}
+                    />
+                    <input
+                      type="file"
+                      onChange={handleUploadFiles}
+                      ref={inputFile}
+                      style={{ display: "none" }}
+                      multiple
+                    />
+                    <Button
+                      className="btn"
+                      color="info"
+                      onClick={() => inputFile.current.click()}
+                    >
+                      <i className="bx bx-camera d-block font-size-20"></i>
+                    </Button>
+                    <button
+                      type="button"
+                      className="ms-1 btn btn-info"
+                      onClick={() => {
+                        tenantEditHandler(item.id, 2);
+                      }}
+                    >
+                      <i className="fa fa-solid fa-pen" />
+                    </button>
+                  
+                    <Button
+                          type="button"
+                          className="ms-1 btn btn-labelColor"
+                          onClick={() => {
+                            tenantFolioHandler(
+                                  item?.property_id,
+                                  item?.contact_id,
+                                  item?.id,
+                                  item?.tenant_folio?.id,
 
-                </Col>
+
+                              );
+                          }}
+                      >
+                          <i className="fa fa-solid fa-dollar-sign" />
+                      </Button>
+                  </Col>
+                )}
+
               </Row>{" "}
               <div
                 className="w-100 mt-2 "
@@ -216,7 +368,8 @@ const ContactsInfoOfTenant = ({
                             <Col md={7}>
                               {" "}
                               <p>
-                                ৳{item.tenant_folio?.rent
+                                $
+                                {item.tenant_folio?.rent
                                   ? item.tenant_folio?.rent
                                   : 0.0}
                               </p>
@@ -311,10 +464,11 @@ const ContactsInfoOfTenant = ({
                         <Col>
                           <Row>
                             <Col md={5}>
-                              <p className="text-textTitleColor">Security Deposit</p>
+                              <p className="text-textTitleColor">Bond</p>
                             </Col>
                             <Col md={7}>
-                              <p>
+                              <p style={{ cursor: "pointer" }}
+                                  className="text-textTitleColor" onClick={toggleBondDetails} >
                                 {/* {"$" +
                                   item.tenant_folio?.bond_required +
                                   " " +
@@ -323,8 +477,21 @@ const ContactsInfoOfTenant = ({
                                   item.tenant_folio?.bond_held ? item.tenant_folio?.bond_held : '' +
                                   " " +
                                 "held"} */}
-                                {`${item.tenant_folio?.bond_required && `৳${item.tenant_folio?.bond_required} required`} ${item.tenant_folio?.bond_held == null ? '' : `, ৳${item.tenant_folio?.bond_held} held`}`}
+                                {`${item.tenant_folio?.bond_required && `$${item.tenant_folio?.bond_required} required`} ${item.tenant_folio?.bond_held == null ? '' : `, $${item.tenant_folio?.bond_held} held`}`}
                               </p>
+                              {toggleBondState && (
+                                <TenantBondDetails
+                                cid={item.tenant_info_data?.data?.data?.id}
+                                conid={item.tenant_info_data?.data?.data?.contact_id}
+                                propID={item.tenant_info_data?.data?.data?.property_id}
+                                toggleBondDetails={toggleBondDetails}
+                                state={state}
+                                state2={state2}
+                                handlePropertyFormTwoValues={handlePropertyFormTwoValues}
+                                handlePropertyFormBond={handlePropertyFormBond}
+                                handleBondDetails={handleBondDetails} 
+                                />
+                              )}
                             </Col>
                           </Row>
                           <div
@@ -409,7 +576,8 @@ const ContactsInfoOfTenant = ({
                               <Col md={7}>
                                 {" "}
                                 <p>
-                                  ৳{item.tenant_folio?.invoice_days_in_advance
+                                  $
+                                  {item.tenant_folio?.invoice_days_in_advance
                                     ? item.tenant_folio?.invoice_days_in_advance
                                     : "0.00"}
                                 </p>
@@ -458,7 +626,8 @@ const ContactsInfoOfTenant = ({
                               <Col md={7}>
                                 {" "}
                                 <p>
-                                  ৳{item.tenant_folio?.part_paid
+                                  $
+                                  {item.tenant_folio?.part_paid
                                     ? item.tenant_folio?.part_paid
                                     : "0.00"}
                                 </p>
@@ -630,14 +799,23 @@ Aos.init({
 });
 
 const mapStateToProps = gstate => {
-  const { contacts_show_data, contacts_show_loading } = gstate.Contacts2;
+  const { 
+    contacts_show_data,
+     contacts_show_loading,
+     tenant_bond_update_data,
+    tenant_bond_update_error,
+    tenant_bond_update_loading,
+     } = gstate.Contacts2;
   return {
     contacts_show_data,
     contacts_show_loading,
+    tenant_bond_update_data,
+    tenant_bond_update_error,
+    tenant_bond_update_loading,
   };
 };
 export default withRouter(
   connect(mapStateToProps, {
-    TenantInfoFresh, storePropertyDocument
+    TenantInfoFresh, storePropertyDocument,editPropertyTanentBondDetails
   })(ContactsInfoOfTenant)
 );

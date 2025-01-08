@@ -98,6 +98,17 @@ const BankStatementModal = props => {
                                     <div
                                         className="d-flex"
                                     >
+                                        <span className="input-group-append rounded-start">
+                                            <span
+                                                className="input-group-text"
+                                                style={{
+                                                    borderTopRightRadius: 0,
+                                                    borderBottomRightRadius: 0,
+                                                }}
+                                            >
+                                                $
+                                            </span>
+                                        </span>
                                         <div className="d-flex flex-column">
                                             <Input
                                                 className="form-control "
@@ -107,22 +118,11 @@ const BankStatementModal = props => {
                                                 onChange={handleValues}
                                                 value={state.balance}
                                                 style={{
-                                                    borderTopRightRadius: 0,
-                                                    borderBottomRightRadius: 0,
-                                                }}
-                                            />
-                                        </div>
-                                        <span className="input-group-append rounded-start">
-                                            <span
-                                                className="input-group-text"
-                                                style={{
                                                     borderTopLeftRadius: 0,
                                                     borderBottomLeftRadius: 0,
                                                 }}
-                                            >
-                                                ৳
-                                            </span>
-                                        </span>
+                                            />
+                                        </div>
                                     </div>
                                 </Col>
                             </Row>

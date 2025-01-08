@@ -15,6 +15,15 @@ class BarChart extends Component {
           hoverBorderColor: "rgba(52, 195, 143, 0.9)",
           data: [65, 59, 81, 45, 56, 80, 50, 20],
         },
+        {
+          label: "Sales Analytics",
+          backgroundColor: 'rgba(255, 82, 82, 0.8)',
+          borderColor: 'rgba(255, 82, 82, 0.8)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255, 82, 82, 0.9)',
+          hoverBorderColor: 'rgba(255, 82, 82, 0.9)',
+          data: [-365, -59, -81, -45, -156, -280, -350, -420],
+        },
       ],
     }
 

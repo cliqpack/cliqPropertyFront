@@ -22,9 +22,9 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 // import Pdf from "react-to-pdf";
 import jsPDF from "jspdf";
 
+document.title = "MyDay";
 
 const PrintRecieptInvoice = (props) => {
-    document.title = "CliqProperty";
     const { id } = useParams();
     const history = useHistory();
     const [init, setInit] = useState(true)
@@ -88,17 +88,17 @@ const PrintRecieptInvoice = (props) => {
                                         <strong>(w) 1111 2222</strong>
                                         <br />
                                         <div>
-                                            www.CliqProperty.com
+                                            www.myday.com
                                         </div>
                                         <div>
-                                            reply@CliqProperty.com
+                                            reply@myday.com
                                         </div>
                                         <div>
                                             46 Hall St <br />
                                             Bondi Beach NSW 2026 <br />
                                         </div>
                                         <div>
-                                            BIN:
+                                            ABN:
                                         </div>
                                         <div>
                                             Licence:
@@ -164,16 +164,16 @@ const PrintRecieptInvoice = (props) => {
                                     {data?.receipt_details?.map((item, i) => (
                                         <tr key={i}>
                                             <td className="col-md-7">{item.allocation}</td>
-                                            <td className="col-md-2 border-secondary">৳0.00</td>
-                                            <td className="col-md-2 border-secondary">৳{item.amount}</td>
+                                            <td className="col-md-2 border-secondary">$0.00</td>
+                                            <td className="col-md-2 border-secondary">${item.amount}</td>
                                         </tr>
                                     ))
                                     }
 
                                     <tr className="border-secondary">
                                         <td className="col-md-7">Total</td>
-                                        <td className="col-md-2">৳0.00</td>
-                                        <td className="col-md-2">৳{totalAmount}</td>
+                                        <td className="col-md-2">$0.00</td>
+                                        <td className="col-md-2">${totalAmount}</td>
                                     </tr>
 
                                 </tbody>

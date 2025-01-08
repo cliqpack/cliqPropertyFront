@@ -346,7 +346,7 @@ const MailTemplateModal = props => {
                       {props.data?.property_activity_email[0]?.email_from} <br />
                       9999 3333 <br />
                       {authUser.user.email} <br /> */}
-                  www.cliqproperty.com <br />
+                  www.myday.com <br />
                 </p>
               </div>
 
@@ -488,7 +488,7 @@ const MailTemplateModal = props => {
                         ${props.data?.message?.from} <br />
 
                                         ${authUser.user.email} <br />
-                                        www.cliqproperty.com <br />
+                                        www.myday.com <br />
                                     </p>
                                 `}
               onReady={editor => {

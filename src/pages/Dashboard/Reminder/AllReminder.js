@@ -5,17 +5,12 @@ import PropTypes, { number } from "prop-types";
 import { useDispatch } from "react-redux";
 import {
     Card,
-    Alert,
     CardBody,
     CardText,
-    CardTitle,
     Col,
     Container,
     Row,
-    Label,
-    Input,
     Button,
-    CardHeader,
     Nav,
     NavItem,
     NavLink,
@@ -50,9 +45,9 @@ import CreateJobReminder from "./CreateJobReminder";
 import ReminderMessageModal from "./ReminderMessageModal";
 
 
+document.title = "myday";
 
 const AllReminder = props => {
-    document.title = "CliqProperty";
     const history = useHistory();
     const { id } = useParams();
     const [state, setState] = useState({
@@ -60,8 +55,6 @@ const AllReminder = props => {
 
     });
     const [selected, setSelected] = useState([])
-
-    console.log(state.activeTab);
 
     const toggleCompleteReminder = () => {
         setState(prev => ({ ...prev, completeReminder: !prev.completeReminder }));

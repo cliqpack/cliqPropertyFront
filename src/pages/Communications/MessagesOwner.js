@@ -482,7 +482,7 @@ const Messages = props => {
     }));
   };
 
-  document.title = "CliqProperty";
+  document.title = "myday";
 
   const {
     inboxmails,

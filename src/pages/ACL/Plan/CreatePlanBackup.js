@@ -130,7 +130,7 @@ const CreatePlan = props => {
         <td>
           {item.details?.map((items, keys) => items.menu.menu_title + ", ")}
         </td>
-        <td>৳{item.price}</td>
+        <td>${item.price}</td>
         <td>
           <button
             type="submit"

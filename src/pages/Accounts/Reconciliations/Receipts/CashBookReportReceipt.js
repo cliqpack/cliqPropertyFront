@@ -19,10 +19,10 @@ import toastr from "toastr";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 
 
+document.title = "MyDay";
 
 
 const CashBookReportReceipt = (props) => {
-    document.title = "CliqProperty";
     const { month, year } = useParams();
     const history = useHistory();
 
@@ -110,11 +110,11 @@ const CashBookReportReceipt = (props) => {
                                                                             {console.log(item)}
 
                                                                             {i === 0 && <td className="col-md-5">From: {item.folioCode} {item.description}</td>}
-                                                                            {i === 0 && <td className="col-md-3">৳{item.amount}</td>}
+                                                                            {i === 0 && <td className="col-md-3">${item.amount}</td>}
                                                                             {i === 0 && <td className="col-md-3">{" "}</td>}
                                                                             {i === 1 && <td className="col-md-6">to: {item.folioCode} {item.description}</td>}
                                                                             {i === 1 && <td className="col-md-3">{" "}</td>}
-                                                                            {i === 1 && <td className="col-md-3">৳{item.amount}</td>
+                                                                            {i === 1 && <td className="col-md-3">${item.amount}</td>
 
                                                                             }
                                                                         </tr>
@@ -133,8 +133,8 @@ const CashBookReportReceipt = (props) => {
                                                         <td >
 
                                                         </td>
-                                                        <td className="fw-bold">    ৳ </td>
-                                                        <td className="fw-bold">৳</td>
+                                                        <td className="fw-bold">    $ </td>
+                                                        <td className="fw-bold">$</td>
 
                                                     </tr>
 
