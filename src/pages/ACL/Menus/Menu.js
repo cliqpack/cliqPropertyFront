@@ -31,7 +31,7 @@ import toastr from "toastr";
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { propTypes } from "react-bootstrap-editable";
-document.title = "myday";
+document.title = "CliqProperty";
 
 const Menu = props => {
   const [state, setState] = useState();

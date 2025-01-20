@@ -33,7 +33,7 @@ import {
   deleteUserPlan,
 } from "store/ACL/UserPlan/action";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const UserPlan = props => {
   const [state, setState] = useState();

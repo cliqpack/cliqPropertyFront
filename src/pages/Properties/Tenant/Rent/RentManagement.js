@@ -41,7 +41,7 @@ import CancelRentModal from "./CancelRentModal";
 import GenerantRentModal from "./GenerateRentModal";
 import RemotePagination from "pages/Task/RemotePagination";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 function RentManagement(props) {
   const { propertyId, contactId, folioId } = useParams();

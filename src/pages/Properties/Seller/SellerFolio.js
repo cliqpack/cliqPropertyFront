@@ -75,7 +75,7 @@ import AddReceipt from "pages/Accounts/Transactions/AddReceipt";
 import Loder from "components/Loder/Loder";
 import moment from "moment";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 function SellerFolio(props) {
   const { propertyId, fId } = useParams();

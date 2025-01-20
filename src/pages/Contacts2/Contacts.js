@@ -143,7 +143,7 @@ const Contacts = props => {
   const [contactState, setContactState] = useState(false);
   const [contactId, setContactId] = useState(null);
 
-  document.title = "myday";
+  document.title = "CliqProperty";
 
   const handlePropertyFormValues = e => {
     setState({ ...state, [e.target.name]: e.target.value });

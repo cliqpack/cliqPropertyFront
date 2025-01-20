@@ -1141,7 +1141,7 @@ const AddSupplier2 = props => {
     }, 5000);
   }
 
-  document.title = "myday";
+  document.title = "CliqProperty";
 
   //----------Multi-reference form hendler------------//
   const handleBtnRows = () => {

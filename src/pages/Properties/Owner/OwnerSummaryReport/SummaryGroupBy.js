@@ -19,7 +19,7 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import mydaylogo from '../../../../assets/images/Asset5.png'
 import './transactiontable.css'
 import { SummaryByMonthlyInfo, SummaryByMonthlyInfoFresh } from "store/actions";
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const SummaryGroupBy = props => {
   const { id, fromdate, todate } = useParams();

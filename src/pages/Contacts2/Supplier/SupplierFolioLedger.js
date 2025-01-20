@@ -22,7 +22,7 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import SupplierFolioLedgerFilter from "./SupplierFolioLedger/SupplierFolioLedgerFilter";
 import Loder from "components/Loder/Loder";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const SupplierFolioLedger = props => {
     console.log(props);

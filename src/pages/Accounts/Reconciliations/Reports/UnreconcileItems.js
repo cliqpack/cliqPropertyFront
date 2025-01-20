@@ -19,7 +19,7 @@ import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const UnreconcileItems = props => {
   const { date, id } = useParams();

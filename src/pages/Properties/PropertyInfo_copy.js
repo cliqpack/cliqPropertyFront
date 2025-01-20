@@ -134,7 +134,7 @@ import React, {
   import PropertyDocs from "./PropertyDocs";
   import TooltipVisibility from "./Documents/TooltipVisibility";
   
-  document.title = "myday";
+  document.title = "CliqProperty";
   
   const PropertyInfo = props => {
     const { id } = useParams();

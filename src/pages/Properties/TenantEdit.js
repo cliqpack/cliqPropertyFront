@@ -1673,7 +1673,7 @@ const TenantEdit = (props) => {
     setFormSubmitBtnState(formSubmitBtnState + 1);
   };
 
-  document.title = "myday";
+  document.title = "CliqProperty";
   return (
     <React.Fragment>
       <div className="page-content">

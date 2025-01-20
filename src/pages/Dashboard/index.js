@@ -76,7 +76,7 @@ import InsightsChartsBelowData from "./InsightsChartsBelowData";
 import CommonTooltip from "common/Tooltip/CommonTooltip";
 import CommonSplineAreaUp from "./Chart.js/CommonSplineAreaUp";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const Dashboard = props => {
   const [seen, setSeen] = useState(false);

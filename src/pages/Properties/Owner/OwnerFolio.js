@@ -57,7 +57,7 @@ import Loder from "components/Loder/Loder";
 import moment from "moment";
 import axios from "axios";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 function OwnerFolio(props) {
   const { propertyId, fId } = useParams();

@@ -20,7 +20,7 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import SellerFolioLedgerFilter from "./SellerFolioLedger/SellerFolioLedgerFilter";
 import Loder from "components/Loder/Loder";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const SellerFolioLedger = props => {
     const { id } = useParams();

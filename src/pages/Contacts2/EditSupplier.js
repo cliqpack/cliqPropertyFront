@@ -854,7 +854,7 @@ const EditSupplier = props => {
 
   console.log(checkState);
 
-  document.title = "myday";
+  document.title = "CliqProperty";
 
   //----------Multi-reference form hendler------------//
   const handleBtnRows = () => {

@@ -42,7 +42,7 @@ import EditFileNameModal from "./EditFileNameModal";
 import RemoveDocModal from "./RemoveDocModal";
 
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const Documents = props => {
   const history = useHistory();

@@ -47,7 +47,7 @@ import toastr from "toastr";
 import Loder from "components/Loder/Loder";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 function BillsList(props) {
   const [state, setState] = useState({

@@ -35,7 +35,7 @@ import paginationFactory, {
 import ReasonModalAdd from "./ReasonModalAdd";
 import RemoveReasonModal from "./RemoveReasonModal";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const GainOrLostReasons = props => {
   const history = useHistory();

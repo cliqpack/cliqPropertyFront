@@ -35,7 +35,7 @@ import paginationFactory, {
 import AddReminderModal from "./AddReminderModal";
 import RemoveReminderSettings from "./RemoveReminderSettings";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const Reminders = props => {
   const history = useHistory();

@@ -37,7 +37,7 @@ const MenuPrice = props => {
   const [deleteState, setDeleteState] = useState(false);
   const [deleteId, setDeleteId] = useState('');
 
-  document.title = "myday";
+  document.title = "CliqProperty";
   useEffect(() => {
     if (props.menu_price_loading === false) {
       props.menuPriceList();

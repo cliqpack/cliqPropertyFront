@@ -18,7 +18,7 @@ import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import '../../../Properties/Owner/OwnerSummaryReport/transactiontable.css'
 import { SupplierSummaryByMonthlyInfo, SupplierSummaryByMonthlyInfoFresh } from "store/actions";
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const SummaryByMonthInfo = props => {
     const { id, fromdate, todate } = useParams();

@@ -752,7 +752,7 @@ const PropertyTanentAdd2 = props => {
     }
   };
 
-  document.title = "myday";
+  document.title = "CliqProperty";
   //----------Multi-reference form hendler------------//
   const handleBtnRows = () => {
     const item = { btn: "" };

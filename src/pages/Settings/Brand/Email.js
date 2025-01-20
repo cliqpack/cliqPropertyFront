@@ -23,7 +23,7 @@ import '@vtaits/react-color-picker/dist/index.css';
 import ColorBtn from "common/Button/ColorBtn";
 import SelectSearch from "common/Select-Search/SelectSearch";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const Email = props => {
     const [isLoading, setIsLoading] = useState(false)

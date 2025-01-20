@@ -53,7 +53,7 @@ const PrerequisiteMenu = props => {
 
   const animatedComponents = makeAnimated();
 
-  document.title = "myday";
+  document.title = "CliqProperty";
   useEffect(() => {
     if (!seen) {
       props.getActiveAddons();

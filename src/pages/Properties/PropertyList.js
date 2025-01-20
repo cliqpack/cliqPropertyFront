@@ -52,7 +52,7 @@ import MessagesModal from "./MessagesModal";
 import LabelModal from "./LabelModal";
 import AddReminder from "../Dashboard/Reminder/AddReminder";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 function PropertyList(props) {
   const location = useLocation();

@@ -22,7 +22,7 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 // import Pdf from "react-to-pdf";
 import jsPDF from "jspdf";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const PrintRecieptInvoice = (props) => {
     const { id } = useParams();
@@ -88,10 +88,10 @@ const PrintRecieptInvoice = (props) => {
                                         <strong>(w) 1111 2222</strong>
                                         <br />
                                         <div>
-                                            www.myday.com
+                                         app.cliqproperty.io
                                         </div>
                                         <div>
-                                            reply@myday.com
+                                            reply@cliqproperty.ai
                                         </div>
                                         <div>
                                             46 Hall St <br />

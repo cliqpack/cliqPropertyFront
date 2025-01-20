@@ -38,7 +38,7 @@ import AddJobModal from "./AddJobModal";
 import RemotePagination from "pages/Task/RemotePagination";
 import { withTranslation, useTranslation } from "react-i18next";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 function JobsTaskList(props) {
   const { t } = useTranslation();

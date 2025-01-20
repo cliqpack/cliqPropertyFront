@@ -31,7 +31,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import PropertyList from "pages/Properties/PropertyList";
 import { withTranslation, useTranslation } from "react-i18next";
 
-document.title = "myDay";
+document.title = "CliqProperty";
 
 const otDashboard = {
     position: "relative",

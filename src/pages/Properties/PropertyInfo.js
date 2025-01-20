@@ -132,7 +132,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import Loder from "components/Loder/Loder";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const PropertyInfo = props => {
     const { id } = useParams();

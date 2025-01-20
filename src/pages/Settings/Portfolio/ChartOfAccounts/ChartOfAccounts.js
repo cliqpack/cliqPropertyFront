@@ -36,7 +36,7 @@ import AccountsAddModal from "./AccountsAddModal";
 import RemoveAccountModal from "./RemoveAccountModal";
 import AccountsInfoModal from "./AccountsInfoModal";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const ChartOfAccounts = props => {
   const history = useHistory();

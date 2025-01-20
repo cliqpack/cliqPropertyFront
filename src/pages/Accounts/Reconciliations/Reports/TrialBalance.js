@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const UnreconcileItems = (props) => {
     const { year, month, day } = useParams();

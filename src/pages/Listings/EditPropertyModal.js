@@ -83,7 +83,7 @@ const EditPropertyModal = props => {
         setInspectionFirstRoutineMonthlyBtn,
     ] = useState(false);
     const [propertyEditState, setPropertyEditState] = useState(true);
-    document.title = "myday";
+    document.title = "CliqProperty";
     const [state2, setState2] = useState({
         location: undefined,
     });

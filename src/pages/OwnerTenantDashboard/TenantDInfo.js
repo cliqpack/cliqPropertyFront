@@ -39,7 +39,7 @@ import TenantMaintenanceModal from "./TenantMaintenanceModal";
 import { date } from "yup";
 import AddJobModal from "pages/Jobs/AddJobModal";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 const TenantDInfo = props => {
   const [init, setInit] = useState(true);

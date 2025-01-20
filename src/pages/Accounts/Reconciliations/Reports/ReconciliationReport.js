@@ -15,7 +15,7 @@ import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
 
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 
 const ReconciliationReport = (props) => {

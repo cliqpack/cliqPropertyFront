@@ -25,7 +25,7 @@ import toastr from "toastr";
 import { integrationsList } from 'store/actions'
 import Img from '../../../assets/images/icon-realestate.svg'
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const Integrations = props => {
 

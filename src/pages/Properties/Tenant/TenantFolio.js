@@ -65,7 +65,7 @@ import DisbursementModal from "./DisbursementModal";
 import TenantAdjustRent from "../TenantAdjustRent";
 import RentDiscount from "./RentDiscount";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 function TenantFolio(props) {
   const { propertyId, contactId, id, folioId } = useParams();

@@ -44,7 +44,7 @@ import paginationFactory, {
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import PropertyKey from "pages/Properties/PropertyKey";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const KeyManagement = props => {
     const history = useHistory();

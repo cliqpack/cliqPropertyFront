@@ -30,7 +30,7 @@ import * as Yup from "yup";
 import toastr from "toastr";
 import DepositClearanceModal from "./DepositClearanceModal";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const PortfolioBanking = props => {
   const history = useHistory();

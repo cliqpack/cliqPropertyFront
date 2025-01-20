@@ -45,7 +45,7 @@ import CreateJobReminder from "./CreateJobReminder";
 import ReminderMessageModal from "./ReminderMessageModal";
 
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const AllReminder = props => {
     const history = useHistory();

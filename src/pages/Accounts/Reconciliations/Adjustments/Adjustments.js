@@ -39,7 +39,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 function Adjustments(props) {
   const [state, setState] = useState({

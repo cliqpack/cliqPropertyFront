@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
-document.title = "MyDay";
+document.title = "CliqProperty";
 const JournalsReport = (props) => {
     const { month, year } = useParams();
     function printDiv(divName) {

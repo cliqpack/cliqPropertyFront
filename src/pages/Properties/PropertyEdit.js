@@ -83,7 +83,7 @@ const Properties = props => {
     setInspectionFirstRoutineMonthlyBtn,
   ] = useState(false);
   const [propertyEditState, setPropertyEditState] = useState(true);
-  document.title = "myday";
+  document.title = "CliqProperty";
   const [state, setState] = useState({
     optionManager: [],
     optionType: [],

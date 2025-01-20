@@ -36,7 +36,7 @@ import AddReminderModal from "./AddReminderModal";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import RemoveReminder from "./RemoveReminder";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const PropertyReminders = props => {
     const history = useHistory();

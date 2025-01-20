@@ -33,7 +33,7 @@ import InspectionReportModal from "./InspectionReportModal";
 import WorkingHoursModal from "./WorkingHoursModal";
 import BootstrapTooltip from "common/Tooltip/BootstrapTooltip";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const PortfolioEdit = props => {
   const history = useHistory();

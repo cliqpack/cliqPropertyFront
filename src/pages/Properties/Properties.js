@@ -155,7 +155,7 @@ const Properties = props => {
     inspectionFirstRoutineMonthlyBtn,
     setInspectionFirstRoutineMonthlyBtn,
   ] = useState(false);
-  document.title = "myday";
+  document.title = "CliqProperty";
   const [state2, setState2] = useState({
     location: undefined,
   });

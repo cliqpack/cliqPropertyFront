@@ -55,7 +55,7 @@ const CreatePlan = props => {
   const [selectedName, setSelectedName] = useState();
   const [deleteState, setDeleteState] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  document.title = "myday";
+  document.title = "CliqProperty";
   useEffect(() => {
     props.prmList();
     props.planList();

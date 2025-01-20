@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import moment from "moment";
 import Breadcrumbs from "components/Common/Breadcrumb";
-document.title = "myday";
+document.title = "CliqProperty";
 function ReconciliationsList(props) {
     const [state, setState] = useState({
         activeTab: "1",

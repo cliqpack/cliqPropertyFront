@@ -71,7 +71,7 @@ const ContactsSingle = props => {
   const autoCompletePostalRef = useRef();
   // ------------------------
 
-  document.title = "myday";
+  document.title = "CliqProperty";
 
   const [show, setShow] = useState(false);
   const [forRef, setForRef] = useState(false);

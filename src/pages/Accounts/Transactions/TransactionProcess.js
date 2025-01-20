@@ -32,7 +32,7 @@ import { reconcileBankFile, reconcileBankFileFresh, tenantInfoFresh, tenantInfor
 import AddReceipt from "./AddReceipt";
 import toastr from "toastr";
 
-document.title = "MyDay";
+document.title = "CliqProperty";
 
 function TransactionProcess(props) {
     const history = useHistory();

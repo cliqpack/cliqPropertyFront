@@ -13,7 +13,7 @@ import NewAddonModal from "./NewAddonModal";
 import DatatableTables2 from '../../Tables/DatatableTables2';
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-document.title = "myday";
+document.title = "CliqProperty";
 
 const AddonList = props => {
     const [state, setState] = useState({ newFeesModal: false });

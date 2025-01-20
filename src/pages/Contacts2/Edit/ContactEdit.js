@@ -64,7 +64,7 @@ const ContactEdit = props => {
   const [fullPostalAddress, setFullPostalAddress] = useState([]);
 
 
-  document.title = "myday";
+  document.title = "CliqProperty";
 
 
   useEffect(() => {

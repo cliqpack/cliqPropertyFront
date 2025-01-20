@@ -174,7 +174,7 @@ const Role = props => {
 
 
   //meta title
-  document.title = "myday";
+  document.title = "CliqProperty";
   return (
     <React.Fragment>
       <div className="page-content">
