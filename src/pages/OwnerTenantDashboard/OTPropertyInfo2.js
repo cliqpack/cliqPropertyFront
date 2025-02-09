@@ -37,6 +37,9 @@ const OTPropertyInfo2 = props => {
     length: 0, showDoc: 3
   })
   let language = localStorage.getItem("i18nextLng");
+  const financialHandler = () => {
+    console.log("financialHandler");
+  }
 
   useEffect(() => {
     if (init) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+
 import { Link, useLocation, useHistory, useParams } from "react-router-dom";
 import { ReconciliationData, ApproveReconciliation, ApproveReconciliationFresh, RevokeReconciliation, RevokeReconciliationFresh, Reconcile, ReconcileFresh, ReconciliationDataFresh, ReceiptListFresh, UnreconciledDepositsDataFresh, adjustmentsDataFresh } from "store/actions";
 
@@ -23,23 +24,52 @@ import toastr from "toastr";
 document.title = "Reconciliations";
 
 function Reconciliation(props) {
+    
     const { location } = useHistory();
     const params = useParams();
     const [seen, setSeen] = useState(false);
 
     // const recon = new URLSearchParams(search).get('recon');
+   //done by miraz issue when left side menu is clicked
+    // const [state, setState] = useState({
+    //     dOpen: false,
+    //     showModal: false,
+    //     showRevokeBtn: false,
+    //     month: location?.state?.date.slice(5, 7),
+    //     year: location?.state?.date.slice(0, 4),
+    //     day: location?.state?.date.slice(8, 11),
+    //     date: location?.state?.date,
+    //     id: location?.state?.id,
+    //     activeTab: "1",
+    // })
+    const [state, setState] = useState(() => {
+        const currentDate = moment().format('YYYY-MM-DD');
+        const defaultState = {
+            dOpen: false,
+            showModal: false,
+            showRevokeBtn: false,
+            month: currentDate.slice(5, 7),
+            year: currentDate.slice(0, 4),
+            day: currentDate.slice(8, 10),
+            date: currentDate,
+            id: params?.id || '',
+            activeTab: "1",
+        };
 
-    const [state, setState] = useState({
-        dOpen: false,
-        showModal: false,
-        showRevokeBtn: false,
-        month: location?.state?.date.slice(5, 7),
-        year: location?.state?.date.slice(0, 4),
-        day: location?.state?.date.slice(8, 11),
-        date: location?.state?.date,
-        id: location?.state?.id,
-    })
+        // If location.state exists and has date, use those values instead
+        if (location?.state?.date) {
+            return {
+                ...defaultState,
+                month: location.state.date.slice(5, 7),
+                year: location.state.date.slice(0, 4),
+                day: location.state.date.slice(8, 10),
+                date: location.state.date,
+                id: location.state.id || params?.id || '',
+            };
+        }
 
+        return defaultState;
+    });
     const toggleModal = () => setState(prev => ({ ...prev, showModal: !prev.showModal }));
 
     const approveHandler = () => {

@@ -2962,7 +2962,7 @@ const AddSupplier2 = props => {
                                                       >
                                                         <div className="w-75">
                                                           <CardTitle tag="h5">
-                                                            Tenant Contact
+                                                            Supplier Contact
                                                           </CardTitle>
 
                                                           <div className="mb-3 ms-2 mt-3">

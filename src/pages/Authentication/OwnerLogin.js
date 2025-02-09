@@ -69,8 +69,8 @@ const OwnerLogin = props => {
                 <img src={property} height="100%" width="100%" style={{ objectFit: "contain" }} />
               </div>
             </Col> */}
-        <Col md={6} className="backgroundImageLogin p-0 m-0">
-          <img src={circle} className="cliqCircle" />
+        <Col md={6} className="backgroundImageLogin p-0 m-0 " style={{ backgroundColor: "#5c51c8", alignItems: "center", justifyContent: "center" }}>
+          {/* <img src={circle} className="cliqCircle" /> */}
           <div style={{ padding: "50px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100vh" }}>
             <div>
               <div style={{ width: '80px' }}>
