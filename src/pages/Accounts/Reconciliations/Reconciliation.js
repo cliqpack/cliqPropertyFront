@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { Link, useLocation, useHistory, useParams } from "react-router-dom";
+import { Link, withRouter,useLocation, useHistory, useParams } from "react-router-dom";
 import { ReconciliationData, ApproveReconciliation, ApproveReconciliationFresh, RevokeReconciliation, RevokeReconciliationFresh, Reconcile, ReconcileFresh, ReconciliationDataFresh, ReceiptListFresh, UnreconciledDepositsDataFresh, adjustmentsDataFresh } from "store/actions";
 
 import {
@@ -401,6 +401,6 @@ const mapStateToProps = gstate => {
     };
 };
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
     ReconciliationData, ReconcileFresh, ApproveReconciliation, ApproveReconciliationFresh, RevokeReconciliation, RevokeReconciliationFresh, ReconciliationDataFresh, Reconcile, ReceiptListFresh, UnreconciledDepositsDataFresh, adjustmentsDataFresh
-})(Reconciliation);
+})(Reconciliation));

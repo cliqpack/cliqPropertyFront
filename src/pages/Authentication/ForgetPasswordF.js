@@ -31,7 +31,7 @@ import profile from "../../assets/images/";
 import lightlogo from "../../assets/images/Asset-light.png";
 import toastr from "toastr";
 import logo from "../../assets/images/logo.svg";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/cliqproperty3.png";
 import ForgetPassword from "./ForgetPassword";
 
 const ForgetPassword2 = props => {

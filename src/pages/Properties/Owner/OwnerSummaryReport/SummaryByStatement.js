@@ -89,7 +89,7 @@ const SummaryByStatement = props => {
                                 <img src={mydaylogo} height="60px" width="200px" style={{ margin: '40px' }} />
                                 <div className="p-4">
                                     <p>(w) 9999 3333</p>
-                                    <p>demo@myday.com</p>
+                                    <p>info@cliqproperty.com</p>
                                     <p>Licence: 123123</p>
                                 </div>
                             </div>

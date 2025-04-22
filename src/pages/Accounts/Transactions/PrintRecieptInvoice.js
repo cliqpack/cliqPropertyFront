@@ -115,6 +115,7 @@ const PrintRecieptInvoice = (props) => {
 
                             </h3>
                         </div>
+                         
                         <Row className="ps-5 pb-5">
                             <Col md={6} className="mt-3">
                                 <Row className="py-1">

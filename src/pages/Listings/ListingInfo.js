@@ -566,7 +566,7 @@ const ListingInfo = props => {
         toggle={activityToggle}
         size="lg"
         style={{
-          border: "5px solid #153D58 !important",
+          border: "5px solid #564bc6 !important",
           borderRadius: "10px 10px 0px 0px",
         }}
       >

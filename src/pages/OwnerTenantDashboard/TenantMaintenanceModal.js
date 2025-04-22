@@ -117,7 +117,7 @@ const TenantMaintenanceModal = props => {
       >
         <div className="modal-content">
           {/* <ModalHeader>New Maintenance</ModalHeader> */}
-          <ModalHeader style={{ backgroundColor: "#153D58" }}>
+          <ModalHeader style={{ backgroundColor: "#564bc6" }}>
             {/* <i className="fas fa-wrench font-size-20 me-2 text-info"></i>
           <span className="text-info">New Job</span> */}
 

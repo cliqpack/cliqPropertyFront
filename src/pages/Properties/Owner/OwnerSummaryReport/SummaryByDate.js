@@ -98,7 +98,7 @@ const SummaryByDate = props => {
                                 />
                                 <div className="p-4">
                                     <p>(w) 9999 3333</p>
-                                    <p>demo@myday.com</p>
+                                    <p>info@cliqproperty.com</p>
                                     <p>Licence: 123123</p>
                                 </div>
                             </div>

@@ -46,7 +46,7 @@ function SwitchBtn(props) {
                 uncheckedIcon={<Offsymbol />}
                 checkedIcon={<OnSymbol />}
                 className="me-1 mb-sm-8 mb-2"
-                onColor="#153D58"
+                onColor="#564bc6"
                 onChange={() => props.handler(props.btn)}
                 checked={props.state.btn}
             />

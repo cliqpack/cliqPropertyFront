@@ -245,7 +245,7 @@ const Reg = props => {
                           component="div"
                           className="invalid-feedback"
                         />
-                        <Label for="email" className="form-label">
+                        <Label for="mobile phone" className="form-label">
                           Mobile Phone
                         </Label>
                       </div>

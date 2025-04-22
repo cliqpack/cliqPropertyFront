@@ -596,7 +596,7 @@ const InspectionExitReport = props => {
                                 uncheckedIcon={<Offsymbol />}
                                 checkedIcon={<OnSymbol />}
                                 className="me-1 mb-sm-8 mb-2"
-                                onColor="#153D58"
+                                onColor="#564bc6"
                                 onChange={() => {
                                   setForm1State({
                                     ...form1state,

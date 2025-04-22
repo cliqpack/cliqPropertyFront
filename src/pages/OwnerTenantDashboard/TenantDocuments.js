@@ -21,7 +21,7 @@ import {
 import TenantMessageModal from "./TenantMessageModal";
 import TenantMaintenanceModal from "./TenantMaintenanceModal";
 import logo from "../../assets/images/Asset-light.png";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/cliqproperty3.png";
 
 const TenantDocuments = (props) => {
   const [init, setInit] = useState(true);
@@ -52,7 +52,7 @@ const TenantDocuments = (props) => {
           position: "fixed",
           top: 0,
           left: 0,
-          backgroundColor: "#153D58",
+          backgroundColor: "#564bc6",
           zIndex: 999,
         }}
         className="navbar-brand-box"

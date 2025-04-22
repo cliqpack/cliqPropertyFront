@@ -334,7 +334,7 @@ const MailTemplateModal = props => {
 
                                 <p>{parse(`${props.data?.email_body}`)}</p>
                                 <p>
-                                    www.myday.com <br />
+                                    www.Cliqproperty.com <br />
                                 </p>
                             </div>
 

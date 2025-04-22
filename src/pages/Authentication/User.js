@@ -501,7 +501,7 @@ const AdminRegister = props => {
           </Modal>
           {editFormStatus && (
             <Modal isOpen={togUserState} toggle={tog_user_standard}>
-              <div className="modal-header" style={{ backgroundColor: "#153D58" }}>
+              <div className="modal-header" style={{ backgroundColor: "#564bc6" }}>
 
                 <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
                   <div>

@@ -237,8 +237,14 @@ const AddReceipt = (props) => {
             props.transactionsListFresh();
             if (checkboxState.print_invoice) {
                 const win = window.open(`/printRecieptTransaction/${props.add_tenant_receipt_data?.receipt_id}`, "_blank");
-                win.focus();
+                if (win) {
+                    win.focus();
+                } else {
+                    console.warn("Popup blocked or failed to open.");
+                }
                 // history.push(`/printRecieptTransaction/${props.add_tenant_receipt_data?.receipt_id}`);
+
+                
             }
             props.addTenantReceiptFresh();
             if (props.bank_data_id) {

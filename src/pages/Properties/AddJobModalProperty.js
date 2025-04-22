@@ -316,7 +316,7 @@ const AddJobModalProperty = props => {
       {/* ===============Inspection modal start from here ================*/}
 
       <Modal isOpen={props.jobModal} toggle={props.toggle} scrollable={true} >
-        <ModalHeader style={{ backgroundColor: "#153D58" }}>
+        <ModalHeader style={{ backgroundColor: "#564bc6" }}>
           <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
             <div>
               {/* <i className="fas fa-wrench font-size-20 me-2 text-white"></i> */}

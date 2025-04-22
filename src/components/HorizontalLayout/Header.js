@@ -18,7 +18,7 @@ import megamenuImg from "../../assets/images/megamenu-img.png";
 import logo from "../../assets/images/logo.svg";
 import logoLight from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/cliqproperty3.png";
 
 // import images
 import github from "../../assets/images/brands/github.png";

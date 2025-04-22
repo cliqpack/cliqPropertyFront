@@ -149,7 +149,7 @@ const ListingsModal1 = (props) => {
             {/* ===============Inspection modal start from here ================*/}
 
             <Modal isOpen={inspectionModal} toggle={toggle} >
-                <ModalHeader style={{ backgroundColor: "#153D58" }}>
+                <ModalHeader style={{ backgroundColor: "#564bc6" }}>
 
                     <div style={{ display: "flex", justifyContent: "space-between", width: "460px", marginTop: "10px" }}>
                         <div>

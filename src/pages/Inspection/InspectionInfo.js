@@ -1357,11 +1357,11 @@ const InspectionInfo = props => {
           toggle={activityToggle}
           size="lg"
           style={{
-            border: "5px solid #153D58 !important",
+            border: "5px solid #564bc6 !important",
             borderRadius: "10px 10px 0px 0px",
           }}
         >
-          <ModalHeader style={{ backgroundColor: "#153D58", height: "70px" }}>
+          <ModalHeader style={{ backgroundColor: "#564bc6", height: "70px" }}>
             <div
               className="custom-modal-width"
             >
@@ -1486,7 +1486,7 @@ const InspectionInfo = props => {
         <Modal isOpen={commentmodal} toggle={commentToggle} size="lg">
           <ModalHeader
             //toggle={commentToggle}
-            style={{ backgroundColor: "#153D58", height: "70px" }}
+            style={{ backgroundColor: "#564bc6", height: "70px" }}
           >
             <div
               className="custom-modal-width"
@@ -1541,7 +1541,7 @@ const InspectionInfo = props => {
         {/* ================= documents modal start   ===================*/}
 
         <Modal isOpen={documentModal} toggle={documentToggle} centered>
-          <ModalHeader style={{ backgroundColor: "#153D58", height: "60px" }}>
+          <ModalHeader style={{ backgroundColor: "#564bc6", height: "60px" }}>
             <div
               className="custom-modal-width-document-modal"
             >

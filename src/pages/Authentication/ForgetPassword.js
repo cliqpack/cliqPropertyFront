@@ -37,7 +37,7 @@ class ForgetPasswordPage extends Component {
           <Container style={{ backgroundColor: "#F2F6FA" }}>
             <Row className="justify-content-center gap-0" style={{ height: "600px" }}>
               <Col md={6} className="p-0 m-0">
-                <div style={{ height: "100%", width: "100%", backgroundColor: "#153D58" }}>
+                <div style={{ height: "100%", width: "100%", backgroundColor: "#564bc6" }}>
                   <img src={property} height="100%" width="100%" style={{ objectFit: "contain" }} />
                 </div>
               </Col>

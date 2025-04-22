@@ -205,7 +205,7 @@ const TenantDInfo = props => {
                   <b>Less paid</b>
                 </Col>
                 <Col md={6}>
-                  {"-"}${tenantFolio?.part_paid}
+                  {"  -  "}${tenantFolio?.part_paid}
                 </Col>
               </Row>
 

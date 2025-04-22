@@ -41,7 +41,7 @@ import "react-image-lightbox/style.css";
 import Img from "../../assets/Property/5.jpg";
 
 import logo from "../../assets/images/Asset-light.png";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/cliqproperty3.png";
 
 const TenantDDetailsActivity = props => {
   const [init, setInit] = useState(true);
@@ -100,7 +100,7 @@ const TenantDDetailsActivity = props => {
           position: "fixed",
           top: 0,
           left: 0,
-          backgroundColor: "#153D58",
+          backgroundColor: "#564bc6",
           zIndex: 999,
         }}
         className="navbar-brand-box"

@@ -1632,48 +1632,28 @@ const PropertyInfo = props => {
                                                                     Documents
                                                                     <i className="fas fa-list font-size-12 align-middle me-2"></i>{" "}
                                                                 </Button>
-
-                                                                {moment().isAfter(
-                                                                    tenantInfoData?.folio?.paid_to
-                                                                ) && (
-                                                                        <div className="d-flex justify-content-center rounded align-items-center p-3 bg-danger">
-                                                                            <div className="me-4 text-white d-flex justify-content-center align-items-center">
-                                                                                <i
-                                                                                    className="fas fa-calendar text-light"
-                                                                                    style={{
-                                                                                        fontSize: "20px",
-                                                                                        marginTop: "0px",
-                                                                                    }}
-                                                                                ></i>
-                                                                                <span
-                                                                                    className="text-light"
-                                                                                    style={{
-                                                                                        margin: "10px",
-                                                                                    }}
-                                                                                >
-                                                                                    {
-                                                                                        tenantInfoData?.folio?.rent_arrers
-                                                                                            ?.days
-                                                                                    }{" "}
-                                                                                    Days
-                                                                                </span>
-                                                                            </div>
-                                                                            <div className="d-flex flex-column justify-content-center text-white">
-                                                                                <p className="mb-0 text-light text-start">
-                                                                                    Rent Arrears
-                                                                                </p>
-                                                                                <p className="mb-0 text-light text-start">
-                                                                                    <b>
-                                                                                        $
-                                                                                        {parseFloat(
-                                                                                            tenantInfoData?.folio?.rent_arrers
-                                                                                                ?.rent_due
-                                                                                        ).toFixed(2)}
-                                                                                    </b>
-                                                                                </p>
-                                                                            </div>
+                                                                    
+                                                                {moment().isAfter(tenantInfoData?.folio?.paid_to) && (
+                                                                    <div className="d-flex flex-wrap justify-content-center align-items-center p-3 bg-danger rounded">
+                                                                        {/* Icon and Days */}
+                                                                        <div className="d-flex align-items-center text-white me-md-4 mb-2 mb-md-0">
+                                                                            <i className="fas fa-calendar text-light fs-4"></i>
+                                                                            <span className="text-light ms-2">
+                                                                                {tenantInfoData?.folio?.rent_arrers?.days} Days
+                                                                            </span>
                                                                         </div>
-                                                                    )}
+
+                                                                        {/* Rent Arrears Info */}
+                                                                        <div className="d-flex flex-column text-white text-center text-md-start">
+                                                                            <p className="mb-0 text-light fw-bold">Rent Arrears</p>
+                                                                            <p className="mb-0 text-light fw-bold">
+                                                                                ${parseFloat(tenantInfoData?.folio?.rent_arrers?.rent_due).toFixed(2)}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
+                                                                    
                                                             </div>
                                                         </>
                                                     )}

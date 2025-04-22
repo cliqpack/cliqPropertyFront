@@ -6,7 +6,7 @@ import Header from "components/VerticalLayout/Header";
 import logo from "../../assets/images/Asset-light.png";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/cliqproperty3.png";
 import { Col, Row } from "reactstrap";
 
 const TenantDDetails = () => {
@@ -30,7 +30,7 @@ const TenantDDetails = () => {
           position: "fixed",
           top: 0,
           left: 0,
-          backgroundColor: "#153D58",
+          backgroundColor: "#564bc6",
           zIndex: 999,
         }}
         className="navbar-brand-box"

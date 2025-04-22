@@ -48,7 +48,7 @@ import Loder from "components/Loder/Loder";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 document.title = "CliqProperty";
-
+ 
 function BillsList(props) {
   const [state, setState] = useState({
     activeTab: "1",

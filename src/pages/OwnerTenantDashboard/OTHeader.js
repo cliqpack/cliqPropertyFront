@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useParams, withRouter, Link } from "react-router-dom";
 //import logo from "../../assets/images/Asset-light.png";
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/images/cliqproperty2.png";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/Asset-light.png";
-import logoDark from "../../assets/images/Myday.png";
+import logoDark from "../../assets/images/cliqproperty3.png";
 import logoSamll from "../../assets/images/Asset-light.png";
 import Header from "components/VerticalLayout/Header";
 import SidebarContactOT from "./SidebarContactOT";
@@ -34,32 +34,32 @@ const OTHeader = props => {
         <div className="vertical-menu" >
           <div
             className="navbar-brand-box"
-            style={{ backgroundColor: "#153D58" }}
+            style={{ backgroundColor: "#564bc6" }}
           >
-            <Link to="/owner-tenant-dashboard" className="logo logo-dark">
-              <span className="logo-sm">
+            <Link to="/owner-tenant-dashboard" className="logo logo-light">
+              {/* <span className="logo-sm">
                 <img src={logo} alt="" height="22" />
-              </span>
+              </span> */}
               <span className="logo-lg">
                 <img src={logoDark} alt="" height="30" />
               </span>
             </Link>
 
-            <Link to="/owner-tenant-dashboard" className="logo logo-light">
+            {/* <Link to="/owner-tenant-dashboard" className="logo logo-light">
               <span className="logo-sm">
                 <img src={logo} alt="" height="22" />
               </span>
               <span className="logo-lg">
                 <img src={logoDark} alt="" height="30" />
               </span>
-            </Link>
+            </Link> */}
           </div>
           <div
             style={{
               position: "fixed",
               top: 0,
               left: 0,
-              backgroundColor: "#153D58 !important",
+              backgroundColor: "#564bc6 !important",
               zIndex: 999,
             }}
             className="navbar-brand-box"
@@ -92,7 +92,7 @@ const OTHeader = props => {
             top: 0,
             left: 0,
             //backgroundColor: "#153D58 !important",
-            backgroundColor: "#153D58",
+            backgroundColor: "#564bc6",
             //color: "red",
             zIndex: 999,
             //border: "1px solid red"

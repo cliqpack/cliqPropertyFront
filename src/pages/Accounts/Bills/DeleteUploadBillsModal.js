@@ -4,7 +4,7 @@ import {
     ModalHeader,
     ModalFooter,
 } from "reactstrap";
-
+ 
 const DeleteUploadBillsModal = props => {
 
     const handleSubmit = () => {

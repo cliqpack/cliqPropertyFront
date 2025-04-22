@@ -2367,10 +2367,11 @@ const Properties = props => {
                             // onClick={() => setAddressShow(true)}
                             onClick={handleSave}
                             style={{
-                              backgroundColor: "#A9F4E0",
+                              backgroundColor: "rgb(86 75 198)",
                               border: "none",
                               borderRadius: "4px",
                               padding: "5px 23px",
+                              color: "white",
                             }}
                           >
                             <i className="fas fa-file-alt me-1"></i> Save

@@ -496,7 +496,7 @@ const MailTemplateModalProperty = props => {
                         ${props.data?.message?.from} <br />
 
                                         ${authUser.user.email} <br />
-                                        www.myday.com <br />
+                                        www.cliqproperty.com <br />
                                     </p>
                                 `}
               onReady={editor => {
