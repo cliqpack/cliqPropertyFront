@@ -61,12 +61,12 @@ const NavHome = props => {
       >
         <div className={random['container']}>
           <a className={`${random['navbar-brand']} @@logo_classes`} href="#">
-            {/* <img
+            <img
               className="navbar-brand-dark common"
               src="https://frontend-myday.cliqpack.com/static/media/logo-dark.c7b586a981eaa4d4fb67.png"
               height="35"
               alt="Logo light"
-            />{" "} */}
+            />{" "}
             {/* <img
               className="navbar-brand-light common"
               src="https://frontend-myday.cliqpack.com/static/media/logo-dark.c7b586a981eaa4d4fb67.png"
