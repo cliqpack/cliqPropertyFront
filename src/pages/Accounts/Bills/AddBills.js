@@ -1,50 +1,50 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import Select from "react-select";
 import {
   Card,
   CardBody,
   Col,
-  Row,
   Input,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalHeader,
+  Row,
 } from "reactstrap";
-import { connect } from "react-redux";
-import Select from "react-select";
 
 import {
-  addBills,
-  billAccountsList,
-  billAccountsListFresh,
   accountsList,
-  supplierList,
-  invoiceChartList,
-  billPropertyList,
-  jobList,
+  accountsListFresh,
+  addBills,
   addBillsFresh,
-  tenancyList,
   addBillsWithTenantInvoice,
   addBillsWithTenantInvoiceFresh,
-  accountsListFresh,
-  supplierListFresh,
-  folioListFresh,
-  jobListFresh,
-  invoiceChartListFresh,
-  tenancyListFresh,
   allBillsListDueFresh,
   allBillsListFutureFresh,
   allBillsListPaidFresh,
+  billAccountsList,
+  billAccountsListFresh,
+  billPropertyList,
   editBillDataShow,
+  folioListFresh,
+  invoiceChartList,
+  invoiceChartListFresh,
+  jobList,
+  jobListFresh,
   sellerFolioList,
+  supplierList,
+  supplierListFresh,
+  tenancyList,
+  tenancyListFresh,
 } from "store/actions";
 
 import toastr from "toastr";
 
 import "flatpickr/dist/themes/material_blue.css";
-import Flatpickr from "react-flatpickr";
 import { optionPriority } from "pages/common/common";
+import Flatpickr from "react-flatpickr";
 
 const AddBillsModal = props => {
   const date = moment().format("yyyy-MM-DD");
@@ -62,8 +62,12 @@ const AddBillsModal = props => {
   const [optionGroupSupplier, setOptionGroupSupplier] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState();
   const [optionGroupAccount, setOptionGroupAccount] = useState([]);
-  const [selectedPriority, setSelectedPriority] = useState({ label: "Normal", value: "Normal" });
-  const [optionGroupPriority, setOptionGroupPriority] = useState(optionPriority);
+  const [selectedPriority, setSelectedPriority] = useState({
+    label: "Normal",
+    value: "Normal",
+  });
+  const [optionGroupPriority, setOptionGroupPriority] =
+    useState(optionPriority);
 
   const [selected, setSelected] = useState([]);
 
@@ -843,7 +847,10 @@ const AddBillsModal = props => {
               className="btn btn-info ms-2"
               onClick={handleBillsSave}
               disabled={
-                (state?.property_Id && state?.owner_folio_id) || selectedSellerFolio ? false : true
+                (state?.property_Id && state?.owner_folio_id) ||
+                selectedSellerFolio
+                  ? false
+                  : true
               }
             >
               <i className="fas fa-file-alt me-1"></i> Save

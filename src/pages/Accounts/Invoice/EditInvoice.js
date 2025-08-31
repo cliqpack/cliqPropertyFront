@@ -33,8 +33,6 @@
 // import { invoiceChartList, propertyList, addBillsWithTenantInvoice, addBillsWithTenantInvoiceFresh, supplierList, invoiceTenant, tenancyList,
 //     invoiceDueList,futureInvoiceBillList,paidInvoiceBillList } from "store/actions";
 
-
-
 // const AddInvoiceModal = props => {
 //     const [showModal, setShowModal] = useState(false);
 //     const toggle = () => setShowModal(prev => !prev);
@@ -43,8 +41,6 @@
 
 //     const [state, setState] = useState({ invoiceDate: date, });
 //     console.log(state);
-
-    
 
 //     const toggleIncludeBtn = () => {
 //         supplierToggle();
@@ -317,8 +313,6 @@
 //                 </ModalFooter>
 //             </Modal>
 
-
-
 //         </>
 //     );
 // };
@@ -327,7 +321,6 @@
 //     const {
 //         property_list_data,
 //         property_list_loading,
-
 
 //     } = gstate.property;
 
@@ -370,5 +363,5 @@
 
 // export default withRouter(connect(mapStateToProps, {
 //     invoiceChartList, propertyList, addBillsWithTenantInvoice, addBillsWithTenantInvoiceFresh, supplierList, invoiceTenant, tenancyList,
-//     invoiceDueList,futureInvoiceBillList,paidInvoiceBillList 
+//     invoiceDueList,futureInvoiceBillList,paidInvoiceBillList
 // })(AddInvoiceModal));

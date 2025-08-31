@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -5,50 +6,49 @@ import {
   allBillsListDue,
   allBillsListFuture,
   allBillsListPaid,
-  payBillFromList,
-  payBillFromListFresh,
   deleteBillAction,
   deleteBillActionFresh,
+  payBillFromList,
+  payBillFromListFresh,
 } from "store/actions";
-import classnames from "classnames";
 import DatatableTables2 from "../../Tables/DatatableTables2";
 
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-  CardText,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from "reactstrap";
-import AddBills from "./AddBills";
-import BillsInfoModal from "./BillsInfoModal";
-import { setDefaultLocale } from "react-datepicker";
-import BillsEditModal from "./BillsEditModal";
+import Breadcrumbs from "components/Common/Breadcrumb";
+import Loder from "components/Loder/Loder";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory, {
+  PaginationListStandalone,
+  PaginationProvider,
+  SizePerPageDropdownStandalone,
+} from "react-bootstrap-table2-paginator";
 import ToolkitProvider, {
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
-  SizePerPageDropdownStandalone,
-} from "react-bootstrap-table2-paginator";
+import { setDefaultLocale } from "react-datepicker";
+import {
+  ButtonDropdown,
+  Card,
+  CardBody,
+  CardText,
+  Col,
+  Container,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
+} from "reactstrap";
 import toastr from "toastr";
-import Loder from "components/Loder/Loder";
-import Breadcrumbs from "components/Common/Breadcrumb";
+import AddBills from "./AddBills";
+import BillsEditModal from "./BillsEditModal";
+import BillsInfoModal from "./BillsInfoModal";
 
 document.title = "CliqProperty";
- 
+
 function BillsList(props) {
   const [state, setState] = useState({
     activeTab: "1",
@@ -85,7 +85,7 @@ function BillsList(props) {
       setState({
         ...state,
         activeTab: tab,
-        selected: tab === '1' ? [...state.selected] : [],
+        selected: tab === "1" ? [...state.selected] : [],
       });
     }
 
@@ -137,12 +137,26 @@ function BillsList(props) {
   );
 
   const amountRef = (cell, row) => {
-    let balance = (+row?.owner?.owner_folio?.money_in + (row?.owner?.owner_folio?.opening_balance ? +row?.owner?.owner_folio?.opening_balance : 0)) - (+row?.owner?.owner_folio?.money_out + +row?.owner?.owner_folio?.uncleared)
+    let balance =
+      +row?.owner?.owner_folio?.money_in +
+      (row?.owner?.owner_folio?.opening_balance
+        ? +row?.owner?.owner_folio?.opening_balance
+        : 0) -
+      (+row?.owner?.owner_folio?.money_out +
+        +row?.owner?.owner_folio?.uncleared);
     let amount;
-    if (row.status === 'Paid') {
+    if (row.status === "Paid") {
       amount = <span>${cell}</span>;
     } else {
-      amount = <span className={`badge rounded-pill p-1 ${balance >= cell ? 'bg-success' : 'bg-danger'}`}>${cell}</span>;
+      amount = (
+        <span
+          className={`badge rounded-pill p-1 ${
+            balance >= cell ? "bg-success" : "bg-danger"
+          }`}
+        >
+          ${cell}
+        </span>
+      );
     }
     return amount;
   };
@@ -250,22 +264,25 @@ function BillsList(props) {
 
   const handleSelect = (isSelect, rows, e) => {
     if (rows) {
-      setData(isSelect)
+      setData(isSelect);
       setActionArray(prevArray => [...prevArray, isSelect]);
-      setState({ ...state, selected: [...state.selected, isSelect.id] })
+      setState({ ...state, selected: [...state.selected, isSelect.id] });
     } else {
       setData({});
       setActionArray(cur => cur.filter(data => data.id !== isSelect.id));
-      setState({ ...state, selected: state.selected.filter(data => data !== isSelect.id) })
+      setState({
+        ...state,
+        selected: state.selected.filter(data => data !== isSelect.id),
+      });
     }
-  }
+  };
   const handleSelectAll = (isSelect, rows, e) => {
     if (isSelect) {
-      setActionArray(rows)
-      setState({ ...state, selected: rows.map(item => item.id) })
+      setActionArray(rows);
+      setState({ ...state, selected: rows.map(item => item.id) });
     } else {
-      setActionArray([])
-      setState({ ...state, selected: [] })
+      setActionArray([]);
+      setState({ ...state, selected: [] });
     }
   };
 
@@ -274,7 +291,7 @@ function BillsList(props) {
     mode: "checkbox",
     onSelect: handleSelect,
     onSelectAll: handleSelectAll,
-    selected: [...state.selected]
+    selected: [...state.selected],
   };
   const handleDelete = () => {
     props.deleteBillAction(node.selectionContext.selected);
@@ -290,35 +307,35 @@ function BillsList(props) {
 
   useEffect(() => {
     if (!seen) {
-      props.allBillsListDue()
+      props.allBillsListDue();
     }
-    setSeen(true)
-  }, [seen])
+    setSeen(true);
+  }, [seen]);
   useEffect(() => {
     if (props.pay_bill_list_loading === "Success") {
-      toastr.success("Success")
-      props.payBillFromListFresh()
-      props.allBillsListDue()
-      props.allBillsListFuture()
-      props.allBillsListPaid()
-      setState({ ...state, loader: false, selected: [] })
-      setActionArray([])
+      toastr.success("Success");
+      props.payBillFromListFresh();
+      props.allBillsListDue();
+      props.allBillsListFuture();
+      props.allBillsListPaid();
+      setState({ ...state, loader: false, selected: [] });
+      setActionArray([]);
     }
-  }, [props.pay_bill_list_loading, props.bills_list_loading])
+  }, [props.pay_bill_list_loading, props.bills_list_loading]);
   useEffect(() => {
     if (props.delete_bill_action_loading === "Success") {
-      toastr.error("Deleted")
-      props.deleteBillActionFresh()
-      props.allBillsListDue()
-      setState({ ...state, loader: false, selected: [] })
-      setActionArray([])
+      toastr.error("Deleted");
+      props.deleteBillActionFresh();
+      props.allBillsListDue();
+      setState({ ...state, loader: false, selected: [] });
+      setActionArray([]);
     }
-  }, [props.delete_bill_action_loading])
+  }, [props.delete_bill_action_loading]);
   useEffect(() => {
-    if (props.delete_bill_loading === 'Success') {
-      endLoader()
+    if (props.delete_bill_loading === "Success") {
+      endLoader();
     }
-  }, [props.delete_bill_loading])
+  }, [props.delete_bill_loading]);
 
   return (
     <div className="page-content">
@@ -527,7 +544,10 @@ function BillsList(props) {
                                       <Row>
                                         <Col xl="12">
                                           <div className="table-responsive">
-                                            <div className="d-flex justify-content-end search-box" style={{ marginTop: "50px" }}>
+                                            <div
+                                              className="d-flex justify-content-end search-box"
+                                              style={{ marginTop: "50px" }}
+                                            >
                                               <SearchBar
                                                 {...toolkitProps.searchProps}
                                               />
@@ -585,7 +605,7 @@ function BillsList(props) {
                               <DatatableTables2
                                 products={props.bills_list_future_data}
                                 columnData={activeData}
-                              // url={url}
+                                // url={url}
                               />
                             ) : null}
                           </CardText>
@@ -600,7 +620,7 @@ function BillsList(props) {
                               <DatatableTables2
                                 products={props.bills_list_paid_data}
                                 columnData={activeData}
-                              // url={url}
+                                // url={url}
                               />
                             ) : null}
                           </CardText>
@@ -614,8 +634,7 @@ function BillsList(props) {
           </Col>
         </Row>
       </Container>
-      {
-        showModal &&
+      {showModal && (
         <BillsInfoModal
           showModal={showModal}
           setEditModal={setShowModal}
@@ -628,9 +647,8 @@ function BillsList(props) {
           ownerId={null}
           startLoader={startLoader}
         />
-      }
-      {
-        billEditModal &&
+      )}
+      {billEditModal && (
         <BillsEditModal
           data={data}
           showModal={billEditModal}
@@ -641,7 +659,7 @@ function BillsList(props) {
           startLoader={startLoader}
           endLoader={endLoader}
         />
-      }
+      )}
       <Loder status={state.loader} />
     </div>
   );

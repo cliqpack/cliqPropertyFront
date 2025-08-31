@@ -1,70 +1,55 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Alert,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-  CardText,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Label,
-  Input,
-  Button,
-  CardHeader,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  FormText,
-} from "reactstrap";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Select from "react-select";
+import {
+  Card,
+  CardBody,
+  Col,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+} from "reactstrap";
 
 import {
-  addBills,
-  billAccountsList,
-  billAccountsListFresh,
   accountsList,
-  supplierList,
-  invoiceChartList,
-  billPropertyList,
-  jobList,
+  accountsListFresh,
+  addBills,
   addBillsFresh,
-  tenancyList,
   addBillsWithTenantInvoice,
   addBillsWithTenantInvoiceFresh,
-  accountsListFresh,
-  supplierListFresh,
-  folioListFresh,
-  jobListFresh,
-  invoiceChartListFresh,
-  tenancyListFresh,
   allBillsListDue,
   allBillsListDueFresh,
+  allBillsListFuture,
   allBillsListFutureFresh,
+  allBillsListPaid,
   allBillsListPaidFresh,
+  billAccountsList,
+  billAccountsListFresh,
+  billPropertyList,
   editBillDataShow,
   editBills,
   editBillsFresh,
+  folioListFresh,
+  invoiceChartList,
+  invoiceChartListFresh,
+  jobList,
+  jobListFresh,
+  supplierList,
+  supplierListFresh,
+  tenancyList,
+  tenancyListFresh,
   uploadBillsListFresh,
-  allBillsListFuture,
-  allBillsListPaid,
 } from "store/actions";
 
 import toastr from "toastr";
 
 import "flatpickr/dist/themes/material_blue.css";
-import Flatpickr from "react-flatpickr";
 import { optionPriority } from "pages/common/common";
+import Flatpickr from "react-flatpickr";
 
 const BillsEditModal = props => {
   const [init, setInit] = useState(true);
@@ -261,11 +246,13 @@ const BillsEditModal = props => {
       });
 
       setSelectedSelectJobOrReminder({
-        label: `Job #${props.data?.maintenance?.id ? props.data?.maintenance?.id : ""
-          }-${props.data?.maintenance?.summary
+        label: `Job #${
+          props.data?.maintenance?.id ? props.data?.maintenance?.id : ""
+        }-${
+          props.data?.maintenance?.summary
             ? props.data?.maintenance?.summary
             : ""
-          }`,
+        }`,
         value: props.data?.maintenance?.id,
       });
 
@@ -286,9 +273,8 @@ const BillsEditModal = props => {
       props.allBillsListFuture();
       props.allBillsListPaid();
       reduxDataFresh();
-      if (props.text == 'supplier') {
-
-        props.supplierBillApiCall()
+      if (props.text == "supplier") {
+        props.supplierBillApiCall();
       }
       props.setShowModal(false);
     } else if (props.edit_bills_loading === "Failed") {
@@ -303,7 +289,7 @@ const BillsEditModal = props => {
       }
       setJobSelect(false);
     }
-  }, [state.property_Id, state.supplier])
+  }, [state.property_Id, state.supplier]);
   useEffect(() => {
     let optionJob;
     if (props.job_list_data?.data) {
@@ -313,7 +299,7 @@ const BillsEditModal = props => {
       }));
       setOptionGroupSelectJobOrReminder(optionJob);
     }
-  }, [props.job_list_data?.data])
+  }, [props.job_list_data?.data]);
   useEffect(() => {
     let optionFolio;
     if (props.bill_property_list_data?.data) {
@@ -324,7 +310,7 @@ const BillsEditModal = props => {
       }));
       setOptionGroupPropertyFolio(optionFolio);
     }
-  }, [props.bill_property_list_data?.data])
+  }, [props.bill_property_list_data?.data]);
   useEffect(() => {
     let optionSupplier;
     if (props.supplier_list_data?.data) {
@@ -341,7 +327,7 @@ const BillsEditModal = props => {
       }));
       setOptionGroupSupplier(optionSupplier);
     }
-  }, [props.supplier_list_data?.data])
+  }, [props.supplier_list_data?.data]);
   useEffect(() => {
     let optionAccount;
     if (props.bill_accounts_list_data?.data) {
@@ -462,7 +448,7 @@ const BillsEditModal = props => {
                           classNamePrefix="select2-selection"
                           placeholder="Priority"
                           id="customRange4"
-                        // disabled={props.data ? true : false}
+                          // disabled={props.data ? true : false}
                         />
                       </Col>
                     </Row>

@@ -2,39 +2,23 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { Row, Col } from "reactstrap";
-
-import { Link } from "react-router-dom";
 
 // Reactstrap
-import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
-import megamenuImg from "../../assets/images/megamenu-img.png";
-
 // import images
-import github from "../../assets/images/brands/github.png";
-import bitbucket from "../../assets/images/brands/bitbucket.png";
-import dribbble from "../../assets/images/brands/dribbble.png";
-import dropbox from "../../assets/images/brands/dropbox.png";
-import mail_chimp from "../../assets/images/brands/mail_chimp.png";
-import slack from "../../assets/images/brands/slack.png";
 
 // import logo from "../../assets/images/logo.svg";
-import logo from "../../assets/images/Myday.png";
-import logoLightSvg from "../../assets/images/Asset-light.png";
-import RightSidebar from "components/CommonForBoth/RightSidebar";
 
 //i18n
 import { withTranslation } from "react-i18next";
 
 // Redux Store
-import { toggleRightSidebar } from "../../store/actions";
 import Notification2 from "components/CommonForBoth/TopbarDropdown/Notification2";
+import { toggleRightSidebar } from "../../store/actions";
 
 class Header extends Component {
   constructor(props) {
@@ -98,9 +82,9 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
-        <header id="page-topbar" >
-          <div className="navbar-header" >
-            <div className="d-flex" >
+        <header id="page-topbar">
+          <div className="navbar-header">
+            <div className="d-flex">
               {/* <div
                 className="navbar-brand-box d-lg-none d-md-block"
                 style={{ backgroundColor: "#159B9C" }}
@@ -118,7 +102,6 @@ class Header extends Component {
                 </Link>
               </div> */}
 
-
               {/* ============= toggle nav  menu ===============*/}
 
               <div>
@@ -132,7 +115,6 @@ class Header extends Component {
                   <i className="fa fa-fw fa-bars"></i>
                 </button>
               </div>
-
 
               {/* <div>
                 <form className="app-search d-none d-lg-block">
@@ -304,7 +286,7 @@ class Header extends Component {
                 <ProfileMenu />
               </div> */}
             </div>
-            <div className="d-flex">
+            {/* <div className="d-flex">
               <form className="app-search d-flex">
                 {/* <div className="position-relative" >
 
@@ -318,20 +300,32 @@ class Header extends Component {
                     <span className="bx bx-search-alt" ></span>
                   </div>
                 </div> */}
-                <label htmlFor="header-search" >
-                  <span className="visually-hidden" >Search</span>
-                </label>
-                <input
+            {/* <label htmlFor="header-search">
+                  <span className="visually-hidden">Search</span>
+                </label> */}
+            {/* <input
                   type="text"
                   id="header-search"
                   placeholder="Search"
                   name="s"
                   // style={{ width: "300px", textAlign: "center", backgroundColor: "#3A607A", borderRadius: "20px 0px 0px 20px", padding: "8px", border: "none", borderRight: "0px", color: "#FFFFFF", }}
                   className="custom_search_bar_input_field"
-                />
-                <button type="submit" style={{ textAlign: "center", backgroundColor: "#6E62E5", borderRadius: "0px 20px 20px 0px", padding: "8px", border: "none", color: "#FFFFFF" }}><i className="bx bx-search-alt font-size-20" ></i></button>
+                /> */}
+            {/* <button
+                  type="submit"
+                  style={{
+                    textAlign: "center",
+                    backgroundColor: "#6E62E5",
+                    borderRadius: "0px 20px 20px 0px",
+                    padding: "8px",
+                    border: "none",
+                    color: "#FFFFFF",
+                  }}
+                >
+                  <i className="bx bx-search-alt font-size-20"></i>
+                </button>
               </form>
-            </div>
+            </div> */}
 
             <div className="d-flex">
               {/* <div className="dropdown d-inline-block d-lg-none ms-2">

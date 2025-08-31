@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { connect } from "react-redux";
 import {
   Link,
   useHistory,
@@ -6,138 +7,114 @@ import {
   useParams,
   withRouter,
 } from "react-router-dom";
-import { connect } from "react-redux";
 import { TagsInput } from "react-tag-input-component";
 import {
-  Card,
   Alert,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-  CardText,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Label,
-  Input,
   Button,
-  CardHeader,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  FormText,
-  Table,
+  Card,
+  CardBody,
   Carousel,
   CarouselControl,
   CarouselItem,
-  CarouselIndicators,
+  Col,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  FormGroup,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Progress,
+  Row,
+  Table,
 } from "reactstrap";
-import { Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-import classnames from "classnames";
 // import DummyImg from '../../../assets/images/dummy-image-square.jpg';
-import DummyImg from "../../assets/images/dummy-image-square.jpg";
-import toastr from "toastr";
-import moment from "moment";
-import MailTemplateModal from "pages/Jobs/Activity/MailTemplateModal";
-import {
-  addProPic,
-  getPropertyTenantInfo,
-  propertyOwnerAddFresh,
-  contactList,
-  propertyUpdateFresh,
-  showContactFresh,
-  JobsListById,
-  propertyList,
-  JobsLabel,
-  getQuote,
-  addQuoteJobApprove,
-  editJobInfo,
-  editJobInfoFresh,
-  JobsListByIdFresh,
-  SupplierList,
-  jobInfoImageAdd,
-  jobInfoImageAddFresh,
-  jobApprove,
-  addSupplierFromJob,
-  addSupplierFromJobFresh,
-  jobUnassigned,
-  jobStatusFresh,
-  getQuoteFresh,
-  jobUnapprove,
-  jobUnquote,
-  jobOwnerAssigned,
-  jobTenantAssigned,
-  jobCompleted,
-  getQuoteInit,
-  jobReopen,
-  jobFinished,
-  deleteJob,
-  JobsList,
-  deleteJobFresh,
-  getMessageJob,
-  addComment,
-  storeInspectionTaskJobDocument,
-  storeInspectionTaskJobDocumentFresh,
-  AllJobDocument,
-  addCommentFresh,
-  editQuoteJob,
-  editQuoteFresh,
-  deleteQuoteJob,
-  deleteQuoteJobFresh,
-  uploadJobFileFresh,
-  jobAllActivity, jobImageDelete, jobImageDeleteFresh
-
-} from "../../store/actions";
-import {
-  addProperty,
-  getUser,
-  getPropertyInfo,
-  getPropertyKeyFresh,
-  getPropertyInfoFresh,
-  updatePicture,
-  getUserInfo,
-  addPropertyMember,
-  updateDoc,
-  lebelInsert2,
-} from "../../store/Properties/actions";
-import { propertyTenantAddFresh } from "../../store/Properties/tenantActions";
-import QuotesModal from "./QuotesModal";
-import QuotesDownModal from "./QuotesDownModal";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import moment from "moment";
 import Comment from "pages/Activity/Comment";
-import MailTemplateModalMaintenance from "./Activity/MailTemplateModalMaintenance";
 import ShowActivityData from "pages/Properties/Activity/ShowActivityData";
-import Lightbox from "yet-another-react-lightbox";
+import toastr from "toastr";
 import "yet-another-react-lightbox/styles.css";
-import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import DummyImg from "../../assets/images/dummy-image-square.jpg";
+import {
+  AllJobDocument,
+  JobsLabel,
+  JobsList,
+  JobsListById,
+  JobsListByIdFresh,
+  SupplierList,
+  addComment,
+  addCommentFresh,
+  addProPic,
+  addQuoteJobApprove,
+  addSupplierFromJob,
+  addSupplierFromJobFresh,
+  contactList,
+  deleteJob,
+  deleteJobFresh,
+  deleteQuoteJob,
+  deleteQuoteJobFresh,
+  editJobInfo,
+  editJobInfoFresh,
+  editQuoteFresh,
+  editQuoteJob,
+  getMessageJob,
+  getPropertyTenantInfo,
+  getQuote,
+  getQuoteFresh,
+  getQuoteInit,
+  jobAllActivity,
+  jobApprove,
+  jobCompleted,
+  jobFinished,
+  jobImageDelete,
+  jobImageDeleteFresh,
+  jobInfoImageAdd,
+  jobInfoImageAddFresh,
+  jobOwnerAssigned,
+  jobReopen,
+  jobStatusFresh,
+  jobTenantAssigned,
+  jobUnapprove,
+  jobUnassigned,
+  jobUnquote,
+  propertyList,
+  propertyOwnerAddFresh,
+  propertyUpdateFresh,
+  showContactFresh,
+  storeInspectionTaskJobDocument,
+  storeInspectionTaskJobDocumentFresh,
+  uploadJobFileFresh,
+} from "../../store/actions";
+import {
+  addPropertyMember,
+  getPropertyInfo,
+  getPropertyInfoFresh,
+  getPropertyKeyFresh,
+  getUser,
+  getUserInfo,
+  lebelInsert2,
+  updateDoc,
+  updatePicture,
+} from "../../store/Properties/actions";
+import { propertyTenantAddFresh } from "../../store/Properties/tenantActions";
+import QuotesDownModal from "./QuotesDownModal";
+import QuotesModal from "./QuotesModal";
 //import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import Video from "yet-another-react-lightbox/plugins/video";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/captions.css";
 
 import "flatpickr/dist/themes/material_blue.css";
-import Flatpickr from "react-flatpickr";
-import MessagesModal from "./MessagesModal/MessagesModal";
-import Select from "react-select";
-import PropertyDocs from "pages/Properties/PropertyDocs";
 import ImageModal from "pages/Image/ImageModal";
-import { withTranslation, useTranslation } from "react-i18next";
+import PropertyDocs from "pages/Properties/PropertyDocs";
+import Flatpickr from "react-flatpickr";
+import { useTranslation } from "react-i18next";
+import Select from "react-select";
+import MessagesModal from "./MessagesModal/MessagesModal";
 
 import CommentData from "pages/Activity/CommentData";
 //import {  } from 'react-router-dom';
@@ -148,14 +125,14 @@ document.title = "CliqProperty";
 
 const JobInfo = props => {
   const { t } = useTranslation();
-  const localizeItem = text => `${t(text)}`
+  const localizeItem = text => `${t(text)}`;
   //const navigate = usenavigate();
 
   const { id } = useParams();
   const [file, setFile] = useState(DummyImg);
 
   const [userState, setUserState] = useState(true);
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
   const [jobs, setJobs] = useState({});
   const [jobsImageState, setJobsImageState] = useState(true);
@@ -212,30 +189,26 @@ const JobInfo = props => {
     setMsgModal(prev => !prev);
   };
 
-
   // activity modal declare
   const [activitymodal, setActivityModal] = useState(false);
   const activityToggle = () => {
-
     if (activitymodal == false) {
-      console.log('1');
+      console.log("1");
       // props.PropertyAllActivity(property_id);
-      setActivityModal(prev => !prev)
+      setActivityModal(prev => !prev);
     } else {
-      console.log('2');
+      console.log("2");
 
-      setActivityModal(prev => !prev)
+      setActivityModal(prev => !prev);
     }
-  }
+  };
 
   // comment modal declare
   const [commentmodal, setCommentModal] = useState(false);
   const commentToggle = () => setCommentModal(!commentmodal);
 
-
   const [documentModal, setDocumentModal] = useState(false);
   const documentToggle = () => setDocumentModal(prev => !prev);
-
 
   // Items array length
   const itemLength = items.length - 1;
@@ -286,7 +259,7 @@ const JobInfo = props => {
       null,
       jobData.id
     );
-    setShow(true)
+    setShow(true);
   };
   const handleDocument = async e => {
     if (
@@ -320,11 +293,11 @@ const JobInfo = props => {
       props.jobListById_show_data?.data?.access == null
         ? [{ label: "Agent", value: "Agent" }]
         : [
-          { label: "None", value: "None" },
-          { label: "Agent", value: "Agent" },
-          { label: "Owner", value: "Owner" },
-          { label: "Tenant", value: "Tenant" },
-        ],
+            { label: "None", value: "None" },
+            { label: "Agent", value: "Agent" },
+            { label: "Owner", value: "Owner" },
+            { label: "Tenant", value: "Tenant" },
+          ],
   });
   const [msgShow, setMsgShow] = useState(false);
   const [message, setMessage] = useState("");
@@ -354,8 +327,7 @@ const JobInfo = props => {
   var authUserData = JSON.parse(localStorage.getItem("authUser"));
   const managerNameData = authUserData?.user?.first_name;
 
-  const tenantName = `${props.jobListById_show_data?.data?.properties[0]?.tenant[0]
-    ?.first_name} ${props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.last_name}`
+  const tenantName = `${props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.first_name} ${props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.last_name}`;
 
   const tenantId =
     props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.id;
@@ -399,7 +371,8 @@ const JobInfo = props => {
   if (
     props.jobListById_show_data?.data?.properties[0]?.owner_id !== undefined
   ) {
-    ownerId = props.jobListById_show_data?.data?.properties[0]?.owner[0]?.contact_id;
+    ownerId =
+      props.jobListById_show_data?.data?.properties[0]?.owner[0]?.contact_id;
   }
 
   const callJobAllActivity = () => props.jobAllActivity(id);
@@ -477,19 +450,16 @@ const JobInfo = props => {
   };
 
   useEffect(() => {
-    if (props.job_image_delete_loading == 'Success') {
-      toastr.success('Success')
+    if (props.job_image_delete_loading == "Success") {
+      toastr.success("Success");
       props.jobImageDeleteFresh();
       props.JobsListById(id);
-
     }
-    if (props.job_image_delete_loading == 'Failed') {
-      toastr.error('Failed')
-      props.jobImageDeleteFresh()
+    if (props.job_image_delete_loading == "Failed") {
+      toastr.error("Failed");
+      props.jobImageDeleteFresh();
     }
-  }, [props.job_image_delete_loading])
-
-
+  }, [props.job_image_delete_loading]);
 
   useEffect(() => {
     let option;
@@ -560,9 +530,9 @@ const JobInfo = props => {
           props.jobListById_show_data?.data?.access == null
             ? { label: "Agent", value: "Agent" }
             : {
-              label: props.jobListById_show_data?.data?.access,
-              value: props.jobListById_show_data?.data?.access,
-            },
+                label: props.jobListById_show_data?.data?.access,
+                value: props.jobListById_show_data?.data?.access,
+              },
         selectedManager: {
           label: `${props.jobListById_show_data?.data?.manager?.full_name}`,
           value: props.jobListById_show_data?.data?.manager?.id,
@@ -575,9 +545,9 @@ const JobInfo = props => {
           props.jobListById_show_data?.data?.properties[0]?.tenant?.length == 0
             ? [{ label: "None", value: null }]
             : [
-              { label: tenantName, value: tenantId },
-              { label: "None", value: null },
-            ],
+                { label: tenantName, value: tenantId },
+                { label: "None", value: null },
+              ],
       }));
     }
     if (props.user_list_loading == false) {
@@ -690,13 +660,13 @@ const JobInfo = props => {
       toastr.success("Uploaded successfully");
       props.storeInspectionTaskJobDocumentFresh();
       props.AllJobDocument(id);
-      setShow(false)
+      setShow(false);
     }
     if (props.store_inspection_task_job_document_loading === "Failed") {
       toastr.error("Failed");
       props.storeInspectionTaskJobDocumentFresh();
       // props.AllJobDocument(id);
-      setShow(false)
+      setShow(false);
     }
     // if (props.add_message_data_loading === "Success") {
     //   toastr.success("Comment Added Successfully");
@@ -730,8 +700,6 @@ const JobInfo = props => {
     props.user_list_data,
   ]);
 
-
-
   const activityData = props.job_all_activity?.data?.data;
   const msgData = props.job_message_data?.data?.data;
 
@@ -743,8 +711,6 @@ const JobInfo = props => {
       </option>
     ));
   }
-
-
 
   const jobDeleteHandler = e => {
     e.preventDefault();
@@ -819,7 +785,6 @@ const JobInfo = props => {
   };
 
   const showSlider = () => {
-
     setShowSliderState(prev => ({
       ...prev,
       isOpen: !prev.isOpen,
@@ -833,23 +798,28 @@ const JobInfo = props => {
 
   const slides = items
     ? items.map((item, key) => {
-      return (
-        <CarouselItem
-          onExited={() => setAnimating(false)}
-          onExiting={() => setAnimating(true)}
-          key={key}
-        >
-          <div onClick={showSlider}>
-            <img
-              src={item.src}
-              className="d-block w-100"
-              alt={item.altText}
-              style={{ height: "450px", width: "100%", objectFit: "cover", width: "400px" }}
-            />
-          </div>
-        </CarouselItem>
-      );
-    })
+        return (
+          <CarouselItem
+            onExited={() => setAnimating(false)}
+            onExiting={() => setAnimating(true)}
+            key={key}
+          >
+            <div onClick={showSlider}>
+              <img
+                src={item.src}
+                className="d-block w-100"
+                alt={item.altText}
+                style={{
+                  height: "450px",
+                  width: "100%",
+                  objectFit: "cover",
+                  width: "400px",
+                }}
+              />
+            </div>
+          </CarouselItem>
+        );
+      })
     : [];
 
   const toggle = tab => {
@@ -859,9 +829,9 @@ const JobInfo = props => {
         activeTab: tab,
       });
     }
-    if (tab == '2') {
+    if (tab == "2") {
       props.AllJobDocument(id);
-      documentToggle()
+      documentToggle();
     }
   };
   // ============for new image viewer===============
@@ -888,7 +858,7 @@ const JobInfo = props => {
 
   const handlejobDoc = e => {
     e.preventDefault();
-    setShow(true)
+    setShow(true);
     props.storeInspectionTaskJobDocument(
       e.dataTransfer.files,
       jobData.property_id,
@@ -940,35 +910,38 @@ const JobInfo = props => {
 
   const handleSelectSupplier = e => {
     props.addSupplierFromJob(e.value, id);
-  }
+  };
 
   const navigateToWorkOrder = () => {
-    history.push("/tasks")
-  }
+    history.push("/tasks");
+  };
 
   return (
     <React.Fragment>
       <div
         className="page-content"
-      // onDragOver={drag}
-      // onDragLeave={dragend}
-      // onDrop={dropFile}
+        // onDragOver={drag}
+        // onDragLeave={dragend}
+        // onDrop={dropFile}
       >
         {/* <Breadcrumbs title="Jobs info" breadcrumbItem="Jobs" /> */}
-        <h4 className="ms-2 text-primary">{localizeItem('Jobs')} {localizeItem('Info')}</h4>
+        <h4 className="ms-2 text-primary">
+          {localizeItem("Jobs")} {localizeItem("Info")}
+        </h4>
         <Row>
           <Col lg={2}>
             <Card style={{ borderRadius: "15px" }}>
               <CardBody style={{ padding: "20px" }}>
-
                 <div>
                   <h5 className="text-primary py-1">
-                    {localizeItem('Job')}{" "}
-                    {`000${jobData?.id ? jobData?.id : ""} [${jobData?.status ? jobData?.status : ""
-                      }]-${props.jobListById_show_data?.data?.summary
+                    {localizeItem("Job")}{" "}
+                    {`000${jobData?.id ? jobData?.id : ""} [${
+                      jobData?.status ? jobData?.status : ""
+                    }]-${
+                      props.jobListById_show_data?.data?.summary
                         ? props.jobListById_show_data?.data?.summary
                         : ""
-                      }`}
+                    }`}
                   </h5>
                   <div
                     className="mb-2"
@@ -981,17 +954,24 @@ const JobInfo = props => {
                     <div className="w-100">
                       <Alert color="info">
                         <Row className="align-items-center flex-column">
-                          <Col md={12} className="d-flex justify-content-end align-items-center">
+                          <Col
+                            md={12}
+                            className="d-flex justify-content-end align-items-center"
+                          >
                             <i className="fas fa-check-circle font-size-16 me-2"></i>
-                            {localizeItem('Closed')} {localizeItem('on')} {jobData?.completed}
+                            {localizeItem("Closed")} {localizeItem("on")}{" "}
+                            {jobData?.completed}
                           </Col>
-                          <Col md={12} className="d-flex justify-content-start mt-2">
+                          <Col
+                            md={12}
+                            className="d-flex justify-content-start mt-2"
+                          >
                             <Button
                               color="info"
                               onClick={() => props.jobReopen(id)}
                             >
                               <i className="fas fa-undo me-2"></i>
-                              {localizeItem('Reopen')}
+                              {localizeItem("Reopen")}
                             </Button>
                           </Col>
                         </Row>
@@ -999,64 +979,60 @@ const JobInfo = props => {
                     </div>
                   )}
                   <Row className="mt-3">
-                    <Col
-                      md={12}
-                      className="d-flex flex-column gap-2"
-                    >
-
+                    <Col md={12} className="d-flex flex-column gap-2">
                       <Button
                         className="btn w-100 d-flex justify-content-between"
                         color="labelColor"
                         onClick={toggleMsgModal}
                       >
-                        {localizeItem('Message')}
+                        {localizeItem("Message")}
                         <i className="fas fa-angle-down ms-1" />
                       </Button>
                       {jobData?.status == "Reported" ||
-                        jobData?.status == "Quoted" ? (
+                      jobData?.status == "Quoted" ? (
                         <Button
                           className="btn w-100 d-flex justify-content-between"
                           color="labelColor"
                           onClick={() => props.jobApprove(id)}
                         >
-                          {localizeItem('Approve')}  <i className="fas fa-thumbs-up me-1" />
+                          {localizeItem("Approve")}{" "}
+                          <i className="fas fa-thumbs-up me-1" />
                         </Button>
-
                       ) : (
                         ""
                       )}
 
                       {jobData?.status == "Approved" ? (
-                        <div className="w-100 d-flex align-items-center my-1" >
-
-                          <div className="w-100" style={{ backgroundColor: "red !important" }}>
+                        <div className="w-100 d-flex align-items-center my-1">
+                          <div
+                            className="w-100"
+                            style={{ backgroundColor: "red !important" }}
+                          >
                             <Select
                               value={state.selectedSupplier}
                               onChange={handleSelectSupplier}
                               options={state.optionSupplier}
                               classNamePrefix="select2-selection"
-                              placeholder='Assign a supplier...'
-                            // theme={(theme) => ({
-                            //   ...theme,
-                            //   borderRadius: 6,
-                            //   backgroundColor: "red",
-                            //   colors: {
-                            //     ...theme.colors,
-                            //     primary25: 'red',
-                            //     primary: 'blue',
-                            //     secondary: "blue"
-                            //   },
+                              placeholder="Assign a supplier..."
+                              // theme={(theme) => ({
+                              //   ...theme,
+                              //   borderRadius: 6,
+                              //   backgroundColor: "red",
+                              //   colors: {
+                              //     ...theme.colors,
+                              //     primary25: 'red',
+                              //     primary: 'blue',
+                              //     secondary: "blue"
+                              //   },
 
-                            //   backgroundColors: {
-                            //     ...theme.colors,
-                            //     primary25: 'red',
-                            //     primary: 'blue',
-                            //     secondary: "blue"
-                            //   },
+                              //   backgroundColors: {
+                              //     ...theme.colors,
+                              //     primary25: 'red',
+                              //     primary: 'blue',
+                              //     secondary: "blue"
+                              //   },
 
-                            // })}
-
-
+                              // })}
                             />
                           </div>
                         </div>
@@ -1071,25 +1047,27 @@ const JobInfo = props => {
                             props.getQuoteInit(id);
                           }}
                         >
-
-                          {localizeItem('Quotes')} <i className="fas fa-wrench font-size-12 align-mpIddle me-1"></i>
+                          {localizeItem("Quotes")}{" "}
+                          <i className="fas fa-wrench font-size-12 align-mpIddle me-1"></i>
                         </Button>
                       ) : null}
-                      {inspectionModal && <QuotesModal
-                        toggle={quotesToggle}
-                        inspectionModal={inspectionModal}
-                      />}
+                      {inspectionModal && (
+                        <QuotesModal
+                          toggle={quotesToggle}
+                          inspectionModal={inspectionModal}
+                        />
+                      )}
 
                       {jobData?.status == "Assigned" ||
-                        jobData?.status == "Finished" ? (
+                      jobData?.status == "Finished" ? (
                         <Button
                           type="button"
                           color="labelColor"
                           className="btn w-100 d-flex justify-content-between"
                           onClick={() => props.jobCompleted(id)}
                         >
-
-                          {localizeItem('Complete')} <i className="fas fa-check-circle me-1"></i>
+                          {localizeItem("Complete")}{" "}
+                          <i className="fas fa-check-circle me-1"></i>
                         </Button>
                       ) : (
                         ""
@@ -1100,36 +1078,44 @@ const JobInfo = props => {
                           color="labelColor"
                           onClick={() => props.jobFinished(id)}
                         >
-
-                          {localizeItem('Finish')} <i className="fas fa-coins me-2"></i>
+                          {localizeItem("Finish")}{" "}
+                          <i className="fas fa-coins me-2"></i>
                         </Button>
                       )}
-                      <Link target="_blank" to={{ pathname: process.env.REACT_APP_DOCUMENT_2 + 'live/Document/' + `workOrder-${id}.pdf.pdf` }}>
+                      <Link
+                        target="_blank"
+                        to={{
+                          pathname:
+                            process.env.REACT_APP_DOCUMENT_2 +
+                            "live/Document/" +
+                            `workOrder-${id}.pdf.pdf`,
+                        }}
+                      >
                         {jobData?.maintenance_assign?.supplier ? (
-
-                          <Button className="btn w-100 d-flex justify-content-between my-2"
-                            color="labelColor">
-
-                            {localizeItem('Work')} {localizeItem('order')}  <i className="fas fa-file-alt me-2"></i>
+                          <Button
+                            className="btn w-100 d-flex justify-content-between my-2"
+                            color="labelColor"
+                          >
+                            {localizeItem("Work")} {localizeItem("order")}{" "}
+                            <i className="fas fa-file-alt me-2"></i>
                           </Button>
-
                         ) : (
                           ""
                         )}
                       </Link>
                     </Col>
                     <Col md={12}>
-
                       {/* <div className="d-flex gap-2 flex-wrap w-100"> */}
                       {props.job_status_loading == "inspected" ? (
                         <Button
                           className="btn w-100 d-flex justify-content-between"
                           color="labelColor"
-                        // onClick={() => {
-                        //     props.insComplete(id);
-                        // }}
+                          // onClick={() => {
+                          //     props.insComplete(id);
+                          // }}
                         >
-                          {localizeItem('Completed')} <i className="fas fa-check me-1"></i>
+                          {localizeItem("Completed")}{" "}
+                          <i className="fas fa-check me-1"></i>
                         </Button>
                       ) : null}
 
@@ -1140,13 +1126,13 @@ const JobInfo = props => {
                             btnsecondary1: !actionState.btnsecondary1,
                           })
                         }
-
                       >
                         <DropdownToggle
                           tag="button"
                           className="btn btn-labelColor w-100 d-flex justify-content-between"
                         >
-                          {localizeItem('Action')} <i className="mdi mdi-chevron-down"></i>
+                          {localizeItem("Action")}{" "}
+                          <i className="mdi mdi-chevron-down"></i>
                         </DropdownToggle>
                         <DropdownMenu>
                           {jobData?.status == "Approved" && (
@@ -1156,7 +1142,8 @@ const JobInfo = props => {
                               }
                             >
                               {/* <a onClick={() =>props.jobOwnerAssigned(ownerId, id)}> */}
-                              {localizeItem('Owner')} {localizeItem('attending')}
+                              {localizeItem("Owner")}{" "}
+                              {localizeItem("attending")}
                               {/* </a> */}
                             </DropdownItem>
                           )}
@@ -1171,16 +1158,15 @@ const JobInfo = props => {
                                     props.jobTenantAssigned(tenantId, id)
                                   }
                                 > */}
-                              {localizeItem('Tenant')} {localizeItem('attending')}
+                              {localizeItem("Tenant")}{" "}
+                              {localizeItem("attending")}
                               {/* </a> */}
                             </DropdownItem>
                           )}
                           {jobData?.status == "Quoted" && (
-                            <DropdownItem
-                              onClick={() => props.jobUnquote(id)}
-                            >
+                            <DropdownItem onClick={() => props.jobUnquote(id)}>
                               {/* <a onClick={() => props.jobUnquote(id)}> */}
-                              {t('Unquote')}
+                              {t("Unquote")}
                               {/* </a> */}
                             </DropdownItem>
                           )}
@@ -1189,7 +1175,7 @@ const JobInfo = props => {
                               onClick={() => props.jobUnassigned(id)}
                             >
                               {/* <a onClick={() => props.jobUnassigned(id)}> */}
-                              {t('Unassign')}
+                              {t("Unassign")}
                               {/* </a> */}
                             </DropdownItem>
                           )}
@@ -1198,7 +1184,7 @@ const JobInfo = props => {
                               onClick={() => props.jobUnapprove(id)}
                             >
                               {/* <a onClick={() => props.jobUnapprove(id)}> */}
-                              {t('Unapprove')}
+                              {t("Unapprove")}
                               {/* </a> */}
                             </DropdownItem>
                           )}
@@ -1214,14 +1200,14 @@ const JobInfo = props => {
                                     props.jobCompleted(id);
                                   }}
                                 > */}
-                              {t('Reject')}
+                              {t("Reject")}
                               {/* </a> */}
                             </DropdownItem>
                           )}
                           <DropdownItem onClick={toggleDeleteModal}>
                             {" "}
                             {/* <a onClick={toggleDeleteModal}> */}
-                            {t('Delete')}
+                            {t("Delete")}
                             {/* </a> */}
                           </DropdownItem>
 
@@ -1238,8 +1224,11 @@ const JobInfo = props => {
                                   className="modal-title mt-0"
                                   id="myModalLabel"
                                 >
-                                  {t('Are')} {t('you')} {t('sure')} {t('you')} {t('want')} {t('to')} {t('delete')} {t('this')} {t('job')}?
-                                  ({t('You')} {t('cannot')} {t('undo')} {t('this')} {t('action')})
+                                  {t("Are")} {t("you")} {t("sure")} {t("you")}{" "}
+                                  {t("want")} {t("to")} {t("delete")}{" "}
+                                  {t("this")} {t("job")}? ({t("You")}{" "}
+                                  {t("cannot")} {t("undo")} {t("this")}{" "}
+                                  {t("action")})
                                 </h5>
                                 <button
                                   type="button"
@@ -1255,14 +1244,14 @@ const JobInfo = props => {
                                   className="btn btn-light"
                                   onClick={toggleDeleteModal}
                                 >
-                                  {t('Cancel')}
+                                  {t("Cancel")}
                                 </button>
                                 <button
                                   type="button"
                                   className="btn btn-info"
                                   onClick={jobDeleteHandler}
                                 >
-                                  {t('Ok')}
+                                  {t("Ok")}
                                 </button>
                               </div>
                             </Modal>
@@ -1273,7 +1262,7 @@ const JobInfo = props => {
                             <a
                             // onClick={() => { } }
                             >
-                              {t('Report')}
+                              {t("Report")}
                             </a>
                           </DropdownItem>
                         </DropdownMenu>
@@ -1281,16 +1270,28 @@ const JobInfo = props => {
                       {/* </div> */}
                     </Col>
                     <Col md={12} className="mt-2">
-                      {jobData?.due_by &&
-                        <div className={`d-flex justify-content-center rounded align-items-center p-3 ${jobData?.due_status == 'Overdue' ? 'bg-danger' : jobData?.due_status == 'Due today' ? 'bg-warning' : 'bg-info'}`}>
+                      {jobData?.due_by && (
+                        <div
+                          className={`d-flex justify-content-center rounded align-items-center p-3 ${
+                            jobData?.due_status == "Overdue"
+                              ? "bg-danger"
+                              : jobData?.due_status == "Due today"
+                              ? "bg-warning"
+                              : "bg-info"
+                          }`}
+                        >
                           <div className="me-4 text-white d-flex justify-content-center align-items-center">
-                            <i className="fas fa-calendar me-1 font-size-24" /> {jobData?.days_difference ? `${jobData?.days_difference} ${t('days')}` : ''}
+                            <i className="fas fa-calendar me-1 font-size-24" />{" "}
+                            {jobData?.days_difference
+                              ? `${jobData?.days_difference} ${t("days")}`
+                              : ""}
                           </div>
                           <div className="d-flex flex-column justify-content-center text-white">
-                            {moment(jobData?.due_by).format('DD MMM')}
+                            {moment(jobData?.due_by).format("DD MMM")}
                             <span>{jobData?.due_status}</span>
                           </div>
-                        </div>}
+                        </div>
+                      )}
                     </Col>
                   </Row>
                 </div>
@@ -1309,7 +1310,7 @@ const JobInfo = props => {
                           gap: "10px",
                           justifyContent: "top",
                           alignItems: "center",
-                          height: '150px'
+                          height: "150px",
                           //justifyContent: "space-between"
                         }}
                       >
@@ -1321,10 +1322,13 @@ const JobInfo = props => {
                           //   toggle("1");
                           // }}
                           onClick={activityToggle}
-                          style={{ display: "flex", justifyContent: "space-between", borderRadius: "5px" }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            borderRadius: "5px",
+                          }}
                         >
-
-                          {t('Activity')}
+                          {t("Activity")}
                           <i className="fas fa-list font-size-12 align-middle me-2"></i>{" "}
                         </Button>
 
@@ -1336,30 +1340,34 @@ const JobInfo = props => {
                           onClick={() => {
                             toggle("2");
                           }}
-                          style={{ display: "flex", justifyContent: "space-between", borderRadius: "5px" }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            borderRadius: "5px",
+                          }}
                         >
-
-                          {t('Documents')}
+                          {t("Documents")}
                           <i className="fas fa-list font-size-12 align-middle me-2"></i>{" "}
                         </Button>
                       </div>
-
                     </Col>
                   </Row>
                 </div>
               </CardBody>
             </Card>
-
           </Col>
           {/* <Row className="justify-content-center"> */}
           <Col md={12} lg={10} xs={12} className="p-0">
-            <Card data-aos="fade-right" className="custom_card_border_design me-2">
+            <Card
+              data-aos="fade-right"
+              className="custom_card_border_design me-2"
+            >
               <CardBody>
                 <div>
                   <Row>
                     <Col md={6}>
                       <Row className="py-1">
-                        <Col md={4}>{t('Property')}</Col>
+                        <Col md={4}>{t("Property")}</Col>
                         <Col md={8}>
                           <Link
                             className="text-info"
@@ -1375,7 +1383,9 @@ const JobInfo = props => {
                         }}
                       ></div>
                       <Row className="py-3">
-                        <Col md={4}>{t('Created')} {t('in')}</Col>
+                        <Col md={4}>
+                          {t("Created")} {t("in")}
+                        </Col>
                         <Col md={8} className="text-muted">
                           {/* {jobData?.created_at
                                 ? new Date(
@@ -1387,9 +1397,7 @@ const JobInfo = props => {
                                 })
                                 : ""} */}
                           {jobData?.created_at &&
-                            moment(jobData?.created_at).format(
-                              "DD MMM YYYY"
-                            )}
+                            moment(jobData?.created_at).format("DD MMM YYYY")}
                         </Col>
                       </Row>
                       <div
@@ -1403,7 +1411,10 @@ const JobInfo = props => {
                             Due by
                           </Label> */}
                           <Col md={12}>
-                            <div className="form-group-new" style={{ marginBottom: "-20px" }}>
+                            <div
+                              className="form-group-new"
+                              style={{ marginBottom: "-20px" }}
+                            >
                               <Flatpickr
                                 className="form-control d-block"
                                 placeholder="Pick a Date..."
@@ -1416,7 +1427,9 @@ const JobInfo = props => {
                                   onChange: dateHandler,
                                 }}
                               />
-                              <label htmlFor="usr">{t('Due')} {t('by')}</label>
+                              <label htmlFor="usr">
+                                {t("Due")} {t("by")}
+                              </label>
                             </div>
                           </Col>
                         </FormGroup>
@@ -1428,16 +1441,18 @@ const JobInfo = props => {
                       ></div>
                       <Row className="mt-4">
                         <FormGroup row>
-
                           <Col md={12}>
-                            <div className="form-group-new" style={{ marginBottom: "-20px" }}>
+                            <div
+                              className="form-group-new"
+                              style={{ marginBottom: "-20px" }}
+                            >
                               <Select
                                 value={state.selectedAccess}
                                 onChange={handleSelectAccess}
                                 options={state.optionAccess}
                                 classNamePrefix="select2-selection"
                               />
-                              <label htmlFor="usr">{t('Access')}</label>
+                              <label htmlFor="usr">{t("Access")}</label>
                             </div>
                           </Col>
                         </FormGroup>
@@ -1453,15 +1468,17 @@ const JobInfo = props => {
                             Manager
                           </Label> */}
                           <Col md={12}>
-
-                            <div className="form-group-new" style={{ marginBottom: "-20px" }}>
+                            <div
+                              className="form-group-new"
+                              style={{ marginBottom: "-20px" }}
+                            >
                               <Select
                                 value={state.selectedManager}
                                 onChange={handleSelectGroupManager}
                                 options={state.optionManager}
                                 classNamePrefix="select2-selection"
                               />
-                              <label htmlFor="usr">{t('Manager')}</label>
+                              <label htmlFor="usr">{t("Manager")}</label>
                             </div>
                           </Col>
                         </FormGroup>
@@ -1473,8 +1490,7 @@ const JobInfo = props => {
                       ></div>
                       <Row className="py-2">
                         {/* Supplier */}
-                        {jobData?.maintenance_assign?.status ==
-                          "Assigned" ? (
+                        {jobData?.maintenance_assign?.status == "Assigned" ? (
                           <>
                             <Col
                               md={4}
@@ -1501,7 +1517,7 @@ const JobInfo = props => {
                         ) : null}
                         {/* Owner */}
                         {jobData?.maintenance_assign?.status ==
-                          "Owner_Assigned" ? (
+                        "Owner_Assigned" ? (
                           <>
                             <Col
                               md={4}
@@ -1514,21 +1530,15 @@ const JobInfo = props => {
                               className="d-flex justify-content-start"
                             >
                               <h4 className="text-primary">
-                                {
-                                  jobData?.maintenance_assign?.owner
-                                    ?.first_name
-                                }{" "}
-                                {
-                                  jobData?.maintenance_assign?.owner
-                                    ?.last_name
-                                }
+                                {jobData?.maintenance_assign?.owner?.first_name}{" "}
+                                {jobData?.maintenance_assign?.owner?.last_name}
                               </h4>
                             </Col>
                           </>
                         ) : null}
                         {/* Tenant */}
                         {jobData?.maintenance_assign?.status ==
-                          "Tenent_Assigned" ? (
+                        "Tenent_Assigned" ? (
                           <>
                             <Col
                               md={4}
@@ -1545,10 +1555,7 @@ const JobInfo = props => {
                                   jobData?.maintenance_assign?.tenant
                                     ?.first_name
                                 }{" "}
-                                {
-                                  jobData?.maintenance_assign?.tenant
-                                    ?.last_name
-                                }
+                                {jobData?.maintenance_assign?.tenant?.last_name}
                               </h4>
                             </Col>
                           </>
@@ -1562,19 +1569,19 @@ const JobInfo = props => {
                         ></div>
                       ) : null}
                       <Row className="py-3">
-                        <Col md={4}>{t('Labels')}</Col>
+                        <Col md={4}>{t("Labels")}</Col>
                         <Col md={8} className="d-flex align-items-center">
                           {level
                             ? selectedLevel.map((item, key) => {
-                              return (
-                                <span
-                                  className="font-size-12 badge rounded-pill bg-info float-start"
-                                  key={key}
-                                >
-                                  {item}
-                                </span>
-                              );
-                            })
+                                return (
+                                  <span
+                                    className="font-size-12 badge rounded-pill bg-info float-start"
+                                    key={key}
+                                  >
+                                    {item}
+                                  </span>
+                                );
+                              })
                             : null}{" "}
                           {level ? (
                             <a
@@ -1606,11 +1613,9 @@ const JobInfo = props => {
                         </Col>
                       </Row>
 
-
                       <div className="py-2">
                         {/* Supplier */}
-                        {jobData?.maintenance_assign?.status ==
-                          "Assigned" ? (
+                        {jobData?.maintenance_assign?.status == "Assigned" ? (
                           <>
                             <Row className="pb-1">
                               <Col md={4}>Supplier</Col>
@@ -1637,7 +1642,7 @@ const JobInfo = props => {
                             </Row>
                             <Row className="py-1">
                               <Col md={4} className="text-muted">
-                                {t('Phone')}
+                                {t("Phone")}
                               </Col>
                               <Col md={8}>
                                 {
@@ -1648,13 +1653,10 @@ const JobInfo = props => {
                             </Row>
                             <Row>
                               <Col md={4} className="text-muted">
-                                {t('Email')}
+                                {t("Email")}
                               </Col>
                               <Col md={8}>
-                                {
-                                  jobData?.maintenance_assign?.supplier
-                                    ?.email
-                                }
+                                {jobData?.maintenance_assign?.supplier?.email}
                               </Col>
                             </Row>
                           </>
@@ -1673,17 +1675,13 @@ const JobInfo = props => {
                       <div className="d-flex justify-content-end align-items-center">
                         {/* <div className="me-2"><i className="fas fa-cloud-upload-alt fa-2x text-info" /></div> */}
 
-
-
                         <Button
                           className="me-1"
                           color="labelColor"
-                        //onClick={() => inputFileProp.current.click()}
+                          //onClick={() => inputFileProp.current.click()}
                         >
                           <i className="fas fa-cloud-upload-alt font-size-16 text-white"></i>
                         </Button>
-
-
 
                         <Button
                           className="btn"
@@ -1732,7 +1730,10 @@ const JobInfo = props => {
                               <div className="mb-3">
                                 <i className="display-4 text-muted bx bxs-cloud-upload" />
                               </div>
-                              <h4>{t('Add')} {t('photo')}(s) {t('for')} {t('maintenance')}</h4>
+                              <h4>
+                                {t("Add")} {t("photo")}(s) {t("for")}{" "}
+                                {t("maintenance")}
+                              </h4>
                             </div>
                           </div>
                         ) : (
@@ -1771,9 +1772,7 @@ const JobInfo = props => {
                                     <ImageModal
                                       openState={showSliderState.isOpen}
                                       toggle={showSlider}
-                                      imageArray={
-                                        jobData?.jobs_images
-                                      }
+                                      imageArray={jobData?.jobs_images}
                                       // property_id={id}
                                       apiCall={props.jobImageDelete}
                                       activeIndex={activeIndex}
@@ -1847,18 +1846,14 @@ const JobInfo = props => {
                   ></div>
                 </div>
 
-
-
                 <Row className="mt-4">
-
                   <Col md={6}>
                     <Row className="py-1">
                       <FormGroup row>
                         <Label for="exampleSelect" md={4}>
-                          {t('Tenant')}
+                          {t("Tenant")}
                         </Label>
                         <Col md={8} className="mt-1">
-
                           <div>
                             <Select
                               value={state.selectedTenant}
@@ -1870,13 +1865,13 @@ const JobInfo = props => {
                         </Col>
                         {props.jobListById_show_data?.data?.properties[0]
                           ?.tenant[0]?.mobile_phone ||
-                          props.jobListById_show_data?.data?.properties[0]
-                            ?.tenant[0]?.home_phone ||
-                          props.jobListById_show_data?.data?.properties[0]
-                            ?.tenant[0]?.work_phone ? (
+                        props.jobListById_show_data?.data?.properties[0]
+                          ?.tenant[0]?.home_phone ||
+                        props.jobListById_show_data?.data?.properties[0]
+                          ?.tenant[0]?.work_phone ? (
                           <Row className="py-1">
                             <Col md={4} className="text-muted">
-                              {t('Phone')}
+                              {t("Phone")}
                             </Col>
                             <Col
                               md={8}
@@ -1884,31 +1879,24 @@ const JobInfo = props => {
                             >
                               <span className="py-1">
                                 {" "}
-                                {
-                                  props.jobListById_show_data?.data
-                                    ?.properties[0]?.tenant[0]
-                                    ?.mobile_phone && `(m) ${props.jobListById_show_data?.data
-                                      ?.properties[0]?.tenant[0]
-                                      ?.mobile_phone}`
-                                }
+                                {props.jobListById_show_data?.data
+                                  ?.properties[0]?.tenant[0]?.mobile_phone &&
+                                  `(m) ${props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.mobile_phone}`}
                               </span>
 
                               <span className="pb-1">
                                 {" "}
-                                {
-                                  props.jobListById_show_data?.data
-                                    ?.properties[0]?.tenant[0]?.home_phone ? ` (h)${props.jobListById_show_data?.data
-                                      ?.properties[0]?.tenant[0]?.home_phone}` : ''
-                                }
+                                {props.jobListById_show_data?.data
+                                  ?.properties[0]?.tenant[0]?.home_phone
+                                  ? ` (h)${props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.home_phone}`
+                                  : ""}
                               </span>
 
                               <span className="">
                                 {" "}
-                                {
-                                  props.jobListById_show_data?.data
-                                    ?.properties[0]?.tenant[0]?.work_phone && `(w) ${props.jobListById_show_data?.data
-                                      ?.properties[0]?.tenant[0]?.work_phone}`
-                                }
+                                {props.jobListById_show_data?.data
+                                  ?.properties[0]?.tenant[0]?.work_phone &&
+                                  `(w) ${props.jobListById_show_data?.data?.properties[0]?.tenant[0]?.work_phone}`}
                               </span>
                             </Col>
                           </Row>
@@ -1917,36 +1905,32 @@ const JobInfo = props => {
                         )}
                         {props.jobListById_show_data?.data?.properties[0]
                           ?.tenant[0]?.email && (
-                            <Row className="py-1 ">
-                              <Col md={4} className="text-muted">
-                                {t('Email')}
-                              </Col>
-                              <Col md={8} className="">
-                                <div className="">
-                                  {" "}
-                                  {props.jobListById_show_data?.data
-                                    ?.properties[0]?.tenant[0]?.email
-                                    ? props.jobListById_show_data?.data
+                          <Row className="py-1 ">
+                            <Col md={4} className="text-muted">
+                              {t("Email")}
+                            </Col>
+                            <Col md={8} className="">
+                              <div className="">
+                                {" "}
+                                {props.jobListById_show_data?.data
+                                  ?.properties[0]?.tenant[0]?.email
+                                  ? props.jobListById_show_data?.data
                                       ?.properties[0]?.tenant[0]?.email
-                                    : ""}
-                                </div>
-                              </Col>
-                            </Row>
-                          )}
+                                  : ""}
+                              </div>
+                            </Col>
+                          </Row>
+                        )}
                       </FormGroup>
                     </Row>
                   </Col>
 
                   <Col md={6}>
-
-
                     {jobData?.properties[0]?.owner?.length > 0 ? (
                       <div className="py-2">
                         <Row className="my-2">
                           <Col md={4}>
-                            <Label for="exampleSelect">
-                              {t('Owner')}
-                            </Label>
+                            <Label for="exampleSelect">{t("Owner")}</Label>
                           </Col>
                           <Col md={8}>
                             <Link
@@ -1954,40 +1938,33 @@ const JobInfo = props => {
                               to={`/contactsInfo/${ownerId}`}
                             >
                               <span>
-                                {
-                                  jobData?.properties[0]?.owner[0]
-                                    ?.first_name
-                                }{" "}
-                                {
-                                  jobData?.properties[0]?.owner[0]
-                                    ?.last_name
-                                }
+                                {jobData?.properties[0]?.owner[0]?.first_name}{" "}
+                                {jobData?.properties[0]?.owner[0]?.last_name}
                               </span>
                             </Link>
                           </Col>
                         </Row>
                         <Row className="my-3">
                           <Col md={4} className="text-muted">
-                            {t('Phone')}
+                            {t("Phone")}
                           </Col>
                           <Col md={8}>
                             {" "}
-                            {props.jobListById_show_data?.data
-                              ?.properties[0]?.owner[0]?.mobile_phone
-                              ? `(m) ${props.jobListById_show_data?.data
-                                ?.properties[0]?.owner[0]?.mobile_phone}`
+                            {props.jobListById_show_data?.data?.properties[0]
+                              ?.owner[0]?.mobile_phone
+                              ? `(m) ${props.jobListById_show_data?.data?.properties[0]?.owner[0]?.mobile_phone}`
                               : ""}
                           </Col>
                         </Row>
                         <Row className="my-2">
                           <Col md={4} className="text-muted">
-                            {t('Email')}
+                            {t("Email")}
                           </Col>
                           <Col md={8}>
-                            {props.jobListById_show_data?.data
-                              ?.properties[0]?.owner[0]?.email
-                              ? props.jobListById_show_data?.data
-                                ?.properties[0]?.owner[0]?.email
+                            {props.jobListById_show_data?.data?.properties[0]
+                              ?.owner[0]?.email
+                              ? props.jobListById_show_data?.data?.properties[0]
+                                  ?.owner[0]?.email
                               : ""}
                           </Col>
                         </Row>
@@ -2015,7 +1992,7 @@ const JobInfo = props => {
                 {props.getQuote_show_data?.data?.length > 0 ? (
                   <div className="mt-5">
                     <div>
-                      <h4 className="text-primary">{t('Quotes')}</h4>
+                      <h4 className="text-primary">{t("Quotes")}</h4>
                     </div>
                     <div
                       style={{
@@ -2027,16 +2004,13 @@ const JobInfo = props => {
                         <QuotesModal
                           toggleEditQuoteModal={toggleEditQuoteModal}
                           editQuoteData={editQuoteModal.item}
-                          showEditQuoteModal={
-                            editQuoteModal.showEditQuoteModal
-                          }
+                          showEditQuoteModal={editQuoteModal.showEditQuoteModal}
                         />
                       )}
                       <Table className="table table-borderless">
                         <tbody>
                           {props.getQuote_show_data?.data[0]?.supplier_id
-                            ? props.getQuote_show_data?.data?.map(
-                              (item, i) => (
+                            ? props.getQuote_show_data?.data?.map((item, i) => (
                                 <tr key={i}>
                                   <td
                                     style={{ width: "33%" }}
@@ -2050,12 +2024,12 @@ const JobInfo = props => {
                                     {item?.reference}
                                   </td>
                                   <td style={{ width: "24%" }}>
-                                    {item?.amount ? `$${item?.amount}` : ''}
+                                    {item?.amount ? `$${item?.amount}` : ""}
                                   </td>
                                   <td style={{ width: "20%" }}>
                                     {item?.status == "init" ? (
                                       jobData?.status == "Reported" ||
-                                        jobData?.status == "Quoted" ? (
+                                      jobData?.status == "Quoted" ? (
                                         <Button
                                           color="info"
                                           className="btn btn-info btn-sm"
@@ -2066,7 +2040,7 @@ const JobInfo = props => {
                                             );
                                           }}
                                         >
-                                          {t('Approve')}
+                                          {t("Approve")}
                                         </Button>
                                       ) : (
                                         " "
@@ -2080,14 +2054,13 @@ const JobInfo = props => {
                                     )}
                                   </td>
                                 </tr>
-                              )
-                            )
+                              ))
                             : null}
                         </tbody>
                       </Table>
                     </div>
                     {jobData?.status === "Reported" ||
-                      jobData?.status === "Quoted" ? (
+                    jobData?.status === "Quoted" ? (
                       <div className="d-flex justify-content-end me-2">
                         <QuotesDownModal />
                       </div>
@@ -2101,7 +2074,7 @@ const JobInfo = props => {
 
                 <div className="mt-5">
                   <div>
-                    <h4 className="text-primary">{t('Bills')}</h4>
+                    <h4 className="text-primary">{t("Bills")}</h4>
                   </div>
                   <div
                     style={{
@@ -2121,10 +2094,11 @@ const JobInfo = props => {
                         </thead>
                         <tbody>
                           <tr>
-                            <th className="text-primary">{`Bill #${jobData?.bill?.id
-                              } (${moment(jobData?.bill?.billing_date).format(
-                                "DD/MM/yyyy"
-                              )})`}</th>
+                            <th className="text-primary">{`Bill #${
+                              jobData?.bill?.id
+                            } (${moment(jobData?.bill?.billing_date).format(
+                              "DD/MM/yyyy"
+                            )})`}</th>
                             <td>{jobData?.bill?.details || ""}</td>
                             <td>${jobData?.bill?.amount}</td>
                             <td></td>
@@ -2138,17 +2112,11 @@ const JobInfo = props => {
                 <div className="mt-5 pt-3">
                   <Row>
                     <Col>
-                      <h4 className="text-primary">{t('Description')}</h4>
-
+                      <h4 className="text-primary">{t("Description")}</h4>
                     </Col>
                     <Col>
                       <div className="d-flex justify-content-end">
-                        <Button
-                          className="me-1"
-                          color="light"
-                          outline
-                          disabled
-                        >
+                        <Button className="me-1" color="light" outline disabled>
                           <i className="fas fa-cloud-upload-alt font-size-20 text-info"></i>
                         </Button>
                         <Button
@@ -2179,14 +2147,14 @@ const JobInfo = props => {
                   </Row>
 
                   <div className="w-100">
-                    {show &&
+                    {show && (
                       <Progress
                         value={90}
                         color="info"
                         style={{ width: "90%" }}
                         animated
                       ></Progress>
-                    }
+                    )}
                   </div>
 
                   <div
@@ -2218,7 +2186,9 @@ const JobInfo = props => {
                           <div className="mb-3">
                             <i className="display-4 text-muted bx bxs-cloud-upload" />
                           </div>
-                          <h4>{t('Add')} {t('document')} {t('to')} {t('Job')}</h4>
+                          <h4>
+                            {t("Add")} {t("document")} {t("to")} {t("Job")}
+                          </h4>
                         </div>
                       </div>
                     ) : (
@@ -2227,11 +2197,19 @@ const JobInfo = props => {
                     {!showDropZone && (
                       <>
                         <Row md={12} className="mt-4">
-
                           <Col md={6} style={{ marginTop: "-10px" }}>
                             <FormGroup row>
-                              <Label for="exampleSelect " className="form-group-new-desc-label" style={{ marginBottom: "-10px", zIndex: "10", width: "85px", padding: "0px 3px 0px 3px", }}>
-                                {t('Summary')}
+                              <Label
+                                for="exampleSelect "
+                                className="form-group-new-desc-label"
+                                style={{
+                                  marginBottom: "-10px",
+                                  zIndex: "10",
+                                  width: "85px",
+                                  padding: "0px 3px 0px 3px",
+                                }}
+                              >
+                                {t("Summary")}
                               </Label>
                               <div className="form-group-new">
                                 <Input
@@ -2246,16 +2224,23 @@ const JobInfo = props => {
                                     jobData?.status == "Closed" ? true : false
                                   }
                                 />
-
                               </div>
                             </FormGroup>
                           </Col>
 
-
                           <Col md={6} style={{ marginTop: "-10px" }}>
                             <FormGroup row>
-                              <Label for="exampleSelect " className="form-group-new-desc-label" style={{ marginBottom: "-10px", zIndex: "10", width: "135px", padding: "0px 3px 0px 3px", }}>
-                                {t('Work')} {t('order')} {t('notes')}
+                              <Label
+                                for="exampleSelect "
+                                className="form-group-new-desc-label"
+                                style={{
+                                  marginBottom: "-10px",
+                                  zIndex: "10",
+                                  width: "135px",
+                                  padding: "0px 3px 0px 3px",
+                                }}
+                              >
+                                {t("Work")} {t("order")} {t("notes")}
                               </Label>
                               <div className="form-group-new">
                                 <Input
@@ -2270,24 +2255,27 @@ const JobInfo = props => {
                                     jobData?.status == "Closed" ? true : false
                                   }
                                 />
-
                               </div>
                             </FormGroup>
                           </Col>
-
-
                         </Row>
 
-
-
-
                         <FormGroup row>
-                          <Label for="exampleSelect " className="form-group-new-desc-label" style={{ marginBottom: "-10px", zIndex: "10", width: "90px", padding: "0px 3px 0px 3px" }}>
-                            {t('Description')}
+                          <Label
+                            for="exampleSelect "
+                            className="form-group-new-desc-label"
+                            style={{
+                              marginBottom: "-10px",
+                              zIndex: "10",
+                              width: "90px",
+                              padding: "0px 3px 0px 3px",
+                            }}
+                          >
+                            {t("Description")}
                           </Label>
 
                           <Col md={12}>
-                            <div className="form-group-new-desc" >
+                            <div className="form-group-new-desc">
                               <Input
                                 name="description"
                                 type="textarea"
@@ -2309,22 +2297,19 @@ const JobInfo = props => {
                   </div>
                 </div>
                 <Row className="mt-2">
-                  <Col
-                    md={12}
-                    className="mt-1 d-flex justify-content-end mb-4"
-                  >
+                  <Col md={12} className="mt-1 d-flex justify-content-end mb-4">
                     <button
                       className="btn btn-buttonCancelColor w-md"
                       type="submit"
                     >
-                      <i className="fas fa-times me-1"></i> {t('Cancel')}
+                      <i className="fas fa-times me-1"></i> {t("Cancel")}
                     </button>
                     <button
                       className="btn btn-buttonColor w-md ms-2"
                       type="submit"
                       onClick={handleSubmit}
                     >
-                      <i className="fas fa-file-alt me-1"></i> {t('Save')}
+                      <i className="fas fa-file-alt me-1"></i> {t("Save")}
                     </button>
                   </Col>
                 </Row>
@@ -2332,17 +2317,6 @@ const JobInfo = props => {
             </Card>
           </Col>
         </Row>
-
-
-
-
-
-
-
-
-
-
-
 
         {/* ================= activity modal start ===================*/}
         <Modal
@@ -2368,7 +2342,7 @@ const JobInfo = props => {
                   className="fw-bold ps-2 font-size-16"
                   style={{ color: "white" }}
                 >
-                  {t('Activity')}
+                  {t("Activity")}
                 </p>
               </div>
               <div>
@@ -2413,7 +2387,7 @@ const JobInfo = props => {
                                 All
                               </span> */}
                       <div className="badge badge-soft-secondary d-flex align-items-start px-3 py-2 font-size-16 text-white">
-                        {t('All')}
+                        {t("All")}
                       </div>
                     </Link>
                   </div>
@@ -2433,7 +2407,7 @@ const JobInfo = props => {
                   borderBottom: "1.2px dotted #c9c7c7",
                 }}
               >
-                {t('Active')}
+                {t("Active")}
               </p>
               <Col sm="12">
                 {msgShow && (
@@ -2464,7 +2438,7 @@ const JobInfo = props => {
                     <Link to={`/all-job-activity/${id}`}>
                       <Button color="labelColor">
                         <i className="fas fa-external-link-alt me-1" />
-                        {t('View')} {t('All')}
+                        {t("View")} {t("All")}
                       </Button>
                     </Link>
                   </div>
@@ -2475,7 +2449,7 @@ const JobInfo = props => {
                     borderBottom: "1.2px dotted #c9c7c7",
                   }}
                 >
-                  {t('Comments')}
+                  {t("Comments")}
                 </p>
                 <CommentData data={msgData} />
               </Col>
@@ -2483,7 +2457,6 @@ const JobInfo = props => {
           </ModalBody>
         </Modal>
         {/* ================= activity modal end   ===================*/}
-
 
         {/* ================= comment modal start ===================*/}
         <Modal isOpen={commentmodal} toggle={commentToggle} size="lg">
@@ -2504,7 +2477,7 @@ const JobInfo = props => {
                   className="fw-bold ps-2 font-size-16"
                   style={{ color: "white" }}
                 >
-                  {t('Activity')}
+                  {t("Activity")}
                 </p>
               </div>
               <div>
@@ -2571,13 +2544,11 @@ const JobInfo = props => {
                   setMessage={setMessage}
                   job_id={id}
                 />
-
               </Col>
             </Row>
           </ModalBody>
         </Modal>
         {/* ================= comment modal end   ===================*/}
-
 
         {msgModal && (
           <MessagesModal
@@ -2587,11 +2558,15 @@ const JobInfo = props => {
           />
         )}
       </div>
-      {documentModal &&
+      {documentModal && (
         <PropertyDocs
-          documentModal={documentModal} documentToggle={documentToggle} component='Jobs'
-          data={props.all_job_document?.data?.data} id={id}
-        />}
+          documentModal={documentModal}
+          documentToggle={documentToggle}
+          component="Jobs"
+          data={props.all_job_document?.data?.data}
+          id={id}
+        />
+      )}
     </React.Fragment>
   );
 };
@@ -2647,7 +2622,7 @@ const mapStateToProps = gstate => {
     job_quote_delete_loading,
     upload_job_file_loading,
 
-    job_image_delete_loading
+    job_image_delete_loading,
   } = gstate.Jobs;
 
   const { contacts_list_data, contacts_list_loading, contacts_show_loading } =
@@ -2747,7 +2722,7 @@ const mapStateToProps = gstate => {
     job_quote_delete_loading,
     upload_job_file_loading,
 
-    job_image_delete_loading
+    job_image_delete_loading,
   };
 };
 
@@ -2811,6 +2786,7 @@ export default withRouter(
     deleteQuoteJobFresh,
     uploadJobFileFresh,
 
-    jobImageDelete, jobImageDeleteFresh
+    jobImageDelete,
+    jobImageDeleteFresh,
   })(JobInfo)
 );

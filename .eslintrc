@@ -1,18 +1,20 @@
 {
+  "extends": ["plugin:react/recommended"],
   "rules": {
     "no-undef": "off",
-    "react/prop-types" : "off"
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off" // <-- Add this line
   },
-  "extends": [
-    "plugin:react/recommended"
-  ],
+  "settings": {
+    "react": {
+      "version": "detect" // Auto-detect the React version
+    }
+  },
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2020,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true,
-      "modules": true,
-      "experimentalObjectRestSpread": true
+      "jsx": true
     }
   }
 }

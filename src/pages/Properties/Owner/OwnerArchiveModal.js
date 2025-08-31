@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Modal, ModalHeader, ModalFooter } from "reactstrap";
+import { useEffect } from "react";
 import { connect } from "react-redux";
+import { Modal, ModalFooter, ModalHeader } from "reactstrap";
 
 import { ownerArchive, ownerArchiveFresh } from "store/actions";
 
@@ -9,8 +9,8 @@ import toastr from "toastr";
 const OwnerArchiveModal = props => {
   const handleSave = e => {
     e.preventDefault();
-    props.setState(prev => ({ ...prev, loader: true }))
-    props.ownerArchive(props.id,'0');
+    props.setState(prev => ({ ...prev, loader: true }));
+    props.ownerArchive(props.id, "0");
   };
 
   const handleClose = e => {
@@ -19,17 +19,17 @@ const OwnerArchiveModal = props => {
   };
 
   useEffect(() => {
-    if (props.archive_owner_loading === 'Success') {
-        if (props.archive_owner_data?.staus == 0) {
-            toastr.warning(props.archive_owner_data?.message);
-        } else {
-            toastr.success('Success');
-        }
-        props.setState(prev => ({ ...prev, loader: false }))
-        props.ownerArchiveFresh();
-        props.toggle();
+    if (props.archive_owner_loading === "Success") {
+      if (props.archive_owner_data?.staus == 0) {
+        toastr.warning(props.archive_owner_data?.message);
+      } else {
+        toastr.success("Success");
+      }
+      props.setState(prev => ({ ...prev, loader: false }));
+      props.ownerArchiveFresh();
+      props.toggle();
     }
-}, [props.archive_owner_loading, props.archive_owner_data]);
+  }, [props.archive_owner_loading, props.archive_owner_data]);
 
   return (
     <>
@@ -41,8 +41,8 @@ const OwnerArchiveModal = props => {
       >
         <ModalHeader toggle={props.toggle}>
           <span className="text-primary">
-            Are you sure you want to archive the folio OWN000{props.id} from all future
-            transactions?
+            Are you sure you want to archive the folio OWN000{props.id} from all
+            future transactions?
           </span>
         </ModalHeader>
 

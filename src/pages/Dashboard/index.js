@@ -1,80 +1,58 @@
 import React, { useEffect, useState, useTransition } from "react";
+import { connect } from "react-redux";
 import {
-  Container,
-  Row,
-  Col,
   Button,
   Card,
   CardBody,
   CardTitle,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Table,
-  Input,
+  Col,
+  Container,
   Nav,
   NavItem,
   NavLink,
+  Row,
   TabContent,
   TabPane,
-  CardText,
-  Tooltip
 } from "reactstrap";
-import { connect } from "react-redux";
 import LineApexChart from "../AllCharts/apex/chartapex";
 
 //import Charts
-import StackedColumnChart from "./StackedColumnChart";
 
-import modalimage1 from "../../assets/images/product/img-7.png";
-import modalimage2 from "../../assets/images/product/img-4.png";
 import classnames from "classnames";
 
 //import action
 import {
   getChartsData,
+  getConversationOpen,
+  getDeshboardInsightsPropertyData,
+  getGainProperties,
   getInsightsActiveProperties,
   getInsightsEntryInspection,
   getInsightsExitInspection,
-  getGainProperties,
-  getLostProperties,
   getInsightTenantArears,
   getJobAssigned,
-  getTaskOverdue,
-  getDeshboardInsightsPropertyData,
   getJobsOpen,
-  getConversationOpen
+  getLostProperties,
+  getTaskOverdue,
 } from "../../store/actions";
 
 // Pages Components
-import WelcomeComp from "./WelcomeComp";
-import MonthlyEarning from "./MonthlyEarning";
-import SocialSource from "./SocialSource";
-import ActivityComp from "./ActivityComp";
-import TopCities from "./TopCities";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //i18n
-import { withTranslation } from "react-i18next";
-import classNames from "classnames";
-import moment from "moment";
-import bankingSVG from "../../assets/images/banking.svg";
-import SplineArea2 from "./Chart.js/SplineArea2";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import SelectSearch from "common/Select-Search/SelectSearch";
-import CenterLoader from "common/Loader/CenterLoader";
-import { Link, useHistory } from "react-router-dom";
+import moment from "moment";
 import ShowActivityData from "pages/Properties/Activity/ShowActivityData";
+import { withTranslation } from "react-i18next";
+import { Link, useHistory } from "react-router-dom";
 import Knob from "../AllCharts/knob/knob";
-import CommonSplineArea from "./Chart.js/CommonSplineArea";
 import ChartLoader from "./Chart.js/ChartLoader";
-import InsightsChartsBelowData from "./InsightsChartsBelowData";
-import CommonTooltip from "common/Tooltip/CommonTooltip";
+import CommonSplineArea from "./Chart.js/CommonSplineArea";
 import CommonSplineAreaUp from "./Chart.js/CommonSplineAreaUp";
+import InsightsChartsBelowData from "./InsightsChartsBelowData";
 
 document.title = "CliqProperty";
 
@@ -82,7 +60,6 @@ const Dashboard = props => {
   const [seen, setSeen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [isShown, setIsShown] = useState({ nav1: false, nav2: false });
-
 
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
@@ -213,7 +190,6 @@ const Dashboard = props => {
         totalPropArrears: tpA,
         totalPropDate: tpD,
         angle: props.chartsData?.vacancies,
-
       }));
     }
     setSeen(true);
@@ -221,7 +197,6 @@ const Dashboard = props => {
   }, [props.chartsData]);
 
   // console.log(props.chartsData);
-
 
   const upperAllData = [
     {
@@ -234,7 +209,9 @@ const Dashboard = props => {
     {
       id: 2,
       title: "DISBURSEMENTS",
-      number: props.chartsData?.disbursement ? props.chartsData?.disbursement : 0,
+      number: props.chartsData?.disbursement
+        ? props.chartsData?.disbursement
+        : 0,
       icon: "fas fa-home",
       path: "disbursement/list",
     },
@@ -250,7 +227,9 @@ const Dashboard = props => {
     {
       id: 4,
       title: "BILLS OVERDUE",
-      number: props.chartsData?.billsOverdue ? props.chartsData?.billsOverdue : 0,
+      number: props.chartsData?.billsOverdue
+        ? props.chartsData?.billsOverdue
+        : 0,
       icon: "fas fas fa-align-justify",
       path: "bills",
     },
@@ -276,7 +255,9 @@ const Dashboard = props => {
     {
       id: 2,
       title: "DISBURSEMENTS",
-      number: props.chartsData?.disbursement ? props.chartsData?.disbursement : 0,
+      number: props.chartsData?.disbursement
+        ? props.chartsData?.disbursement
+        : 0,
       icon: "fas fa-home",
       path: "disbursement/list",
     },
@@ -299,10 +280,11 @@ const Dashboard = props => {
     {
       id: 1,
       title: "INVOICE ARREARS",
-      number: `${props.chartsData?.invoiceAreas
-        ? Math.round(props.chartsData?.invoiceAreas.toFixed(2))
-        : 0
-        }%`,
+      number: `${
+        props.chartsData?.invoiceAreas
+          ? Math.round(props.chartsData?.invoiceAreas.toFixed(2))
+          : 0
+      }%`,
       icon: "bx bx-health",
       path: "",
       details: "of properties have invoice arrears",
@@ -311,7 +293,9 @@ const Dashboard = props => {
     {
       id: 2,
       title: "RENEWALS",
-      number: props.chartsData?.upcomingLeaseRenewals ? props.chartsData?.upcomingLeaseRenewals : 0,
+      number: props.chartsData?.upcomingLeaseRenewals
+        ? props.chartsData?.upcomingLeaseRenewals
+        : 0,
       icon: "fas fa-retweet",
       path: "propertylist",
       details: "upcoming renewals",
@@ -338,7 +322,9 @@ const Dashboard = props => {
     {
       id: 5,
       title: "INSPECTION PLANING",
-      number: props.chartsData?.inspectionPlanning ? props.chartsData?.inspectionPlanning : 0,
+      number: props.chartsData?.inspectionPlanning
+        ? props.chartsData?.inspectionPlanning
+        : 0,
       icon: "bx bx-wifi",
       path: "planinspections",
       details: "overdue and due in next 30 days",
@@ -382,7 +368,6 @@ const Dashboard = props => {
     if (state.selectedUser.label == "All") {
       if (item.title == "RECONCILIATION") {
         return 6;
-
       } else {
         return 3;
       }
@@ -674,12 +659,12 @@ const Dashboard = props => {
 
   const upperDataHistory = data => {
     console.log(data);
-    if (data == 'messages') {
-      history.push('/messages', { from: "dashboard" })
+    if (data == "messages") {
+      history.push("/messages", { from: "dashboard" });
     } else {
-      history.push(`/${data}`)
+      history.push(`/${data}`);
     }
-  }
+  };
 
   const bankingDataShow = data => {
     if (data > 999) {
@@ -689,17 +674,16 @@ const Dashboard = props => {
       console.log(amount);
       return amount;
     } else {
-      return data
-
+      return data;
     }
-  }
+  };
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title={props.t("Dashboards")} breadcrumbItem={""} />
+          <Breadcrumbs title={props.t("Dashboard")} breadcrumbItem={""} />
 
           <Row className="d-flex">
             <Col md={6}>
@@ -785,17 +769,17 @@ const Dashboard = props => {
                     className=""
                   >
                     <Row
-                      className={`my-3 d-flex ${state.selectedUser.label == "All"
-                        ? ""
-                        : "justify-content-end"
-                        }`}
+                      className={`my-3 d-flex ${
+                        state.selectedUser.label == "All"
+                          ? ""
+                          : "justify-content-end"
+                      }`}
                     >
                       {upperMainData.map(item => (
                         <Col
                           sm={`${state.selectedUser.label == "All" ? "" : "3"}`}
                           key={item.id}
                         >
-
                           <div
                             key={item.id}
                             onClick={() => upperDataHistory(item.path)}
@@ -805,8 +789,7 @@ const Dashboard = props => {
                                   ? "#fde3dd"
                                   : "#159b9c38",
                               height: "100px",
-                              borderRadius: "8px"
-
+                              borderRadius: "8px",
                             }}
                             className="custom_dashboard_div_style"
                           >
@@ -863,28 +846,25 @@ const Dashboard = props => {
                               </div>
                               <div className="col-md-6 d-flex justify-content-center">
                                 <span
-
                                   style={{
                                     color:
-                                      item.title == "WITHDRAWALS" &&
-                                      "#d2300e",
+                                      item.title == "WITHDRAWALS" && "#d2300e",
                                     fontSize: "26px",
                                   }}
                                 >
-
-                                  {
-                                    item.title == 'BANKING' ?
-                                      <span className="">{bankingDataShow(item.number)}</span> :
-                                      item.number ? item.number : "0"
-                                  }
-
-
-
+                                  {item.title == "BANKING" ? (
+                                    <span className="">
+                                      {bankingDataShow(item.number)}
+                                    </span>
+                                  ) : item.number ? (
+                                    item.number
+                                  ) : (
+                                    "0"
+                                  )}
                                 </span>
                               </div>
                             </div>
                           </div>
-
                         </Col>
                       ))}
                     </Row>
@@ -906,8 +886,8 @@ const Dashboard = props => {
                                 MONTHLY RENT ARREARS -{" "}
                                 {props?.chartsData?.arrears
                                   ? Math.round(
-                                    props?.chartsData?.arrears
-                                  ).toFixed(2)
+                                      props?.chartsData?.arrears
+                                    ).toFixed(2)
                                   : "0.00"}{" "}
                                 %
                               </CardTitle>
@@ -930,13 +910,15 @@ const Dashboard = props => {
 
                         <Card>
                           <CardBody>
-                            <Link to={{
-                              pathname: 'propertylist',
-                              state: {
-                                tab: '6'
-                              }
-                            }}>
-                              <div className="text-center" dir="ltr" >
+                            <Link
+                              to={{
+                                pathname: "propertylist",
+                                state: {
+                                  tab: "6",
+                                },
+                              }}
+                            >
+                              <div className="text-center" dir="ltr">
                                 <div className="d-flex justify-content-between">
                                   <span></span>
                                   <span>VACANCIES</span>
@@ -964,14 +946,18 @@ const Dashboard = props => {
                         <Col md={handleColumn(item)} key={item.id}>
                           <Link
                             to={{
-                              pathname: `/${item.path == 'reconciliationsList' ? '/dashboard' : item.path}`,
+                              pathname: `/${
+                                item.path == "reconciliationsList"
+                                  ? "/dashboard"
+                                  : item.path
+                              }`,
                               state: {
                                 tab:
                                   item.title == "INVOICE ARREARS"
                                     ? "5"
                                     : item.title == "RENEWALS"
-                                      ? "7"
-                                      : "",
+                                    ? "7"
+                                    : "",
                               },
                             }}
                             style={{ color: "black", cursor: "pointer" }}
@@ -1007,14 +993,15 @@ const Dashboard = props => {
                                       {item.company}
                                     </span>
                                     <span className="mt-2 fw-bold">
-                                      {item.reconcile == 0 ?
+                                      {item.reconcile == 0 ? (
                                         <Link to={`/reconciliationsList`}>
-                                          <Button color='info'>
+                                          <Button color="info">
                                             Reconcile
                                           </Button>
                                         </Link>
-                                        :
-                                        item.date}
+                                      ) : (
+                                        item.date
+                                      )}
                                     </span>
                                   </Col>
                                   <Col
@@ -1110,20 +1097,19 @@ const Dashboard = props => {
                     </Col>
                   )}
                 </Row>
-                <Row>
-
-                </Row>
+                <Row></Row>
               </>
             </TabPane>
             <TabPane tabId="2">
               <>
                 <Row className="pt-4">
-
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-                      <CommonSplineAreaUp left='Properties' right='Total active properties' id={1} />
-
-
+                      <CommonSplineAreaUp
+                        left="Properties"
+                        right="Total active properties"
+                        id={1}
+                      />
 
                       {props.insightsActivePropertiesLoading == "Success" ? (
                         <CommonSplineArea
@@ -1166,13 +1152,11 @@ const Dashboard = props => {
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Properties gained' right='Total rental properties gained' id={2} />
-
-
-
-
-
+                      <CommonSplineAreaUp
+                        left="Properties gained"
+                        right="Total rental properties gained"
+                        id={2}
+                      />
 
                       {props.insightsGainPropertiesLoading == "Success" ? (
                         <CommonSplineArea
@@ -1209,8 +1193,11 @@ const Dashboard = props => {
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Properties lost' right='Total rental properties lost' id={3} />
+                      <CommonSplineAreaUp
+                        left="Properties lost"
+                        right="Total rental properties lost"
+                        id={3}
+                      />
 
                       {props.insightsLostPropertiesLoading == "Success" ? (
                         <CommonSplineArea
@@ -1247,11 +1234,14 @@ const Dashboard = props => {
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
+                      <CommonSplineAreaUp
+                        left="Inspections completed - routine"
+                        right="Total routine inspections completed"
+                        id={4}
+                      />
 
-
-                      <CommonSplineAreaUp left='Inspections completed - routine' right='Total routine inspections completed' id={4} />
-
-                      {props.dashboardInsightsPropertyDataLoading == "Success" ? (
+                      {props.dashboardInsightsPropertyDataLoading ==
+                      "Success" ? (
                         <CommonSplineArea
                           seriesOne={
                             props.dashboardInsightsPropertyData?.series[0]?.data
@@ -1271,34 +1261,37 @@ const Dashboard = props => {
 
                       {props.dashboardInsightsPropertyDataLoading ==
                         "Success" && (
-                          <div className="d-flex justify-content-between">
-                            <InsightsChartsBelowData
-                              data={
-                                props.dashboardInsightsPropertyData?.series[0]
-                                  ?.data
-                              }
-                              date={
-                                props.dashboardInsightsPropertyData?.xaxis
-                                  ?.categories
-                              }
-                            />
-                            <InsightsChartsBelowData
-                              data={
-                                props.dashboardInsightsPropertyData?.series[1]
-                                  ?.data
-                              }
-                              date={props.dashboardInsightsPropertyData?.xaxis1}
-                              color="text-info"
-                            />
-                          </div>
-                        )}
+                        <div className="d-flex justify-content-between">
+                          <InsightsChartsBelowData
+                            data={
+                              props.dashboardInsightsPropertyData?.series[0]
+                                ?.data
+                            }
+                            date={
+                              props.dashboardInsightsPropertyData?.xaxis
+                                ?.categories
+                            }
+                          />
+                          <InsightsChartsBelowData
+                            data={
+                              props.dashboardInsightsPropertyData?.series[1]
+                                ?.data
+                            }
+                            date={props.dashboardInsightsPropertyData?.xaxis1}
+                            color="text-info"
+                          />
+                        </div>
+                      )}
                     </Card>
                   </Col>
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Inspections completed - entry' right='Total entry inspections completed' id={5} />
+                      <CommonSplineAreaUp
+                        left="Inspections completed - entry"
+                        right="Total entry inspections completed"
+                        id={5}
+                      />
 
                       {props.insightsEntryInspectionLoading == "Success" ? (
                         <CommonSplineArea
@@ -1341,8 +1334,11 @@ const Dashboard = props => {
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Inspections completed - exit' right='Total exit inspections completed' id={6} />
+                      <CommonSplineAreaUp
+                        left="Inspections completed - exit"
+                        right="Total exit inspections completed"
+                        id={6}
+                      />
 
                       {props.insightsExitInspectionLoading == "Success" ? (
                         <CommonSplineArea
@@ -1377,13 +1373,13 @@ const Dashboard = props => {
                     </Card>
                   </Col>
 
-
-
-
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Jobs assigned time (average)' right='Average days a current unassigned job has been open' id={9} />
+                      <CommonSplineAreaUp
+                        left="Jobs assigned time (average)"
+                        right="Average days a current unassigned job has been open"
+                        id={9}
+                      />
 
                       {props.insightsJobAssignedLoading == "Success" ? (
                         <CommonSplineArea
@@ -1413,8 +1409,11 @@ const Dashboard = props => {
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Tasks overdue' right='Total of active tasks due' id={10} />
+                      <CommonSplineAreaUp
+                        left="Tasks overdue"
+                        right="Total of active tasks due"
+                        id={10}
+                      />
 
                       {props.insightsTaskOverdueLoading == "Success" ? (
                         <CommonSplineArea
@@ -1434,20 +1433,28 @@ const Dashboard = props => {
                             color="text-info"
                           />
 
-                          <InsightsChartsBelowData data={props.insightsTaskOverdue?.series[0]?.data}
-                            date={props.insightsTaskOverdue?.xaxis?.categories} />
+                          <InsightsChartsBelowData
+                            data={props.insightsTaskOverdue?.series[0]?.data}
+                            date={props.insightsTaskOverdue?.xaxis?.categories}
+                          />
 
-                          <InsightsChartsBelowData data={props.insightsTaskOverdue?.series[1]?.data}
-                            date={props.insightsTaskOverdue?.xaxis1} color='text-info' />
-
-                        </div>)}
+                          <InsightsChartsBelowData
+                            data={props.insightsTaskOverdue?.series[1]?.data}
+                            date={props.insightsTaskOverdue?.xaxis1}
+                            color="text-info"
+                          />
+                        </div>
+                      )}
                     </Card>
                   </Col>
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Jobs open' right='Total active jobs' id={11} />
+                      <CommonSplineAreaUp
+                        left="Jobs open"
+                        right="Total active jobs"
+                        id={11}
+                      />
 
                       {props.insightsJobsOpenLoading == "Success" ? (
                         <CommonSplineArea
@@ -1477,8 +1484,11 @@ const Dashboard = props => {
 
                   <Col md={4}>
                     <Card body style={{ borderBottomRightRadius: "30px" }}>
-
-                      <CommonSplineAreaUp left='Conversations open' right='Total open conversations in the inbox' id={12} />
+                      <CommonSplineAreaUp
+                        left="Conversations open"
+                        right="Total open conversations in the inbox"
+                        id={12}
+                      />
 
                       {props.insightsConversationOpenLoading == "Success" ? (
                         <CommonSplineArea
@@ -1488,21 +1498,33 @@ const Dashboard = props => {
                           seriesTwo={
                             props.insightsConversationOpen?.series[1]?.data
                           }
-                          date={props.insightsConversationOpen?.xaxis?.categories}
-                          text='Overdue'
+                          date={
+                            props.insightsConversationOpen?.xaxis?.categories
+                          }
+                          text="Overdue"
                         />
                       ) : (
                         <ChartLoader />
                       )}
-                      {props.insightsConversationOpenLoading == "Success" &&
+                      {props.insightsConversationOpenLoading == "Success" && (
                         <div className="d-flex justify-content-between">
-                          <InsightsChartsBelowData data={props.insightsConversationOpen?.series[0]?.data}
-                            date={props.insightsConversationOpen?.xaxis?.categories} />
-                          <InsightsChartsBelowData data={props.insightsConversationOpen?.series[1]?.data}
-                            date={props.insightsConversationOpen?.xaxis1} color='text-info' />
-
-                        </div>}
-
+                          <InsightsChartsBelowData
+                            data={
+                              props.insightsConversationOpen?.series[0]?.data
+                            }
+                            date={
+                              props.insightsConversationOpen?.xaxis?.categories
+                            }
+                          />
+                          <InsightsChartsBelowData
+                            data={
+                              props.insightsConversationOpen?.series[1]?.data
+                            }
+                            date={props.insightsConversationOpen?.xaxis1}
+                            color="text-info"
+                          />
+                        </div>
+                      )}
                     </Card>
                   </Col>
                 </Row>
@@ -1543,7 +1565,7 @@ const mapStateToProps = gstate => {
     insightsJobsOpen,
     insightsJobsOpenLoading,
     insightsConversationOpen,
-    insightsConversationOpenLoading
+    insightsConversationOpenLoading,
   } = gstate.Dashboard;
   return {
     chartsData,
@@ -1570,7 +1592,7 @@ const mapStateToProps = gstate => {
     insightsJobsOpen,
     insightsJobsOpenLoading,
     insightsConversationOpen,
-    insightsConversationOpenLoading
+    insightsConversationOpenLoading,
   };
 };
 
@@ -1586,5 +1608,5 @@ export default connect(mapStateToProps, {
   getTaskOverdue,
   getDeshboardInsightsPropertyData,
   getJobsOpen,
-  getConversationOpen
+  getConversationOpen,
 })(withTranslation()(Dashboard));

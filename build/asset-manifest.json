@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.220e3742.css",
-    "main.js": "/static/js/main.a76958e2.js",
+    "main.css": "/static/css/main.cf951c5e.css",
+    "main.js": "/static/js/main.c1c2f39c.js",
     "static/js/239.c5cbbf22.chunk.js": "/static/js/239.c5cbbf22.chunk.js",
     "static/js/213.cc80e838.chunk.js": "/static/js/213.cc80e838.chunk.js",
     "static/js/667.7cdef9be.chunk.js": "/static/js/667.7cdef9be.chunk.js",
@@ -96,21 +96,20 @@
     "static/media/fraction.cjs": "/static/media/fraction.7992481f3d8339b77604.cjs",
     "static/media/new_myday_image.svg": "/static/media/new_myday_image.62bc22965d65f911ab4ec8ef83f47b09.svg",
     "static/media/logo_purple 2-svg.svg": "/static/media/logo_purple 2-svg.ba337aa8b27a11acb79f4fb6404abd25.svg",
-    "static/media/banking.svg": "/static/media/banking.b12709bb9203f3933745c04d2ceed03b.svg",
     "static/media/strokedlogo_purple.svg": "/static/media/strokedlogo_purple.0db748c973e9299eb79fcdec0c68dde5.svg",
     "index.html": "/index.html",
     "static/media/logo.svg": "/static/media/logo.9901a8a015a7c672ad758f00c081e10c.svg",
     "static/media/icon-realestate.svg": "/static/media/icon-realestate.89b3968c3cd2e4c81dc2edb16cf3daf4.svg",
     "static/media/circle.svg": "/static/media/circle.ac6616ba7765c18533bca250a24efbe9.svg",
     "static/media/index.cjs": "/static/media/index.f6d03137e8c9dd0de04c.cjs",
-    "main.220e3742.css.map": "/static/css/main.220e3742.css.map",
-    "main.a76958e2.js.map": "/static/js/main.a76958e2.js.map",
+    "main.cf951c5e.css.map": "/static/css/main.cf951c5e.css.map",
+    "main.c1c2f39c.js.map": "/static/js/main.c1c2f39c.js.map",
     "239.c5cbbf22.chunk.js.map": "/static/js/239.c5cbbf22.chunk.js.map",
     "213.cc80e838.chunk.js.map": "/static/js/213.cc80e838.chunk.js.map",
     "667.7cdef9be.chunk.js.map": "/static/js/667.7cdef9be.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.220e3742.css",
-    "static/js/main.a76958e2.js"
+    "static/css/main.cf951c5e.css",
+    "static/js/main.c1c2f39c.js"
   ]
 }

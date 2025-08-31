@@ -1,165 +1,214 @@
 import React, { useEffect } from "react";
-import {
-    useHistory,
-    useParams,
-    withRouter,
-} from "react-router-dom";
+import { useParams, withRouter } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
-
 
 import { ReconciliationData } from "store/actions";
 //Import Image
-import { connect } from "react-redux";
-import moment from "moment";
 import InvoiceHeader from "common/Invoice/InvoiceHeader";
 import jsPDF from "jspdf";
-
+import moment from "moment";
+import { connect } from "react-redux";
 
 document.title = "CliqProperty";
 
+const ReconciliationReport = props => {
+  const { id } = useParams();
 
-const ReconciliationReport = (props) => {
-    const { id } = useParams();
+  function printDiv(divName) {
+    console.log(divName);
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
 
-    function printDiv(divName) {
-        console.log(divName);
-        var printContents = document.getElementById(divName).innerHTML;
-        var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
 
-        document.body.innerHTML = printContents;
+    window.print();
 
-        window.print();
+    document.body.innerHTML = originalContents;
+  }
 
-        document.body.innerHTML = originalContents;
+  useEffect(() => {
+    if (props.recon_loading === false) {
+      props.ReconciliationData(id);
     }
+  }, [props.recon_loading]);
+  const data = props.recon_data?.data;
+  console.log(data);
 
-    useEffect(() => {
-        if (props.recon_loading === false) {
-            props.ReconciliationData(id);
+  const reconciledBankStatementBalance =
+    parseInt(data?.bank_statement_balance) +
+    parseInt(data?.unreconciled_deposits) -
+    parseInt(data?.unreconciled_withdrawals) +
+    parseInt(data?.adjustment) +
+    parseInt(data?.cash_not_banked) -
+    parseInt(data?.withdrawals_not_processed);
+  const cashBookBalance =
+    parseInt(data?.cashbook_amount) +
+    parseInt(data?.new_receipts) -
+    parseInt(data?.new_withdrawals);
 
-        }
-    }, [props.recon_loading]);
-    const data = props.recon_data?.data;
-    console.log(data);
+  function downloadPdfDocument() {
+    let pWidth = 595.28; // 595.28 is the width of a4
+    let srcWidth = document.getElementById("printableArea").scrollWidth;
+    let margin = 24; // narrow margin - 1.27 cm (36);
+    let scale = (pWidth - margin * 2) / srcWidth;
+    let pdf = new jsPDF("p", "pt", "a4");
+    pdf.html(document.getElementById("printableArea"), {
+      margin: [40, 40, 40, 40],
+      html2canvas: {
+        scale: scale,
+      },
+      callback: pdf => {
+        pdf.save("reconciliation.pdf");
+      },
+    });
+  }
 
-    const reconciledBankStatementBalance = parseInt(data?.bank_statement_balance) + parseInt(data?.unreconciled_deposits) - parseInt(data?.unreconciled_withdrawals) + parseInt(data?.adjustment) + parseInt(data?.cash_not_banked) - parseInt(data?.withdrawals_not_processed);
-    const cashBookBalance = parseInt(data?.cashbook_amount) + parseInt(data?.new_receipts) - parseInt(data?.new_withdrawals);
+  return (
+    <React.Fragment>
+      <div>
+        <InvoiceHeader
+          printDiv={printDiv}
+          downloadPdfDocument={downloadPdfDocument}
+        />
 
-    function downloadPdfDocument() {
-        let pWidth = 595.28; // 595.28 is the width of a4
-        let srcWidth = document.getElementById('printableArea').scrollWidth;
-        let margin = 24; // narrow margin - 1.27 cm (36);
-        let scale = (pWidth - margin * 2) / srcWidth;
-        let pdf = new jsPDF('p', 'pt', 'a4');
-        pdf.html(document.getElementById('printableArea'), {
-            margin: [40, 40, 40, 40],
-            html2canvas: {
-                scale: scale,
-            },
-            callback: (pdf) => {
-                pdf.save('reconciliation.pdf');
-            }
-        });
-    }
+        <Container className="px-4" fluid id="printableArea">
+          <Row>
+            <Col>
+              <Card>
+                <CardBody>
+                  <div className="d-flex flex-column justify-content-end w-100 py-1 mb-2">
+                    <center className="py-1 fw-bold">
+                      Reconciliation Report
+                    </center>
+                    <center className="py-1">
+                      From {moment().format("01/MM/YYYY")} to{" "}
+                      {moment().format("DD/MM/YYYY")}
+                    </center>
+                  </div>
+                </CardBody>
+              </Card>
 
-    return (
-        <React.Fragment>
-            <div>
-                <InvoiceHeader printDiv={printDiv} downloadPdfDocument={downloadPdfDocument} />
+              <Card>
+                <CardBody>
+                  <div>
+                    <div>
+                      <div className="fw-bold h5">Bank Account</div>
+                      <div className="border-1 border-bottom border-secondary" />
+                    </div>
+                    <Row className="py-1 ">
+                      <Col md={6}>
+                        Bank statement balance as at{" "}
+                        <b className="ms-1">
+                          {/* {moment(data?.bank_statement_balance_date).format("dddd, MMMM Do YYYY")}</b> */}
+                          {moment().format("dddd, MMMM Do YYYY")}
+                        </b>
+                      </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.bank_statement_balance}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Add: unreconciled deposits</Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.unreconciled_deposits}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Less: unreconciled withdrawals</Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.unreconciled_withdrawals}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Add: adjustments </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.adjustment}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Add: cash not banked </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.cash_not_banked}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Less: withdrawals not processed </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        <span>${data?.withdrawals_not_processed}</span>
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}></Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        <span className="border-bottom border-secondary w-25"></span>
+                      </Col>
+                    </Row>
+                    <Row className="py-1">
+                      <Col md={6}>Reconciled bank statement balance</Col>
+                      <Col
+                        md={6}
+                        className="d-flex justify-content-end fw-bold"
+                      >
+                        {" "}
+                        $
+                        {reconciledBankStatementBalance > 0
+                          ? reconciledBankStatementBalance
+                          : "0.00"}
+                      </Col>
+                    </Row>
+                  </div>
+                </CardBody>
+              </Card>
 
-                <Container className="px-4" fluid id="printableArea">
-                    <Row>
-                        <Col>
-                            <Card>
-                                <CardBody>
-                                    <div className="d-flex flex-column justify-content-end w-100 py-1 mb-2">
-                                        <center className='py-1 fw-bold'>Reconciliation Report</center>
-                                        <center className='py-1'>From {moment().format('01/MM/YYYY')} to {moment().format('DD/MM/YYYY')}</center>
-                                    </div>
-                                </CardBody>
-                            </Card>
+              <Card>
+                <CardBody>
+                  <div>
+                    <div>
+                      <div className="fw-bold h5">CashBook </div>
+                      <div className="border-1 border-bottom border-secondary" />
+                    </div>
+                    <Row className="py-1 ">
+                      <Col md={6}>
+                        Balance brought forward from: Tuesday, November 1, 2022{" "}
+                      </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.cashbook_amount}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Add: new receipts </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.new_receipts}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}>Less: new withdrawals </Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        ${data?.new_withdrawals}
+                      </Col>
+                    </Row>
+                    <Row className="py-1 ps-3">
+                      <Col md={6}></Col>
+                      <Col md={6} className="d-flex justify-content-end">
+                        <span className="border-bottom border-secondary w-25"></span>
+                      </Col>
+                    </Row>
+                    <Row className="py-1">
+                      <Col md={6}>
+                        Balance as at {moment().format("dddd, MMMM Do YYYY")}{" "}
+                      </Col>
+                      <Col
+                        md={6}
+                        className="d-flex justify-content-end fw-bold"
+                      >
+                        ${cashBookBalance}
+                      </Col>
+                    </Row>
+                  </div>
+                </CardBody>
+              </Card>
 
-                            <Card>
-                                <CardBody>
-                                    <div>
-                                        <div>
-                                            <div className="fw-bold h5">Bank Account</div>
-                                            <div className="border-1 border-bottom border-secondary" />
-                                        </div>
-                                        <Row className="py-1 ">
-                                            <Col md={6}>Bank statement balance as at <b className="ms-1">
-                                                {/* {moment(data?.bank_statement_balance_date).format("dddd, MMMM Do YYYY")}</b> */}
-                                                {moment().format("dddd, MMMM Do YYYY")}</b>
-                                            </Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.bank_statement_balance}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Add: unreconciled deposits</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.unreconciled_deposits}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Less: unreconciled withdrawals</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.unreconciled_withdrawals}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Add: adjustments	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.adjustment}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Add: cash not banked	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.cash_not_banked}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Less: withdrawals not processed		</Col>
-                                            <Col md={6} className='d-flex justify-content-end'><span>${data?.withdrawals_not_processed}</span></Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}></Col>
-                                            <Col md={6} className='d-flex justify-content-end'><span className="border-bottom border-secondary w-25"></span></Col>
-                                        </Row>
-                                        <Row className="py-1">
-                                            <Col md={6}>
-                                                Reconciled bank statement balance
-                                            </Col>
-                                            <Col md={6} className='d-flex justify-content-end fw-bold'> ${reconciledBankStatementBalance > 0 ? reconciledBankStatementBalance : '0.00'}</Col>
-                                        </Row>
-                                    </div>
-                                </CardBody>
-                            </Card>
-
-                            <Card>
-                                <CardBody>
-                                    <div>
-                                        <div>
-                                            <div className="fw-bold h5">CashBook	</div>
-                                            <div className="border-1 border-bottom border-secondary" />
-                                        </div>
-                                        <Row className="py-1 ">
-                                            <Col md={6}>Balance brought forward from: Tuesday, November 1, 2022		</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.cashbook_amount}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Add: new receipts	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.new_receipts}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}>Less: new withdrawals	</Col>
-                                            <Col md={6} className='d-flex justify-content-end'>${data?.new_withdrawals}</Col>
-                                        </Row>
-                                        <Row className="py-1 ps-3">
-                                            <Col md={6}></Col>
-                                            <Col md={6} className='d-flex justify-content-end'><span className="border-bottom border-secondary w-25"></span></Col>
-                                        </Row>
-                                        <Row className="py-1">
-                                            <Col md={6}>Balance as at {moment().format('dddd, MMMM Do YYYYY')}	</Col>
-                                            <Col md={6} className='d-flex justify-content-end fw-bold'>${cashBookBalance}</Col>
-                                        </Row>
-
-                                    </div>
-                                </CardBody>
-                            </Card>
-
-                            {/* <Card>
+              {/* <Card>
                                 <CardBody>
                                     <div>
                                         <div>
@@ -196,8 +245,7 @@ const ReconciliationReport = (props) => {
                                 </CardBody>
                             </Card> */}
 
-
-                            {/* <Card>
+              {/* <Card>
                                 <CardBody>
                                     <div>
                                         <Row className="py-1 ps-3">
@@ -232,34 +280,25 @@ const ReconciliationReport = (props) => {
                                     </div>
                                 </CardBody>
                             </Card> */}
-
-                        </Col>
-                    </Row>
-
-
-                </Container>
-            </div>
-        </React.Fragment >
-    );
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </React.Fragment>
+  );
 };
 
-
 const mapStateToProps = gstate => {
+  const { recon_data, recon_loading } = gstate.Reconciliations;
 
-
-    const {
-        recon_data,
-        recon_loading,
-    } = gstate.Reconciliations;
-
-    return {
-        recon_data,
-        recon_loading,
-    };
-}
+  return {
+    recon_data,
+    recon_loading,
+  };
+};
 
 export default withRouter(
-    connect(mapStateToProps, {
-        ReconciliationData
-    })(ReconciliationReport)
+  connect(mapStateToProps, {
+    ReconciliationData,
+  })(ReconciliationReport)
 );
